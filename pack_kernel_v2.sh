@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+cd /home/brener/hanoip-uboot
+MKB=$(command -v mkbootimg || echo /usr/bin/mkbootimg)
+# header v2 (suporta dtb no boot.img)
+$MKB \
+  --base '0x0' \
+  --kernel_offset '0x00008000' \
+  --ramdisk work/ramdisk-empty.cpio.gz \
+  --second_offset '0x00f00000' \
+  --dtb_offset '0x01f00000' \
+  --header_version '2' \
+  --kernel kernel-mainline/arch/arm64/boot/Image.gz \
+  --dtb kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip.dtb \
+  --pagesize '4096' \
+  -o work/kernel-mainline-hanoip-v2.img
+echo "=== OK ==="
+ls -la work/kernel-mainline-hanoip-v2.img
+python3 - <<'PYEOF'
+import struct
+d = open('work/kernel-mainline-hanoip-v2.img','rb').read()
+print('magic:', d[0:8])
+print('kernel_size:', struct.unpack('<I', d[8:12])[0])
+print('ramdisk_size:', struct.unpack('<I', d[16:20])[0])
+print('second_size:', struct.unpack('<I', d[24:28])[0])
+print('header_version:', struct.unpack('<I', d[40:44])[0])
+print('dtb_size field (v2):', struct.unpack('<I', d[1636:1640])[0] if len(d)>1640 else 'n/a')
+idx = d.find(b'\xd0\x0d\xfe\xed')
+print('DTB magic em:', hex(idx) if idx>=0 else 'NAO ACHOU')
+PYEOF
