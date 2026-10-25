@@ -53,17 +53,29 @@ done
 echo "modules loaded $(up)"
 
 # The stock Motorola modem reads mmi_unit_info (SMEM item 134) and aborts
-# ~1.5 s after boot without it. Identifiers come from a runtime file
-# (/run/mmi-unit-info.conf, KEY=value lines), never from the image.
-if [ -f /run/mmi-unit-info.conf ]; then
-    . /run/mmi-unit-info.conf
+# ~1.5 s after boot without it. U-Boot copies ABL's identity into
+# /chosen (u-boot,abl-bootargs, linux,serial*, linux,hwrev,
+# mmi,powerup_reason); /run/mmi-unit-info.conf (KEY=value) overrides it.
+# Identifiers never come from the image.
+C=/proc/device-tree/chosen
+abl_arg() { $BB tr ' ' '\n' < $C/u-boot,abl-bootargs 2>/dev/null | $BB sed -n "s/^$1=//p" | $BB head -1; }
+dt_u32() { [ -f $C/$1 ] && printf '0x%s' "$($BB od -An -tx1 $C/$1 | $BB tr -d ' \n')"; }
+if [ -f $C/u-boot,abl-bootargs ]; then
+    BARCODE=$(abl_arg androidboot.serialno); CARRIER=$(abl_arg androidboot.carrier)
+    RADIO_STR=$(abl_arg androidboot.radio); DEVICE=$(abl_arg androidboot.device)
+    SYSTEM_REV=$(dt_u32 linux,hwrev); SERIAL_LOW=$(dt_u32 linux,seriallow)
+    SERIAL_HIGH=$(dt_u32 linux,serialhigh); POWERUP_REASON=$(dt_u32 mmi,powerup_reason)
+    echo "mmi_unit_info from ABL via U-Boot (device=$DEVICE radio=$RADIO_STR)"
+fi
+[ -f /run/mmi-unit-info.conf ] && . /run/mmi-unit-info.conf && echo "mmi_unit_info overridden by /run file"
+if [ -n "$BARCODE$SYSTEM_REV" ]; then
     $BB insmod $W/hanoip_mmi_unit_info.ko device="${DEVICE:-hanoip}" \
         barcode="$BARCODE" carrier="$CARRIER" radio_str="$RADIO_STR" \
         radio="${RADIO:-0}" system_rev="${SYSTEM_REV:-0}" \
         serial_low="${SERIAL_LOW:-0}" serial_high="${SERIAL_HIGH:-0}" \
         powerup_reason="${POWERUP_REASON:-0}" || echo "mmi_unit_info failed"
 else
-    echo "WARNING: /run/mmi-unit-info.conf missing; the modem is expected to crash"
+    echo "WARNING: no ABL identity and no /run/mmi-unit-info.conf; the modem is expected to crash"
 fi
 # IPA (self-loaded GSI firmware) must be up before the modem starts.
 i=0

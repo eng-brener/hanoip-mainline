@@ -165,7 +165,9 @@ static int qcom_of_fixup_nodes(void * __maybe_unused ctx, struct event *event)
 
 EVENT_SPY_FULL(EVT_OF_LIVE_BUILT, qcom_of_fixup_nodes);
 
-int ft_board_setup(void __maybe_unused *blob, struct bd_info __maybe_unused *bd)
+int qcom_fixup_abl_identity(void *blob);
+
+int ft_board_setup(void *blob, struct bd_info __maybe_unused *bd)
 {
-	return 0;
+	return qcom_fixup_abl_identity(blob);
 }

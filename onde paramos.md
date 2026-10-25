@@ -1,12 +1,21 @@
 # Handoff — Moto G60 hanoip mainline
 
+## >>> GOLD ATUAL: work/GOLD-20261025-1203/ (v3 completa, 25/10/2026 12:03 -03)
+Display + rede USB/SSH + UFS RO + modem/Wi-Fi + Bluetooth sobem sozinhos.
+Identidade (MAC, BD_ADDR, dados do modem) vem do ABL via U-Boot a cada boot.
+Ver GOLD.txt na pasta. GOLDs anteriores (1047, 0126) preservadas.
+
+## >>> Bluetooth FUNCIONANDO (25/10/2026) — hci0, busca BR/EDR + LE
+Ver docs/kernel/checkpoint-2026-10-25-bluetooth.txt e scripts/hanoip-load-bt.sh.
+Precisa BT_ADDR (privado) aplicado com btmgmt public-addr.
+
 ## >>> Wi-Fi FUNCIONANDO (25/10/2026) — work/wifi-20261025/v3/
 wlan0 conecta (AccessDenied_5G WPA2, DHCP, ping, apk update OK). Ver docs/kernel/checkpoint-2026-10-25-wifi.txt.
 Precisa de /run/mmi-unit-info.conf (privado, work/wifi-20261025/private/)
 antes de /sbin/load-wifi. Próximo: conectar com wpa_supplicant (pmOS).
 
-## >>> GOLD ATUAL: work/GOLD-20261025-1047/ (v2, promovida 25/10/2026 10:47 -03)
-Retorno padrão; a GOLD-20261025-0126 fica preservada. Ver GOLD.txt na pasta.
+## GOLD v2 anterior: work/GOLD-20261025-1047/ (promovida 25/10/2026 10:47 -03)
+Foi o retorno padrão até a GOLD-20261025-1203. Ver GOLD.txt na pasta.
 
 ## v2 (25/10/2026) — display automático antes da rede
 

@@ -1,0 +1,27 @@
+VERSÃO GOLD v3 (completa) — Moto G60 hanoip mainline
+Promovida pelo usuário em 25/10/2026 12:03:52 -03.
+Substitui como retorno padrão a GOLD-20261025-1047 (preservada, assim como a
+GOLD-20261025-0126).
+
+Origem: work/full-20261025/v1/. Kernel Image #8 inalterado (seção kernel
+d79c3426...). Mudam DT (sm7150-motorola-hanoip-wifi-diagnostic: rmtfs_mem,
+MPSS, IPA self-loader, CE do Wi-Fi edge), U-Boot (abl_identity.c) e ramdisk.
+
+Sobe sozinho, sem intervenção (validado 1 boot, usuário viu o texto):
+  display 19 s -> rede USB/SSH 22 s -> UFS RO 25 s -> mmi_unit_info do ABL
+  -> modem + wlan0 37 s -> Bluetooth hci0 42 s.
+Identidade (MAC Wi-Fi, BD_ADDR, serial/hwrev/carrier/radio para o modem)
+vem do ABL via U-Boot a cada boot; nada gravado na imagem (conferido).
+Firmware de modem/WLAN/IPA/BT lido de modem_a e bluetooth_a montadas
+ro,noload (hash conferido antes/depois). rmtfs serve o EFS da RAM em -r.
+
+Boot (SOMENTE volátil, nunca flash):
+  fastboot boot u-boot-hanoip-full.img   (aguardar product motorola-hanoip)
+  fastboot boot kernel-hanoip-full.img
+SSH: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@172.16.42.1
+Conectar Wi-Fi (manual; senha só em /run): ver docs/kernel/checkpoint-2026-10-25-wifi.txt.
+pmOS: scp do tarball work/pmos-20261025/pmos-v26.06-wifi-rootfs.tar.gz para
+/tmp/pmos-rootfs.tar.gz e enter-pmos.
+Para reiniciar: desmontar /mnt/ro/* antes (o /sbin/reboot recusa mounts
+não-RAM). O modem fica ligado (sem RIL, não registra sozinho).
+Pendências: FIFO DSI intermitente na partida; removed_region vs trust-zone.

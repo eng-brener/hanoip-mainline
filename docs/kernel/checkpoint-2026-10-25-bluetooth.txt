@@ -1,0 +1,44 @@
+Bluetooth WCN3990 no mainline — Moto G60 hanoip, 25/10/2026
+
+RESULTADO: hci0 funcional ao vivo, sobre a variante Wi-Fi v3 (sem reboot):
+firmware baixado no chip, controlador configurado, busca BR/EDR e LE com
+vários dispositivos encontrados; Wi-Fi seguiu conectado ao mesmo tempo.
+
+- Nó já existente no DT da placa: &uart3 > bluetooth "qcom,wcn3990-bt"
+  (vddio L10A, vddxo L1C, vddrf vdd_wcss_adc_dac, vddch0 L10C, 3,2 Mbaud).
+  Não depende do modem.
+- Módulos (M= contra o Image #8, sem mudar .config): crypto/ecc,
+  ecdh_generic, net/bluetooth/bluetooth, rfcomm, drivers/bluetooth/btqca,
+  btbcm, hci_uart. KBUILD_EXTRA_SYMBOLS com net/rfkill e lib/crypto;
+  CONFIG_BT_QCOMSMD= na linha de comando (btqcomsmd não se aplica).
+- Firmware: bluetooth_a (sde20) montada ro,noload; links em
+  /lib/firmware/qca. Chip: SOC 0x40020140, ROM 0x0201 -> crbtfw21.tlv +
+  crnv21.bin. Hash da partição dc4867b6... igual antes/depois.
+- Controlador fica "Unconfigured" (missing public-address) até definir o
+  BD_ADDR: btmgmt -i hci0 public-addr <BT_ADDR>. O endereço real vem de
+  androidboot.btmacaddr do boot stock e fica só em
+  work/wifi-20261025/private/ (BT_ADDR, também WIFI_ADDR), aplicado em
+  runtime. btmgmt/bluez instalados no pmOS via apk pelo próprio Wi-Fi.
+- Saúde: modem running sem quedas, 0 SMMU/Oops/erros BT, UFS 84 RO.
+Script: scripts/hanoip-load-bt.sh (módulos esperados em /lib/hanoip-bt).
+PENDENTE: embutir módulos BT no ramdisk; bluetoothd (D-Bus) e pareamento;
+BD_ADDR/MAC Wi-Fi vindos do U-Boot (local-bd-address/local-mac-address)
+em vez de runtime; áudio por Bluetooth fora de escopo.
+
+IMAGEM COMPLETA (work/full-20261025/v1/, 25/10/2026), sem intervenção:
+- U-Boot: arch/arm/mach-snapdragon/abl_identity.c em ft_board_setup lê o DT
+  que o ABL entrega (get_prev_bl_fdt_addr) e grava no DT do Linux:
+  /chosen u-boot,abl-bootargs, linux,seriallow/serialhigh, linux,hwrev,
+  mmi,powerup_reason; local-bd-address (ordem invertida) no qcom,wcn3990-bt
+  a partir de androidboot.btmacaddr; local-mac-address no qcom,wcn3990-wifi
+  a partir do primeiro endereço de wifimacaddr. Sem DT do ABL: não faz nada.
+- load-wifi monta a mmi_unit_info a partir de /proc/device-tree/chosen
+  (/run/mmi-unit-info.conf só como override manual).
+- autostart: display -> rede USB -> load-wifi -> load-bt quando existem
+  /etc/hanoip/autoload-wifi e autoload-bt (presentes nesta imagem) ou
+  hanoip.wifi/hanoip.bt no cmdline. Conexão a redes continua manual.
+- Boot: display 19 s, UFS 25 s, mmi_unit_info do ABL 30 s, modem running
+  e wlan0 37 s, hci0 42 s. modem_a/bluetooth_a com hash inalterado.
+  MAC do Wi-Fi e BD_ADDR conferidos iguais aos reais (sem expor valores);
+  sem "invalid MAC"; controlador BT configurado pelo DT.
+- Display: usuário confirmou texto na tela (6 IRQs FIFO na partida).

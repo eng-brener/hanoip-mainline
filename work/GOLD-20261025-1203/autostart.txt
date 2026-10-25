@@ -1,0 +1,41 @@
+autostart 9.25
+HANOIP: display probe started (PID 144); see dmesg and /run/hanoip-display-loader.log
+fb0=msmdrmfb after 8s at 19.24
+irqs=6
+HANOIP: UFS probe started in background (PID 506); see dmesg
+UFS module loader returned: 0
+HANOIP: UFS ready, 84 block devices, all read-only
+autostart done 42.77
+--- wifi.log
+start 25.77
+modem_a /dev/sde18 pre 6a1fc4b5c25704d476a57e1c0a59983b75c9af27ca8a75412037614c6c6f45dc
+modules loaded 30.36
+mmi_unit_info from ABL via U-Boot (device=hanoip radio=LATAM)
+[    0.642930] platform 1e40000.ipa: Adding to iommu group 6
+[   30.290348] ipa 1e40000.ipa: IPA driver initialized
+[   30.327061] ipa 1e40000.ipa: IPA driver setup completed successfully
+mpss /sys/class/remoteproc/remoteproc0 firmware=qcom/sm7150/motorola/hanoip/modem.mdt state=offline recovery=disabled
+mpss state=running wlan0=yes after 4s at 37.29
+modem_a unchanged
+--- bt.log
+start 40.25
+bluetooth_a /dev/sde20 pre dc4867b657a6bf725fed047454033a5e8c7ae4dfe2fdafbae333b777daf5a3ec
+[   40.762032] Bluetooth: hci0: QCA Downloading qca/crbtfw21.tlv
+[   41.779892] Bluetooth: hci0: QCA Downloading qca/crnv21.bin
+[   41.935152] Bluetooth: hci0: QCA setup on UART is completed
+hci: hci0 after 2s at 42.68
+local-bd-address present in DT
+bluetooth_a unchanged
+--- DT do U-Boot
+linux,hwrev
+linux,serialhigh
+linux,seriallow
+mmi,powerup_reason
+u-boot,abl-bootargs
+/proc/device-tree/soc@0/wifi@18800000/local-mac-address
+/proc/device-tree/soc@0/geniqup@8c0000/serial@88c000/bluetooth/local-bd-address
+--- estado
+/sys/class/bluetooth: hci0  /sys/class/net: lo rmnet_ipa0 usb0 wlan0 
+running
+[   30.407259] mmi_unit_info (SMEM 134) for modem: version = 0x03, device = 'hanoip', radio_str = 'LATAM', system_rev = 0xc000, carrier = '<carrier>'
+irqs=6

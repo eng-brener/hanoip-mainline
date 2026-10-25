@@ -139,7 +139,16 @@ composite gadget, udhcpd, static musl dropbear + sftp-server). SSH/SFTP to
 DSI FIFO IRQs when loaded at ~72 s after scp traffic. Not attributed yet;
 next: reboot v1 and load display early before network traffic.
 
-# GOLD v2 (user-designated 2026-10-25 10:47 -03) — DEFAULT RETURN PAIR
+# GOLD v3 complete (user-designated 2026-10-25 12:03 -03) — DEFAULT RETURN PAIR
+
+work/GOLD-20261025-1203/ (read-only, GOLD.txt + SHA256SUMS): Image #8 with the
+wifi diagnostic DT, U-Boot with abl_identity.c and a ramdisk that brings up
+display, USB network/SSH, UFS (RO), modem + Wi-Fi and Bluetooth on its own.
+Device identity comes from ABL through U-Boot at every boot; never put device
+identifiers or Wi-Fi passwords in images, scripts or commits. kernel
+5260ee61..., U-Boot faf8014b.... Unmount /mnt/ro/* before /sbin/reboot.
+
+# GOLD v2 (user-designated 2026-10-25 10:47 -03), preserved
 
 work/GOLD-20261025-1047/ (read-only, GOLD.txt + SHA256SUMS): same kernel/DT/
 U-Boot as the first GOLD, ramdisk adds autostart (display before network),

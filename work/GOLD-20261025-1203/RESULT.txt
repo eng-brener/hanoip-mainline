@@ -1,0 +1,1 @@
+run1 25/10/2026: usuario confirmou texto na tela; wlan0+hci0 automaticos; MAC/BD_ADDR do ABL conferidos.
