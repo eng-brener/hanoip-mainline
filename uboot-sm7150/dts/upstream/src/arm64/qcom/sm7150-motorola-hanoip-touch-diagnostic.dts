@@ -1,0 +1,9 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-display-diagnostic.dts"
+
+&spi6 {
+	touchscreen@0 {
+		/* The downstream driver requests falling edges, despite its old DT. */
+		interrupts-extended = <&tlmm 9 IRQ_TYPE_EDGE_FALLING>;
+	};
+};

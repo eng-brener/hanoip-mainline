@@ -1,0 +1,15 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip.dts"
+
+/* Initial RAM-only USB bring-up: do not probe internal storage. */
+&ufs_mem_hc {
+	status = "disabled";
+};
+
+&ufs_mem_phy {
+	status = "disabled";
+};
+
+&ice {
+	status = "disabled";
+};

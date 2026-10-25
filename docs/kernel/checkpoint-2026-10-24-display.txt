@@ -1,0 +1,136 @@
+Checkpoint experimental de display — 2026-10-24
+
+REGRA: nenhum flash, nenhuma gravacao em particoes. Todos os testes usaram
+fastboot boot, initramfs em RAM, sem UFS/SD e sem mounts persistentes.
+O checkpoint UFS anterior e seus hashes continuam preservados.
+
+RESULTADO ATUAL
+
+O par no-reset/ abriu o shell e carregou MSM e painel com retorno 0.
+DRM criou card0, card0-DSI-1 e fb0=msmdrmfb. Conector connected/enabled;
+CRTC ativo, modo 1080x2460 a 60 Hz, pixel clock 343458 kHz, VFP 2565,
+VBP 12, duas mixers e dois DSC atribuidos ao CRTC. Framebuffer XR24,
+pitch 4352, tamanho 10706944 bytes. O dispositivo ficou acessivel por USB
+apos o modeset. A observacao de uptime no log final foi 107,23 segundos.
+Sem falhas SMMU nao tratadas, timeouts DSI ou erros PPS no dmesg coletado.
+O texto de teste foi enviado a /dev/tty1 (framebuffer em RAM).
+CONFIRMACAO VISUAL: o usuario confirmou que a mensagem de teste apareceu
+na tela. Isso valida a imagem neste boot a 60 Hz; testes adicionais ainda
+sao necessarios para outros modos, suspend/resume e ciclos das alimentacoes.
+
+Somente ram0..ram15 expostos; mounts rootfs/proc/sysfs/devtmpfs/tmpfs/
+configfs/debugfs. Nenhuma particao montada. Brilho WLED 512/4095.
+Ha avisos sys_fillrect/sys_imageblit por falta de FBINFO_VIRTFB no fbdev
+legado do MSM, embora o buffer seja obtido por msm_gem_get_vaddr; investigar
+essa flag separadamente. O teste nao validou GPU, touch, suspend/resume,
+120 Hz, handoff a frio ou um ciclo completo das alimentacoes LCDB.
+
+PAR EVIDENCIADO: work/hanoip-display-20261024/no-reset/
+u-boot-hanoip-display-noreset.img + kernel-hanoip-display-noreset.img.
+drm-state.txt, live-verification.txt e final-dmesg.txt documentam o resultado.
+Os relatos de falha abaixo pertencem as variantes anteriores.
+
+FONTES PREPARADOS
+
+panel-ilitek-ili7807s.c: reset especifico Tianma (eletrico 4/1/12 ms,
+traduzido para GPIO_ACTIVE_LOW); VFP 2565 e VBP 12 corrigidos; DSC 1.1,
+540x10, duas slices, 8 bpc/8 bpp, block prediction; PPS enviado depois
+da sequencia on-command, como no downstream. Removido SYNC_PULSE, pois
+o DT Android declara h-sync-pulse=0. A sequencia vendor original foi mantida.
+Esses ajustes ainda dependem de validacao visual e de modeset no aparelho.
+
+Packetizacao: backport dos commits upstream ffa88de8ddb64067df49e4d9f253d09a9c247059
+e ce73a5db44e3d5f9c0c061f0868ae209b59605f1. Usa a flag
+MIPI_DSI_MODE_DSC_ALL_SLICES_IN_PKT, em vez do campo experimental da PR69.
+
+DT de display separado, tanto no kernel como no U-Boot. O DT efetivo vem
+do U-Boot. UFS/PHY/ICE continuam desabilitados. GPU desabilitada; DRM/MSM,
+painel, WLED e dependencias empacotados como modulos, para carga manual
+depois de confirmar o shell USB e os mounts em RAM.
+
+WLED: downstream qcom-spmi-wled.c confirmou que string-cfg e bitmask.
+O valor stock 7 corresponde a strings 0/1/2, nao quatro strings.
+Limites preservados: 25000 uA por string, boost 1400 mA, OVP 26500 mV.
+Brilho inicial de teste 512/4095. Backlight descrito explicitamente no DT.
+Nao foi adicionada a supply wled generica da proposta upstream: ela nao
+substitui a descricao do controlador PMIC neste aparelho.
+
+MEMORIA — CORRECOES E VERIFICACOES
+
+1. Preservado o fix LCDB anterior: regmap_read recebe unsigned int, sem
+cast para escrever quatro bytes sobre uma variavel u8. Outros pontos de
+robustez/refcount/erro do LCDB permanecem fora desta alteracao.
+2. Limite de RAM preservado: 0x17dd00000. As 22 reservas fixas do DT
+efetivo correspondem ao checkpoint e nao se sobrepoem. Phandles podem
+ser renumerados ao acrescentar a referencia de backlight.
+3. U-Boot continua CONFIG_ANDROID_BOOT_IMAGE_IGNORE_BLOB_ADDR=y: os
+enderecos legados do header nao controlam a copia do ramdisk/kernel.
+Nao reaproveitar o antigo ramdisk em 0x01000000 que sobrepunha o Image.
+4. Bug adicional identificado e testado: faltava qcom,sm7150-mdss em
+qcom_smmu_client_of_match (arm-smmu-qcom.c), embora o compatible ja
+existisse na tabela ACTLR. Assim o MDSS perdia a politica de dominio
+identity usada durante o handoff por SDM845/SM8150 e outros.
+
+EVIDENCIA DO FIX SMMU
+
+Primeiras duas variantes (MSM built-in e depois MSM modular), ainda sem
+carregar painel, exibiram texto breve e apagaram; nao abriram USB.
+Um boot com as imagens conhecidas recuperou console-ramoops parcialmente
+corrompido, com falhas SMMU em enderecos do framebuffer 0x9c... e SIDs
+do display. Esse log tem bytes alterados e nao deve ser tratado como
+registro integral confiavel nem como prova de defeito fisico da RAM.
+
+Adicionar apenas o compatible SM7150 a tabela de dominio inicial,
+mantendo o mesmo DT e ramdisk modular, permitiu abrir o shell USB.
+Grupo IOMMU do MDSS: identity. Dmesg vivo sem Unhandled context fault.
+Todos os 11 modulos carregaram, WLED reportou brilho 512, e o shell
+continuou acessivel. Apenas ram0..ram15 em /proc/partitions; nenhum mount
+persistente. Isso valida o desbloqueio do boot/handoff, nao o display DRM.
+A traducao global continua strict; nao foi removido o iommus da UFS.
+
+SEGUNDO BLOQUEIO
+
+Com o fix SMMU, o MSM falhou no probe do MDSS com -110 e nao criou card0.
+DISPCC estava vinculado, mas mdss_gdsc nao aparecia no resumo de dominios.
+O driver definia mdss_gdsc e dispcc_sm7150_gdscs, mas omitia .gdscs e
+.num_gdscs de qcom_cc_desc. Esses dois campos foram restaurados em fonte.
+A configuracao herdada de PLL/clocks foi mantida nesta etapa.
+
+A variante com GDSC restaurado tambem abriu USB. A carga automatizada da
+sequencia de modulos foi seguida de desconexao USB e retorno ao Android.
+Nao foi recuperado panic/stack trace; pstore estava vazio no boot seguinte.
+Nao classificar como display funcionando nem assumir causa do reset.
+Um teste posterior divide dependencias, MSM e painel em etapas separadas.
+
+O teste separado confirmou carga das nove dependencias sem reinicio.
+Ao inserir somente msm.ko (painel ainda ausente), o aparelho reiniciou.
+Um msm.ko com marcadores delimitou o ponto: registro MDP/DPU, DSI,
+Adreno e entrada no probe MDSS completaram. O ultimo marcador foi
+"HANOIP MDSS: asserting reset"; nao apareceu "reset released".
+O teste seguinte remove apenas a propriedade opcional resets de &mdss
+no DT de diagnostico, em ambas as arvores. Nao remove reset-gpios do
+painel, nao altera o DT normal e nao toca em particoes. Essa excecao
+serve ao handoff de firmware; a causa fisica do reset ainda requer estudo.
+Os marcadores temporarios ficam em msm_drv.c e msm_mdss.c.
+
+ARTEFATOS
+
+work/hanoip-display-20261024/: primeira variante, U-Boot efetivo, configs,
+hashes, fontes antes da alteracao, proveniencia e validacao de memoria/DT.
+modular/: segunda variante, modulos e ramdisk sem carga automatica.
+recovery/: recuperacao do primeiro pstore com imagens do checkpoint UFS.
+smmu/: kernel com compatible corrigido; preflight, after-load, dependencies,
+final-state e runtime-verification.json demonstram o desbloqueio do shell.
+gdsc/: variante experimental com dominio registrado e investigacao do reset.
+trace/: msm.ko instrumentado e log serial do ponto do reset.
+no-reset/: par experimental com reset do core MDSS omitido do DT.
+source-overlay.tar.gz e source-manifest.json: fontes desta etapa.
+
+Ferramentas locais: scripts/hanoip_validate_display.py valida DT/memoria;
+scripts/hanoip-load-display.sh verifica RAM-only mounts/ausencia de discos
+antes de carregar modulos. Nenhum deles monta particoes do aparelho.
+
+Builds GCC reais e modpost estrito passaram. Os dez testes do empacotador
+passaram, e git diff --check passou. Teste negativo confirmou rejeicao do
+mapa incorreto de 4 GiB pelo validador local.
+O touch Ilitek SPI ainda nao foi portado/carregado nesta etapa.

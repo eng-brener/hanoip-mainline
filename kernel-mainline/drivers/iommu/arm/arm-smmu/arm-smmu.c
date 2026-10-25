@@ -1165,6 +1165,37 @@ static void arm_smmu_master_install_s2crs(struct arm_smmu_master_cfg *cfg,
 	}
 }
 
+/* Diagnostic hanoip handoff: retain ABL scanout before switching its streams. */
+static int arm_smmu_hanoip_map_splash(struct iommu_domain *domain, struct device *dev)
+{
+	struct arm_smmu_domain *smmu_domain = to_smmu_domain(domain);
+	struct device_node *memory;
+	struct resource region;
+	int ret;
+
+	if (!of_machine_is_compatible("motorola,hanoip") ||
+	    !of_device_is_compatible(dev->of_node, "qcom,sm7150-mdss"))
+		return 0;
+	memory = of_parse_phandle(dev->of_node, "memory-region", 0);
+	if (!memory)
+		return 0;
+	ret = of_address_to_resource(memory, 0, &region);
+	of_node_put(memory);
+	if (ret)
+		return ret;
+	if (region.start != 0x9c000000 || resource_size(&region) != 0x1700000)
+		return -EINVAL;
+	if (smmu_domain->hanoip_splash_mapped)
+		return 0;
+	ret = iommu_map(domain, region.start, region.start,
+			resource_size(&region), IOMMU_READ, GFP_KERNEL);
+	if (ret)
+		return dev_err_probe(dev, ret, "HANOIP: splash mapping failed\n");
+	smmu_domain->hanoip_splash_mapped = true;
+	dev_info(dev, "HANOIP: mapped firmware framebuffer %pr before stream switch\n", &region);
+	return 0;
+}
+
 static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev,
 			       struct iommu_domain *old)
 {
@@ -1204,6 +1235,10 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev,
 		ret = -EINVAL;
 		goto rpm_put;
 	}
+
+	ret = arm_smmu_hanoip_map_splash(domain, dev);
+	if (ret)
+		goto rpm_put;
 
 	/* Looks ok, so add the device to the domain */
 	arm_smmu_master_install_s2crs(cfg, S2CR_TYPE_TRANS,

@@ -1,0 +1,67 @@
+Moto G60 hanoip: display handoff e entrada touch em RAM
+24/10/2026, retomada após onde paramos.md
+
+Segurança: nenhum flash, troca de slot, montagem ou gravação de partições.
+O initramfs só expõe ram0..ram15; UFS/SD estão desabilitadas no DT efetivo.
+
+Artefatos atuais:
+  work/hanoip-touch-20261024/handoff-v2/kernel-hanoip-touch-handoff-v2.img
+  work/hanoip-touch-20261024/handoff-v2/u-boot-hanoip-touch-handoff-v2.img
+Usar os dois caminhos explicitamente no helper boot-volatile.py. O nome da
+pasta handoff-unbooted é histórico: o primeiro kernel ali já falhou em teste.
+O kernel atual é Linux 7.1.0-sm7150 #8; SHA em handoff-v2/SHA256SUMS.
+
+Memória/display:
+- Correção LCDB anterior permanece: regmap_read recebe unsigned int.
+- DT preserva as 22 reservas e RAM até 0x17dd00000, sem sobreposição.
+- Tentativa inicial de iommu_map no MSM antes do attach retornou -ENODEV.
+  arm_smmu_map_pages necessita pgtbl_ops, publicados durante init_domain_context.
+  Não reutilizar aquele kernel como baseline funcional.
+- Novo hook específico motorola,hanoip + qcom,sm7150-mdss, após preparar o
+  domínio e antes de instalar os S2CRs, mapeia 0x9c000000..0x9d6fffff READ-only.
+  Exige memory-region com range exato. Não muda política global ou UFS.
+- MSM limita o allocator IOVA abaixo de 0x9c000000 para evitar colisão.
+- global_state_initialized torna a limpeza do objeto DRM idempotente:
+  a falha anterior expôs duas chamadas ao fini do mesmo objeto, causando Oops.
+  Esta proteção compilou; não forçamos uma nova falha para testar esse caminho.
+- No segundo boot, o log confirmou o mapa ANTES da troca dos streams, DRM
+  inicializado, msmdrmfb, connected/enabled, modo 1080x2460 e tainted=0.
+  Nenhuma falha SMMU, timeout DSI ou Oops observados após essa correção.
+- Mensagem HANOIP MAINLINE - TESTE 2 enviada à tty1. O usuário confirmou:
+  "sim tem mensagem na tela". Display visual e touch estão validados neste boot.
+- Warnings antigos FBINFO_VIRTFB permanecem; sem alteração nesta retomada.
+
+Touch:
+- Driver mínimo SPI identificou PID 0x78071c03, verificou integralmente os
+  três blocos IRAM e confirmou a mesma versão do firmware Android.
+- /dev/input/event3 registrado como Hanoip Ilitek ILI7807 SPI.
+- Captura válida de 45 s: 1949 eventos, 463 SYN_REPORT, 15 contatos e 15
+  solturas, nenhum contato preso. Máximo observado: um dedo simultâneo.
+- Coordenadas observadas: X 343..597, Y 164..2458; dentro dos limites
+  declarados X 0..1079, Y 0..2459. Não valida orientação nem toda a superfície.
+- Estatísticas no fim: irqs=1249 reports=1249 rejected=0. IRQ TLMM9 confirma
+  1249 interrupções. Pacotes idênticos podem não gerar novos eventos evdev.
+- Isso valida entrada física de um dedo no boot atual; não equivale a
+  validar dez dedos, suspend/resume, gestos ou estabilidade entre boots.
+- input-events.txt contém uma tentativa INVÁLIDA por sintaxe do timeout;
+  usar input-events-45s.txt e input-analysis.json como evidência.
+- BusyBox antigo requer timeout -t SECONDS. Analisador host:
+  handoff-v2/analyze-input.py (input_event ARM64, 24 bytes little-endian).
+- Segunda captura, 30 s: 4453 eventos, 690 SYN_REPORT, 42 contatos/42 solturas,
+  máximo observado de DOIS dedos simultâneos, zero contatos presos, coordenadas
+  dentro dos limites. Stats acumuladas: irqs=2347 reports=2347 rejected=0;
+  tainted=0. Evidência em input-multitouch-30s.txt e input-multitouch-analysis.json.
+  Valida dois dedos neste boot, sem inferir suporte prático aos dez slots.
+
+Logs e fontes: handoff-v2/display-load.txt, visual-test.txt,
+input-events-45s.txt, input-analysis.json, source-overlay.tar.gz,
+source-manifest.json e source-changes.patch. Build Image e modpost passaram;
+git diff --check passou. Imagens anteriores foram preservadas.
+
+Referência primária da ordem de inicialização do SMMU, também confirmada na
+árvore local (a implementação do port tem diferenças posteriores):
+https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux/+/d4c08d8b23b22807c712208cd05cb047e92e7672/drivers/iommu/arm/arm-smmu/arm-smmu.c
+
+Priorização posterior do usuário: refinamento do touch fica para depois.
+Próximo item recomendado: rede USB em RAM preservando ACM; depois userspace
+temporário/interface por software, antes de GPU. Ainda não implementado.

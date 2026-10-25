@@ -78,6 +78,7 @@ struct dpu_kms {
 	 * dpu_kms_global_get_state()
 	 */
 	struct drm_private_obj global_state;
+	bool global_state_initialized;
 
 	struct dpu_rm rm;
 

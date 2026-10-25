@@ -85,6 +85,9 @@
 	};
 
 	reserved-memory {
+		/* Keep one DFPS reservation at the address used by the stock DT. */
+		/delete-node/ dfps-data@9e300000;
+
 		/* cont_splash e dfps: framebuffer do ABL - SEM no-map (o sm7150.dtsi ja tem os demais) */
 		cont_splash_mem: cont-splash@9c000000 {
 			reg = <0x0 0x9c000000 0x0 0x01700000>;
@@ -817,9 +820,6 @@
 	vcc-max-microamp = <600000>;
 	vccq2-supply = <&vreg_l12a_1p8>;
 	vccq2-max-microamp = <600000>;
-
-	/* TESTE: remove a SMMU para validar a hipotese da causa raiz */
-	/delete-property/ iommus;
 
 	status = "okay";
 };

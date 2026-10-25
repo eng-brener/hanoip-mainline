@@ -1,5 +1,15 @@
 # U-Boot + Kernel Mainline para Motorola Moto G60 (hanoip / SM7150)
 
+> **Regra atual: nenhum flash nem gravação em partições do celular.** Os exemplos
+> antigos de flash abaixo são históricos e não devem ser executados.
+> **Checkpoint 2026-10-24:** boot temporário em RAM com shell USB, correção QUP
+> e **UFS funcionando em leitura**, com discos e partições em somente leitura.
+> Veja [o checkpoint UFS](docs/kernel/checkpoint-2026-10-24-ufs-leitura.txt).
+> A etapa de display já criou DRM/DSI ativo em 1080×2460 a 60 Hz, com DSC e
+> `msmdrmfb`; o usuário confirmou a mensagem visível na tela. Veja
+> [o checkpoint de display](docs/kernel/checkpoint-2026-10-24-display.txt).
+> As seções com datas de agosto abaixo são histórico do port.
+
 Port do U-Boot mainline (fork sm7150-mainline/u-boot) e kernel Linux mainline
 (fork sm7150-mainline/linux) para o Moto G60 (codename `hanoip`,
 SoC Qualcomm Snapdragon 730G / `sm7150` / `sdmmagpie`).

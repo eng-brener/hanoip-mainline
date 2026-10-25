@@ -95,7 +95,7 @@ static int qcom_lcdb_set_bst(struct qcom_lcdb *lcdb, int mv)
 static int qcom_lcdb_enable(struct qcom_lcdb *lcdb)
 {
 	int ret, timeout;
-	u8 val;
+	unsigned int val;
 	int bst = bst_mv(lcdb->lab_mv, lcdb->ibb_mv);
 	if (lcdb->enabled)
 		return 0;
@@ -111,14 +111,16 @@ static int qcom_lcdb_enable(struct qcom_lcdb *lcdb)
 	if (ret) return ret;
 	ret = qcom_lcdb_sec_write(lcdb, LCDB_ENABLE_CTL1_REG, MODULE_EN_BIT);
 	if (ret) return ret;
-	timeout = 20;
-	while (timeout--) {
-		ret = regmap_read(lcdb->regmap, lcdb->base + INT_RT_STATUS_REG, (unsigned int*)&val);
-		if (ret) break;
-		if (val & VREG_OK_RT_STS_BIT) break;
+	for (timeout = 20; timeout > 0; timeout--) {
+		ret = regmap_read(lcdb->regmap,
+				  lcdb->base + INT_RT_STATUS_REG, &val);
+		if (ret)
+			return ret;
+		if (val & VREG_OK_RT_STS_BIT)
+			break;
 		usleep_range(1000, 1500);
 	}
-	if (timeout <= 0) {
+	if (!timeout) {
 		dev_err(lcdb->dev, "VREG_OK timeout val=0x%x\n", val);
 		return -ETIMEDOUT;
 	}

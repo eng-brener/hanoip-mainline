@@ -185,6 +185,7 @@ struct drm_gpuvm *msm_kms_init_vm(struct drm_device *dev, struct device *mdss_de
 	struct msm_drm_private *priv = dev->dev_private;
 	struct msm_kms *kms = priv->kms;
 	struct device *iommu_dev;
+	u64 iova_size = 0x100000000ULL - 0x1000;
 
 	/*
 	 * IOMMUs can be a part of MDSS device tree binding, or the
@@ -203,8 +204,11 @@ struct drm_gpuvm *msm_kms_init_vm(struct drm_device *dev, struct device *mdss_de
 	if (IS_ERR(mmu))
 		return ERR_CAST(mmu);
 
+	/* Keep allocations below the reserved firmware scanout mapping. */
+	if (mmu->firmware_start)
+		iova_size = mmu->firmware_start - 0x1000;
 	vm = msm_gem_vm_create(dev, mmu, "mdp_kms",
-			       0x1000, 0x100000000 - 0x1000, true);
+			       0x1000, iova_size, true);
 	if (IS_ERR(vm)) {
 		dev_err(mdp_dev, "vm create, error %pe\n", vm);
 		mmu->funcs->destroy(mmu);

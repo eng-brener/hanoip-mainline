@@ -402,7 +402,10 @@ static const struct drm_private_state_funcs dpu_kms_global_state_funcs = {
 
 static void dpu_kms_global_obj_fini(struct dpu_kms *dpu_kms)
 {
+	if (!dpu_kms->global_state_initialized)
+		return;
 	drm_atomic_private_obj_fini(&dpu_kms->global_state);
+	dpu_kms->global_state_initialized = false;
 }
 
 static int dpu_kms_parse_data_bus_icc_path(struct dpu_kms *dpu_kms)
@@ -1156,6 +1159,7 @@ static int dpu_kms_hw_init(struct msm_kms *kms)
 
 	drm_atomic_private_obj_init(dpu_kms->dev, &dpu_kms->global_state,
 				    &dpu_kms_global_state_funcs);
+	dpu_kms->global_state_initialized = true;
 
 	atomic_set(&dpu_kms->bandwidth_ref, 0);
 

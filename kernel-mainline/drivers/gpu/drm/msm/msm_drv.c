@@ -1127,14 +1127,19 @@ static int __init msm_drm_register(void)
 		return -EINVAL;
 
 	DBG("init");
+	pr_info("HANOIP DRM: register MDP/DPU\n");
 	msm_mdp_register();
 	msm_dpu_register();
+	pr_info("HANOIP DRM: register DSI\n");
 	msm_dsi_register();
 	msm_hdmi_register();
 	msm_dp_register();
+	pr_info("HANOIP DRM: register Adreno\n");
 	adreno_register();
 	msm_mdp4_register();
+	pr_info("HANOIP DRM: register MDSS\n");
 	msm_mdss_register();
+	pr_info("HANOIP DRM: registration complete\n");
 
 	return 0;
 }

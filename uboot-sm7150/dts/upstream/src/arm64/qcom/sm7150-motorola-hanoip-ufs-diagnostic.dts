@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-diagnostic.dts"
+
+/* Passed to Linux; this U-Boot variant is built without a UFS driver. */
+&ufs_mem_hc {
+	/* Match the mainline DMA topology; the base board had removed it. */
+	iommus = <&apps_smmu 0x300 0x0>;
+	status = "okay";
+};
+
+&ufs_mem_phy {
+	status = "okay";
+};

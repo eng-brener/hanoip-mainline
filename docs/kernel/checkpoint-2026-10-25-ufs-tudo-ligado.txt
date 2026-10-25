@@ -1,0 +1,40 @@
+UFS com tudo ligado — Moto G60 hanoip, 25/10/2026
+
+Boot apenas em RAM (fastboot boot do U-Boot e do kernel). Nenhum flash,
+nenhuma montagem, nenhuma escrita em partição. Pasta:
+work/ufs-20261025/ufs-local/ (imagens, módulos, logs, SHA256SUMS,
+ufs-local-results.json).
+
+COMPOSIÇÃO
+Base = par CPUidle local-only (display + touch + CPUfreq + idle local).
+Image #8 inalterado (seção kernel d79c3426...). DT novo
+sm7150-motorola-hanoip-ufs-local-diagnostic.dts (kernel e U-Boot) só muda
+status=okay em ufshc@1d84000 e phy@1d87000; iommus <&apps_smmu 0x300 0x0>
+preservado. U-Boot com CONFIG_UFS=n. Ramdisk = local-only + lib/hanoip-ufs/
+(ufshcd-core, ufshcd-pltfrm, ufs-qcom) + /sbin/load-ufs.
+Módulos recompilados limpos contra a árvore do Image #8 com
+make M=drivers/ufs CONFIG_SCSI_UFSHCD=m CONFIG_SCSI_UFSHCD_PLATFORM=m
+CONFIG_SCSI_UFS_QCOM=m modules, sem alterar .config (hash conferido).
+kernel-hanoip-ufs-local.img c99f8cf5ebfd8009a3357697b95f2ce8439e2e257a18bfc3dcf2dfa219e8734c
+u-boot-hanoip-ufs-local.img 33c05711d1b53e5df75ae2fb985646c56d690703c541dcca1e7b563ec763c1e1
+
+RESULTADOS (um boot)
+Display carregado primeiro: DSI irqs=0, connected/enabled, até uptime 489 s.
+load-ufs: loader 0, grupo IOMMU 5, Samsung KM5V8001DM-B622, sda..sdf,
+84 blocos todos RO (guardião BLKROSET). Mounts só RAM/pseudo.
+sdb 64 KiB x3 = 629a8ca6... (igual ao Android). sdb 256 MiB em 1 GiB x2,
+com drop_caches = 45ab429d... (repetível; não comparado com Android).
+Leitura sequencial: sde 256 MiB 515 MB/s; sdb 2 GiB 510,6 MB/s.
+power_info em repouso: HS_GEAR1, 1 lane, rate B, HIBERN8, clkscale=1
+(amostra ociosa; gear sob carga não medido).
+Touch: load-touch recusa por haver storage exposto (trava conservadora).
+Carregados os mesmos insmod manualmente após checar mounts só RAM e todos
+os sd* RO: event3 registrado, 170136 bytes de eventos em 15 s com toques.
+CPUidle state2 em uso, cpufreq 1248 MHz, 35,4..40,3 °C, tainted 4096 (O,
+módulos externos), zero erros UFS/SMMU/I/O no dmesg.
+
+LIMITES
+Um único boot. Sem escrita, montagem, ICE, suspend, runtime PM sob carga,
+stress longo ou comparação de regiões grandes com Android. load-touch
+ainda recusa storage exposto; ajustar para aceitar apenas se tudo RO
+seria mudança de ramdisk para uma próxima variante.

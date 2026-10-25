@@ -7,6 +7,7 @@
 #include <linux/adreno-smmu-priv.h>
 #include <linux/io-pgtable.h>
 #include <linux/kmemleak.h>
+#include <linux/of_address.h>
 #include "msm_drv.h"
 #include "msm_gpu_trace.h"
 #include "msm_mmu.h"
@@ -723,6 +724,30 @@ static const struct msm_mmu_funcs funcs = {
 		.set_stall = msm_iommu_set_stall,
 };
 
+static int msm_iommu_hanoip_firmware_reserve(struct msm_iommu *iommu, struct device *dev)
+{
+	struct device_node *memory;
+	struct resource region;
+	int ret;
+
+	if (!of_machine_is_compatible("motorola,hanoip") ||
+	    !of_device_is_compatible(dev->of_node, "qcom,sm7150-mdss"))
+		return 0;
+	memory = of_parse_phandle(dev->of_node, "memory-region", 0);
+	if (!memory)
+		return 0;
+	ret = of_address_to_resource(memory, 0, &region);
+	of_node_put(memory);
+	if (ret)
+		return ret;
+	/* Only the separately reserved, collected hanoip splash range is allowed. */
+	if (region.start != 0x9c000000 || resource_size(&region) != 0x1700000)
+		return -EINVAL;
+	/* The SMMU attach hook maps this after its page tables are ready. */
+	iommu->base.firmware_start = region.start;
+	return 0;
+}
+
 struct msm_mmu *msm_iommu_new(struct device *dev, unsigned long quirks)
 {
 	struct iommu_domain *domain;
@@ -748,6 +773,13 @@ struct msm_mmu *msm_iommu_new(struct device *dev, unsigned long quirks)
 	msm_mmu_init(&iommu->base, dev, &funcs, MSM_MMU_IOMMU);
 
 	mutex_init(&iommu->init_lock);
+
+	ret = msm_iommu_hanoip_firmware_reserve(iommu, dev);
+	if (ret) {
+		iommu_domain_free(domain);
+		kfree(iommu);
+		return ERR_PTR(ret);
+	}
 
 	ret = iommu_attach_device(iommu->domain, dev);
 	if (ret) {

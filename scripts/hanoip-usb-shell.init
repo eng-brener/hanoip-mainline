@@ -1,0 +1,57 @@
+#!/bin/sh
+# Mount only RAM-backed and pseudo filesystems, never phone partitions.
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin
+export HOME=/ HISTFILE=/dev/null TERM=vt100
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+mkdir -p /run /tmp /sys/kernel/config
+mount -t tmpfs -o mode=0755 tmpfs /run
+mount -t tmpfs -o mode=1777 tmpfs /tmp
+mount -t configfs configfs /sys/kernel/config
+echo 'HANOIP: USB shell initramfs; no disk partitions mounted'
+
+udc=''
+while [ -z "$udc" ]; do
+    for device in /sys/class/udc/*; do
+        [ -e "$device" ] || continue
+        udc=${device##*/}
+        break
+    done
+    [ -n "$udc" ] || sleep 1
+done
+
+G=/sys/kernel/config/usb_gadget/g1
+if (
+    set -e
+    mkdir -p "$G/strings/0x409"
+    echo 0x18d1 > "$G/idVendor"
+    echo 0x4ee4 > "$G/idProduct"
+    echo 0x0100 > "$G/bcdDevice"
+    echo 0x0200 > "$G/bcdUSB"
+    echo hanoip-diagnostic > "$G/strings/0x409/serialnumber"
+    echo Motorola > "$G/strings/0x409/manufacturer"
+    echo 'Hanoip USB shell (RAM only)' > "$G/strings/0x409/product"
+    mkdir -p "$G/functions/acm.usb0" "$G/configs/c.1/strings/0x409"
+    echo 'CDC ACM diagnostic shell' > "$G/configs/c.1/strings/0x409/configuration"
+    ln -s "$G/functions/acm.usb0" "$G/configs/c.1/acm.usb0"
+    echo "$udc" > "$G/UDC"
+); then
+    echo "HANOIP: ACM bound to $udc; waiting for USB terminal"
+else
+    echo 'HANOIP: USB gadget setup failed; see kernel console'
+fi
+
+while :; do
+    if [ -c /dev/ttyGS0 ]; then
+        # Open the TTY after setsid to give the shell a controlling terminal.
+        /bin/busybox setsid /bin/busybox sh -c '
+            exec </dev/ttyGS0 >/dev/ttyGS0 2>&1
+            echo
+            echo "HANOIP USB SHELL; filesystems in RAM; no partitions mounted"
+            /bin/busybox uname -a
+            exec /bin/busybox sh -i
+        '
+    fi
+    sleep 1
+done

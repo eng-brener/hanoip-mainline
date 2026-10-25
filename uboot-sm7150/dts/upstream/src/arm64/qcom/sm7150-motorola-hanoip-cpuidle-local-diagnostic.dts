@@ -1,0 +1,7 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-cpuidle-diagnostic.dts"
+
+/* Isolate per-CPU power collapse; no L3/CX/AOSS domain collapse in this test. */
+&cluster_pd {
+	/delete-property/ domain-idle-states;
+};

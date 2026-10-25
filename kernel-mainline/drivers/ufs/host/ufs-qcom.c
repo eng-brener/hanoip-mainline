@@ -504,7 +504,9 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
 	mode = host_params->hs_rate == PA_HS_MODE_B ? PHY_MODE_UFS_HS_B : PHY_MODE_UFS_HS_A;
 
 	/* Reset UFS Host Controller and PHY */
+	dev_info(hba->dev, "UFS DIAG: QCOM host reset start\n");
 	ret = ufs_qcom_host_reset(hba);
+	dev_info(hba->dev, "UFS DIAG: QCOM host reset returned %d\n", ret);
 	if (ret)
 		return ret;
 
@@ -513,7 +515,9 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
 
 
 	/* phy initialization - calibrate the phy */
+	dev_info(hba->dev, "UFS DIAG: PHY init start\n");
 	ret = phy_init(phy);
+	dev_info(hba->dev, "UFS DIAG: PHY init returned %d\n", ret);
 	if (ret) {
 		dev_err(hba->dev, "%s: phy init failed, ret = %d\n",
 			__func__, ret);
@@ -525,14 +529,18 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
 		goto out_disable_phy;
 
 	/* power on phy - start serdes and phy's power and clocks */
+	dev_info(hba->dev, "UFS DIAG: PHY power-on start\n");
 	ret = phy_power_on(phy);
+	dev_info(hba->dev, "UFS DIAG: PHY power-on returned %d\n", ret);
 	if (ret) {
 		dev_err(hba->dev, "%s: phy power on failed, ret = %d\n",
 			__func__, ret);
 		goto out_disable_phy;
 	}
 
+	dev_info(hba->dev, "UFS DIAG: PHY calibration start\n");
 	ret = phy_calibrate(phy);
+	dev_info(hba->dev, "UFS DIAG: PHY calibration returned %d\n", ret);
 	if (ret) {
 		dev_err(hba->dev, "Failed to calibrate PHY: %d\n", ret);
 		goto out_disable_phy;

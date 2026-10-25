@@ -1,0 +1,103 @@
+Checkpoint: UFS mainline funcional em leitura — 2026-10-24
+
+Regra preservada: nenhum flash, erase, format, mudanca de slot ou escrita
+em particoes. Todos os boots foram temporarios, com fastboot boot.
+Nenhuma particao foi montada. Arquivos de diagnostico no aparelho ficaram
+em RAM; os logs persistentes foram salvos somente no computador.
+
+RESULTADO NO MOTO G60 XT2135-1
+
+Linux 7.1.0-sm7150 iniciou com shell CDC ACM via USB. Os tres modulos UFS
+foram carregados manualmente depois da conexao USB: ufshcd-core.ko,
+ufshcd-pltfrm.ko e ufs-qcom.ko.
+
+O kernel reconheceu Samsung KM5V8001DM-B622, firmware 1500, com seis LUNs
+de dados e tres well-known LUNs. Apareceram sda, sdb, sdc, sdd, sde e sdf
+e suas tabelas de particoes. Foram conferidos 84 dispositivos de bloco
+(6 discos + 78 particoes), todos com flag de somente leitura igual a 1.
+
+Tres leituras de 65536 bytes do inicio de /dev/sdb produziram o mesmo SHA256:
+629a8ca6e6945642b045e47dad5f8c9d8559d3f4f245422d27ac3c1911f10a15
+Depois do retorno ao Android, uma leitura root da mesma faixa em
+/dev/block/sdb produziu exatamente esse hash. Isso valida leituras basicas;
+nao e teste de integridade de todo o disco.
+
+CAUSA E TESTE COMPARATIVO
+
+Sem iommus no DTB U-Boot experimental:
+  reset do dispositivo: retornou;
+  reset do host, PHY init/power-on/calibration e HCE: 0;
+  DME_LINK_STARTUP e link startup: 0;
+  NOP OUT: timeout e abort da tarefa, sem discos enumerados.
+
+O kernel usa CONFIG_ARM_SMMU_DISABLE_BYPASS_BY_DEFAULT=y e
+CONFIG_IOMMU_DEFAULT_DMA_STRICT=y, mas o DTB efetivo retirava a ligacao
+DMA do host UFS ao apps_smmu.
+
+Restaurando iommus = <&apps_smmu 0x300 0x0> no DTB entregue pelo U-Boot:
+  host UFS adicionado ao grupo IOMMU 6;
+  NOP OUT retornou 0;
+  inicializacao do dispositivo completou;
+  seis discos e suas particoes foram enumerados;
+  leituras repetidas coincidiram com Android.
+
+Nao foi necessario forcar DMA de 32 bits nem alterar tensoes para resolver
+esse timeout. A remocao experimental de iommus foi retirada tambem do DTS
+normal do U-Boot. O DTS do kernel ja preservava essa propriedade.
+As propriedades do DT recompilado com os fontes finais foram comparadas
+e sao identicas as do DTB efetivamente testado no hardware.
+
+ARTEFATOS VALIDADOS
+
+Diretorio work/hanoip-ufs-modules-20261024/iommu/:
+  u-boot-hanoip-ufs-modules.img — U-Boot testado em RAM, flash desabilitado.
+  kernel-hanoip-ufs-modules.img — kernel, ramdisk e modulos testados.
+  uboot.dtb — DTB embutido efetivamente testado.
+  source-final.dtb — DT recompilado depois da limpeza do DTS normal.
+  ramdisk.cpio.gz — shell, carregador UFS e reboot para ambiente RAM.
+  ufs-live.txt — probe com NOP OUT bem-sucedido.
+  ufs-verification.txt — discos, particoes, montagens e grupo IOMMU.
+  readonly-and-read-tests.txt — flags RO e tres hashes de leitura.
+  read-validation.json — verificacao estruturada desses testes.
+  android-gpt-comparison.json — comparacao com o Android.
+  dmesg-final.txt — log do boot bem-sucedido.
+  return-to-android.json — retorno ao Android e verificacao com root.
+
+Configuracoes e .ko estao no diretorio pai:
+  kernel.config, uboot.config, ufshcd-core.ko, ufshcd-pltfrm.ko, ufs-qcom.ko.
+A base anterior sem UFS continua em work/hanoip-build-20261024/v2/.
+As imagens originais foram preservadas em work/baseline-before-qup-2026-10-24/.
+
+REPRODUCAO E CONTROLE
+
+Kernel: configs/hanoip-mainline-base.config, depois
+configs/hanoip-usb-shell.fragment e configs/hanoip-ufs-modules.fragment.
+U-Boot: qcom_defconfig, qcom-phone.config, tauchgang.config, depois
+configs/hanoip-uboot-diagnostic.fragment e
+configs/hanoip-uboot-ufs-diagnostic.fragment.
+O ambiente Linux esta definido em scripts/Dockerfile.hanoip.
+
+Depois do Image, compilar os modulos juntos no kernel configurado:
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8 M=drivers/ufs modules
+Os modulos externos marcam taint O; sao os fontes deste projeto.
+
+O /init nao carrega modulos nem monta discos automaticamente.
+/sbin/load-ufs carrega o driver em background e inicia um guardiao que
+aplica BLKROSET a discos e particoes. BLKROSET muda somente o estado de
+leitura no kernel, sem gravar no disco. O script usa /bin/busybox
+explicitamente, pois o ramdisk antigo nao tem links para todos os applets.
+
+O reboot do BusyBox antigo depende de setprop. O /sbin/reboot empacotado
+verifica se so existem pseudofs/RAM montados e usa SysRq nesse ambiente.
+Esse reset voltou ao bootloader Motorola; fastboot reboot retornou ao
+Android original, confirmado por ADB com root, slot _a e kernel
+4.14.206—CosmicFresh-R6-Final.
+
+LIMITES
+
+Nao foram testados escrita, montagem, rootfs persistente, ICE, stress,
+suspend/resume, gerenciamento de energia ou cold boot. Display continua
+via framebuffer herdado, sem handoff DRM/DSC. CPUfreq/cpuidle seguem
+limitados para bring-up e existem probes adiados.
+Os marcadores UFS sao temporarios; a console earlycon lenta aumenta
+bastante o tempo do probe. Ainda nao e configuracao de uso diario.

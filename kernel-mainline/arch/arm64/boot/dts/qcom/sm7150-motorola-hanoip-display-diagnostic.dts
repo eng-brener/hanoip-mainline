@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-diagnostic.dts"
+
+/* Volatile display test: UFS stays disabled; panel is loaded over USB. */
+&mdss {
+	status = "okay";
+	memory-region = <&cont_splash_mem>;
+	/* The core BCR reset reboots this board during firmware handoff. */
+	/delete-property/ resets;
+};
+
+&dispcc {
+	status = "okay";
+};
+
+&mdss_dsi0 {
+	status = "okay";
+};
+
+&mdss_dsi0_phy {
+	status = "okay";
+};
+
+&gpu {
+	status = "disabled";
+};
+
+&panel {
+	backlight = <&pm6150l_wled>;
+};
+
+&pm6150l_lcdb {
+	status = "okay";
+};
+
+&pm6150l_wled {
+	status = "okay";
+	qcom,enabled-strings = <0 1 2>;
+	qcom,current-limit-microamp = <25000>;
+	qcom,current-boost-limit = <1400>;
+	qcom,ovp-millivolt = <26500>;
+	default-brightness = <512>;
+	max-brightness = <4095>;
+};

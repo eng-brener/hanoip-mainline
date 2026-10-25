@@ -1,0 +1,24 @@
+{
+  "source": "work/display-repeat-20261024/quiesce-late/ramdisk.cpio.gz",
+  "sha256": "b9170e9592577e2bee38bee70c249f1b5c694171887bd3467989c4e75c9c431d",
+  "member_count": 76,
+  "modules": [
+    "lib/hanoip-display/cec.ko",
+    "lib/hanoip-display/drm_client_lib.ko",
+    "lib/hanoip-display/drm_display_helper.ko",
+    "lib/hanoip-display/drm_exec.ko",
+    "lib/hanoip-display/drm_gpuvm.ko",
+    "lib/hanoip-display/gpu-sched.ko",
+    "lib/hanoip-display/mdt_loader.ko",
+    "lib/hanoip-display/msm.ko",
+    "lib/hanoip-display/panel-ilitek-ili7807s.ko",
+    "lib/hanoip-display/qcom-wled.ko",
+    "lib/hanoip-display/ubwc_config.ko",
+    "lib/hanoip-touch/evdev.ko",
+    "lib/hanoip-touch/ilitek-hanoip-spi.ko"
+  ],
+  "firmware": [
+    "lib/firmware/ilitek",
+    "lib/firmware/ilitek/hanoip-7807-iram.bin"
+  ]
+}

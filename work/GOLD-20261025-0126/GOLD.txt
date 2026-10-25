@@ -1,0 +1,20 @@
+VERSÃO GOLD — Moto G60 hanoip mainline
+Marcada pelo usuário em 25/10/2026 01:26:20 (-03).
+
+Origem: work/ufs-20261025/ufs-local/ (cópia fiel; hashes abaixo).
+Conteúdo: Linux 7.1.0-sm7150 #8, display DRM/DSI + touch SPI + CPUfreq +
+CPUidle local (sem colapso de cluster) + UFS em módulos, discos somente
+leitura, rootfs em RAM.
+
+Uso: SOMENTE volátil, nunca flash:
+  fastboot boot u-boot-hanoip-ufs-local.img
+  (aguardar product motorola-hanoip)
+  fastboot boot kernel-hanoip-ufs-local.img
+No shell USB: /sbin/load-display; depois /sbin/load-ufs (guardião RO).
+load-touch recusa storage exposto; nesta sessão o touch foi carregado
+com os mesmos insmod após checar mounts só RAM e todos sd* RO.
+Nunca montar partições UFS.
+
+Validação: um boot em 25/10/2026, ver checkpoint e ufs-local-results.json.
+Retornos anteriores preservados: cpuidle-20261024/local-only e
+cpufreq-20261024/quiesce-late-baseline.

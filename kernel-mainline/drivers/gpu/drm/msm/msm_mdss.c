@@ -319,6 +319,7 @@ static int msm_mdss_reset(struct device *dev)
 				     "failed to acquire mdss reset\n");
 	}
 
+	dev_info(dev, "HANOIP MDSS: asserting reset\n");
 	reset_control_assert(reset);
 	/*
 	 * Tests indicate that reset has to be held for some period of time,
@@ -326,6 +327,7 @@ static int msm_mdss_reset(struct device *dev)
 	 */
 	msleep(20);
 	reset_control_deassert(reset);
+	dev_info(dev, "HANOIP MDSS: reset released\n");
 
 	reset_control_put(reset);
 
@@ -473,6 +475,7 @@ static int mdss_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	int ret;
 
+	dev_info(dev, "HANOIP MDSS: probe entered\n");
 	mdss = msm_mdss_init(pdev, is_mdp5);
 	if (IS_ERR(mdss))
 		return PTR_ERR(mdss);
@@ -485,6 +488,7 @@ static int mdss_probe(struct platform_device *pdev)
 	 * Populate the children devices, find the MDP5/DPU node, and then add
 	 * the interfaces to our components list.
 	 */
+	dev_info(dev, "HANOIP MDSS: populating children\n");
 	ret = of_platform_populate(dev->of_node, NULL, NULL, dev);
 	if (ret) {
 		DRM_DEV_ERROR(dev, "failed to populate children devices\n");

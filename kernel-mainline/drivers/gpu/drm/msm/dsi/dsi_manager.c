@@ -198,6 +198,7 @@ static void dsi_mgr_phy_disable(int id)
 struct dsi_bridge {
 	struct drm_bridge base;
 	int id;
+	bool video_deferred;
 };
 
 #define to_dsi_bridge(x) container_of(x, struct dsi_bridge, base)
@@ -296,6 +297,16 @@ static void dsi_mgr_bridge_pre_enable(struct drm_bridge *bridge)
 		return;
 	}
 
+	/* Keep command transport ready, but don't feed DSC video during reset/PPS. */
+	if (!is_bonded_dsi && of_machine_is_compatible("motorola,hanoip") &&
+	    msm_dsi->next_bridge &&
+	    of_device_is_compatible(msm_dsi->next_bridge->of_node,
+				    "tianma,ili7807s-hanoip") &&
+	    (msm_dsi_host_get_mode_flags(host) & MIPI_DSI_MODE_VIDEO)) {
+		to_dsi_bridge(bridge)->video_deferred = true;
+		return;
+	}
+
 	ret = msm_dsi_host_enable(host);
 	if (ret) {
 		pr_err("%s: enable host %d failed, %d\n", __func__, id, ret);
@@ -316,6 +327,22 @@ host1_en_fail:
 	msm_dsi_host_disable(host);
 host_en_fail:
 	dsi_mgr_bridge_power_off(bridge);
+}
+
+static void dsi_mgr_bridge_enable(struct drm_bridge *bridge)
+{
+	struct dsi_bridge *dsi_bridge = to_dsi_bridge(bridge);
+	struct msm_dsi *dsi = dsi_mgr_get_dsi(dsi_bridge->id);
+	int ret;
+
+	if (!dsi_bridge->video_deferred)
+		return;
+	dsi_bridge->video_deferred = false;
+	ret = msm_dsi_host_enable(dsi->host);
+	if (ret) {
+		dev_err(&dsi->pdev->dev, "HANOIP: late video enable failed: %d\n", ret);
+		dsi_mgr_bridge_power_off(bridge);
+	}
 }
 
 void msm_dsi_manager_tpg_enable(void)
@@ -340,6 +367,7 @@ static void dsi_mgr_bridge_post_disable(struct drm_bridge *bridge)
 	bool is_bonded_dsi = IS_BONDED_DSI();
 	int ret;
 
+	to_dsi_bridge(bridge)->video_deferred = false;
 	DBG("id=%d", id);
 
 	/*
@@ -447,6 +475,7 @@ static int dsi_mgr_bridge_attach(struct drm_bridge *bridge,
 static const struct drm_bridge_funcs dsi_mgr_bridge_funcs = {
 	.attach = dsi_mgr_bridge_attach,
 	.pre_enable = dsi_mgr_bridge_pre_enable,
+	.enable = dsi_mgr_bridge_enable,
 	.post_disable = dsi_mgr_bridge_post_disable,
 	.mode_set = dsi_mgr_bridge_mode_set,
 	.mode_valid = dsi_mgr_bridge_mode_valid,

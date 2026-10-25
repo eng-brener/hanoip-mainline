@@ -376,6 +376,7 @@ enum arm_smmu_domain_stage {
 };
 
 struct arm_smmu_domain {
+	bool hanoip_splash_mapped;
 	struct arm_smmu_device		*smmu;
 	struct io_pgtable_ops		*pgtbl_ops;
 	unsigned long			pgtbl_quirks;

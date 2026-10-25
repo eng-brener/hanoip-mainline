@@ -1,0 +1,24 @@
+CPUfreq — Moto G60 hanoip, 24/10/2026
+
+Boot apenas em RAM, sem flash/partições. Par preservado em
+work/cpufreq-20261024/quiesce-late-baseline/.
+Image e ramdisk idênticos ao baseline quiesce-late; DT apenas remove
+cpufreq.off=1. Mantém maxcpus=6 e cpuidle.off=1. Reservas/RAM/UFS/proteções
+validadas. U-Boot contém o DT efetivo correspondente.
+
+policy0: driver qcom-cpufreq-hw, related CPUs0..5, schedutil.
+Frequências: 300000 576000 768000 1017600 1248000 1324800 1497600
+1612800 1708800 1804800 kHz.
+
+Teste powersave/performance/schedutil, dois segundos por etapa, com restauração
+automática do governor original e limite de interrupção em 65 °C:
+powersave: requested/hardware 300000/300000 kHz.
+performance: 1804800/1804800 kHz.
+schedutil na amostra: 1248000/1248000 kHz.
+Teste saiu0; temperaturas e estatísticas exatas em governor-analysis.json.
+DSI error_snapshot ficou em ZERO nos três governors; tainted0, sem Oops/SMMU.
+Usuário confirmou display estável com CPUfreq ativo. Não fizemos stress prolongado,
+CPU6/7, medição de consumo elétrico, carregamento/bateria ou validação de CPUidle.
+
+Logs: preflight.txt, display.txt, governors.txt e governor-analysis.json.
+CPUidle será variante separada, mantendo este par como retorno.

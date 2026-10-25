@@ -93,6 +93,9 @@
 	};
 
 	reserved-memory {
+		/* The SoC entry reserves the same DFPS range under a stale name. */
+		/delete-node/ dfps-data@9e300000;
+
 		/* cont_splash e dfps: framebuffer do ABL - SEM no-map (o sm7150.dtsi ja tem os demais) */
 		cont_splash_mem: cont-splash@9c000000 {
 			reg = <0x0 0x9c000000 0x0 0x01700000>;

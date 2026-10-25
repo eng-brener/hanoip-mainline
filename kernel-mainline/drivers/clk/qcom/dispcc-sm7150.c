@@ -970,6 +970,8 @@ static const struct qcom_cc_desc dispcc_sm7150_desc = {
 	.num_clks = ARRAY_SIZE(dispcc_sm7150_clocks),
 	.resets = dispcc_sm7150_resets,
 	.num_resets = ARRAY_SIZE(dispcc_sm7150_resets),
+	.gdscs = dispcc_sm7150_gdscs,
+	.num_gdscs = ARRAY_SIZE(dispcc_sm7150_gdscs),
 };
 
 static const struct of_device_id dispcc_sm7150_match_table[] = {

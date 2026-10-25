@@ -1,0 +1,3 @@
+# Apply to the validated display configuration. Load manually after USB.
+CONFIG_TOUCHSCREEN_HANOIP_ILITEK_SPI=m
+CONFIG_INPUT_EVDEV=m

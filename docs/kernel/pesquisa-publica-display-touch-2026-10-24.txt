@@ -1,0 +1,86 @@
+Pesquisa publica de display e touch — 2026-10-24
+
+Escopo: buscas web e GitHub por hanoip/mainline/ILI7807S/Ilitek SPI,
+codigo upstream Linux, propostas DRM e fontes Android Motorola/CosmicFresh.
+Nenhum comando foi enviado ao aparelho nesta pesquisa. Nenhum driver foi
+substituido e nenhum teste de hardware foi realizado nesta etapa.
+Ausencia de resultados nao prova ausencia de outros trabalhos publicos.
+
+DISPLAY
+
+O driver panel-ilitek-ili7807s.c esta publico no Linux upstream.
+Commit dd7ec83f456734de8efc115eac671e5add82777a, integrado em 03/07/2026:
+https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net/+/dd7ec83f456734de8efc115eac671e5add82777a
+https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-ilitek-ili7807s.c
+O codigo consultado corresponde a DLC DLC0697 1080x1920@60, compatible
+dlc,dlc0697, quatro lanes RGB888 video burst. Nao inclui a variante Tianma
+1080x2460 do hanoip nem sua configuracao DSC/PPS.
+
+O projeto local JA tem essa base e acrescenta tianma,ili7807s-hanoip.
+A busca tambem encontra essa adaptacao no proprio eng-brener/hanoip-mainline;
+isso nao e evidencia de implementacao independente ou de hardware validado.
+As sequencias on/off locais ja conferiram com o DT Android extraido, mas
+o driver local ainda nao configura DSC. Reset local generico 10/10/10 ms
+tambem difere do reset eletrico 4/1/12 ms coletado; GPIO_ACTIVE_LOW exige
+traducao de valores logicos. Os porches verticais locais exigem revisao
+contra VFP=2565, VBP=12, VPW=2 antes de testar DRM.
+
+Proposta publicada em 29/09/2026 adiciona supply wled ao driver upstream:
+https://lists.openwall.net/linux-kernel/2026/09/29/1809
+Ela atende placas com enable WLED representado por regulador. O codigo
+torvalds/master consultado ainda nao a contem. Nao copiar automaticamente:
+o hanoip usa WLED PMIC e precisa de sua propria descricao eletrica e
+backlight, sem impor uma supply obrigatoria que nao exista no DT.
+
+PR69 sm7150, aberta na consulta, e candidata concreta para a base atual:
+https://github.com/sm7150-mainline/linux/pull/69
+O primeiro commit permite duas slices DSC por pacote; o Android do hanoip
+tambem declara duas. O segundo commit configura painel Samsung de sweet,
+portanto nao serve como configuracao do Tianma. A infraestrutura nao
+substitui DSC/PPS, reset, timings e alimentacoes especificos do hanoip.
+O patch do primeiro commit ja estava separado e nao aplicado em
+work/upstream-review-2026-10-24/pr69-dsc-core.patch.
+
+TOUCH
+
+Fonte diretamente relevante encontrada no CosmicFresh publico:
+https://github.com/Dark-Matter7232/CosmicFresh-Hanoip/tree/main/drivers/input/touchscreen/ilitek_v3_mmi
+Versao declarada no header consultado: 3.0.4.0.200731.
+TDDI_INTERFACE=BUS_SPI, com HOST_DOWN_LOAD para SPI.
+ilitek_v3_hostdl.c: ili_fw_upgrade chama ilitek_tddi_fw_iram_upgrade,
+que programa IRAM do controlador; nao e gravacao de particao UFS.
+Firmware solicitado por padrao: FW_ILITEK_TDDI_TM.bin, conforme
+firmware/ilitek_v3_fw.h. Isso e uma boa fonte de protocolo/implementacao,
+nao prova de que possa ser compilada sem alteracoes para Linux 7.1.
+
+Fonte Motorola comunitaria tambem confirma o DT:
+https://github.com/Motorola-SM6150/android_kernel_motorola_sm6150/blob/503bfd1297f7c57662a4dc07f643e2a967d54ed1/arch/arm64/boot/dts/qcom/sdmmagpie-hanoi-touchscreen.dtsi
+Compatible tchip,ilitek, SPI maximo 12MHz, reset TLMM8, IRQ TLMM9.
+Esses valores conferem com a coleta do Android neste aparelho.
+https://github.com/Motorola-SM6150/android_kernel_motorola_sm6150/tree/503bfd1297f7c57662a4dc07f643e2a967d54ed1/drivers/input/touchscreen/ilitek_v3_mmi
+
+Dependencias antigas vistas: msm_drm_notify.h, mmi_wake_lock.h,
+notificadores FB/DRM Motorola e funcoes de arquivo antigas como vfs_write.
+O hostdl inclui opcao de dump para /sdcard. Uma adaptacao precisa excluir
+interfaces de fabrica/dump/atualizacao persistente e ficar restrita a
+firmware empacotado no initramfs, transferido para IRAM do touch, e input.
+Nao carregar o driver downstream inteiro sem revisar seus efeitos.
+BOOT_FW_UPDATE=DISABLE sozinho nao impede host download SPI: a thread
+tambem e condicionada por HOST_DOWN_LOAD.
+
+O driver local drivers/input/touchscreen/ilitek_ts_i2c.c e I2C, portanto
+CONFIG_TOUCHSCREEN_ILITEK nao resolve o dispositivo SPI identificado.
+Ha ainda fontes genericas TDDI, mas sao referencia menos especifica:
+https://github.com/hychiang73/ipio_touch_driver
+Seu README limita o suporte SPI anunciado a ILI9881H; nao presumir que
+serve diretamente ao chip do aparelho, cujo modelo exato ainda falta ler.
+
+DECISAO
+
+Ha codigo publico aproveitavel para ambos. Priorizar a adaptacao de display
+ja existente com DSC/PPS/reset/porches corretos, usando PR69 como candidata
+para packetizacao; depois portar o minimo do Ilitek v3 SPI a partir do
+CosmicFresh. Nao foi localizado port independente do hanoip com validacao
+publica de display/touch mainline nesta busca. Preservar o checkpoint UFS.
+Todo eventual teste continua por boot volatil/initramfs em RAM, sem flash,
+sem mounts persistentes e sem gravacao em particoes.

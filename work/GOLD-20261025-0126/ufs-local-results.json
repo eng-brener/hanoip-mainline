@@ -1,0 +1,22 @@
+{
+  "variant": "ufs-local (cpuidle-local + UFS modules), everything enabled",
+  "boot": "fastboot boot only (U-Boot then kernel); no partition writes",
+  "kernel_section_sha256": "d79c342671e7f42199a609ee36ad39d08281726d06964c258fd2bab7902286c9 (Image #8, unchanged)",
+  "dt_diff_vs_local_only": "only status=okay on ufshc@1d84000 and phy@1d87000; iommus 0x300 kept",
+  "display": {"dsi_error_irqs": 0, "connected": true, "enabled": true, "checked_until_uptime_s": 489},
+  "ufs": {
+    "loader_rc": 0, "iommu_group": 5, "model": "KM5V8001DM-B622 (9 scsi devices)",
+    "disks": ["sda", "sdb", "sdc", "sdd", "sde", "sdf"], "block_devices": 84, "not_readonly": 0,
+    "sdb_first_64KiB_sha256_x3": "629a8ca6e6945642b045e47dad5f8c9d8559d3f4f245422d27ac3c1911f10a15 (matches Android capture)",
+    "sdb_1GiB_offset_256MiB_sha256_x2": "45ab429dbb265ff5912a68703296961a20b1b3864f6df70de4b4971d0fdeef37 (repeatable, not compared to Android)",
+    "seq_read_MBps": {"sde_256MiB": 515.2, "sdb_2GiB": 510.6},
+    "idle_power_info": "HS_GEAR1, 1 lane, rate B, HIBERN8, clkscale_enable=1 (sampled idle, not under load)",
+    "errors_in_dmesg": 0
+  },
+  "touch": {"loaded_manually": "same insmod as load-touch after inline check (no non-RAM mounts, all sd* RO); load-touch refuses whenever storage is exposed",
+            "input": "Hanoip Ilitek ILI7807 SPI event3", "event_bytes_15s": 170136},
+  "cpu": {"cpuidle": "psci_idle, state2 time increasing on CPUs0-5", "cpufreq_cur_khz": 1248000},
+  "thermal_millic": [35400, 40300],
+  "tainted": "4096 (O: external UFS modules, expected)",
+  "mounts": "rootfs proc sysfs devtmpfs tmpfs configfs only"
+}

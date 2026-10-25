@@ -1,0 +1,15 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-cpuidle-local-diagnostic.dts"
+
+/*
+ * Everything from the local CPUidle baseline plus UFS. Drivers are modules;
+ * /init does not load or mount storage. The base node keeps the required
+ * iommus = <&apps_smmu 0x300 0x0>.
+ */
+&ufs_mem_hc {
+	status = "okay";
+};
+
+&ufs_mem_phy {
+	status = "okay";
+};

@@ -1,0 +1,74 @@
+Checkpoint: QUP corrigido + shell USB em RAM, 2026-10-24
+
+Regra do usuario: nenhum flash e nenhuma gravacao de particoes do aparelho.
+Os testes abaixo usaram apenas fastboot boot. Nao houve montagem de particoes.
+
+RESULTADO NA PLACA
+
+U-Boot de diagnostico iniciou de forma volatil e respondeu product motorola-hanoip.
+Kernel Linux 7.1.0-sm7150 chegou ao initramfs e abriu shell CDC ACM no macOS,
+em /dev/cu.usbmodem211401 (esse numero pode mudar em outro boot).
+A primeira variante foi observada com uptime de 191,79 segundos.
+A segunda variante tambem chegou ao shell e eliminou a reserva DFPS duplicada.
+
+/proc/mounts confirmou apenas rootfs, proc, sysfs, devtmpfs, tmpfs e configfs.
+/proc/partitions mostrou somente ram0 a ram15; nenhum disco UFS foi exposto.
+LCDB adotou o estado do ABL: LAB/IBB 5500 mV, BST 5650 mV, VREG_OK=1.
+Isso valida a adocao, nao um ciclo completo de desligar/religar o painel.
+CPUfreq e cpuidle continuam desabilitados para o bring-up; existem mensagens
+de probe/sync_state pendentes que nao impediram o shell.
+
+ALTERACOES
+
+- PR 66: MASTER_QUP_1 agora referencia aggre2_noc nas duas arvores.
+- DTs de diagnostico desabilitam UFS/PHY/ICE; MDSS e SD ja estavam desligados.
+- U-Boot usa ambiente proprio, com bootcmd=run fastboot, sem bootflow scan.
+- Fastboot flash, OEM run, UUU, OEM board, UMS, saveenv, persistencia EFI e
+  atualizacao por capsulas foram desabilitados nessa configuracao.
+- Novo /init monta somente pseudofs/RAM e inicia um shell interativo em ttyGS0.
+- LCDB: corrigidos o destino de regmap_read e propagacao de erro/timeout.
+  Outros pontos de robustez do LCDB continuam pendentes.
+- Removida no DTS da placa a reserva DFPS herdada sob o nome antigo,
+  mantendo apenas dfps-data@9d700000.
+- Scripts de boot v2 corrigidos: page_size em 36, dtb_size em 1648,
+  dtb_addr em 1652 com 64 bits. Novo empacotador nao sobrescreve saidas diferentes.
+
+ARTEFATOS VALIDADOS
+
+work/hanoip-build-20261024/v2/u-boot-hanoip-qup-diagnostic.img
+work/hanoip-build-20261024/v2/kernel-hanoip-qup-usb-shell-no-ufs.img
+work/hanoip-build-20261024/v2/mainline-usb-console.txt
+work/hanoip-build-20261024/v2/runtime-verification.json
+work/hanoip-build-20261024/v2/volatile-boot-events.json
+
+As imagens originais permanecem em work/ e foram copiadas com hashes para
+work/baseline-before-qup-2026-10-24/ antes das alteracoes.
+Configuracao base recuperada: configs/hanoip-mainline-base.config.
+Configuracoes efetivas compiladas: work/hanoip-build-20261024/kernel.config e
+work/hanoip-build-20261024/uboot.config.
+Fragmentos especificos: configs/hanoip-usb-shell.fragment e
+configs/hanoip-uboot-diagnostic.fragment.
+
+BUILD E VALIDACAO
+
+Kernel compilado com GCC 13.3.0/binutils 2.42 em Linux aarch64 no Docker.
+U-Boot compilado com a imagem local hanoip-mainline-builder:20261024,
+definida em scripts/Dockerfile.hanoip.
+Fontes foram extraidos do commit 84bec7953, preservando nomes que diferem
+somente em maiusculas/minusculas, e receberam as alteracoes locais do port.
+O checkout macOS tem colisoes de nomes em Netfilter; essas diferencas antigas
+nao foram incorporadas ao build e nao foram alteradas nesta tarefa.
+Logs de compilacao estao em work/hanoip-build-20261024/.
+Oito testes de empacotamento passaram, incluindo preservacao de payloads,
+offsets do header v2, enderecos de 64 bits e recusa de sobrescrita.
+A inicializacao interativa do BusyBox com controlling TTY foi testada em PTY.
+
+LIMITACOES E CONTINUACAO
+
+O BusyBox antigo tenta reiniciar via setprop; esse comando nao existe aqui.
+O primeiro retorno ao bootloader e o retorno final ao Android foram feitos
+pelo usuario com os botoes. ADB depois confirmou novamente o Android
+4.14.206—CosmicFresh-R6-Final com root.
+O initramfs seguinte precisa de um caminho de reinicio independente do Android.
+Proxima etapa: UFS em modulo carregado depois do shell USB, com marcadores
+em HCE/link startup e nenhum filesystem do aparelho montado.

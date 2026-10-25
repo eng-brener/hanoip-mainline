@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-diagnostic.dts"
+
+/* Drivers are modules; /init does not load or mount storage automatically. */
+&ufs_mem_hc {
+	status = "okay";
+};
+
+&ufs_mem_phy {
+	resets = <&ufs_mem_hc 0>;
+	reset-names = "ufsphy";
+	status = "okay";
+};

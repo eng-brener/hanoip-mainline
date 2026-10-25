@@ -518,6 +518,15 @@ config TOUCHSCREEN_ILI210X
 	  To compile this driver as a module, choose M here: the
 	  module will be called ili210x.
 
+config TOUCHSCREEN_HANOIP_ILITEK_SPI
+	tristate "Experimental Moto G60 Ilitek ILI7807 SPI touchscreen"
+	depends on SPI && OF && GPIOLIB
+	select CRC32
+	help
+	  Minimal hanoip SPI bring-up with the collected stock firmware loaded
+	  and verified in the controller's internal RAM. No controller flash
+	  programming, factory interfaces, gestures or suspend support.
+
 config TOUCHSCREEN_ILITEK
 	tristate "Ilitek I2C 213X/23XX/25XX/Lego Series Touch ICs"
 	depends on I2C

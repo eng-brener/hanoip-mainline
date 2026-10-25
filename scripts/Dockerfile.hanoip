@@ -1,0 +1,6 @@
+# Extend the local cross-compiler image without touching the phone.
+FROM hanoip-kernel-builder:4.14-fix
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    xxd pkg-config libgnutls28-dev uuid-dev swig python3-dev \
+    python3-setuptools python3-pyelftools python3-libfdt \
+    && apt-get clean

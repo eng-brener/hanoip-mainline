@@ -4138,7 +4138,9 @@ static int ufshcd_dme_link_startup(struct ufs_hba *hba)
 	};
 	int ret;
 
+	dev_info(hba->dev, "UFS DIAG: DME_LINK_STARTUP send start\n");
 	ret = ufshcd_send_uic_cmd(hba, &uic_cmd);
+	dev_info(hba->dev, "UFS DIAG: DME_LINK_STARTUP returned %d\n", ret);
 	if (ret)
 		dev_dbg(hba->dev,
 			"dme-link-startup: error code %d\n", ret);
@@ -5257,7 +5259,10 @@ static int ufshcd_link_startup(struct ufs_hba *hba)
 
 link_startup:
 	do {
+		dev_info(hba->dev, "UFS DIAG: link PRE_CHANGE start, retries=%d\n",
+			 retries);
 		ufshcd_vops_link_startup_notify(hba, PRE_CHANGE);
+		dev_info(hba->dev, "UFS DIAG: link PRE_CHANGE returned\n");
 
 		ret = ufshcd_dme_link_startup(hba);
 
@@ -11276,12 +11281,16 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 	}
 
 	/* Reset the attached device */
+	dev_info(dev, "UFS DIAG: attached-device reset start\n");
 	ufshcd_device_reset(hba);
+	dev_info(dev, "UFS DIAG: attached-device reset returned\n");
 
 	ufshcd_init_crypto(hba);
 
 	/* Host controller enable */
+	dev_info(dev, "UFS DIAG: HCE start\n");
 	err = ufshcd_hba_enable(hba);
+	dev_info(dev, "UFS DIAG: HCE returned %d\n", err);
 	if (err) {
 		dev_err(hba->dev, "Host controller enable failed\n");
 		ufshcd_print_evt_hist(hba);
@@ -11298,7 +11307,9 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 			    FIELD_PREP(UFSHCI_AHIBERN8_SCALE_MASK, 3);
 	}
 
+	dev_info(dev, "UFS DIAG: add SCSI host start\n");
 	err = ufshcd_add_scsi_host(hba);
+	dev_info(dev, "UFS DIAG: add SCSI host returned %d\n", err);
 	if (err)
 		goto out_disable;
 
@@ -11318,7 +11329,9 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 
 	hba->ufshcd_state = UFSHCD_STATE_RESET;
 
+	dev_info(dev, "UFS DIAG: link startup start\n");
 	err = ufshcd_link_startup(hba);
+	dev_info(dev, "UFS DIAG: link startup returned %d\n", err);
 	if (err)
 		goto out_disable;
 
@@ -11335,7 +11348,9 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 	ufshcd_set_link_active(hba);
 
 	/* Verify device initialization by sending NOP OUT UPIU */
+	dev_info(dev, "UFS DIAG: NOP OUT device verification start\n");
 	err = ufshcd_verify_dev_init(hba);
+	dev_info(dev, "UFS DIAG: NOP OUT device verification returned %d\n", err);
 	if (err)
 		goto out_disable;
 

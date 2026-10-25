@@ -56,6 +56,8 @@ struct msm_mmu {
 	int (*handler)(void *arg, unsigned long iova, int flags, void *data);
 	void *arg;
 	enum msm_mmu_type type;
+	/* Optional firmware scanout mapping, excluded from display allocations. */
+	u64 firmware_start;
 
 	/**
 	 * @prealloc: pre-allocated pages for pgtable
@@ -72,6 +74,7 @@ static inline void msm_mmu_init(struct msm_mmu *mmu, struct device *dev,
 	mmu->dev = dev;
 	mmu->funcs = funcs;
 	mmu->type = type;
+	mmu->firmware_start = 0;
 }
 
 struct msm_mmu *msm_iommu_new(struct device *dev, unsigned long quirks);

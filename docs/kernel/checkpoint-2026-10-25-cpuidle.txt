@@ -1,0 +1,38 @@
+CPUidle — Moto G60 hanoip, 24-25/10/2026
+
+Boot apenas em RAM, sem flash/partições. Base: par CPUfreq validado
+(work/cpufreq-20261024/quiesce-late-baseline/), mesmo Image #8 e ramdisk.
+DT remove cpuidle.off=1; mantém maxcpus=6 e CPUfreq ativo.
+
+1) CPUidle completo — work/cpuidle-20261024/ — FALHOU visualmente.
+psci_idle/menu, OSI, 18 estados (WFI + cpu-sleep-0-0/0-1 por CPU) e
+domain-idle-states de cluster_pd (colapso L3/CX/AOSS). Contadores mostraram
+uso de PC/rail-PC, 2 IRQs FIFO DSI iniciais, tainted0, mas o usuário relatou
+TELA PRETA. Desabilitar states1/2 via sysfs não teve recuperação confirmada.
+
+2) CPUidle local-only — work/cpuidle-20261024/local-only/ — PASSOU 2/2 boots.
+Mesmo DT do teste completo, exceto domain-idle-states removido de cluster_pd:
+só estados locais dos núcleos, sem colapso de cluster.
+kernel-hanoip-cpuidle-local.img SHA256
+  ac58b663049826369848002e84c827f500c9d7ee32fa2bd1fc2f103c2acfa0cf
+u-boot-hanoip-cpuidle-local.img SHA256
+  b62dac48898682aca520bccb95277697f255550352c7d5ee08ab1a2b7a58e4fb
+
+Boot 1 (local-only/runtime.txt, idle-analysis.json): DSI irqs=0,
+connected/enabled, tainted0, CPUs0..5 ~4,97-5,0 s de 5 s em cpu-sleep-0-1,
+rejected 0. Usuário confirmou imagem na tela.
+Boot 2 (local-only-repeat/runtime.txt, idle-analysis.json): idêntico em
+comportamento: DSI irqs=0, connected/enabled, tainted0 início/fim, sem
+Oops/SError/SMMU, CPUs0..5 ~4,97-5,0 s em cpu-sleep-0-1, rejected 0,
+temperaturas 34,5-37,5 °C. Mounts só RAM/pseudo, blocos só ram0..ram15.
+Usuário: "sim mostra na tela".
+
+Conclusão limitada: o colapso de cluster (domain-idle-states) é o suspeito
+principal da tela preta; os estados locais de CPU convivem com o display em
+dois boots. Não é prova de causa: um único boot do completo, e o FIFO inicial
+DSI varia entre boots. Sem medição de consumo, stress longo, CPU6/7 ou
+suspend. Hipótese a investigar depois: votos de MDSS/interconnect/RPMh que
+impeçam CX/AOSS collapse enquanto o display está ativo.
+
+Novo par de retorno com energia: local-only (CPUfreq + idle local).
+O par CPUfreq quiesce-late-baseline com cpuidle.off=1 continua preservado.
