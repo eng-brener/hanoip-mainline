@@ -1,5 +1,88 @@
 # Handoff — Moto G60 hanoip mainline
 
+## >>> GOLD ATUAL: work/GOLD-20261025-1047/ (v2, promovida 25/10/2026 10:47 -03)
+Retorno padrão; a GOLD-20261025-0126 fica preservada. Ver GOLD.txt na pasta.
+
+## v2 (25/10/2026) — display automático antes da rede
+
+`work/usbnet-20261025/v2/` (SHA256SUMS): kernel/DT/U-Boot = GOLD; ramdisk =
+v1 + `/sbin/hanoip-autostart` (load-display, espera fb0=msmdrmfb, depois
+start-usbnet; cmdline hanoip.nodisplay/hanoip.nonet pulam etapas) +
+`/sbin/enter-pmos` + load-touch/load-display aceitando storage SE todo
+`/sys/class/block/*/ro`=1. Init em `scripts/hanoip-v2-shell.init`.
+run1: sem interação, fb0 aos 19 s, rede 22,6 s, SSH 28 s após envio;
+6 IRQs FIFO na partida, usuário confirmou TEXTO. Depois: pmOS via
+enter-pmos embutido OK, touch registrado, UFS enumerou em 1 s, 84 blocos
+RO, mounts só RAM, DSI sem IRQ nova, tainted 4096 (O). Checagem do
+load-touch: passa com tudo RO, recusa simulação com bloco RW.
+fastboot max-download-size = 768 MB (embutir pmOS é viável).
+Próximo: repetir boots da v2 (2-3) e promover a nova GOLD; depois UFS 100%
+(descritores, gear sob carga, PM) e SD (sdhc_2: L9C/L6C, cd GPIO 69).
+Coleta Android completa: `work/android-dump-20261025/` (LEIA-ME, privado).
+
+## (anterior) Rede USB + SSH/SFTP — pausado 25/10/2026 madrugada
+
+Celular ficou no **Android** (ADB ok). Nada gravado em partição.
+Retorno padrão: `work/GOLD-20261025-0126/` (não modificar).
+
+Variante em teste: `work/usbnet-20261025/v1/` (SHA256SUMS na pasta).
+- Kernel/DTB/U-Boot IDÊNTICOS à GOLD; só o ramdisk muda (base = ramdisk GOLD).
+- `/init` novo: `scripts/hanoip-usbnet-shell.init` — gadget configfs único
+  1d6b:0104 (IAD 0xEF/2/1) com ACM (serial, `ttyGS0`) + NCM; se NCM falhar
+  no bind, cai para só ACM. Monta devpts.
+- `scripts/hanoip-start-usbnet.sh` (/sbin/start-usbnet, em background):
+  links de applets em /usr/bin (sem mkfs/fdisk/tune2fs/fsck/etc.), usb0
+  172.16.42.1/24, udhcpd entrega 172.16.42.2 ao host (sem rota/DNS),
+  dropbear `-R -s` (só chave; host key gerada por boot em RAM).
+- Dropbear 2026.94 + `sftp-server` do OpenSSH 10.6p1, estáticos com musl
+  1.2.6 (compilado em /tmp/usbnet-build no container). Hashes das fontes
+  conferidos com SHA256SUM oficial/OpenWrt. glibc estática deu segfault de
+  NSS — não usar. authorized_keys = ~/.ssh/id_ed25519.pub do Mac.
+
+Resultado do 1º boot (25/10):
+- Mac: serial `cu.usbmodem211401` + interface `en10` com 172.16.42.2 (DHCP).
+- ping ok; `ssh root@172.16.42.1` ok; SFTP put/get 64 MiB com hash igual
+  (~28 MB/s); `scp -O` e `scp` ~21 MB/s (limite USB high-speed). Serial
+  continua funcionando junto. tainted0, mounts só RAM/pseudo.
+- **Display: TELA PRETA** com 2 IRQs FIFO DSI (`dsi_err_worker status=4`)
+  no init do fb, contador estável em 2; sem Oops/SMMU. Log em
+  `v1/dmesg-black.txt`, `v1/display-over-ssh.txt`.
+  Diferença vs GOLD: display carregado aos ~72 s (após tráfego scp) em vez
+  de ~27 s. Pode ser só o FIFO intermitente conhecido (já deu 0/2/6 IRQs);
+  NÃO concluir que a rede causa.
+
+Run2 (25/10, `v1/run2-early/`): mesmo par v1, display carregado pela
+SERIAL aos 15 s, sem tráfego de rede iniciado: 5 IRQs FIFO na partida,
+mas usuário confirmou TEXTO na tela. Depois ~320 MiB scp/SFTP com hashes
+iguais: contador ficou em 5 (nenhuma IRQ nova), tela continuou com texto
+(confirmado). Leitura: risco está na inicialização do display, não na rede
+depois; número de IRQs na partida não prevê preto (2=preto, 5=texto).
+Uma amostra por lado: não é prova. Prática adotada: carregar o display
+ANTES de tráfego de rede. Proposta v2: /init carrega display automaticamente
+e só depois sobe rede/SSH.
+
+**postmarketOS em RAM (25/10, mesmo boot run2):** `work/pmos-20261025/`.
+Rootfs pmOS v26.06 (Alpine 3.24), 156 pacotes (postmarketos-base,
+alpine-base, bash, htop, nano, iproute2, iperf3, usbutils, evtest,
+fastfetch), montado com apk no container `alpine:3.24` arm64 (precisa
+`docker run`; o container de build antigo não tem rede). Chave pmOS de
+pmbootstrap main `pmb/data/keys/build.postmarketos.org.rsa.pub` (sha256
+b70e6ffc...). Sem pacote de kernel/device; mkinitfs pulou (sem deviceinfo).
+Tarball 41,5 MB -> scp 1,9 s -> `scripts/hanoip-enter-pmos.sh` (copiado
+como /run/enter-pmos; some no reboot) monta tmpfs 1 GiB em /mnt/pmos,
+extrai, bind de proc/sys/dev/dev/pts/run/tmp e faz chroot. NÃO roda
+OpenRC/init do pmOS, recusa se houver mount não-RAM. Resultado: fastfetch
+"postmarketOS v26.06 / Motorola Moto G60 / DSI-1 1080x2460", bash 5.3.9,
+123 MiB usados, tainted0, DSI continuou em 5.
+Uso: `scp -O tarball root@172.16.42.1:/tmp/pmos-rootfs.tar.gz`, depois
+`ssh -t root@172.16.42.1 /run/enter-pmos`.
+Pendente: incluir enter-pmos no ramdisk da v2; internet no celular (NAT
+pelo Mac) para `apk add`; mais tarde switch_root com OpenRC. Comandos SSH do Mac (zsh):
+`ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 root@172.16.42.1`
+Para SFTP: `sftp` com as mesmas opções. Se ADB não aparecer no Android,
+entrar no bootloader com Power + Volume-.
+Depois da rede: atualizar `load-touch` para aceitar storage só se tudo RO.
+
 Atualizado em 24/10/2026. O usuário pediu este arquivo para outra IA continuar
 mais tarde. **Não iniciar novos testes automaticamente por causa deste arquivo.**
 

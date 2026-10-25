@@ -1,0 +1,28 @@
+VERSÃO GOLD v2 — Moto G60 hanoip mainline
+Promovida pelo usuário em 25/10/2026 10:47:37 (-03).
+Substitui como retorno padrão a GOLD-20261025-0126 (preservada).
+
+Origem: work/usbnet-20261025/v2/. Kernel, DT e U-Boot idênticos à GOLD
+anterior (Image #8, seção kernel d79c3426..., DTB fffa22ce...); muda só o
+ramdisk.
+
+Conteúdo: display DRM/DSI + touch SPI + CPUfreq + CPUidle local + UFS em
+módulos somente leitura + gadget USB único ACM (serial) + NCM (rede) +
+Dropbear/sftp-server estáticos (musl) + entrada para postmarketOS em RAM.
+
+Boot (SOMENTE volátil, nunca flash):
+  fastboot boot u-boot-hanoip-v2.img      (aguardar product motorola-hanoip)
+  fastboot boot kernel-hanoip-v2.img
+Sozinho: display aos ~19 s, depois rede; Mac recebe 172.16.42.2 por DHCP.
+  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@172.16.42.1
+  (só chave ~/.ssh/id_ed25519 do Mac; sem senha; host key nova a cada boot)
+  SFTP/scp funcionam (scp -O ou scp moderno).
+Serial ACM continua disponível (cu.usbmodem*).
+Manuais: /sbin/load-ufs (guardião RO), /sbin/load-touch (aceita storage só
+se tudo RO), enter-pmos [tarball] (pmOS em tmpfs /mnt/pmos, chroot, sem init).
+cmdline hanoip.nodisplay / hanoip.nonet pulam etapas do autostart.
+Nunca montar partições UFS.
+
+Validação: 1 boot (run1) em 25/10/2026 — usuário confirmou texto; pmOS,
+touch, UFS 84 blocos RO, sem IRQ DSI nova após a partida (6 na partida).
+FIFO DSI intermitente na partida continua em aberto.

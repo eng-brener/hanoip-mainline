@@ -1,0 +1,13 @@
+HANOIP: pmOS rootfs unpacked into RAM at /mnt/pmos
+PRETTY_NAME="postmarketOS v26.06"
+156
+--- touch ANTES do UFS
+HANOIP: SPI touch probe started (PID 545); firmware targets controller RAM only
+1
+--- UFS
+HANOIP: UFS probe started in background (PID 557); see dmesg
+enum 1s
+blocks=84 not_ro=0
+configfs devpts devtmpfs proc rootfs sysfs tmpfs 
+irqs=6
+4096

@@ -122,7 +122,23 @@ display irqs=0, 84 blocks all RO, sdb hash matches Android, ~510 MB/s reads,
 touch events (manual insmod; load-touch refuses exposed storage). See
 docs/kernel/checkpoint-2026-10-25-ufs-tudo-ligado.txt. Never mount UFS.
 
-# GOLD version (user-designated 2026-10-25 01:26 -03)
+# Paused: USB network + SSH/SFTP (read FIRST section of onde paramos.md)
+
+work/usbnet-20261025/v1/ = GOLD kernel/DT/U-Boot + new ramdisk (ACM+NCM
+composite gadget, udhcpd, static musl dropbear + sftp-server). SSH/SFTP to
+172.16.42.1 worked with serial alive, but display went BLACK with 2 startup
+DSI FIFO IRQs when loaded at ~72 s after scp traffic. Not attributed yet;
+next: reboot v1 and load display early before network traffic.
+
+# GOLD v2 (user-designated 2026-10-25 10:47 -03) — DEFAULT RETURN PAIR
+
+work/GOLD-20261025-1047/ (read-only, GOLD.txt + SHA256SUMS): same kernel/DT/
+U-Boot as the first GOLD, ramdisk adds autostart (display before network),
+ACM+NCM gadget, static dropbear + sftp-server, enter-pmos, and RO-aware
+load-touch/load-display. kernel-hanoip-v2.img 4f12de96..., U-Boot 33c05711....
+Never modify GOLD folders; build variants elsewhere. Volatile boot only.
+
+# First GOLD version (user-designated 2026-10-25 01:26 -03), preserved
 
 work/GOLD-20261025-0126/ is a read-only copy of the ufs-local pair with
 GOLD.txt and SHA256SUMS (kernel c99f8cf5..., U-Boot 33c05711...). It is the

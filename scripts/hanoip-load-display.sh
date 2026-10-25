@@ -8,8 +8,11 @@ while read -r source target type rest; do
         *) echo "Refusing display test: $target is mounted as $type" >&2; exit 1 ;;
     esac
 done < /proc/mounts
+# Storage may be exposed only if every disk/partition is kernel read-only.
 for disk in /sys/class/block/sd* /sys/class/block/mmcblk*; do
-    [ ! -e "$disk" ] || { echo 'Refusing test with storage exposed' >&2; exit 1; }
+    [ -e "$disk" ] || continue
+    [ "$("$BB" cat "$disk/ro" 2>/dev/null)" = 1 ] ||
+        { echo "Refusing test: ${disk##*/} is not read-only" >&2; exit 1; }
 done
 [ ! -e /run/hanoip-display-started ] || { echo 'Display test already started'; exit 1; }
 modules='cec drm_display_helper drm_exec drm_gpuvm gpu-sched drm_client_lib
