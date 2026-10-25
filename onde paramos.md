@@ -20,6 +20,9 @@ Tudo no `main` do GitHub. Container `hanoip-kernel73` mantém a árvore 7.3
 (branch hanoip-7.3-prs = v2). Próximos passos sugeridos: ligar a carga da
 bateria (precisa de autorização: escreve no carregador do PMIC) ou começar o
 áudio (WCD937x + aw882xx no DT do U-Boot). GOLD v5 só se o usuário promover.
+Lista completa e agrupada do que falta: seção "O que falta" do README.md
+(inclui hardware visto no DT do Android: FPC1020, SX933x, vibrador do PMIC,
+flash/tri-LED, 4 câmeras, fsa4480; painel com modos de 90/120 Hz).
 
 ## Kernel migrado para o Linux 7.3 mainline (25/10/2026, noite) — v1
 

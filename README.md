@@ -26,7 +26,82 @@ postmarketOS e Plasma Mobile rodando de verdade.
 | Armazenamento | UFS, todos os blocos somente leitura exceto o rootfs |
 | CPU | 8 CPUs, CPUfreq (qcom-cpufreq-hw), CPUidle local |
 | Bateria | telemetria (PM6150 QG + SMB5); **carga ainda desligada** |
-| Pendente | carga da bateria, áudio (WCD937x + Awinic aw882xx), suspend/resume, modem, câmera, sensores |
+| Pendente | ver [O que falta](#o-que-falta) |
+
+## O que falta
+
+Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
+
+**Energia (o mais urgente)**
+- **Carga da bateria.** O SMB5 roda só em modo monitor: o celular descarrega
+  mesmo no cabo (~−160 mA com a tela no máximo). Falta ligar a carga com
+  limites conservadores, corte por temperatura (JEITA) e, depois, USB-PD.
+  Escreve no carregador do PMIC, então precisa de autorização.
+- **Porcentagem calibrada.** Hoje é estimada pela tensão. O driver já aceita
+  tabela OCV, mas falta descrever a bateria (tabela e resistência interna)
+  no DT.
+- **Suspend/resume.** O celular nunca dorme. Desligar o painel já funciona
+  (o touch recarrega o firmware), mas o suspend do sistema nunca foi testado.
+- **CPUidle de cluster.** Só os estados locais das CPUs estão ligados; o
+  colapso de cluster deixou a tela preta e está desativado.
+- **Estabilidade prolongada.** Falta uma sessão de horas medindo
+  temperatura, erros do DSI e memória.
+
+**Display e entrada**
+- **FIFO do DSI na partida.** Alguns boots ainda mostram erros de FIFO; a
+  causa da tela preta ocasional não foi fechada.
+- **90/120 Hz.** O painel do Android tem modos de 90 e 120 Hz; hoje só 60 Hz.
+- **Touch: refinamento.** Cantos, orientação, calibração e gestos ficaram
+  adiados de propósito.
+- **Botões.** Power e volume aparecem como `gpio-keys`/`pwrkey`; falta
+  conferir o mapeamento no Plasma.
+
+**Áudio**
+- **Alto-falante, microfones e fone.** O hanoip usa codec WCD937x pelos
+  macros do LPASS, amplificador Awinic aw882xx (I²C 0x34) e chave de áudio
+  do USB-C `fsa4480`. Os nós do LPASS e do SoundWire já estão no kernel 7.3
+  v2 (PRs #65/#60 do fork), mas desligados e fora do DT do U-Boot. O pinctrl
+  do LPASS está bloqueado no autoload até ser validado.
+- **Áudio Bluetooth.** Depende da pilha de áudio; não testado.
+
+**Telefonia e rádio**
+- **Modem.** O modem sobe (necessário para o Wi-Fi), mas não há RIL: sem
+  chamadas, SMS ou dados móveis. No log, o modem aparece como `failed` e
+  sem objeto de SIM (não foi testado com um chip inserido).
+- **GPS.** Passa pelo modem; não investigado.
+- **Hotspot Wi-Fi.** Não testado.
+
+**Câmera e LEDs**
+- **Câmeras.** 4 sensores, 2 atuadores de foco e EEPROMs no Android. O fork
+  tem o camss do SM7150 (de outros aparelhos), nada configurado para o
+  hanoip.
+- **Flash da câmera e LED de notificação.** Flash do PM6150L e tri-LED; não
+  investigados.
+
+**Sensores e periféricos**
+- **Acelerômetro/giroscópio e luz/proximidade.** ICM4x6xx e TMD2755, ligados
+  ao ADSP no Android. O TMD2755 não tem driver no mainline e o barramento
+  (SE do QUP) ainda não foi achado. Sem eles: sem rotação nem brilho
+  automáticos. Não há magnetômetro.
+- **Leitor de digital.** FPC1020; sem driver nem integração.
+- **Vibração.** Motor do PMIC (`qpnp-vibrator-ldo`); não investigado.
+- **Sensor SAR.** Semtech SX933x; não investigado.
+- **USB host/OTG.** Hoje a USB é só gadget (NCM + serial); falta o modo host
+  e a troca de papel no Type-C.
+- **microSD.** Parado: as tentativas pediam 3,3 V num regulador que vai até
+  2,95 V. Os patches estão guardados em `work/sd-20261025/saved-patches/`.
+- **Vídeo por hardware.** O Venus (decodificação) não foi ligado.
+
+**Sistema**
+- **Boot sem computador.** Tudo sobe por `fastboot boot` a partir do Mac;
+  sem gravar partições, o celular não inicia o pmOS sozinho.
+- **OTA do Android.** Uma atualização do Android usaria o espaço livre do
+  `super` e apagaria o pmOS.
+- **Firewall.** O kernel não tem nftables; o pmOS roda sem firewall.
+- **Térmica sob carga.** As CPUs grandes chegam a ~74 °C; o controle
+  térmico existe, mas não foi validado em carga longa.
+- **Upstream.** As correções do hanoip (LCDB, painel, touch, DSI, SMMU,
+  bateria) ainda não foram enviadas ao fork nem ao mainline.
 
 ## Como bootar (só volátil)
 
