@@ -30,6 +30,15 @@ throughout this project, including later sessions.
   session. Keep diagnostic root filesystems in RAM, without automounting disks.
 - Keep known-good images and hashes before preparing another variant.
 
+# Kernel 7.3 v2 (2026-10-26): v1 + fork PRs #70, #64, #65, #60
+
+work/kernel-7.3/v2/ (README.txt), 160 patches on v7.3. Battery telemetry
+drivers from the fork PRs (charging still monitor-only) and the shared LPASS
+audio nodes as the base for audio work (disabled; not in the U-Boot DT).
+In `sh`, a trailing `&` makes the command read stdin from /dev/null: never
+pipe a tarball into a backgrounded list, and never delete a modules tree
+before the new one is extracted.
+
 # Kernel 7.3 migration (2026-10-25, validated on two boots, not a GOLD)
 
 work/kernel-7.3/v1/ (README.txt): upstream v7.3 + 128 patches (sm7150-mainline

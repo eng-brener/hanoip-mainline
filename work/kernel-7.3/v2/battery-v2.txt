@@ -1,0 +1,8 @@
+== qcom_qg
+status=Not charging capacity=52 voltage_now=3815663 voltage_ocv=3916874 current_now=-439453 current_avg=-74768 temp=335 charge_full=4939000 health= 
+== hanoip-pm6150-monitor-charger
+status=Not charging capacity= voltage_now=4967120 voltage_ocv= current_now=496645 current_avg= temp= charge_full= health=Good 
+[   23.410522] qcom-smbx-charger c440000.spmi:pmic@0:charger@1000: Generation SMB5
+[   23.410996] qcom-smbx-charger c440000.spmi:pmic@0:charger@1000: SMB5 monitor: charger/Type-C configuration preserved
+qcom_qg 12288 0 - Live 0xffffbd2eb2049000
+qcom_smbx 24576 0 - Live 0xffffbd2eb2032000

@@ -1,6 +1,19 @@
 # Handoff — Moto G60 hanoip mainline
 
-## Retomada atual — kernel migrado para o Linux 7.3 mainline (25/10/2026, noite)
+## Retomada atual — 7.3 v2 com os PRs #70/#64/#65/#60 do fork (26/10/2026)
+
+O telefone roda `work/kernel-7.3/v2/` (ler README.txt): v1 + 4 PRs abertos do
+sm7150-mainline (160 patches sobre v7.3, reprodutível). Bateria: drivers
+novos de QG/SMB5 carregados e coerentes (52%, ~-160 mA com brilho máximo,
+status pelo carregador); carga segue desligada. Áudio: nós LPASS/SoundWire
+no sm7150.dtsi (base para o WCD937x + aw882xx do hanoip), desligados e fora
+do DT do U-Boot. Fork sem commits novos; branches next*/audio-wip são
+rascunhos antigos. PRs #66/#69 já estavam cobertos; #58/#52 superados.
+Armadilha: em `sh`, `cmd ... &` recebe stdin de /dev/null (o tar falhou e o
+/lib/modules/7.3.0 foi apagado antes; reinstalado). Nunca apagar antes de
+extrair.
+
+## Kernel migrado para o Linux 7.3 mainline (25/10/2026, noite) — v1
 
 Variante validada em dois boots: `work/kernel-7.3/v1/` (ler README.txt).
 Base upstream v7.3 (c03c1a14) + 128 patches em `work/kernel-7.3/v1/patches/`

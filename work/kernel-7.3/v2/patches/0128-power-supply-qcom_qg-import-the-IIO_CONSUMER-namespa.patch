@@ -1,0 +1,23 @@
+From ccb1a177a23238c326d9fc211171949ec0ffc5b7 Mon Sep 17 00:00:00 2001
+From: eng-brener <eng-brener@users.noreply.github.com>
+Date: Sun, 25 Oct 2026 21:09:12 +0000
+Subject: [PATCH 128/160] power: supply: qcom_qg: import the IIO_CONSUMER
+ namespace
+
+Since 7.3 the IIO consumer API is exported in the IIO_CONSUMER namespace.
+---
+ drivers/power/supply/qcom_qg.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/power/supply/qcom_qg.c b/drivers/power/supply/qcom_qg.c
+index 0bd75196d2cd..1637c806c14d 100644
+--- a/drivers/power/supply/qcom_qg.c
++++ b/drivers/power/supply/qcom_qg.c
+@@ -299,3 +299,4 @@ module_platform_driver(qcom_qg_driver);
+ MODULE_AUTHOR("Danila Tikhonov <danila@jiaxyga.com>");
+ MODULE_DESCRIPTION("Qualcomm PMIC QGauge (QG) driver");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS("IIO_CONSUMER");
+-- 
+2.43.0
+

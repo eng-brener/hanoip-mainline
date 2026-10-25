@@ -17,3 +17,7 @@ work/kernel-7.3/hanoip-tree.txt
 work/kernel-7.3/hanoip-patches/
 work/kernel-7.3/v1/volatile-boot-events*.json
 work/pmos-super-20261025/modules-7.3.0-sm7150.tar.gz
+work/kernel-7.3/v2/volatile-boot-events*.json
+work/kernel-7.3/pr-patches/
+work/kernel-7.3/qcom_qg-*.c
+work/kernel-7.3/pr64-qg-net.diff

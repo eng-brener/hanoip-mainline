@@ -1,0 +1,28 @@
+From 182df38cd25ca3044c2987127cc6c03861548311 Mon Sep 17 00:00:00 2001
+From: Danila Tikhonov <danila@jiaxyga.com>
+Date: Fri, 8 Sep 2023 21:14:47 +0300
+Subject: [PATCH 011/160] FROMLIST: dt-bindings: nvmem: qfprom: Add the SM7150
+ compatible
+
+Document QFPROM compatible for SM7150.
+
+Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
+---
+ Documentation/devicetree/bindings/nvmem/qcom,qfprom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/nvmem/qcom,qfprom.yaml b/Documentation/devicetree/bindings/nvmem/qcom,qfprom.yaml
+index bc0a0898b9e4..e361f6aa57c6 100644
+--- a/Documentation/devicetree/bindings/nvmem/qcom,qfprom.yaml
++++ b/Documentation/devicetree/bindings/nvmem/qcom,qfprom.yaml
+@@ -57,6 +57,7 @@ properties:
+           - qcom,sm6115-qfprom
+           - qcom,sm6350-qfprom
+           - qcom,sm6375-qfprom
++          - qcom,sm7150-qfprom
+           - qcom,sm8150-qfprom
+           - qcom,sm8250-qfprom
+           - qcom,sm8450-qfprom
+-- 
+2.43.0
+

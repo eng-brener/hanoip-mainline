@@ -1,0 +1,5 @@
+7.3.0-sm7150
+== qcom_qg
+status=Not charging capacity=53 voltage_now=3869383 voltage_ocv=3916874 current_now=-11749 current_avg=-49285 temp=339 charge_full=4939000 health= 
+== hanoip-pm6150-monitor-charger
+status=Not charging capacity= voltage_now=4978544 voltage_ocv= current_now=495670 current_avg= temp= charge_full= health=Good 
