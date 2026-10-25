@@ -1,0 +1,16 @@
+2f29cf5185fac749
+pre head8M=1240833a0a6c72af389c83b8538bc5cac2c066afd65edf5ecdf51ea394fa3886 used5154M=ac4806cf5872a6a1bfc3c89c06c239b63560b531c0ecf380eeee6dd64606879b
+pre A_REGION_OK
+writable: sdb sdb23; others not RO: 0
+/dev/loop7: 5410652160 /dev/sdb23
+pattern 2f07a5eacae6a1c4b2eb85c68cd6fc2a78b9c7659faf5f0969f9d25b339890d7
+67108864 bytes (64.0MB) copied, 0.479596 seconds, 133.4MB/s
+WRITE_VERIFY_OK
+67108864 bytes (64.0MB) copied, 0.411783 seconds, 155.4MB/s
+closed: disk ro=1 part ro=1
+post head8M=1240833a0a6c72af389c83b8538bc5cac2c066afd65edf5ecdf51ea394fa3886 used5154M=ac4806cf5872a6a1bfc3c89c06c239b63560b531c0ecf380eeee6dd64606879b
+post A_REGION_OK
+final blocks=84 not_ro=0
+DONE test 1050.17
+tail 3b2c85119a9258e5423f70eef033eead970bda14abea38fb52a16f91f0b8e136
+0

@@ -1,0 +1,89 @@
+Display / LCDB robustness — 2026-10-25
+====================================
+
+Base: work/cpu-gpu-20261025/combined-cpu8-gpu-quiet/ (preserved).
+LCDB-only test: work/display-robustness-20261025/lcdb-v1/.
+Final LCDB + panel error-handling variant:
+work/display-robustness-20261025/display-v2/.
+
+Changes
+-------
+The old shared refcount was incremented before a successful enable, was not
+locked across the two regulator devices, and decremented before knowing
+whether the shared module had actually disabled. Several register reads
+ignored errors. ABL state was adopted only after regulator registration,
+which can already invoke callbacks. The OF regulator container settings
+also prevented the core from finding the actual lab/ibb constraint nodes.
+
+The driver now serializes shared LCDB access with a mutex and tracks each
+rail independently. A failed operation does not commit a new logical rail
+state. is_enabled reports per-rail ownership as well as MODULE_EN, so the
+framework cannot silently skip the second rail's enable callback just
+because the first rail has powered the common module. Bootloader state and
+voltages are read and validated before registration, without writes during
+capture. Register errors, VREG_OK timeouts and short-circuit status propagate.
+Failed new enables attempt to disable MODULE_EN; rollback errors are logged
+and subsequent enables re-read the actual hardware.
+
+Voltage selection uses the actual regulator linear ranges and respects the
+requested min/max. Cache updates follow successful operations. Live voltage
+increases raise boost headroom first; reductions retain excess boost until
+the next cold enable. The normal 5.5 V targets and 5.65 V boost are unchanged.
+The OF descriptors now find lab/ibb directly and let the core manage their
+node references, constraints and registration failure paths.
+
+The panel driver now reports regulator-unwind failures after an unsuccessful
+prepare and returns regulator power-down failures from unprepare, allowing
+the DRM panel core to retain prepared state on that failure. DSI commands,
+delays, resets, splash mapping and clock/IOMMU workarounds are unchanged.
+
+Validation
+----------
+scripts/tests/hanoip-lcdb-host-test.py compiles the actual driver helpers with
+a host regmap mock. It covers adoption, both disable orders, independent
+rail votes, all capture-read failures, first-enable write failures, read
+errors, timeout/short-circuit rollback, failed rollback and retry, preservation
+of an active sibling, failed disable and retry, voltage bounds/cache/headroom,
+and concurrent rail callbacks. These are simulated failures, not injected
+hardware faults. The real ARM64 kernel and panel module also compile.
+
+Kernel #10 (7.1.0-sm7150) booted in RAM with lcdb-v1. LCDB adopted LAB/IBB
+5500 mV, BST 5650 mV, VREG_OK=1, SC=0. The regulator summary exposed the
+5500..5500 mV DT constraints and balanced panel consumers on both rails.
+
+Six actual off/on cycles via fb0/blank disabled both LCDB outputs and
+re-enabled them with VREG_OK. Use counts returned to one for each active
+panel consumer; DSI error_snapshot stayed irqs=0. No regulator underflow,
+unbalanced call, warning or Oops appeared. The user confirmed visible image
+after the first cycle. Evidence: lcdb-v1/runtime-after-cycle1.txt and
+lcdb-v1/cycles-2-to-6.txt.
+
+Before each reset, all sd block devices were checked RO, raw modem_a and
+bluetooth_a hashes were verified unchanged, and both firmware mounts were
+unmounted. Boot method is volatile fastboot boot only. No partition writes.
+
+Limits
+------
+This does not establish suspend/resume support, cold-start repeatability,
+or a universal fix for the intermittent startup DSI FIFO problem. MDSS core
+BCR remains omitted in the diagnostic DT. No LP DCS panel-status polling was
+used.
+
+Final variant result
+--------------------
+display-v2 booted via volatile U-Boot + kernel. The loaded panel module's
+SHA-256 matched the new artifact (c698e8f64d96fd9a28fd20e05188e24aefeb0e1162d3fe31137987f30f98b010).
+The newc payload was checked: only this module differs from the v1 ramdisk;
+all archive owners remain uid=0/gid=0. The kernel is the same tested #10.
+
+Three more complete LCDB off/on cycles passed in this final variant. Both
+rails reported disabled during off and enabled after on, each enable reached
+VREG_OK, both consumer use counts returned to one, and all three cached DSI
+snapshots remained irqs=0. CPU0-7 stayed online, SSH remained available and
+all sd block devices remained read-only. Taint=4096 is the expected O flag
+from the pre-existing external modules, with no additional taint.
+
+Nine cycles passed across the two variants (six LCDB-only, three final).
+The user confirmed normal visible image after the final sequence. The phone
+was left running display-v2 with its status message on screen. Evidence:
+display-v2/runtime-v2.txt. All GOLD and combined-quiet artifacts are preserved.

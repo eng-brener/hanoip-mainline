@@ -1,0 +1,51 @@
+GPU / Mesa checkpoint — Moto G60 hanoip, 2026-10-25
+
+Variant: work/cpu-gpu-20261025/gpu-zap-early/
+This was a volatile test only: U-Boot and kernel were started with fastboot
+boot. No partition was written. The source GPU variant and GOLD directories
+remain preserved.
+
+Boot sequence and firmware order:
+- The early helper loaded UFS, checked every /sys/class/block/sd*/ro value was
+  1, and mounted modem_a as ext4 ro,noload,nodev,nosuid,noexec.
+- At uptime 9.75 s, modem_a was /dev/sdd18, ro=1, with SHA256
+  6a1fc4b5c25704d476a57e1c0a59983b75c9af27ca8a75412037614c6c6f45dc.
+  The helper created links for a615_zap.mdt and b00-b02 before load-display.
+  The post-read hash matched exactly.
+- The display/GPU component probe followed around uptime 62-64 s. The driver
+  loaded a630_sqe.fw and a630_gmu.bin. The previous "Unable to load
+  .../a615_zap.mdt" and "gpu hw init failed: -2" messages did not recur.
+  There is no explicit success printk for the Zap blob in this kernel.
+
+Mesa rendering test:
+- postmarketOS/Alpine 3.24 rootfs was unpacked under a 1 GiB tmpfs using
+  enter-pmos. Mesa 26.1.6, mesa-dri-gallium and kmscube were installed into
+  this RAM-only rootfs. The bundled driver is /usr/lib/dri/msm_dri.so.
+- kmscube ran on /dev/dri/card0 for 120 frames with GALLIUM_DRIVER=freedreno
+  and MESA_LOADER_DRIVER_OVERRIDE=msm. It exited 0 and reported Mesa Project,
+  OpenGL ES 3.2 Mesa 26.1.6, vendor freedreno, renderer FD618.
+  This confirms an actual Freedreno render path on Adreno 618.
+- After rendering: renderD128 present, GPU devfreq 180 MHz at idle, thermal
+  cooling device devfreq-5000000.gpu present (state 0/6), DSI error_snapshot
+  irqs=0, tainted=4096 (out-of-tree modules), no GPU-init or Zap-load error.
+- fb0 remained msmdrmfb. This checkpoint does not claim long-duration GPU
+  stability, power-management validation, or a visual confirmation of the
+  display after kmscube.
+
+Artifact details:
+- kernel-hanoip-gpu-zap-early.img was initially booted with SHA256
+  860c05d1f8ef5266dc44062465f5bbc66182e5dd7c2c6f3d0302de0c503a9d23.
+  That first package had host uid/gid on initramfs files, so Dropbear rejected
+  authorized_keys. The live RAM copy was corrected with chown; no partition
+  was involved. The on-disk image was then rebuilt with all newc owners
+  normalized to uid=0/gid=0. Its current SHA256 is recorded in
+  work/cpu-gpu-20261025/gpu-zap-early/SHA256SUMS. The corrected package has
+  not been rebooted; the GPU test ran on the content-equivalent first build.
+- Console capture, firmware log, Mesa output, and final runtime status are in
+  work/cpu-gpu-20261025/gpu-zap-early/run1/.
+- The Mesa/kmscube rootfs archive is also in that variant directory. It is a
+  diagnostic artifact; the device copy was unpacked only into tmpfs.
+
+Next: validate repeatability and, if desired, run a longer bounded GPU load.
+Keep CPU/GPU diagnostic images separate from the designated GOLD until the
+user explicitly promotes a new return pair. Never flash.

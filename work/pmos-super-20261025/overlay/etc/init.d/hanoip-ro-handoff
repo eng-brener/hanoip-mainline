@@ -1,0 +1,39 @@
+#!/sbin/openrc-run
+# Hand the read-only guard from the initramfs poll loop to the udev rule
+# (60-hanoip-blockdev-ro.rules): re-assert RO on every sd* except sdb and
+# super, verify, and only then stop the 0.1 s loop.
+description="Hanoip UFS read-only guard handoff to udev"
+
+depend() {
+	need udev
+	after udev-trigger udev-settle
+}
+
+exempt() {
+	case "$1" in
+	sdb) return 0 ;;
+	sdb*) [ "$(sed -n 's/^PARTNAME=//p' /sys/class/block/$1/uevent)" = super ] ;;
+	*) return 1 ;;
+	esac
+}
+
+start() {
+	ebegin "Moving the UFS RO guard to udev"
+	[ -f /etc/udev/rules.d/60-hanoip-blockdev-ro.rules ] || { eend 1 "rule missing"; return 1; }
+	bad=""
+	for b in /sys/class/block/sd*; do
+		n=${b##*/}
+		exempt $n && continue
+		blockdev --setro /dev/$n
+		[ "$(cat $b/ro)" = 1 ] || bad="$bad $n"
+	done
+	if [ -n "$bad" ]; then
+		eend 1 "not read-only:$bad; keeping the poll loop"
+		return 1
+	fi
+	p=/run/hanoip-ufs-readonly.pid
+	if [ -f $p ] && kill "$(cat $p)" 2>/dev/null; then
+		echo "stopped by hanoip-ro-handoff" > /run/hanoip-ufs-readonly.handoff
+	fi
+	eend 0
+}

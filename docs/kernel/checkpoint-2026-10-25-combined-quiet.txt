@@ -1,0 +1,45 @@
+# Combined CPU8 + GPU/Freedreno quiet-screen variant (2026-10-25)
+
+Variant: `work/cpu-gpu-20261025/combined-cpu8-gpu-quiet/`
+
+This package is derived from `gpu-zap-early/`. It combines the CPU8 DT,
+GPU-enabled DT, early Zap firmware availability, and the existing diagnostic
+initramfs features: display, touch, USB ACM/NCM + SSH/SFTP, UFS guarded
+read-only handling, Wi-Fi, and Bluetooth. The source GPU variant's Mesa 26.1.6
+Freedreno/KMSCube test rendered 120 frames on FD618. See
+`checkpoint-2026-10-25-gpu.txt` for source evidence.
+
+The bootargs token `console=tty1` is removed with an equal-length blank in:
+- U-Boot external DTB and matching embedded FDT in `u-boot.bin`;
+- Android kernel boot image DTB.
+
+Kernel consoles on `ttyMSM0`, `ttyGS0`, and `ramoops` remain enabled. Kernel
+loglevel and ignore_loglevel are unchanged. This targets kernel printk output
+on the display; the initramfs may still write its status line to `/dev/tty1`.
+U-Boot's own display output is not changed.
+
+The kernel payload and ramdisk payload hashes match the GPU-Zap-early source.
+This package has been image-structure/hash checked only; the combined pair has
+not yet been boot-tested. No phone partition was written and no phone command
+was executed while building it. Test only with volatile `fastboot boot`.
+
+## Volatile boot result (2026-10-25)
+
+Booted the new pair via two `fastboot boot` commands. CPU0-7 came online;
+USB network/SSH, display (`connected`), and `renderD128` appeared. `/proc/cmdline`
+confirmed no `console=tty1`; serial/USB/ramoops consoles remain. The visible
+kernel-console selection is therefore removed; the initramfs greeting still
+uses tty1. DSI `error_snapshot` reported `irqs=0`.
+
+KMSCube rendered 120 frames with exit 0 under Mesa 26.1.6, GLES 3.2,
+`vendor=freedreno`, `renderer=FD618`. UFS reported 84 block devices, all
+read-only; modem_a and bluetooth_a hashes matched before and after read-only
+use. No partition was written.
+
+Wi-Fi modem, IPA, ath10k driver/firmware initialized and wlan0 appeared. The
+interface was brought administratively UP, but remained without carrier/IP:
+association was not tested because this initramfs does not start
+wpa_supplicant or embed credentials. Bluetooth hci0 and WCN3990 firmware setup
+completed; local address was present in DT and rfkill was unblocked. Discovery
+and pairing were not tested because btmgmt/bluetoothctl are absent here.
+Detailed run result: `work/cpu-gpu-20261025/combined-cpu8-gpu-quiet/run2/`.

@@ -1,0 +1,21 @@
+CPU 100% — 8 núcleos — Moto G60 hanoip, 25/10/2026
+
+Variante work/cpu-gpu-20261025/cpu8/ = GOLD v3 + DT sm7150-motorola-hanoip-
+cpu8-diagnostic (só bootargs: sem maxcpus=6 e sem idle=poll).
+
+CAUSA DO LIMITE: com maxcpus=6 o kernel finaliza as capacidades do sistema só
+com os A55; ao ligar o A76 depois: "CPU6: Detected conflict for capability 80
+(Spectre-v2) ... will not boot". O PSCI liga o núcleo; o problema era só a
+ordem. Bootar com os 8 núcleos resolve (Spectre-v2/BHB detectados no boot).
+
+RESULTADO (1 boot):
+- online 0-7. CPU6/7 0x51df804e (Kryo 470 Gold / A76).
+- policy0 CPUs0-5 300-1804,8 MHz (10 níveis); policy6 CPUs6-7 300-2304 MHz
+  (14 níveis); qcom-cpufreq-hw, schedutil; capacidade EAS 382/1024.
+- CPUidle nos A76: WFI, cpu-sleep-1-0 (PC), cpu-sleep-1-1 (rail-PC) em uso.
+- Carga total 8 núcleos 45 s: A76 fixos em 2304 MHz, A55 1804,8 MHz;
+  temperatura estabilizou em 86 °C (< 90 °C passive), sem throttling
+  necessário; 5 s depois 50 °C / 806 MHz.
+- Térmico: zonas cpu0-9 com passive 90/95 °C e critical 110 °C, ligadas a
+  cpufreq-cpu0 (A55) e cpufreq-cpu6 (A76). gpuss sem cdev até a GPU subir.
+- Wi-Fi, Bluetooth, modem e display seguiram funcionando; 0 Oops/SMMU.

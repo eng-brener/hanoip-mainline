@@ -155,7 +155,7 @@ static int ili7807s_off(struct ili7807s *ctx)
 static int ili7807s_prepare(struct drm_panel *panel)
 {
 	struct ili7807s *ctx = to_ili7807s(panel);
-	int ret;
+	int ret, cleanup_ret;
 
 	ret = regulator_bulk_enable(ARRAY_SIZE(ili7807s_supplies), ctx->supplies);
 	if (ret < 0) {
@@ -178,7 +178,11 @@ static int ili7807s_prepare(struct drm_panel *panel)
 err:
 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
 
-	regulator_bulk_disable(ARRAY_SIZE(ili7807s_supplies), ctx->supplies);
+	cleanup_ret = regulator_bulk_disable(ARRAY_SIZE(ili7807s_supplies),
+					     ctx->supplies);
+	if (cleanup_ret)
+		dev_err(ctx->panel.dev, "failed to unwind regulators: %d\n",
+			cleanup_ret);
 	return ret;
 }
 
@@ -193,7 +197,11 @@ static int ili7807s_unprepare(struct drm_panel *panel)
 
 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
 
-	regulator_bulk_disable(ARRAY_SIZE(ili7807s_supplies), ctx->supplies);
+	ret = regulator_bulk_disable(ARRAY_SIZE(ili7807s_supplies), ctx->supplies);
+	if (ret) {
+		dev_err(ctx->panel.dev, "failed to disable regulators: %d\n", ret);
+		return ret;
+	}
 
 	return 0;
 }

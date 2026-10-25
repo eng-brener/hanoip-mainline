@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-battery-diagnostic.dts"
+
+/*
+ * pmOS on the super tail: same hardware as the battery telemetry variant.
+ * The ILI7807S is a TDDI whose touch firmware lives in IRAM and is lost when
+ * the panel powers off, so the touch follows the panel and reloads it.
+ */
+&spi6 {
+	touchscreen@0 {
+		panel = <&panel>;
+	};
+};

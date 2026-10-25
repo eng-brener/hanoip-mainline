@@ -1,0 +1,17 @@
+#!/sbin/openrc-run
+# Keep the USB NCM address set by the initramfs (172.16.42.1/24). The
+# initramfs udhcpd keeps serving 172.16.42.2 to the host.
+description="Hanoip USB network address"
+
+depend() {
+	before sshd
+}
+
+start() {
+	ebegin "Configuring usb0"
+	ip link set usb0 up && {
+		ip -4 addr show dev usb0 | grep -q 172.16.42.1 ||
+			ip addr add 172.16.42.1/24 dev usb0
+	}
+	eend $?
+}

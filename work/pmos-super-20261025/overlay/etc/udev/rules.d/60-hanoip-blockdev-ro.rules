@@ -1,0 +1,11 @@
+# Hanoip: every UFS disk/partition is read-only by its own flag the moment it
+# appears or changes (UFS reset, partition rescan). Only the disk holding the
+# pmOS root (sdb) and the super partition (the pmOS rootfs lives in its
+# unallocated tail) stay writable. Replaces the 0.1 s RO poll of the initramfs.
+ACTION!="add|change", GOTO="hanoip_ro_end"
+SUBSYSTEM!="block", GOTO="hanoip_ro_end"
+KERNEL!="sd*", GOTO="hanoip_ro_end"
+ENV{DEVTYPE}=="disk", KERNEL=="sdb", GOTO="hanoip_ro_end"
+ENV{DEVTYPE}=="partition", KERNEL=="sdb*", ENV{PARTNAME}=="super", GOTO="hanoip_ro_end"
+RUN+="/sbin/blockdev --setro /dev/%k"
+LABEL="hanoip_ro_end"

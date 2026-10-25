@@ -11,8 +11,10 @@ while read -r source target type rest; do
     esac
 done < /proc/mounts
 # Storage may be exposed only if every disk/partition is kernel read-only.
+# Removable user media (microSD) is allowed; phone storage is not.
 for disk in /sys/class/block/sd* /sys/class/block/mmcblk*; do
     [ -e "$disk" ] || continue
+    [ "$("$BB" cat "$disk/removable" 2>/dev/null)" = 1 ] && continue
     [ "$("$BB" cat "$disk/ro" 2>/dev/null)" = 1 ] ||
         { echo "Refusing test: ${disk##*/} is not read-only" >&2; exit 1; }
 done

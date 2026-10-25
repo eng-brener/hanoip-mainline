@@ -1,0 +1,63 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-gpu-diagnostic.dts"
+
+/* RAM diagnostic: battery telemetry and passive SMB5 monitoring only. */
+/ {
+	chosen {
+		bootargs = "earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0";
+	};
+
+	hanoip_battery: battery {
+		compatible = "simple-battery";
+		device-chemistry = "lithium-ion";
+		/* Observed Android BMS design values for the ATL 6000 mAh pack. */
+		voltage-min-design-microvolt = <3200000>;
+		voltage-max-design-microvolt = <4450000>;
+		charge-full-design-microamp-hours = <6174000>;
+		constant-charge-current-max-microamp = <3600000>;
+	};
+};
+
+/* The U-Boot PM6150 include predates the mainline charger node/channels. */
+&pm6150_lsid0 {
+	pm6150_charger: charger@1000 {
+		reg = <0x1000>;
+		compatible = "motorola,hanoip-smb5-monitor";
+		io-channels = <&pm6150_adc ADC5_USB_IN_I>,
+			      <&pm6150_adc ADC5_USB_IN_V_16>;
+		io-channel-names = "usbin_i", "usbin_v";
+		monitored-battery = <&hanoip_battery>;
+		status = "okay";
+	};
+};
+
+&pm6150_adc {
+	channel@7 {
+		reg = <ADC5_USB_IN_I>;
+		qcom,pre-scaling = <1 1>;
+		label = "usb_in_i_uv";
+	};
+
+	channel@8 {
+		reg = <ADC5_USB_IN_V_16>;
+		qcom,pre-scaling = <1 16>;
+		label = "usb_in_v_div_16";
+	};
+};
+
+&pm6150_charger {
+	/* This diagnostic compatible skips all charger/Type-C setup writes. */
+	compatible = "motorola,hanoip-smb5-monitor";
+	monitored-battery = <&hanoip_battery>;
+	status = "okay";
+};
+
+&pm6150_qgauge {
+	monitored-battery = <&hanoip_battery>;
+	power-supplies = <&pm6150_charger>;
+	status = "okay";
+};
+
+&pm6150_qg_sdam {
+	read-only;
+};

@@ -13,6 +13,7 @@
 #include <linux/platform_device.h>
 #include <linux/power_supply.h>
 #include <linux/regmap.h>
+#include <linux/unaligned.h>
 
 /* BATT offsets */
 #define QG_S2_NORMAL_AVG_V_DATA0_REG	0x80 /* 2-byte 0x80-0x81 */
@@ -127,11 +128,18 @@ static int qcom_qg_get_property(struct power_supply *psy,
 				union power_supply_propval *val)
 {
 	struct qcom_qg_chip *chip = power_supply_get_drvdata(psy);
+	u8 data[4];
 	int ret;
+
+	/* Registration can publish the supply before its battery info is ready. */
+	if (!chip->batt_info)
+		return -EAGAIN;
 
 	switch (psp) {
 	case POWER_SUPPLY_PROP_STATUS:
-		val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+		ret = power_supply_get_property_from_supplier(psy, psp, val);
+		if (ret)
+			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
 		break;
 	case POWER_SUPPLY_PROP_TECHNOLOGY:
 		val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
@@ -155,9 +163,10 @@ static int qcom_qg_get_property(struct power_supply *psy,
 			return ret;
 		break;
 	case POWER_SUPPLY_PROP_VOLTAGE_OCV:
-		ret = nvmem_device_read(chip->sdam, QG_SDAM_OCV_OFFSET, 4, &val->intval);
+		ret = nvmem_device_read(chip->sdam, QG_SDAM_OCV_OFFSET, 4, data);
 		if (ret < 0)
 			return ret;
+		val->intval = get_unaligned_le32(data);
 		break;
 	case POWER_SUPPLY_PROP_CURRENT_NOW:
 		ret = qcom_qg_get_current(chip,
@@ -176,10 +185,10 @@ static int qcom_qg_get_property(struct power_supply *psy,
 		break;
 	case POWER_SUPPLY_PROP_CHARGE_FULL:
 		ret = nvmem_device_read(chip->sdam,
-				QG_SDAM_LEARNED_CAPACITY_OFFSET, 2, &val->intval);
+				QG_SDAM_LEARNED_CAPACITY_OFFSET, 2, data);
 		if (ret < 0)
 			return ret;
-		val->intval *= 1000; /* mAh to uAh */
+		val->intval = get_unaligned_le16(data) * 1000; /* mAh to uAh */
 		break;
 	case POWER_SUPPLY_PROP_CAPACITY:
 		ret = qcom_qg_get_capacity(chip, &val->intval);
@@ -200,12 +209,18 @@ static int qcom_qg_get_property(struct power_supply *psy,
 	return 0;
 }
 
+static void qcom_qg_external_power_changed(struct power_supply *psy)
+{
+	power_supply_changed(psy);
+}
+
 static struct power_supply_desc batt_psy_desc = {
 	.name = "qcom_qg",
 	.type = POWER_SUPPLY_TYPE_BATTERY,
 	.properties = qcom_qg_props,
 	.num_properties = ARRAY_SIZE(qcom_qg_props),
 	.get_property = qcom_qg_get_property,
+	.external_power_changed = qcom_qg_external_power_changed,
 };
 
 static int qcom_qg_probe(struct platform_device *pdev)

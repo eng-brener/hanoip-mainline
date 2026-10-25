@@ -2,3 +2,7 @@ __pycache__/
 *.py[cod]
 work/android-dump-*/
 work/wifi-20261025/private/
+
+# GOLD v4 large artifacts stay local (GitHub 100 MB limit); hashes in SHA256SUMS.
+work/GOLD-20261025-1659/rootfs-snapshot.tar.gz
+work/GOLD-20261025-1659/pmos-super-rootfs.img.gz

@@ -1,0 +1,3 @@
+# Root is set up by the Hanoip initramfs (loop over the super tail).
+# Do not add phone partitions here.
+tmpfs	/tmp	tmpfs	nosuid,nodev,mode=1777	0 0

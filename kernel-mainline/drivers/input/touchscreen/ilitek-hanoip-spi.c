@@ -18,6 +18,8 @@
 #include <linux/module.h>
 #include <linux/spi/spi.h>
 #include <linux/unaligned.h>
+#include <linux/workqueue.h>
+#include <drm/drm_panel.h>
 
 #define ILI_FIRMWARE "ilitek/hanoip-7807-iram.bin"
 #define ILI_CHIP 0x7807
@@ -35,7 +37,12 @@ struct ili_hanoip {
 	struct input_dev *input;
 	u8 *tx, *rx;
 	bool ice;
-	unsigned long irqs, reports, rejected;
+	unsigned long irqs, reports, rejected, restarts;
+	/* The TDDI loses its IRAM image whenever the panel powers off. */
+	const struct firmware *fw;
+	struct drm_panel_follower follower;
+	struct work_struct restart_work;
+	bool irq_enabled;
 };
 
 static int ili_transfer(struct ili_hanoip *ts, size_t txlen, size_t rxlen)
@@ -307,17 +314,94 @@ static ssize_t stats_show(struct device *dev, struct device_attribute *attr, cha
 {
 	struct ili_hanoip *ts = spi_get_drvdata(to_spi_device(dev));
 
-	return sysfs_emit(buf, "irqs=%lu reports=%lu rejected=%lu\n",
-			 READ_ONCE(ts->irqs), READ_ONCE(ts->reports), READ_ONCE(ts->rejected));
+	return sysfs_emit(buf, "irqs=%lu reports=%lu rejected=%lu restarts=%lu\n",
+			 READ_ONCE(ts->irqs), READ_ONCE(ts->reports), READ_ONCE(ts->rejected),
+			 READ_ONCE(ts->restarts));
 }
 static DEVICE_ATTR_RO(stats);
 static struct attribute *ili_attrs[] = { &dev_attr_stats.attr, NULL };
 ATTRIBUTE_GROUPS(ili);
 
+static int ili_start(struct ili_hanoip *ts)
+{
+	int ret = ili_load_iram(ts, ts->fw);
+
+	if (ret)
+		return ret;
+	return ili_check_running_firmware(ts);
+}
+
+static void ili_release_slots(struct ili_hanoip *ts)
+{
+	int i;
+
+	for (i = 0; i < ILI_SLOTS; i++) {
+		input_mt_slot(ts->input, i);
+		input_mt_report_slot_inactive(ts->input);
+	}
+	input_mt_sync_frame(ts->input);
+	input_sync(ts->input);
+}
+
+static void ili_restart_work(struct work_struct *work)
+{
+	struct ili_hanoip *ts = container_of(work, struct ili_hanoip, restart_work);
+	int ret;
+
+	if (ts->irq_enabled) {
+		disable_irq(ts->spi->irq);
+		ts->irq_enabled = false;
+	}
+	ret = ili_start(ts);
+	if (ret) {
+		dev_err(&ts->spi->dev, "IRAM reload after panel power-on failed: %d\n", ret);
+		return;
+	}
+	ts->restarts++;
+	ts->irq_enabled = true;
+	enable_irq(ts->spi->irq);
+	dev_info(&ts->spi->dev, "IRAM reloaded after panel power-on\n");
+}
+
+static int ili_panel_enabled(struct drm_panel_follower *follower)
+{
+	struct ili_hanoip *ts = container_of(follower, struct ili_hanoip, follower);
+
+	/* The download takes ~300 ms; keep it out of the modeset path. */
+	schedule_work(&ts->restart_work);
+	return 0;
+}
+
+static int ili_panel_disabling(struct drm_panel_follower *follower)
+{
+	struct ili_hanoip *ts = container_of(follower, struct ili_hanoip, follower);
+
+	cancel_work_sync(&ts->restart_work);
+	if (ts->irq_enabled) {
+		disable_irq(ts->spi->irq);
+		ts->irq_enabled = false;
+		ili_release_slots(ts);
+	}
+	return 0;
+}
+
+static const struct drm_panel_follower_funcs ili_follower_funcs = {
+	.panel_enabled = ili_panel_enabled,
+	.panel_disabling = ili_panel_disabling,
+};
+
+static void ili_cleanup(void *data)
+{
+	struct ili_hanoip *ts = data;
+
+	cancel_work_sync(&ts->restart_work);
+	release_firmware(ts->fw);
+}
+
 static int ili_probe(struct spi_device *spi)
 {
 	struct device *dev = &spi->dev;
-	const struct firmware *fw;
+	bool follower = drm_is_panel_follower(dev);
 	struct ili_hanoip *ts;
 	int ret;
 
@@ -338,25 +422,25 @@ static int ili_probe(struct spi_device *spi)
 	ret = spi_setup(spi);
 	if (ret)
 		return dev_err_probe(dev, ret, "SPI setup failed\n");
-	ret = request_firmware(&fw, ILI_FIRMWARE, dev);
+	INIT_WORK(&ts->restart_work, ili_restart_work);
+	ret = request_firmware(&ts->fw, ILI_FIRMWARE, dev);
 	if (ret)
 		return dev_err_probe(dev, ret, "Missing RAM firmware\n");
-	ret = ili_validate_firmware(fw);
+	ret = devm_add_action_or_reset(dev, ili_cleanup, ts);
 	if (ret)
-		goto release;
+		return ret;
+	ret = ili_validate_firmware(ts->fw);
+	if (ret)
+		return dev_err_probe(dev, ret, "Invalid RAM firmware\n");
 	ts->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-	if (IS_ERR(ts->reset)) {
-		ret = PTR_ERR(ts->reset);
-		goto release;
+	if (IS_ERR(ts->reset))
+		return dev_err_probe(dev, PTR_ERR(ts->reset), "Missing reset GPIO\n");
+	/* As a panel follower the IRAM is loaded each time the panel is enabled. */
+	if (!follower) {
+		ret = ili_start(ts);
+		if (ret)
+			return dev_err_probe(dev, ret, "IRAM initialization failed\n");
 	}
-	ret = ili_load_iram(ts, fw);
-release:
-	release_firmware(fw);
-	if (ret)
-		return dev_err_probe(dev, ret, "IRAM initialization failed\n");
-	ret = ili_check_running_firmware(ts);
-	if (ret)
-		return dev_err_probe(dev, ret, "Running firmware check failed\n");
 	ts->input = devm_input_allocate_device(dev);
 	if (!ts->input)
 		return -ENOMEM;
@@ -371,10 +455,19 @@ release:
 	if (ret)
 		return ret;
 	ret = devm_request_threaded_irq(dev, spi->irq, NULL, ili_irq,
-				       IRQF_ONESHOT | IRQF_TRIGGER_FALLING, dev_name(dev), ts);
+				       IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+				       (follower ? IRQF_NO_AUTOEN : 0), dev_name(dev), ts);
 	if (ret)
 		return dev_err_probe(dev, ret, "Touch IRQ setup failed\n");
-	dev_info(dev, "ILI7807 ready: 1080x2460, 10 slots, IRAM only\n");
+	ts->irq_enabled = !follower;
+	if (follower) {
+		ts->follower.funcs = &ili_follower_funcs;
+		ret = devm_drm_panel_add_follower(dev, &ts->follower);
+		if (ret)
+			return dev_err_probe(dev, ret, "Panel follower setup failed\n");
+	}
+	dev_info(dev, "ILI7807 ready: 1080x2460, 10 slots, IRAM only%s\n",
+		 follower ? ", follows panel power" : "");
 	return 0;
 }
 

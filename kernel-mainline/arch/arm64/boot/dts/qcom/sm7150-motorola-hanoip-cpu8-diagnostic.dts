@@ -1,0 +1,14 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-wifi-diagnostic.dts"
+
+/*
+ * Boot all eight CPUs. With maxcpus=6 the Cortex-A76 cores could not be
+ * onlined later: the system capabilities were finalized on the A55 cluster
+ * alone and CPU6 was refused ("Detected conflict for capability 80
+ * (Spectre-v2)"). idle=poll is dropped as well; arm64 does not know it.
+ */
+/ {
+	chosen {
+		bootargs = "earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops console=tty1 loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0";
+	};
+};

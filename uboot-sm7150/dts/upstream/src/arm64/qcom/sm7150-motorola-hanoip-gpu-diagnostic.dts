@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-cpu8-diagnostic.dts"
+
+/*
+ * Enable the Adreno 618 that the display bring-up kept disabled. SQE/GMU
+ * firmware comes from linux-firmware; the zap shader is the device-signed
+ * one on the modem partition (linked by load-wifi from modem_a, mounted
+ * read-only). The speed-bin fuse (0xa7) selects 800..180 MHz.
+ */
+&gpu {
+	status = "okay";
+
+	zap-shader {
+		firmware-name = "qcom/sm7150/motorola/hanoip/a615_zap.mdt";
+	};
+};

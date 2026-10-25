@@ -1,6 +1,260 @@
 # Handoff — Moto G60 hanoip mainline
 
-## >>> GOLD ATUAL: work/GOLD-20261025-1203/ (v3 completa, 25/10/2026 12:03 -03)
+## >>> GOLD ATUAL v4: work/GOLD-20261025-1659/ — pmOS + Plasma Mobile no `super` (25/10/2026 ~16:59 -03)
+
+Promovida pelo usuário. Substitui a GOLD v3 (`work/GOLD-20261025-1203/`) como
+retorno padrão; v3, v2 (1047) e a primeira (0126) ficam preservadas. Ler
+`GOLD.txt` e `SHA256SUMS` da pasta (somente leitura; nunca modificar).
+
+Boot (SÓ volátil, nunca flash):
+  fastboot boot work/GOLD-20261025-1659/u-boot-hanoip-pmos-v1.img
+  fastboot boot work/GOLD-20261025-1659/kernel-hanoip-pmos-super-v1.img
+Plasma Mobile em ~37-40 s; usuário `user` (uid 10000, PIN definido pelo
+usuário no telefone; não registrar aqui). SSH root@172.16.42.1 por chave.
+
+Regra nova (ver AGENTS.md): rootfs gravável SÓ na região não alocada do fim
+do `super` (sdb23), espaço do grupo do slot B (slot ativo = A):
+offset 5160 MiB (byte 5410652160), 5120 MiB, ext4 `hanoip_pmos`; último
+extent LP (vendor_a) termina em 5153,88 MiB. Metadados LP e volumes `_a`
+nunca são gravados (hashes antes/depois em baseline-super.txt e
+write-*-run.txt). Durante o pmOS só sdb/sdb23 ficam graváveis; os outros 82
+blocos ficam RO por flag próprio + guard. OTA do Android apagaria o pmOS.
+
+Como funciona:
+- Kernel #10 (Image fa6d0e1c…), mesmo kernel/DTB da telemetry-v1. Ramdisk =
+  telemetry-v1 + `/etc/hanoip/boot-pmos` + `/sbin/pmos-root`
+  (`scripts/hanoip-pmos-root.sh`): estágio 1 sobe display/USB/UFS RO/Wi-Fi/BT/
+  bateria, confere hash LP e ext4 no offset, monta `/dev/loop7` rw, move
+  /dev /proc /sys /run e /mnt/ro/* e faz `switch_root` para o OpenRC.
+  rmtfs/tqftpserv/pd-mapper/udhcpd e o guard RO do estágio 1 continuam vivos.
+- U-Boot: .config da telemetry-v1; DT `sm7150-motorola-hanoip-pmos.dts` =
+  battery-diagnostic + `panel = <&panel>` no touch (única diferença).
+- Touch `ilitek-hanoip-spi`: o TDDI perde a IRAM quando o painel desliga;
+  driver é panel follower (recarrega IRAM em panel_enabled via work, desliga
+  IRQ em panel_disabling; `stats` tem `restarts`). Validado com botão power.
+- /lib/modules: 828 módulos da árvore #10 (Image idêntico; vmlinux
+  inalterado; sem zstd) + 43 validados em `updates/`. Blacklist de autoload
+  (`/etc/modprobe.d/hanoip-blacklist.conf`): icc_bwmon (sync_state do
+  interconnect pode tirar banda do MDSS), pinctrl_sm7150_lpass_lpi, qcomtee,
+  simple_pm_bus. Autoload validado: joydev, qcom_rng, qcom_spmi_temp_alarm,
+  qcom_stats, rpmsg_ctrl.
+- polkit tem que ser `polkit-elogind` (o `polkit-noelogind-libs` não vê a
+  sessão: brilho, Discover e NetworkManager falhavam).
+- Wi-Fi: NetworkManager dono do wlan0, wpa_supplicant ativado por D-Bus (sem
+  serviço OpenRC nem ifupdown), sem MAC aleatório, usb0 unmanaged. AP
+  WPA2/WPA3: NM sempre oferece SAE, que exige a senha em si (PSK hex não
+  basta); a senha fica só no .nmconnection 600 do telefone.
+- Bluetooth: serviço `hanoip-firmware` (boot) recria os links /lib/firmware
+  para /mnt/ro/{modem_a,bluetooth_a}; rfkill block/unblock refaz o setup QCA.
+  NUNCA dar unbind em hci_uart_qca (Oops em qca_power_off).
+- Seat: no primeiro boot após instalar elogind, as tags udev só aparecem com
+  novo trigger; imagens novas já nascem com as regras.
+- Instalados: Plasma Mobile, QMLKonsole, Discover (backend apk).
+
+Reprodução: `work/pmos-super-20261025/build-rootfs.sh` (+ overlay/ e
+modules-7.1.0-sm7150.tar.gz) recria o rootfs completo do zero (rebuild
+verificado em pmos-super-rootfs-v2.img, não gravado). O user sai bloqueado:
+`passwd user` no telefone; rede Wi-Fi pelo Plasma. A GOLD também tem
+`rootfs-snapshot.tar.gz` do rootfs vivo SEM segredos (senha do Wi-Fi conferida
+ausente) e `shadow.sanitized`.
+
+Observado: SoC até ~74 °C sob carga (gzip), 62-70 °C em uso; bateria
+descarrega mesmo no cabo (3,84 V, -109 mA, estimativa 56%->44% na sessão).
+
+Pós-GOLD v4 (aplicado no rootfs do telefone e no build, não na pasta GOLD):
+guard RO passou do poll de 0,1 s para udev. Regra
+`/etc/udev/rules.d/60-hanoip-blockdev-ro.rules` faz `blockdev --setro` em todo
+sd* em add/change, exceto o disco sdb e a partição PARTNAME=super; serviço
+`hanoip-ro-handoff` (sysinit, após udev) reafirma RO, confere e só então mata
+o loop do estágio 1 (/run/hanoip-ufs-readonly.pid). `udevadm test` e trigger
+change conferidos; 84 blocos, graváveis só sdb/sdb23. CPU em repouso 13,4% ->
+0,2%; pico térmico 62-70 -> 42 °C. Kernel/ramdisk da GOLD inalterados (o loop
+ainda roda até o switch_root).
+
+Pendências, em ordem sugerida: carregamento da bateria (hoje desabilitado de
+propósito); FIFO DSI intermitente na partida; suspend/resume; nftables no kernel;
+áudio, modem/telefonia, câmera, sensores. Touch polish segue adiado.
+No zsh, não guardar opções do ssh numa variável ($O não faz word-split).
+Nada commitado.
+
+## Histórico — telemetria de bateria/carregador (25/10/2026)
+
+Telefone ligado na variante volátil `work/battery-20261025/telemetry-v1/`.
+Ela deriva do kernel #10 e da base `display-v2`, com o display, rede USB,
+Wi-Fi/BT, CPU0-7 e UFS somente leitura preservados. O novo DT ativa o gauge
+PM6150 e um driver SMB monitor-only: lê USB/bateria sem configurar o carregador,
+alterar limites, habilitar carga ou registrar callbacks de escrita. SDAM está
+read-only (`force_ro=1`); 84 dispositivos de bloco continuam RO.
+
+Leituras observadas: bateria ~3,91 V, ~31 °C e 56–57% estimados pelo driver a
+partir da tensão (não é SOC calibrado); carregador USB presente, ~5,07 V,
+`online=1`, status `Not charging`, limite reportado 500 mA. Corrente da bateria
+em repouso ficou perto de zero e respondeu a uma carga diagnóstica curta:
+−169 a −228 mA na bateria e ~495–498 mA na USB, retornando a zero após a carga.
+Temperatura máxima do SoC foi 74,5 °C; display permaneceu ativo, DSI irqs=0,
+tainted=4096 apenas por módulos externos, todos os blocos RO. Isso valida
+telemetria e resposta do sensor, não carregamento. Ativar/regular carga,
+JEITA/USB-PD e validar SOC seguem pendentes, porém adiados por decisão do
+usuário (abaixo).
+
+Checkpoint: `docs/kernel/checkpoint-2026-10-25-battery.txt`; detalhes, logs,
+fontes de módulos e hashes em `work/battery-20261025/telemetry-v1/`.
+GOLDs e a variante display-v2 permanecem preservadas; nada foi gravado no
+telefone.
+
+### Decisão de 25/10/2026 e próximo passo
+
+Controle de carga fica adiado por decisão do usuário: não habilitar
+carregamento, política JEITA, USB-PD nem SOC calibrado por enquanto. A
+variante `telemetry-v1` continua só como instrumentação passiva e referência.
+
+Próximo passo: estabilidade prolongada do par atual, sem mudar
+kernel/DT/ramdisk. Usar a `telemetry-v1` (mesmo kernel do display-v2) e
+amostrar periodicamente DSI FIFO (contadores e snapshot de registradores),
+tainted, diff de dmesg, temperaturas, CPUfreq/idle, memória, supplies de
+bateria/USB, estado RO dos 84 blocos e resposta de serial/SSH. Aprovar se não
+houver Oops/WARNING/SMMU/DSI fault, a tela continuar correta (checagem visual,
+sem LP DCS), os contadores DSI ficarem estáveis após o boot, nenhum bloco RO
+mudar e a temperatura ficar abaixo de 80 °C. Abortar diante de tela preta,
+taint novo, erro de I/O ou perda de serial/SSH. Isso fecha a base antes de
+retomar o FIFO intermitente de partida e, só depois, suspend/resume (segue
+adiado). Sem flash, sem escrita em partição, sem montar UFS e sem carga
+controlada.
+
+Frente offline paralela (25/10): levantamento de sensores — ver a seção
+"Sensores" abaixo.
+
+## Histórico — sensores: levantamento offline (25/10/2026)
+
+Trabalho somente de análise, sem teste no aparelho. Identificados o
+acelerômetro/giroscópio TDK InvenSense `icm4x6xx` em 0x68 e o ALS/proximidade
+ams `tmd2755` em 0x39; não há magnetômetro ativo (bússola indisponível). No
+Android os dois rodam no ADSP (lpass, `62400000.qcom,lpass`), via adsprpc; não
+existe nó deles no DT da AP. O registry do SSC guarda só bus_instance 1 e 5,
+IRQ DRI 86 e 89 e os rails `sensor_vdd`/`sensor_vddio` (clientes do PMIC vistos
+pelo ADSP). O firmware do ADSP contém `sns_icm4x6xx`, `sns_tmd2755` e a única
+referência física encontrada, `/dev/qup_ssc/11`.
+
+No mainline, `inv_icm42600` cobre ICM42600/42602/42605/42622/42631/42686/42688
+(falta saber qual é a variante do aparelho), mas o **TMD2755 não tem driver** —
+será preciso escrever um driver IIO de ALS/proximidade. O bloqueio principal é
+descobrir o SE/QUP físico, os GPIOs do barramento e o GPIO de IRQ. Próximo
+passo, quando houver teste: habilitar um SE por vez (começando por SE11
+`a94000`, GPIO101/102, citado no firmware) e fazer scan somente leitura de
+0x68/0x39 + WHO_AM_I. Não tocar SE3 `88c000` (console) nem SE2/SE7 (NFC/SAR).
+O BusyBox do ramdisk não tem i2cget; será preciso utilitário próprio ou U-Boot.
+
+Ver `docs/kernel/checkpoint-2026-10-25-sensores.txt` e
+`work/sensors-20261025/` (configs do registry, configs do vendor, overlays GPL
+da Motorola e SHA256SUMS). Nada foi executado e nenhuma partição foi tocada.
+
+## Histórico — SD: tentativa de 25/10 parada por segurança
+
+Habilitado `sdhc_2` no kernel #1 (`CONFIG_MMC_SDHCI_MSM=y`) e no DT embutido do
+U-Boot (o kernel usa o DTB do U-Boot via `boot_with_embedded_fdt`), com pinctrl
+`sdc2`, `vmmc` L9C, `vqmmc` L6C e CD no GPIO69. Sem cartão o controlador sobe
+limpo: `sdhci_msm 8804000.mmc: Got CD GPIO`, `mmc2 ... ADMA 64-bit`, IRQ de CD
+registrada, display normal. Logs em `work/sd-20261025/run1/`.
+
+O dump Android foi coletado **sem cartão** (`LEIA-ME.txt`: "sem cartão
+inserido no momento da coleta"; `mmc_cards.txt` vazio), então não existe
+identidade de cartão extraída para comparar. A única referência extraída é o DT
+stock: L9C 2,95 V, L6C 1,8/2,95 V, CD GPIO69.
+
+A configuração atual repete a condição de 2026-08-22 documentada como
+arriscada: o mainline pede 3,3 V para `vqmmc` (L6C máximo 2,95 V) e deixa
+`vmmc` em 3,3 V; as tentativas com cartão travaram o boot e queimaram um cartão.
+**Não inserir cartão nesta variante.** Antes disso é preciso portar
+`qcom,vdd-io-voltage-level` (1,8/2,95 V, nunca 3,3 V) ou fixar vmmc/vqmmc em
+2,95 V e validar sem cartão. O par de retorno seguro continua sendo
+`work/GOLD-20261025-1203/` ou a `telemetry-v1` (SD desabilitado).
+
+Atualização 25/10 (tarde): `v2/` (LDO9 fixo em 2,95 V, fallback de vqmmc
+em `drivers/mmc/core/regulator.c`, caps 2,7–2,95 V em `sdhci-msm.c` e
+`cd-gpios` trocado para ACTIVE_HIGH) deu tela preta sem USB/serial/fastboot,
+SEM cartão. Suspeita: com ACTIVE_HIGH o GPIO69 alto (vazio, visto no v1) vira
+"cartão presente". `v3/` = v2 com só o `cd-gpios` de volta a ACTIVE_LOW
+(DTBs alterados em 1 byte; DTS fonte corrigidos) também falhou segundo o
+usuário, sem log. **SD descartado por ora por decisão do usuário**; os patches
+MMC continuam não commitados no working tree. Voltar à `telemetry-v1`.
+
+O driver downstream foi analisado em
+`docs/kernel/checkpoint-2026-10-25-sd-downstream.txt` e
+`work/sd-20261025/downstream/`: ele lê `qcom,vdd-voltage-level` e
+`qcom,vdd-io-voltage-level`, liga vdd/vdd-io em 2,95 V, alterna 1,8 V no power
+IRQ e **nunca escreve 3,3 V**. O `cd-gpios` stock tem flag 0 (active high) e o
+downstream liga `MMC_CAP2_CD_ACTIVE_HIGH`; a variante atual usa active low, o
+que também precisa ser corrigido. O porte para o mainline é o próximo passo
+antes de qualquer cartão.
+
+## Histórico — robustez LCDB/display (25/10/2026)
+
+Telefone rodando em RAM a variante `work/display-robustness-20261025/display-v2/`,
+kernel #10, derivada da `combined-cpu8-gpu-quiet/` que fica preservada.
+A contagem compartilhada do LCDB foi substituída por estados individuais
+LAB/IBB sob mutex; falhas não confirmam mudanças de estado. Leituras e
+VREG_OK/SC propagam erros, enable com falha tenta rollback, captura/adopção
+do ABL acontece antes do registro e as restrições DT lab/ibb agora são
+interpretadas pelo core. Seleção de tensão respeita min/max e headroom do
+boost. O painel passa a reportar falhas ao desfazer/desligar reguladores.
+
+Validação: testes de falhas simuladas e concorrência com os helpers reais do
+LCDB passaram; kernel e módulo compilados. Seis ciclos reais off/on no v1 e
+mais três na variante final v2 passaram, ambas as saídas desligando e
+religando com VREG_OK, contagens equilibradas e DSI irqs=0. Usuário confirmou
+imagem normal após o primeiro ciclo e após a sequência final. CPU0-7, SSH,
+UFS RO continuam disponíveis. Mantido silêncio do kernel no framebuffer;
+mensagem de status em tty1 identifica `display robust v2`.
+
+Ver `docs/kernel/checkpoint-2026-10-25-display-robustness.txt`,
+`lcdb-v1/cycles-2-to-6.txt` e `display-v2/runtime-v2.txt`. Nenhum flash ou
+escrita em partição; hashes de modem_a/bluetooth_a inalterados antes dos resets.
+GOLDs intactas. Isso resolve esta etapa de robustez de estados/erros LCDB;
+suspend/resume, repetibilidade a frio e FIFO intermitente da partida seguem
+pendentes. Não reintroduzir MDSS core BCR nem usar LP DCS para checagem.
+
+### Ponto de parada solicitado pelo usuário
+
+- Estado ao concluir aquela etapa: telefone ligado na `display-v2`, imagem
+  normal confirmada pelo usuário depois dos três ciclos finais; nove ciclos no total.
+- Par exato na pasta `work/display-robustness-20261025/display-v2/`:
+  `u-boot-hanoip-display-robust-v2.img` (SHA256
+  `6aae8559d47495b6c2a31e62762bd3a608869b30b8c3537c68f046f3c876f2b1`)
+  e `kernel-hanoip-display-robust-v2.img` (SHA256
+  `9085a811949520d0940e133b41688944e704045d794eec9eec850ea2a3f45813`).
+- Alterações LCDB/painel, teste host e checkpoint estão no disco, ainda sem
+  commit/push. A variante não foi promovida a GOLD; GOLD v3 permanece intacta.
+- Naquele ponto, suspend/resume, bateria/carregador, estabilidade prolongada
+  e FIFO de partida seguiam pendentes. Bateria/carregador foi investigada no
+  checkpoint atual acima; suspend/resume continua adiado. Otimização de boot e
+  refinamento do touch continuam adiados.
+- Antes de reiniciar: verificar novamente todos os blocos RO, conferir os
+  hashes brutos de modem_a/bluetooth_a, desmontar `/mnt/ro/*` e usar o
+  `/sbin/reboot` com guarda RAM. Detectar o estado USB depois. Somente
+  `fastboot boot`, nunca flash ou escrita em partição.
+
+## Histórico — GPU/Freedreno (25/10/2026)
+
+O telefone está na variante volátil `work/cpu-gpu-20261025/gpu-zap-early/`.
+Ela carrega UFS com todos os blocos `ro=1`, monta `modem_a` com
+`ro,noload,nodev,nosuid,noexec` e disponibiliza `a615_zap.mdt` + b00-b02
+antes de carregar o display. Hash bruto de modem_a antes/depois idêntico:
+`6a1fc4b5c25704d476a57e1c0a59983b75c9af27ca8a75412037614c6c6f45dc`.
+
+GPU/Mesa validado: pmOS/Alpine 3.24 em tmpfs, Mesa 26.1.6 e kmscube. O teste
+de 120 frames em `/dev/dri/card0` terminou com código 0 e reportou
+`vendor=freedreno`, `renderer=FD618`, OpenGL ES 3.2. `renderD128` existe,
+GPU devfreq/controle térmico registrados; DSI `irqs=0`; sem erro de carga do
+Zap ou `gpu hw init failed`. Não há printk explícito de sucesso do Zap. Ver
+`docs/kernel/checkpoint-2026-10-25-gpu.txt` e logs em `run1/`.
+
+O initramfs foi repacotado depois para corrigir uid/gid dos arquivos (Dropbear
+StrictModes): a imagem atual tem hashes em `gpu-zap-early/SHA256SUMS`, mas a
+imagem repacotada ainda não foi reiniciada. O boot testado e a imagem atual
+usam o mesmo kernel/DT e ordem GPU; só a propriedade dos arquivos do initramfs
+difere. O GOLD v3 continua preservado como retorno; nada foi flashado.
+
+## GOLD v3 anterior: work/GOLD-20261025-1203/ (v3 completa, 25/10/2026 12:03 -03)
 Display + rede USB/SSH + UFS RO + modem/Wi-Fi + Bluetooth sobem sozinhos.
 Identidade (MAC, BD_ADDR, dados do modem) vem do ABL via U-Boot a cada boot.
 Ver GOLD.txt na pasta. GOLDs anteriores (1047, 0126) preservadas.
@@ -620,3 +874,30 @@ Não usar o helper enquanto o usuário só estiver pedindo para ler este handoff
 - Sem validação de suspend/resume, boot/ciclo frio de alimentações, GPU,
   120 Hz ou rootfs. Continua sendo um initramfs de diagnóstico em RAM.
 - A regra de nenhuma gravação em partições continua valendo em qualquer etapa.
+
+## Variante consolidada com tela sem printk do kernel (25/10/2026)
+
+Nova variante pronta em `work/cpu-gpu-20261025/combined-cpu8-gpu-quiet/`.
+Consolida a base GPU-Zap-early (CPU8, GPU/Freedreno, firmware Zap antes do
+DRM, display, touch, USB ACM/NCM + SSH/SFTP, UFS com guarda RO, Wi-Fi e BT).
+A remoção de `console=tty1` foi aplicada nos DTBs do U-Boot (externo e
+embutido) e do boot image do kernel. Logs seguem disponíveis em ttyMSM0,
+ttyGS0 e ramoops; mensagens de status do initramfs ainda podem aparecer na
+tela e a saída própria do U-Boot não foi alterada.
+
+A imagem tem estrutura e hashes verificados, mas a combinação com console
+silencioso ainda não foi bootada. Não foi feita escrita em partição. Para o
+próximo teste, usar somente `fastboot boot` com o par nomeado
+`u-boot-hanoip-combined-cpu8-gpu-quiet.img` e
+`kernel-hanoip-combined-cpu8-gpu-quiet.img`. Ver
+`docs/kernel/checkpoint-2026-10-25-combined-quiet.txt`.
+
+Resultado do teste volátil da variante consolidada (25/10/2026): CPU0-7
+online; display conectado; `renderD128` presente; KMSCube 120 frames, exit 0,
+Mesa GLES 3.2, Freedreno FD618; DSI `irqs=0`. `/proc/cmdline` confirma sem
+`console=tty1`; serial/USB/ramoops mantidos. UFS 84/84 blocos RO, modem_a e
+bluetooth_a sem alteração de hash. Wi-Fi/modem/ath10k inicializaram e `wlan0`
+apareceu, mas sem associação (sem supplicant/credenciais nessa imagem).
+Bluetooth `hci0` e firmware QCA subiram, endereço veio do DT e rfkill estava
+liberado; descoberta/pareamento não testados por falta de ferramentas no
+initramfs. Logs em `combined-cpu8-gpu-quiet/run2/` e checkpoint combinado.

@@ -1,0 +1,17 @@
+#!/sbin/openrc-run
+# evdev + Hanoip SPI touch. The firmware goes to controller RAM only; the
+# driver has no flash programming path.
+description="Hanoip evdev and SPI touch"
+
+depend() {
+	need udev
+	before display-manager tinydm greetd
+}
+
+start() {
+	ebegin "Loading evdev and touch"
+	for m in evdev ilitek-hanoip-spi; do
+		grep -q "^${m//-/_} " /proc/modules || insmod /lib/hanoip-touch/$m.ko || return 1
+	done
+	eend 0
+}

@@ -1,0 +1,70 @@
+# Checkpoint: telemetria passiva de bateria e USB — 2026-10-25
+
+## Estado
+
+Variante volátil testada: `work/battery-20261025/telemetry-v1/`.
+Derivada do kernel #10/display-v2. O par foi iniciado com `fastboot boot`; não
+houve flash, escrita em partição ou montagem de UFS. O telefone ficou ligado
+nesta variante ao encerrar o trabalho.
+
+Imagens:
+
+- U-Boot `u-boot-hanoip-battery-telemetry-v1.img`, SHA256
+  `b8674f8145f0bf62330b7d0742b8f6c1b02ae3d5b492139bef6c6f104fc573dc`.
+- Kernel/ramdisk/DT `kernel-hanoip-battery-telemetry-v1.img`, SHA256
+  `b37bf4a689cc332b7166802e9b145669e4956a141220ea4d679b6ac3955b6fcf`.
+
+## Implementação
+
+- Ativados ADC5, SDAM e gauge `qcom_qg` do PM6150; o SDAM ficou com
+  `force_ro=1`. O driver QG publica tensão, corrente, temperatura, status e
+  capacidade. Corrigidos o acesso prematuro aos dados da bateria e a leitura
+  little-endian/desalinhada de OCV e capacidade aprendida.
+- Adicionado match `motorola,hanoip-smb5-monitor`. Este modo não chama a rotina
+  de configuração SMB/Type-C, não registra setters nem executa IRQ/workers que
+  alterem registradores. Só lê propriedades e notifica periodicamente o
+  power-supply. Novos canais ADC USB_IN_I e USB_IN_V são definidos no DT.
+- O script `scripts/hanoip-load-battery.sh` carrega os módulos em RAM. O DT usa
+  parâmetros de bateria do dump Android somente para metadados.
+- `scripts/tests/hanoip-battery-host-test.py`: PASS para conversões/unidades,
+  sinal e limites de capacidade, estados SMB, bits de sobre-tensão e propagação
+  de erros. Isso é teste host de helpers, não injeção de falhas no hardware.
+
+## Evidência de execução
+
+`runtime-final.txt`: kernel #10; tela ativa, conector DRM conectado, DSI
+`irqs=0`; CPUs 0–7 online; 84 dispositivos de bloco todos RO; SDAM
+`force_ro=1`; sem Oops/WARNING ou novos erros no recorte de dmesg. Taint 4096
+corresponde ao uso de módulos externos.
+
+Valores observados em repouso:
+
+- Bateria: cerca de 3,91 V, 31,0–31,3 °C, capacidade 56–57%, status
+  `Not charging`.
+- USB: online, aproximadamente 5,07 V, corrente variável em torno de
+  0,17–0,28 A, `current_max=500000` µA, status `Not charging`.
+
+O percentual publicado pelo QG é estimativa baseada na tensão, sem curva SOC
+calibrada para o pack. Não deve ser interpretado como medição precisa de carga.
+
+Foi feita uma única carga diagnóstica curta, com oito workers de leitura de
+`/dev/zero`, abortando a 80 °C e pulando se a leitura térmica inicial fosse
+>=75 °C. A bateria saiu de ~0 para −169…−228 mA (sinal negativo: descarga),
+USB chegou a ~495–498 mA, e a temperatura máxima do SoC foi 74,5 °C. Na
+recuperação, corrente da bateria voltou a 0 e USB a ~0,24 A; temperatura caiu
+para 45,4 °C. Isso confirma que o canal de corrente responde à carga. Não é
+teste de duração, eficiência ou estabilidade prolongada.
+
+## Limites e continuação
+
+Esta variante é somente de monitoramento. Não tentou iniciar carregamento nem
+alterar corrente/tensão, watchdog, Type-C ou proteção térmica. O sistema
+reportou `Not charging` durante a observação. Controle de carga, política
+JEITA, USB-PD e validação de SOC calibrado ainda precisam de etapa própria.
+Suspend/resume permanece adiado a pedido do usuário. Preservar
+`work/display-robustness-20261025/display-v2/` e os GOLDs como retornos; não
+promover esta variante nem fazer commit/push sem solicitação.
+
+Arquivos de evidência: `runtime-sample1.txt`, `runtime-final.txt`,
+`current-load-check.txt`, `host-test.txt`, `image.json`, `dt-changes.json` e
+`SHA256SUMS` na pasta da variante.

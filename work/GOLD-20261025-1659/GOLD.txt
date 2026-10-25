@@ -1,0 +1,59 @@
+VERSÃO GOLD v4 (pmOS + Plasma Mobile de verdade) — Moto G60 hanoip mainline
+Promovida pelo usuário em 25/10/2026 ~16:59 -03.
+Substitui como retorno padrão a GOLD-20261025-1203 (v3), que fica preservada,
+assim como a GOLD-20261025-1047 e a GOLD-20261025-0126.
+
+Mudança de natureza: esta GOLD não roda só em RAM. O rootfs pmOS v26.06
+(Alpine 3.24) mora na região NÃO ALOCADA do fim do `super` (sdb23), espaço do
+grupo do slot B (slot ativo é A), autorizado pelo usuário em 25/10/2026.
+  offset 5160 MiB (byte 5410652160), 5120 MiB, ext4 label hanoip_pmos.
+  Último extent LP (vendor_a) termina em 5153,88 MiB. Metadados LP e volumes
+  _a nunca são gravados: head 8 MiB e 0-5154 MiB conferidos antes/depois
+  (baseline-super.txt, write-*-run.txt). OTA do Android apagaria esta região.
+U-Boot e kernel continuam SOMENTE voláteis (fastboot boot; nunca flash).
+
+Boot:
+  fastboot boot u-boot-hanoip-pmos-v1.img   (aguardar product motorola-hanoip)
+  fastboot boot kernel-hanoip-pmos-super-v1.img
+O estágio 1 (ramdisk) sobe display, USB/SSH, UFS RO, Wi-Fi/modem, BT e
+bateria; `pmos-root` confere hash LP + ext4 no offset, abre /dev/loop7 rw
+(só sdb/sdb23 graváveis, demais 82 blocos RO por flag próprio + guard) e
+faz switch_root para o OpenRC. Falha => shell USB em RAM.
+Plasma Mobile ~37-40 s. Login: user (uid 10000). SSH root@172.16.42.1 (chave).
+
+Peças:
+  Kernel Linux 7.1.0-sm7150 #10 (Image fa6d0e1c…), mesmo kernel/DTB da
+  battery telemetry-v1; ramdisk = telemetry-v1 + /sbin/pmos-root +
+  /etc/hanoip/boot-pmos + init com switch_root.
+  U-Boot: .config da telemetry-v1, DT sm7150-motorola-hanoip-pmos =
+  battery-diagnostic + `panel = <&panel>` no touch (única diferença no DTB).
+  Touch ilitek-hanoip-spi: panel follower; recarrega a IRAM quando o painel
+  liga (o TDDI perde o firmware ao desligar o painel). stats tem restarts.
+  /lib/modules: 828 módulos da árvore #10 + 43 validados em updates/;
+  blacklist de autoload: icc_bwmon, pinctrl_sm7150_lpass_lpi, qcomtee,
+  simple_pm_bus.
+  rootfs: Plasma Mobile, QMLKonsole, Discover (apk), polkit-elogind,
+  NetworkManager (wpa_supplicant via D-Bus, sem MAC aleatório, usb0
+  unmanaged), serviços hanoip-usbnet/hanoip-touch/hanoip-firmware.
+
+Validado pelo usuário: imagem, login, touch (inclusive após botão power),
+brilho do Plasma, Wi-Fi (NetworkManager), Bluetooth (scan; rfkill cycle OK),
+terminal e loja instalados. Reboot pelo pmOS volta ao fastboot.
+DSI irqs=0, tainted 4096 (módulos O), nenhum serviço OpenRC falho.
+
+Conteúdo:
+  rootfs-snapshot.tar.gz  tar do rootfs vivo, SEM segredos (sem
+    system-connections, ssh_host_*, shadow, machine-id, kwallet do user,
+    pareamentos BT, logs); senha do Wi-Fi conferida ausente (0 ocorrências).
+    shadow.sanitized = /etc/shadow com hashes trocados por "!".
+  pmos-super-rootfs.img.gz  imagem ext4 inicial gravada (d5fc913a…), sem Plasma.
+  build-rootfs.sh + overlay/ + modules-7.1.0-sm7150.tar.gz recriam o rootfs
+    completo do zero (rebuild verificado). O user sai bloqueado: definir o PIN
+    com `passwd user`; a rede Wi-Fi se adiciona pelo Plasma.
+  write-super-tail.sh  procedimento de gravação (test/full) com guards.
+
+Não está na imagem (por regra): senha do Wi-Fi, PIN, identidade do aparelho
+(vem do ABL a cada boot).
+Pendências: carregamento da bateria (descarrega mesmo no cabo), guard RO
+gasta ~7% CPU (poll 0,1 s), FIFO DSI intermitente na partida, suspend/resume,
+sem nftables no kernel, áudio/modem/câmera/sensores.

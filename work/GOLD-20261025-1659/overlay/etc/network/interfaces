@@ -1,0 +1,3 @@
+# usb0 is configured by the initramfs; wlan0 by NetworkManager.
+auto lo
+iface lo inet loopback

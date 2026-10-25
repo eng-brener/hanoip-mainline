@@ -1,0 +1,12 @@
+pre head8M=1240833a0a6c72af389c83b8538bc5cac2c066afd65edf5ecdf51ea394fa3886 used5154M=ac4806cf5872a6a1bfc3c89c06c239b63560b531c0ecf380eeee6dd64606879b
+pre A_REGION_OK
+writable: sdb sdb23; others not RO: 0
+/dev/loop7: 5410652160 /dev/sdb23
+5368709120 bytes (5.0GB) copied, 29.820662 seconds, 171.7MB/s
+write 1240.29 (start 1210.47)
+IMAGE_VERIFY_OK
+closed: disk ro=1 part ro=1
+post head8M=1240833a0a6c72af389c83b8538bc5cac2c066afd65edf5ecdf51ea394fa3886 used5154M=ac4806cf5872a6a1bfc3c89c06c239b63560b531c0ecf380eeee6dd64606879b
+post A_REGION_OK
+final blocks=84 not_ro=0
+DONE full 1318.18

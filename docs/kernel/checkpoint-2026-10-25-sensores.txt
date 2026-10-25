@@ -1,0 +1,111 @@
+# Checkpoint: levantamento de sensores (offline) — 2026-10-25
+
+## Estado
+
+Trabalho somente de análise; nenhum boot, flash ou escrita no telefone. O
+objetivo foi identificar os sensores do hanoip, descobrir como o Android os
+controla e medir o que o mainline já suporta antes de preparar uma variante.
+
+## Hardware identificado
+
+O Android expõe 39 sensores de hardware, mas só dois chips físicos interessam:
+
+- TDK InvenSense `icm4x6xx`: acelerômetro e giroscópio (wakeup e non-wakeup),
+  mais temperatura e freefall. Aparece como "icm4x6xx" no `dumpsys_sensors`.
+- ams `tmd2755`: luz ambiente e proximidade.
+- Não há bússola/magnetômetro ativo: `sensors_list.txt` não lista `mag` e o
+  vendor marca o compasso como indisponível.
+
+Configuração gravada na fábrica (registry em `persist/sensors/registry`):
+
+| item | ICM4x6xx | TMD2755 |
+| --- | --- | --- |
+| endereço I2C | `0x68` (104) | `0x39` (57) |
+| bus_type | 3 | 0 |
+| bus_instance | 1 | 5 |
+| IRQ DRI (SSC) | 86 | 89 |
+| trigger | 4 | 4 |
+| rails | `sensor_vddio` | `sensor_vdd` + `sensor_vddio` |
+| velocidade | 400 kHz–12,5 MHz | 400 kHz |
+
+O `bus_type` 3 do ICM e a presença de `i3c_address = 10` no config sugerem
+I3C, mas não está confirmado; o TMD usa `bus_type` 0. Os números de IRQ 86/89
+são internos do SSC/ADSP, não aparecem no `/proc/interrupts` da AP. Os rails
+`/pmic/client/sensor_vdd*` são clientes do PMIC vistos pelo ADSP, não
+reguladores nomeados no DT da AP.
+
+## Como o Android controla
+
+- Os drivers rodam no **ADSP** (`62400000.qcom,lpass`), via `adsprpc`; o kernel
+  da AP só registra `sensors_class.ko` (`/dev/sensors`, "moto sensor init!").
+- Não existe nó de ICM/TMD no DT da AP. O overlay Motorola
+  `sdmmagpie-hanoip-sensor-overlay.dtsi` trata apenas do SAR `sx933x` (i2c7,
+  GPIO84, PM6150 L16) — não dos sensores de movimento.
+- O firmware do ADSP (`adsp.b*` do dump) contém `sns_icm4x6xx`, `sns_tmd2755`,
+  `/dev/qup_ssc`, `/dev/qup_ssc/11` e os rails `sensor_vdd`/`sensor_vddio`.
+  O caminho `/dev/qup_ssc/11` é a única referência concreta a instância física
+  encontrada, mas ainda não prova qual SE da AP corresponde aos sensores.
+
+Barramentos I2C da AP no Android: só i2c0 (`888000`: NFC/áudio), i2c1
+(`a84000`: `sx933x`) e i2c2 (`a8c000`: NFC no hanoip) estão ativos; os demais
+seguem `disabled` no DT. O console serial usa `88c000` (SE3) — não mexer.
+
+## Situação no mainline
+
+- `inv_icm42600` existe e cobre ICM42600/42602/42605/42622/42631/42686/42688,
+  com detecção por WHO_AM_I. Falta descobrir qual variante é usada no hanoip
+  para escolher o `compatible` e validar o WHO_AM_I esperado.
+- **TMD2755 não tem driver no mainline** (nem em staging): será necessário
+  escrever um driver IIO de ALS/proximidade para ele.
+- `CONFIG_I2C_CHARDEV=y` no kernel usado, então `/dev/i2c-N` existe quando o
+  adaptador é habilitado; o BusyBox do ramdisk **não** tem `i2cget/i2cdetect`.
+
+## Desconhecidos que bloqueiam o bring-up
+
+1. Qual SE/QUP físico atende os sensores e em quais GPIOs (pins e pinmux).
+2. Qual GPIO é a linha de IRQ (DRI) de cada chip.
+3. Qual regulador PMIC entrega `sensor_vddio` (1,8 V?) e `sensor_vdd` (2,8 V?).
+4. Qual variante exata do ICM4x6xx (WHO_AM_I).
+5. Se o ICM está realmente em I3C (bus_type 3) ou I2C.
+
+## Próximo passo proposto (quando houver teste)
+
+Tudo somente leitura, um barramento por vez, sem escrever em registrador:
+
+1. Habilitar um SE candidato no DT (status okay + pinctrl `qupXX`) e reiniciar
+   com variante volátil.
+2. Candidatos iniciais, em ordem: **SE11 `a94000` (GPIO101/102)** — única
+   instância citada no firmware do ADSP —, SE8 `a88000` (GPIO42/43), SE4
+   `890000` (GPIO53/54), SE10 `a90000` (GPIO110/111), SE1 `884000` (GPIO0/1),
+   SE0 `880000` (GPIO49/50). Evitar SE3 `88c000` (console) e SE2/SE7 (NFC/SAR).
+3. Fazer scan apenas dos endereços 0x68 e 0x39 e ler WHO_AM_I/chip ID; registrar
+   o que responder. Não usar `i2cset`.
+4. Identificar o GPIO de IRQ por inspeção do padrao de pinos ou pelo esquema;
+   se não houver fonte, testar candidatos como entrada, sem drive.
+5. Só depois montar o DT definitivo e decidir entre usar `inv_icm42600` e
+   escrever o driver do TMD2755.
+
+O scan exige um utilitário de I2C (BusyBox não tem). Opções: compilar um
+`i2cget` estático para aarch64 ou usar os comandos `i2c` do U-Boot antes de
+subir o kernel.
+
+Nada disso foi executado. O telefone continua na variante `telemetry-v1`
+(ou no estado em que foi deixado); nenhuma partição foi tocada.
+
+## Evidência
+
+- `work/sensors-20261025/android-registry/`: configs reais do registry
+  (`icm4x6xx_0_platform.config`, `icm4x6xa_0_platform.config`,
+  `tmd2755_platform.config`) e `sensors_list.txt`.
+- `work/sensors-20261025/android-config/`: configs do vendor
+  (`icm4x6xx_0.json`, `sdmmagpie_icm4x6xx_0.json`, `tmd2755_0.json`,
+  `sdmmagpie_tmd2755_0.json`).
+- `work/sensors-20261025/motorola-kernel/`: overlays GPL da Motorola usados
+  para confirmar que os sensores de movimento não estão no DT da AP
+  (`sdmmagpie-hanoip-sensor-overlay.dtsi`, `sdmmagpie-hanoip-common-overlay.dtsi`).
+- Fonte dos overlays: `MotorolaMobilityLLC/kernel-msm`, branch
+  `android-12-release-s2ris32.32-20-7-15` (commit `bc338d82...`) e
+  `android-12-release-s2ris32.32-20-9-9-2-1` (commit `f6673a13...`); os dois
+  arquivos são idênticos nas duas branches.
+- `dumpsys_sensors.txt`, `buses.txt`, `dmesg-android.txt`, `persist/` e
+  `firmware/firmware.tar` em `work/android-dump-20261025/`.

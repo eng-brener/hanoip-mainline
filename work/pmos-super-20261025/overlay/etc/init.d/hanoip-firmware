@@ -1,0 +1,27 @@
+#!/sbin/openrc-run
+# Recreate the firmware links the initramfs made: modem_a and bluetooth_a
+# stay mounted read-only at /mnt/ro/* after switch_root, so a later restart
+# of Wi-Fi, Bluetooth or the GPU zap shader can still find its files.
+description="Hanoip firmware links into the read-only partitions"
+
+depend() {
+	before bluetooth networkmanager udev-trigger
+}
+
+link_dir() {
+	src=$1 dst=$2
+	[ -d "$src" ] || return 0
+	mkdir -p "$dst"
+	for f in "$src"/*; do
+		[ -e "$f" ] && ln -sfn "$f" "$dst/${f##*/}"
+	done
+}
+
+start() {
+	ebegin "Linking firmware from /mnt/ro"
+	link_dir /mnt/ro/modem_a/image /lib/firmware/qcom/sm7150/motorola/hanoip
+	link_dir /mnt/ro/bluetooth_a/image /lib/firmware/qca
+	b=/mnt/ro/modem_a/image/bdwlan_hanoip_ipa.bin
+	[ -e $b ] && ln -sfn $b /lib/firmware/ath10k/WCN3990/hw1.0/board.bin
+	eend 0
+}

@@ -1,0 +1,9 @@
+# Hanoip: OpenRC plus a root shell on the USB ACM console (same as the
+# diagnostic initramfs) and a login on the panel console.
+::sysinit:/sbin/openrc sysinit
+::sysinit:/sbin/openrc boot
+::wait:/sbin/openrc default
+ttyGS0::respawn:/sbin/getty -n -l /bin/sh -L 115200 ttyGS0 vt100
+tty1::respawn:/sbin/getty 38400 tty1
+::ctrlaltdel:/sbin/reboot
+::shutdown:/sbin/openrc shutdown

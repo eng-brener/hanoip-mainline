@@ -251,6 +251,7 @@ struct smb_chip {
 	struct delayed_work status_change_work;
 	int cable_irq;
 	bool wakeup_enabled;
+	bool monitor_only;
 
 	struct iio_channel *usb_in_i_chan;
 	struct iio_channel *usb_in_v_chan;
@@ -265,6 +266,7 @@ struct smb_match_data {
 	const struct smb_init_register *init_seq;
 	unsigned int current_step_size_ua;
 	unsigned int current_limit_max_ua;
+	bool monitor_only;
 };
 
 static enum power_supply_property smb_properties[] = {
@@ -372,7 +374,7 @@ static int smbx_ov_status(struct smb_chip *chip)
 	if (rc)
 		return rc;
 
-	return !!(reg & mask);
+	return !!(val & mask);
 }
 
 static int smb_get_prop_status(struct smb_chip *chip, int *val)
@@ -480,7 +482,7 @@ static inline int smb_get_current_now(struct smb_chip *chip,
 		return rc;
 	}
 
-	if (!smb_is_charging(chip)) {
+	if (!chip->monitor_only && !smb_is_charging(chip)) {
 		*val = 0;
 		return rc;
 	}
@@ -560,7 +562,7 @@ static void smb_status_change_work(struct work_struct *work)
 static int smb_get_iio_chan(struct smb_chip *chip, struct iio_channel *chan,
 			     int *val)
 {
-	if (!smb_is_charging(chip)) {
+	if (!chip->monitor_only && !smb_is_charging(chip)) {
 		*val = 0;
 		return 0;
 	}
@@ -678,7 +680,7 @@ static int smb_get_property(struct power_supply *psy,
 		ret = smb_get_iio_chan(chip, chip->usb_in_v_chan,
 					 &val->intval);
 		if (!ret) {
-			if (chip->gen == SMB5)
+			if (chip->gen == SMB5 && !chip->monitor_only)
 				val->intval *= 16;
 		}
 		return ret;
@@ -1037,6 +1039,16 @@ static int smb_init_irq(struct smb_chip *chip, int *irq, const char *name,
 	return 0;
 }
 
+/* Diagnostic monitoring never runs the charger setup or IRQ write paths. */
+static void smb_monitor_work(struct work_struct *work)
+{
+	struct smb_chip *chip = container_of(to_delayed_work(work),
+						  struct smb_chip, status_change_work);
+
+	power_supply_changed(chip->chg_psy);
+	schedule_delayed_work(&chip->status_change_work, msecs_to_jiffies(10000));
+}
+
 static int smb_probe(struct platform_device *pdev)
 {
 	struct power_supply_config supply_config = {};
@@ -1076,14 +1088,17 @@ static int smb_probe(struct platform_device *pdev)
 	match_data = (const struct smb_match_data *)device_get_match_data(chip->dev);
 
 	chip->gen = match_data->gen;
+	chip->monitor_only = match_data->monitor_only;
 	chip->current_step_size_ua = match_data->current_step_size_ua;
 	chip->current_limit_max_ua = match_data->current_limit_max_ua;
 
 	dev_info(chip->dev, "Generation %s\n", chip->gen == SMB2 ? "SMB2" : "SMB5");
 
-	rc = smb_init_hw(chip, match_data->init_seq, match_data->init_seq_len);
-	if (rc < 0)
-		return rc;
+	if (!match_data->monitor_only) {
+		rc = smb_init_hw(chip, match_data->init_seq, match_data->init_seq_len);
+		if (rc < 0)
+			return rc;
+	}
 
 	supply_config.drv_data = chip;
 	supply_config.fwnode = dev_fwnode(&pdev->dev);
@@ -1097,12 +1112,27 @@ static int smb_probe(struct platform_device *pdev)
 			       match_data->name);
 	if (!desc->name)
 		return -ENOMEM;
+	if (match_data->monitor_only) {
+		desc->set_property = NULL;
+		desc->property_is_writeable = NULL;
+	}
 
 	chip->chg_psy =
 		devm_power_supply_register(chip->dev, desc, &supply_config);
 	if (IS_ERR(chip->chg_psy))
 		return dev_err_probe(chip->dev, PTR_ERR(chip->chg_psy),
 				     "failed to register power supply\n");
+
+	if (match_data->monitor_only) {
+		rc = devm_delayed_work_autocancel(chip->dev, &chip->status_change_work,
+						  smb_monitor_work);
+		if (rc)
+			return rc;
+		platform_set_drvdata(pdev, chip);
+		schedule_delayed_work(&chip->status_change_work, msecs_to_jiffies(10000));
+		dev_info(chip->dev, "SMB5 monitor: charger/Type-C configuration preserved\n");
+		return 0;
+	}
 
 	rc = power_supply_get_battery_info(chip->chg_psy, &chip->batt_info);
 	if (rc)
@@ -1174,7 +1204,16 @@ static int smb_probe(struct platform_device *pdev)
 	return 0;
 }
 
+static const struct smb_match_data hanoip_monitor_match_data = {
+	.name = "hanoip-pm6150-monitor",
+	.gen = SMB5,
+	.current_step_size_ua = 50000,
+	.current_limit_max_ua = 5000000,
+	.monitor_only = true,
+};
+
 static const struct of_device_id smb_match_id_table[] = {
+	{ .compatible = "motorola,hanoip-smb5-monitor", .data = &hanoip_monitor_match_data },
 	{ .compatible = "qcom,pmi8998-charger", .data = &pmi8998_match_data },
 	{ .compatible = "qcom,pm660-charger", .data = &pm660_match_data },
 	{ .compatible = "qcom,pm7250b-charger", .data = &pm7250b_match_data },

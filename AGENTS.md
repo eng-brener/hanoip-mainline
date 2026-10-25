@@ -16,9 +16,67 @@ throughout this project, including later sessions.
   verify and byte-exact restore was authorized and done (RESTORE_OK). That
   does NOT authorize other writes. Partitions report RO only via their disk:
   pin every partition's own RO flag before ever making a disk writable.
+- 2026-10-25: the user authorized a pmOS rootfs on the UNALLOCATED tail of
+  `super` (sdb23), the space of the inactive slot B group. Active slot is A.
+  Allowed: write only inside that tail (after the last LP extent, vendor_a
+  ending at LP sector 10555160, plus margin), through a loop/dm device bounded
+  by offset and size. Forbidden: changing LP metadata, touching any _a volume
+  or other partition, userdata/persist/metadata. Pin every other sdb
+  partition RO by its own flag first, hash super head (LP metadata) and the _a
+  extents before/after, and get explicit user go before the first write.
+  U-Boot and kernel stay volatile (`fastboot boot`); physical _b partitions
+  stay untouched. An Android OTA would overwrite this region.
 - Volatile tests with `fastboot boot` have been authorized and used in this
   session. Keep diagnostic root filesystems in RAM, without automounting disks.
 - Keep known-good images and hashes before preparing another variant.
+
+# GOLD v4 (user-designated 2026-10-25 ~16:59 -03) — DEFAULT RETURN PAIR
+
+work/GOLD-20261025-1659/ (read-only, GOLD.txt + SHA256SUMS). Real pmOS v26.06
+with Plasma Mobile: rootfs on the unallocated super tail (offset 5160 MiB,
+5120 MiB, ext4 hanoip_pmos), booted by volatile `fastboot boot` of
+u-boot-hanoip-pmos-v1.img then kernel-hanoip-pmos-super-v1.img (kernel #10;
+ramdisk switch_roots via /sbin/pmos-root). Read the FIRST section of
+`onde paramos.md`. Touch is a panel follower (IRAM reload on panel-on), polkit
+must be polkit-elogind, NetworkManager owns wlan0, hanoip-firmware relinks
+/mnt/ro firmware, module autoload blacklist in /etc/modprobe.d. Never unbind
+hci_uart_qca (Oops). The Wi-Fi password and the user PIN live only on the
+phone; never copy them into images, snapshots, docs or commits. Rebuild with
+work/pmos-super-20261025/build-rootfs.sh. Writing anything outside the super
+tail stays forbidden. GOLD v3/v2/first are preserved; never modify GOLD
+folders. Battery charging is still disabled (it discharges on USB).
+
+# Latest confirmed experiment: battery/charger telemetry (2026-10-25)
+
+Read the FIRST section of `onde paramos.md` and
+`docs/kernel/checkpoint-2026-10-25-battery.txt`. The phone is running volatile
+`work/battery-20261025/telemetry-v1/`, derived from display-v2/kernel #10.
+PM6150 QG exposes battery voltage/current/temperature and voltage-derived
+capacity estimate; 56–57% observed is NOT calibrated SOC. A monitor-only SMB
+driver exposes USB online/status/voltage/current without charger configuration
+or writes. Battery current responded to a short bounded load (about -169 to
+-228 mA, USB about 495–498 mA), then returned near zero. USB is present but
+reports `Not charging`; charging control, JEITA/USB-PD, calibrated SOC, long
+run and suspend/resume are still pending. The SoC peaked at 74.5 C in that
+short test; DSI irqs=0, all 84 block devices RO, SDAM `force_ro=1`.
+No phone partition was written. Keep this passive telemetry pair and the
+display-v2 return pair; do not promote to GOLD or commit without user request.
+
+# Previous confirmed experiment: LCDB/display robustness (2026-10-25)
+
+Read the FIRST section of `onde paramos.md`. Phone is now running the volatile
+`work/display-robustness-20261025/display-v2/` pair (kernel #10), derived from
+`combined-cpu8-gpu-quiet/`. LCDB shared state is mutex-protected per rail;
+error/timeout handling, rollback, ABL adoption order and DT constraint parsing
+are fixed. The panel reports regulator cleanup/power-down failures. Nine real
+panel power cycles passed across v1/v2 (six + three), DSI irqs=0, balanced
+regulator counts, user confirmed normal image after the final sequence.
+Host fault/concurrency tests also passed. See
+`docs/kernel/checkpoint-2026-10-25-display-robustness.txt`.
+This supersedes the historical LCDB refcount/error-robustness pending notes
+below. It does NOT validate suspend/resume or fix intermittent startup FIFO.
+MDSS BCR, SMMU handoff and UFS guards remain unchanged. GOLDs and the previous
+combined quiet pair are preserved; no GOLD promotion has been requested.
 
 # Current baseline
 
@@ -139,7 +197,7 @@ composite gadget, udhcpd, static musl dropbear + sftp-server). SSH/SFTP to
 DSI FIFO IRQs when loaded at ~72 s after scp traffic. Not attributed yet;
 next: reboot v1 and load display early before network traffic.
 
-# GOLD v3 complete (user-designated 2026-10-25 12:03 -03) — DEFAULT RETURN PAIR
+# GOLD v3 complete (user-designated 2026-10-25 12:03 -03), preserved
 
 work/GOLD-20261025-1203/ (read-only, GOLD.txt + SHA256SUMS): Image #8 with the
 wifi diagnostic DT, U-Boot with abl_identity.c and a ramdisk that brings up
