@@ -175,8 +175,9 @@ em `drivers/mmc/core/regulator.c`, caps 2,7–2,95 V em `sdhci-msm.c` e
 SEM cartão. Suspeita: com ACTIVE_HIGH o GPIO69 alto (vazio, visto no v1) vira
 "cartão presente". `v3/` = v2 com só o `cd-gpios` de volta a ACTIVE_LOW
 (DTBs alterados em 1 byte; DTS fonte corrigidos) também falhou segundo o
-usuário, sem log. **SD descartado por ora por decisão do usuário**; os patches
-MMC continuam não commitados no working tree. Voltar à `telemetry-v1`.
+usuário, sem log. **SD descartado por ora por decisão do usuário**. Os patches
+MMC, a linha do Makefile e os dois sd-diagnostic.dts saíram do working tree
+em 25/10 e estão salvos em `work/sd-20261025/saved-patches/` (LEIA-ME.txt).
 
 O driver downstream foi analisado em
 `docs/kernel/checkpoint-2026-10-25-sd-downstream.txt` e
