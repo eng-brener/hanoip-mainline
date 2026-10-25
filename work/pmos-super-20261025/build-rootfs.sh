@@ -41,10 +41,13 @@ ln -sf /etc/init.d/hanoip-ro-handoff "$ROOT/etc/runlevels/sysinit/hanoip-ro-hand
 echo hanoip > "$ROOT/etc/hostname"
 sed -i 's|^root:[^:]*:|root:*:|' "$ROOT/etc/shadow"
 
-# Kernel #10 modules: in-tree build plus the 43 validated ones in updates/
-# (see modules-7.1.0-sm7150.tar.gz); depmod output is included.
+# Kernel modules, one tree per kernel (depmod output included):
+#   7.1.0-sm7150  kernel #10 (GOLD v4): in-tree build + 43 validated in updates/
+#   7.3.0-sm7150  kernel 7.3 (work/kernel-7.3): in-tree build + extra/mmi
 mkdir -p "$ROOT/lib/modules"
-tar -xzf /work/modules-7.1.0-sm7150.tar.gz -C "$ROOT/lib/modules"
+for t in /work/modules-7.1.0-sm7150.tar.gz /work/modules-7.3.0-sm7150.tar.gz; do
+    tar -xzf "$t" -C "$ROOT/lib/modules"
+done
 
 # Plasma Mobile session for tinydm autologin (AUTOLOGIN_UID=10000). The
 # account is created locked: set the PIN on the phone with `passwd user`.

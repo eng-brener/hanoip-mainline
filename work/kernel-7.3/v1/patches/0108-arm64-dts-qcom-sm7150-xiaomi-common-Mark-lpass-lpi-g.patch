@@ -1,0 +1,28 @@
+From 5efde669cfb31a5f454de73860aee764ad794580 Mon Sep 17 00:00:00 2001
+From: Aelin Reidel <aelin@mainlining.org>
+Date: Wed, 13 May 2026 02:05:51 +0200
+Subject: [PATCH 108/128] arm64: dts: qcom: sm7150-xiaomi-common: Mark lpass
+ lpi gpios 0-17 as reserved
+
+---
+ arch/arm64/boot/dts/qcom/sm7150-xiaomi-common.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/sm7150-xiaomi-common.dtsi b/arch/arm64/boot/dts/qcom/sm7150-xiaomi-common.dtsi
+index bdf83786f033..3a369818990a 100644
+--- a/arch/arm64/boot/dts/qcom/sm7150-xiaomi-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm7150-xiaomi-common.dtsi
+@@ -532,6 +532,10 @@ &ipa {
+ 	status = "okay";
+ };
+ 
++&lpass_tlmm {
++	gpio-reserved-ranges = <0 18>;
++};
++
+ &mdss {
+ 	status = "okay";
+ };
+-- 
+2.43.0
+

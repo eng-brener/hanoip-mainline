@@ -1,5 +1,30 @@
 # Handoff — Moto G60 hanoip mainline
 
+## Retomada atual — kernel migrado para o Linux 7.3 mainline (25/10/2026, noite)
+
+Variante validada em dois boots: `work/kernel-7.3/v1/` (ler README.txt).
+Base upstream v7.3 (c03c1a14) + 128 patches em `work/kernel-7.3/v1/patches/`
+(117 do fork sm7150-mainline "v7.2", 11 do hanoip, 1 fix do qcom_qg para o
+namespace IIO_CONSUMER). Boot só volátil:
+  fastboot boot work/kernel-7.3/v1/u-boot-hanoip-pmos-v1.img
+  fastboot boot work/kernel-7.3/v1/kernel-hanoip-pmos-7.3-v1.img
+Mesmo U-Boot/DT e mesmo rootfs da GOLD v4; o rootfs tem /lib/modules 7.1.0 e
+7.3.0 lado a lado (hanoip-touch agora usa modprobe), então a GOLD v4 continua
+bootando igual. Tudo funcionou no 7.3: display (DSI irqs=0), KWin OpenGL,
+touch follower, Wi-Fi, BT, UFS RO, CPUfreq 0-7, sem Oops/WARNING; LP/lado A
+do super conferidos idênticos. GOLD v4 segue como retorno padrão até o
+usuário promover outra. `kernel-mainline/` continua sendo a fonte do 7.1
+(GOLD v4); a fonte do 7.3 é a série de patches.
+
+Ambiente: container `hanoip-kernel73` (imagem hanoip-kernel-builder, COM
+rede) tem /tmp/linux-7.3 (branches hanoip-7.1 e hanoip-7.3, config em
+/tmp/config-7.3-hanoip). No container o GitHub trava no git (kernel.org ok):
+o fork entrou por bundle. Repositórios de análise no Mac:
+work/kernel-7.3/linux.git (parcial; NÃO usar para format-patch, os
+lazy-fetch falham) e fork-full.git (completo, 118 commits). O helper
+boot-volatile.py grava um .json ao lado da imagem: bootar GOLD a partir de
+uma cópia (work/kernel-7.3/gold-v4-boot/), nunca da pasta GOLD.
+
 ## >>> GOLD ATUAL v4: work/GOLD-20261025-1659/ — pmOS + Plasma Mobile no `super` (25/10/2026 ~16:59 -03)
 
 Promovida pelo usuário. Substitui a GOLD v3 (`work/GOLD-20261025-1203/`) como

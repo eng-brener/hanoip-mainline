@@ -30,6 +30,15 @@ throughout this project, including later sessions.
   session. Keep diagnostic root filesystems in RAM, without automounting disks.
 - Keep known-good images and hashes before preparing another variant.
 
+# Kernel 7.3 migration (2026-10-25, validated on two boots, not a GOLD)
+
+work/kernel-7.3/v1/ (README.txt): upstream v7.3 + 128 patches (sm7150-mainline
+fork, hanoip delta, qcom_qg IIO_CONSUMER fix). Same U-Boot/DT and rootfs as
+GOLD v4; the rootfs carries /lib/modules for 7.1.0 and 7.3.0. Everything
+validated on 7.1 also works on 7.3. GOLD v4 stays the default return pair
+until the user promotes another. Boot GOLD images from a copy: the volatile
+boot helper writes next to the image and GOLD folders are read-only.
+
 # GOLD v4 (user-designated 2026-10-25 ~16:59 -03) — DEFAULT RETURN PAIR
 
 work/GOLD-20261025-1659/ (read-only, GOLD.txt + SHA256SUMS). Real pmOS v26.06

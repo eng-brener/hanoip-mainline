@@ -6,3 +6,14 @@ work/wifi-20261025/private/
 # GOLD v4 large artifacts stay local (GitHub 100 MB limit); hashes in SHA256SUMS.
 work/GOLD-20261025-1659/rootfs-snapshot.tar.gz
 work/GOLD-20261025-1659/pmos-super-rootfs.img.gz
+
+# Kernel 7.3 analysis repos, transfer bundle, GOLD boot copies and duplicates.
+work/kernel-7.3/linux.git/
+work/kernel-7.3/fork-full.git/
+work/kernel-7.3/*.bundle
+work/kernel-7.3/gold-v4-boot/
+work/kernel-7.3/fetch.log
+work/kernel-7.3/hanoip-tree.txt
+work/kernel-7.3/hanoip-patches/
+work/kernel-7.3/v1/volatile-boot-events*.json
+work/pmos-super-20261025/modules-7.3.0-sm7150.tar.gz

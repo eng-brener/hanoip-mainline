@@ -1,0 +1,35 @@
+{
+  "file": "/Volumes/SSDExterno/Users/brener/developer/hanoip-mainline/work/kernel-7.3/v1/kernel-hanoip-pmos-7.3-v1.img",
+  "bytes": 17121280,
+  "header_version": 2,
+  "page_size": 4096,
+  "dtb_addr": "0x1f00000",
+  "sha256": "44f65f76dfc998848d766476245d02e3ed4169f608004469ca73ef8d26561225",
+  "sections": {
+    "kernel": {
+      "offset": 4096,
+      "size": 12597156,
+      "sha256": "dc6f6dc3abc3384ae665650a285d8f475f6d95f533cfb4afbfe822c439269e52"
+    },
+    "ramdisk": {
+      "offset": 12603392,
+      "size": 4423189,
+      "sha256": "8a8a27ce817a178aa3388cd0a308a64568c3c83e32e3251afc21e48f817fbd50"
+    },
+    "second": {
+      "offset": 17027072,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "recovery_dtbo": {
+      "offset": 17027072,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dtb": {
+      "offset": 17027072,
+      "size": 90990,
+      "sha256": "243968b55fd29c3c0941a8d04ee7eb7f3b1efcd38173a7271ccd111d638c6a73"
+    }
+  }
+}

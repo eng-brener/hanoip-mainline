@@ -1,6 +1,9 @@
 #!/sbin/openrc-run
 # evdev + Hanoip SPI touch. The firmware goes to controller RAM only; the
-# driver has no flash programming path.
+# driver has no flash programming path. modprobe picks the module that
+# matches the running kernel (/lib/modules/$(uname -r)), so the same rootfs
+# boots both the 7.1 GOLD and the 7.3 kernels; /lib/hanoip-touch is the
+# fallback for a rootfs without that modules tree.
 description="Hanoip evdev and SPI touch"
 
 depend() {
@@ -11,7 +14,8 @@ depend() {
 start() {
 	ebegin "Loading evdev and touch"
 	for m in evdev ilitek-hanoip-spi; do
-		grep -q "^${m//-/_} " /proc/modules || insmod /lib/hanoip-touch/$m.ko || return 1
+		grep -q "^${m//-/_} " /proc/modules && continue
+		modprobe -q $m 2>/dev/null || insmod /lib/hanoip-touch/$m.ko || return 1
 	done
 	eend 0
 }
