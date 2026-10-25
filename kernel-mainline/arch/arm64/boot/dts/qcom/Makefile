@@ -356,6 +356,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-cpufreq-diagnostic.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-cpuidle-diagnostic.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-cpuidle-local-diagnostic.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-ufs-local-diagnostic.dtb
+dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-wifi-diagnostic.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-davinci-samsung.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-davinci-visionox.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-surya-huaxing.dtb

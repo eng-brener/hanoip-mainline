@@ -7,6 +7,15 @@ throughout this project, including later sessions.
   /dev/block devices, repair phone filesystems, or push files onto partitions.
 - Do not execute historical flashing examples in README.md or docs/.
 - Read-only ADB collection and local source/build/artifact changes are allowed.
+- 2026-10-25: the user authorized READ-ONLY mounts of UFS partitions, only
+  when the block device is already kernel read-only (BLKROSET guard, sysfs
+  ro=1) and with ro,noload (ext4) plus nodev,nosuid,noexec. Prove no writes
+  by hashing the raw partition before and after. Writing stays forbidden;
+  never mount super/userdata/persist/metadata without asking again.
+- 2026-10-25: one-time UFS write test on logo_b (inactive slot B) with backup,
+  verify and byte-exact restore was authorized and done (RESTORE_OK). That
+  does NOT authorize other writes. Partitions report RO only via their disk:
+  pin every partition's own RO flag before ever making a disk writable.
 - Volatile tests with `fastboot boot` have been authorized and used in this
   session. Keep diagnostic root filesystems in RAM, without automounting disks.
 - Keep known-good images and hashes before preparing another variant.

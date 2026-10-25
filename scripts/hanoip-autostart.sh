@@ -2,7 +2,8 @@
 # Boot order that kept the panel lit: display first, network/SSH after the
 # DRM framebuffer is up. Started in background by /init; the ACM serial
 # shell is available meanwhile. Kernel cmdline hanoip.nodisplay skips the
-# display; hanoip.nonet skips network/SSH. Storage is never loaded here.
+# display; hanoip.nonet skips network/SSH. UFS is loaded (read-only guard)
+# only if the cmdline has hanoip.ufs or /etc/hanoip/autoload-ufs exists.
 BB=/bin/busybox
 LOG=/run/hanoip-autostart.log
 exec >> "$LOG" 2>&1
@@ -29,4 +30,8 @@ case " $cmdline " in
 *" hanoip.nonet "*) echo 'network skipped by cmdline' ;;
 *) /sbin/start-usbnet ;;
 esac
+if case " $cmdline " in *" hanoip.ufs "*) true ;; *) false ;; esac ||
+   [ -e /etc/hanoip/autoload-ufs ]; then
+    /sbin/load-ufs
+fi
 echo "autostart done $(up)"

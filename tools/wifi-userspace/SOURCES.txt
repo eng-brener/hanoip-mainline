@@ -1,0 +1,9 @@
+Static (musl 1.2.6) builds of the linux-msm userspace needed by the modem:
+  qrtr      https://github.com/linux-msm/qrtr       29e36ae164389580a0f8ea7a7fdb728140ae978d
+  rmtfs     https://github.com/linux-msm/rmtfs      b30a3eb38f9af283f18dbd3c7755653efc52c094 (v1.3)
+  tqftpserv https://github.com/linux-msm/tqftpserv  0bf5b98c24229b0042554d99bb1509d813219f36
+  pd-mapper https://github.com/linux-msm/pd-mapper  5ecd2fe926aca7abfe40724177f63b942cff3947 (v1.1)
+libudev.h/udev-shim.c replace libudev for rmtfs (only phys_addr/size sysfs
+reads); lzma-stub.c/lzma.h build pd-mapper without liblzma. build.sh runs in
+the aarch64 build container with sources under /tmp/wifi-build.
+ath10k firmware-5.bin: linux-firmware bf992df7a95b5e19bb8f8546eb4d7c53ab2598d0.

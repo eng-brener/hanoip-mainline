@@ -1,0 +1,59 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include <dt-bindings/firmware/qcom,scm.h>
+#include "sm7150-motorola-hanoip-ufs-local-diagnostic.dts"
+
+/*
+ * Wi-Fi bring-up: start the modem (it hosts the WCN3990 WLAN firmware) and
+ * give rmtfs a fixed buffer. Android allocates rmtfs dynamically; this range
+ * is plain RAM there (outside removed_region and every firmware carve-out).
+ * rmtfs runs file-backed and read-only (-o /run/efs -r): EFS never touches UFS.
+ */
+&reserved_memory {
+	rmtfs_mem: memory@9a000000 {
+		compatible = "qcom,rmtfs-mem";
+		reg = <0x0 0x9a000000 0x0 0x202000>;
+		no-map;
+
+		qcom,client-id = <1>;
+		qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
+		qcom,use-guard-pages;
+	};
+};
+
+&remoteproc_mpss {
+	firmware-name = "qcom/sm7150/motorola/hanoip/modem.mdt";
+	status = "okay";
+};
+
+/*
+ * As on Android (ipa_fws loaded by the AP), the AP loads the IPA GSI
+ * firmware from the modem partition before the modem starts. Without IPA
+ * the modem aborted ~1.5 s after boot (EX:kernel tmr_slave1), with or
+ * without ath10k loaded.
+ */
+&ipa {
+	qcom,gsi-loader = "self";
+	memory-region = <&ipa_fw_mem>;
+	firmware-name = "qcom/sm7150/motorola/hanoip/ipa_fws.mdt";
+	status = "okay";
+};
+
+/*
+ * The WCN3990 copy-engine interrupts are pulses: Android configures them as
+ * edge. Declared level-high, no CE interrupt ever reached the CPU (HTC ready
+ * only arrived by polling and the HTT connect timed out).
+ */
+&wifi {
+	interrupts = <GIC_SPI 414 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 415 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 416 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 417 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 418 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 419 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 420 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 421 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 422 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 423 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 424 IRQ_TYPE_EDGE_RISING>,
+		     <GIC_SPI 425 IRQ_TYPE_EDGE_RISING>;
+};

@@ -3,6 +3,8 @@
 set -e
 BB=/bin/busybox
 while read -r source target type rest; do
+    # Read-only firmware mounts made by load-wifi are the only exception.
+    case "$target:$rest" in /mnt/ro/*:ro,*) continue ;; esac
     case "$type" in
         rootfs|ramfs|tmpfs|proc|sysfs|devtmpfs|devpts|configfs|debugfs|tracefs) ;;
         *) echo "Refusing display test: $target is mounted as $type" >&2; exit 1 ;;

@@ -1,3 +1,4 @@
 __pycache__/
 *.py[cod]
 work/android-dump-*/
+work/wifi-20261025/private/

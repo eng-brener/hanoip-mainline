@@ -1,0 +1,64 @@
+Wi-Fi WCN3990 no mainline — Moto G60 hanoip, 25/10/2026
+
+RESULTADO: wlan0 funcional (scan 2,4 e 5 GHz, 12 redes) em boot volátil.
+Variante: work/wifi-20261025/v3/ (kernel Image #8 inalterado; DT + ramdisk).
+Firmware do modem/WLAN/IPA lido da partição modem_a montada só leitura
+(ro,noload; hash 6a1fc4b5... igual antes/depois). Nada escrito no UFS.
+
+CADEIA (scripts/hanoip-load-wifi.sh):
+1. load-ufs (guardião RO) -> monta modem_a em /mnt/ro/modem_a.
+2. /lib/firmware/qcom/sm7150/motorola/hanoip/* -> links para image/*;
+   ath10k board.bin -> bdwlan_hanoip_ipa.bin; firmware-5.bin do linux-firmware
+   (kernel.org bf992df7). regulatory.db do wireless-regdb (pmOS).
+3. EFS: dd de modemst1/modemst2/fsg/fsc para /run/efs com os nomes que o
+   rmtfs usa em modo arquivo (modem_fs1, modem_fs2, modem_fsg, modem_fsc).
+   rmtfs -o /run/efs -r (read-only: nunca pwrite/fdatasync).
+4. Módulos (M= contra o #8, sem mudar .config): rfkill cfg80211 libarc4
+   mac80211 qcom_glink_smem qcom_pil_info qcom_sysmon qcom_q6v5 qcom_common
+   qcom_q6v5_pas qrtr-smd ipa ath ath10k_core ath10k_snoc +
+   hanoip_mmi_unit_info (módulo próprio).
+5. pd-mapper, tqftpserv (/var/lib/tqftpserv em RAM), rmtfs: musl estáticos
+   (linux-msm qrtr 29e36ae, rmtfs b30a3eb, tqftpserv 0bf5b98, pd-mapper
+   5ecd2fe); shim de libudev e stub de lzma em work/wifi-20261025/userspace.
+6. recovery do remoteproc desligada antes de start (sem loop de crash).
+
+DT (sm7150-motorola-hanoip-wifi-diagnostic.dts, kernel e U-Boot):
+- rmtfs_mem @0x9a000000 0x202000, client-id 1, vmid MSS_MSA, guard pages.
+  Faixa é RAM comum no Android (fora de removed_region e carve-outs).
+- remoteproc_mpss okay, firmware-name qcom/sm7150/motorola/hanoip/modem.mdt.
+- ipa okay, qcom,gsi-loader="self", memory-region ipa_fw_mem, firmware
+  ipa_fws.mdt da partição (como no Android: AP carrega ipa_fws).
+- wifi: 12 interrupções CE como IRQ_TYPE_EDGE_RISING (Android usa edge).
+
+PROBLEMAS RESOLVIDOS (em ordem):
+a) rmtfs procurava modem_fs1..: nomes errados -> EFS rmts_get_buffer failed.
+b) tqftpserv sem /var/lib -> falha nas requisições readwrite do modem.
+c) Modem caía ~1,5 s após "now up" (EX:kernel:0x0:tmr_slave1:0x1d1
+   PC=0xc06ddec0), com ou sem ath10k e com IPA: faltava o item SMEM 134
+   mmi_unit_info v3 que o kernel Motorola cria (drivers/mmi_info, SM6150).
+   Módulo hanoip_mmi_unit_info cria o item; valores (device, barcode,
+   carrier, radio_str, system_rev, serial, pu_reason) vêm de
+   /run/mmi-unit-info.conf, fora da imagem pública
+   (work/wifi-20261025/private/, no .gitignore).
+d) CE interrupts level-high -> nenhuma IRQ; HTC ready só por polling e
+   HTT connect timeout. Edge-rising resolveu.
+IPA foi habilitado na tentativa (c); funciona (rmnet_ipa0), mas não era a
+causa. Mantido.
+
+PENDENTE: conectar a uma rede (wpa_supplicant no pmOS); MAC real (Android
+recebe wifimacaddr do bootloader; ath10k escolhe aleatório); Bluetooth;
+achado separado: reserva trust-zone mainline 45 MiB < removed_region
+Android 65 MiB (0x88f00000-0x8a2fffff usado como RAM no mainline).
+O modem fica ligado durante o teste (sem RIL não registra sozinho).
+
+CONEXÃO (mesmo boot, 25/10/2026):
+- wpa_supplicant 2.11 (pmOS em chroot), config só em /run/wpa.conf (RAM,
+  0600; senha nunca gravada no projeto). AccessDenied_5G, 5180 MHz,
+  WPA2-PSK/CCMP, COMPLETED em 5 s; link VHT-MCS9 80 MHz 433,3 Mbit/s.
+- udhcpc obteve IP/rota default; ping 1.1.1.1 0% perda ~22-26 ms; DNS ok;
+  apk update ok. Relógio estava em 1974 (sem RTC): TLS falhava até ntpd -q.
+- Estado final: modem running, 0 crashes; 0 falhas SMMU/Oops/erros ath10k;
+  tainted 4096 (O); UFS 84 blocos RO; único mount não-RAM: modem_a ro,
+  norecovery; temp máx 42,5 °C.
+PENDENTE: MAC real (wifimacaddr), RTC/hora no boot, Bluetooth, embutir
+pmOS+wpa no autostart, achado removed_region vs trust-zone.

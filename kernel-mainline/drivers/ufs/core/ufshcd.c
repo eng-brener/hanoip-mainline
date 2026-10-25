@@ -4138,9 +4138,7 @@ static int ufshcd_dme_link_startup(struct ufs_hba *hba)
 	};
 	int ret;
 
-	dev_info(hba->dev, "UFS DIAG: DME_LINK_STARTUP send start\n");
 	ret = ufshcd_send_uic_cmd(hba, &uic_cmd);
-	dev_info(hba->dev, "UFS DIAG: DME_LINK_STARTUP returned %d\n", ret);
 	if (ret)
 		dev_dbg(hba->dev,
 			"dme-link-startup: error code %d\n", ret);
@@ -5259,10 +5257,7 @@ static int ufshcd_link_startup(struct ufs_hba *hba)
 
 link_startup:
 	do {
-		dev_info(hba->dev, "UFS DIAG: link PRE_CHANGE start, retries=%d\n",
-			 retries);
 		ufshcd_vops_link_startup_notify(hba, PRE_CHANGE);
-		dev_info(hba->dev, "UFS DIAG: link PRE_CHANGE returned\n");
 
 		ret = ufshcd_dme_link_startup(hba);
 
@@ -9909,10 +9904,7 @@ static int ufshcd_variant_hba_init(struct ufs_hba *hba)
 {
 	int err;
 
-	dev_info(hba->dev, "UFS DIAG: variant callback start (%s)\n",
-		 ufshcd_get_var_name(hba));
 	err = ufshcd_vops_init(hba);
-	dev_info(hba->dev, "UFS DIAG: variant callback returned %d\n", err);
 
 	if (err)
 		dev_err_probe(hba->dev, err,
@@ -9935,21 +9927,21 @@ static int ufshcd_hba_init(struct ufs_hba *hba)
 	err = ufshcd_init_hba_vreg(hba);
 	if (err) {
 		dev_err_probe(hba->dev, err,
-			      "UFS DIAG: generic init_hba_vreg failed\n");
+			      "generic init_hba_vreg failed\n");
 		goto out;
 	}
 
 	err = ufshcd_setup_hba_vreg(hba, true);
 	if (err) {
 		dev_err_probe(hba->dev, err,
-			      "UFS DIAG: generic setup_hba_vreg failed\n");
+			      "generic setup_hba_vreg failed\n");
 		goto out;
 	}
 
 	err = ufshcd_init_clocks(hba);
 	if (err) {
 		dev_err_probe(hba->dev, err,
-			      "UFS DIAG: generic init_clocks failed\n");
+			      "generic init_clocks failed\n");
 		goto out_disable_hba_vreg;
 	}
 
@@ -9959,25 +9951,24 @@ static int ufshcd_hba_init(struct ufs_hba *hba)
 	err = ufshcd_setup_clocks(hba, true);
 	if (err) {
 		dev_err_probe(hba->dev, err,
-			      "UFS DIAG: generic setup_clocks failed\n");
+			      "generic setup_clocks failed\n");
 		goto out_disable_hba_vreg;
 	}
 
 	err = ufshcd_init_vreg(hba);
 	if (err) {
 		dev_err_probe(hba->dev, err,
-			      "UFS DIAG: generic init_vreg failed\n");
+			      "generic init_vreg failed\n");
 		goto out_disable_clks;
 	}
 
 	err = ufshcd_setup_vreg(hba, true);
 	if (err) {
 		dev_err_probe(hba->dev, err,
-			      "UFS DIAG: generic setup_vreg failed\n");
+			      "generic setup_vreg failed\n");
 		goto out_disable_clks;
 	}
 
-	dev_info(hba->dev, "UFS DIAG: generic init complete, invoking variant\n");
 	err = ufshcd_variant_hba_init(hba);
 	if (err)
 		goto out_disable_vreg;
@@ -11171,18 +11162,16 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 
 	err = ufshcd_hba_init(hba);
 	if (err) {
-		dev_err_probe(dev, err, "UFS DIAG: ufshcd_hba_init failed\n");
+		dev_err_probe(dev, err, "ufshcd_hba_init failed\n");
 		goto out_error;
 	}
-	dev_info(dev, "UFS DIAG: ufshcd_hba_init passed\n");
 
 	/* Read capabilities registers */
 	err = ufshcd_hba_capabilities(hba);
 	if (err) {
-		dev_err_probe(dev, err, "UFS DIAG: hba_capabilities failed\n");
+		dev_err_probe(dev, err, "hba_capabilities failed\n");
 		goto out_disable;
 	}
-	dev_info(dev, "UFS DIAG: hba_capabilities passed\n");
 
 	/* Get UFS version supported by the controller */
 	hba->ufs_version = ufshcd_get_ufs_version(hba);
@@ -11281,16 +11270,12 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 	}
 
 	/* Reset the attached device */
-	dev_info(dev, "UFS DIAG: attached-device reset start\n");
 	ufshcd_device_reset(hba);
-	dev_info(dev, "UFS DIAG: attached-device reset returned\n");
 
 	ufshcd_init_crypto(hba);
 
 	/* Host controller enable */
-	dev_info(dev, "UFS DIAG: HCE start\n");
 	err = ufshcd_hba_enable(hba);
-	dev_info(dev, "UFS DIAG: HCE returned %d\n", err);
 	if (err) {
 		dev_err(hba->dev, "Host controller enable failed\n");
 		ufshcd_print_evt_hist(hba);
@@ -11307,9 +11292,7 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 			    FIELD_PREP(UFSHCI_AHIBERN8_SCALE_MASK, 3);
 	}
 
-	dev_info(dev, "UFS DIAG: add SCSI host start\n");
 	err = ufshcd_add_scsi_host(hba);
-	dev_info(dev, "UFS DIAG: add SCSI host returned %d\n", err);
 	if (err)
 		goto out_disable;
 
@@ -11329,9 +11312,7 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 
 	hba->ufshcd_state = UFSHCD_STATE_RESET;
 
-	dev_info(dev, "UFS DIAG: link startup start\n");
 	err = ufshcd_link_startup(hba);
-	dev_info(dev, "UFS DIAG: link startup returned %d\n", err);
 	if (err)
 		goto out_disable;
 
@@ -11348,9 +11329,7 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 	ufshcd_set_link_active(hba);
 
 	/* Verify device initialization by sending NOP OUT UPIU */
-	dev_info(dev, "UFS DIAG: NOP OUT device verification start\n");
 	err = ufshcd_verify_dev_init(hba);
-	dev_info(dev, "UFS DIAG: NOP OUT device verification returned %d\n", err);
 	if (err)
 		goto out_disable;
 

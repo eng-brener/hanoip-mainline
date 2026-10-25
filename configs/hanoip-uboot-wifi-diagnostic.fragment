@@ -1,0 +1,4 @@
+CONFIG_DEFAULT_DEVICE_TREE="qcom/sm7150-motorola-hanoip-wifi-diagnostic"
+CONFIG_UFS=n
+CONFIG_SCSI=n
+CONFIG_CMD_SCSI=n

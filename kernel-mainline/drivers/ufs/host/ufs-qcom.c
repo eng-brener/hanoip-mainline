@@ -504,9 +504,7 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
 	mode = host_params->hs_rate == PA_HS_MODE_B ? PHY_MODE_UFS_HS_B : PHY_MODE_UFS_HS_A;
 
 	/* Reset UFS Host Controller and PHY */
-	dev_info(hba->dev, "UFS DIAG: QCOM host reset start\n");
 	ret = ufs_qcom_host_reset(hba);
-	dev_info(hba->dev, "UFS DIAG: QCOM host reset returned %d\n", ret);
 	if (ret)
 		return ret;
 
@@ -515,9 +513,7 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
 
 
 	/* phy initialization - calibrate the phy */
-	dev_info(hba->dev, "UFS DIAG: PHY init start\n");
 	ret = phy_init(phy);
-	dev_info(hba->dev, "UFS DIAG: PHY init returned %d\n", ret);
 	if (ret) {
 		dev_err(hba->dev, "%s: phy init failed, ret = %d\n",
 			__func__, ret);
@@ -529,18 +525,14 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
 		goto out_disable_phy;
 
 	/* power on phy - start serdes and phy's power and clocks */
-	dev_info(hba->dev, "UFS DIAG: PHY power-on start\n");
 	ret = phy_power_on(phy);
-	dev_info(hba->dev, "UFS DIAG: PHY power-on returned %d\n", ret);
 	if (ret) {
 		dev_err(hba->dev, "%s: phy power on failed, ret = %d\n",
 			__func__, ret);
 		goto out_disable_phy;
 	}
 
-	dev_info(hba->dev, "UFS DIAG: PHY calibration start\n");
 	ret = phy_calibrate(phy);
-	dev_info(hba->dev, "UFS DIAG: PHY calibration returned %d\n", ret);
 	if (ret) {
 		dev_err(hba->dev, "Failed to calibrate PHY: %d\n", ret);
 		goto out_disable_phy;
@@ -919,13 +911,13 @@ static int ufs_qcom_icc_set_bw(struct ufs_qcom_host *host, u32 mem_bw, u32 cfg_b
 
 	ret = icc_set_bw(host->icc_ddr, 0, mem_bw);
 	if (ret < 0) {
-		dev_err(dev, "UFS DIAG: ufs-ddr bandwidth request failed: %d\n", ret);
+		dev_err(dev, "ufs-ddr bandwidth request failed: %d\n", ret);
 		return ret;
 	}
 
 	ret = icc_set_bw(host->icc_cpu, 0, cfg_bw);
 	if (ret < 0) {
-		dev_err(dev, "UFS DIAG: cpu-ufs bandwidth request failed: %d\n", ret);
+		dev_err(dev, "cpu-ufs bandwidth request failed: %d\n", ret);
 		return ret;
 	}
 
@@ -1535,31 +1527,27 @@ static int ufs_qcom_icc_init(struct ufs_qcom_host *host)
 	struct device *dev = host->hba->dev;
 	int ret;
 
-	dev_info(dev, "UFS DIAG: icc get ufs-ddr start\n");
 	host->icc_ddr = devm_of_icc_get(dev, "ufs-ddr");
 	if (IS_ERR(host->icc_ddr))
 		return dev_err_probe(dev, PTR_ERR(host->icc_ddr),
-				    "UFS DIAG: failed to acquire ufs-ddr interconnect\n");
+				    "failed to acquire ufs-ddr interconnect\n");
 
-	dev_info(dev, "UFS DIAG: icc get cpu-ufs start\n");
 	host->icc_cpu = devm_of_icc_get(dev, "cpu-ufs");
 	if (IS_ERR(host->icc_cpu))
 		return dev_err_probe(dev, PTR_ERR(host->icc_cpu),
-				    "UFS DIAG: failed to acquire cpu-ufs interconnect\n");
+				    "failed to acquire cpu-ufs interconnect\n");
 
 	/*
 	 * Set Maximum bandwidth vote before initializing the UFS controller and
 	 * device. Ideally, a minimal interconnect vote would suffice for the
 	 * initialization, but a max vote would allow faster initialization.
 	 */
-	dev_info(dev, "UFS DIAG: icc set bandwidth start\n");
 	ret = ufs_qcom_icc_set_bw(host, ufs_qcom_bw_table[MODE_MAX][0][0].mem_bw,
 				  ufs_qcom_bw_table[MODE_MAX][0][0].cfg_bw);
 	if (ret < 0)
 		return dev_err_probe(dev, ret,
-				    "UFS DIAG: failed to set initial bandwidth\n");
+				    "failed to set initial bandwidth\n");
 
-	dev_info(dev, "UFS DIAG: icc init passed\n");
 	return 0;
 }
 
@@ -1590,14 +1578,12 @@ static int ufs_qcom_init(struct ufs_hba *hba)
 	ufshcd_set_variant(hba, host);
 
 	/* Setup the optional reset control of HCI */
-	dev_info(dev, "UFS DIAG: host reset get start\n");
 	host->core_reset = devm_reset_control_get_optional(hba->dev, "rst");
 	if (IS_ERR(host->core_reset)) {
 		err = dev_err_probe(dev, PTR_ERR(host->core_reset),
-				    "UFS DIAG: failed to get host reset rst\n");
+				    "failed to get host reset rst\n");
 		goto out_variant_clear;
 	}
-	dev_info(dev, "UFS DIAG: host reset get passed\n");
 
 	/* Fire up the reset controller. Failure here is non-fatal. */
 	host->rcdev.of_node = dev->of_node;
@@ -1609,31 +1595,25 @@ static int ufs_qcom_init(struct ufs_hba *hba)
 		dev_warn(dev, "Failed to register reset controller\n");
 
 	if (!has_acpi_companion(dev)) {
-		dev_info(dev, "UFS DIAG: PHY get start\n");
 		host->generic_phy = devm_phy_get(dev, "ufsphy");
 		if (IS_ERR(host->generic_phy)) {
 			err = dev_err_probe(dev, PTR_ERR(host->generic_phy),
-					   "UFS DIAG: failed to get PHY ufsphy\n");
+					   "failed to get PHY ufsphy\n");
 			goto out_variant_clear;
 		}
-		dev_info(dev, "UFS DIAG: PHY get passed\n");
 	}
 
-	dev_info(dev, "UFS DIAG: ICC init start\n");
 	err = ufs_qcom_icc_init(host);
 	if (err)
 		goto out_variant_clear;
-	dev_info(dev, "UFS DIAG: ICC init passed\n");
 
-	dev_info(dev, "UFS DIAG: device reset GPIO get start\n");
 	host->device_reset = devm_gpiod_get_optional(dev, "reset",
 						     GPIOD_OUT_HIGH);
 	if (IS_ERR(host->device_reset)) {
 		err = dev_err_probe(dev, PTR_ERR(host->device_reset),
-				    "UFS DIAG: failed to acquire device reset GPIO\n");
+				    "failed to acquire device reset GPIO\n");
 		goto out_variant_clear;
 	}
-	dev_info(dev, "UFS DIAG: device reset GPIO get passed\n");
 
 	ufs_qcom_get_controller_revision(hba, &host->hw_ver.major,
 		&host->hw_ver.minor, &host->hw_ver.step);
@@ -1646,13 +1626,11 @@ static int ufs_qcom_init(struct ufs_hba *hba)
 			clki->keep_link_active = true;
 	}
 
-	dev_info(dev, "UFS DIAG: lane clocks get start\n");
 	err = ufs_qcom_init_lane_clks(host);
 	if (err) {
-		dev_err_probe(dev, err, "UFS DIAG: failed to acquire lane clocks\n");
+		dev_err_probe(dev, err, "failed to acquire lane clocks\n");
 		goto out_variant_clear;
 	}
-	dev_info(dev, "UFS DIAG: lane clocks get passed\n");
 
 	ufs_qcom_set_caps(hba);
 	ufs_qcom_advertise_quirks(hba);
@@ -1660,13 +1638,11 @@ static int ufs_qcom_init(struct ufs_hba *hba)
 	ufs_qcom_set_phy_gear(host);
 	ufs_qcom_parse_gear_limits(hba);
 
-	dev_info(dev, "UFS DIAG: ICE init start\n");
 	err = ufs_qcom_ice_init(host);
 	if (err) {
-		dev_err_probe(dev, err, "UFS DIAG: failed to initialize ICE\n");
+		dev_err_probe(dev, err, "failed to initialize ICE\n");
 		goto out_variant_clear;
 	}
-	dev_info(dev, "UFS DIAG: ICE init passed\n");
 
 	ufs_qcom_setup_clocks(hba, true, POST_CHANGE);
 
@@ -1680,8 +1656,6 @@ static int ufs_qcom_init(struct ufs_hba *hba)
 	if (drvdata && drvdata->no_phy_retention)
 		hba->spm_lvl = UFS_PM_LVL_5;
 
-	dev_info(dev, "UFS DIAG: Qualcomm variant init complete (%d lane clocks)\n",
-		 host->num_clks);
 	return 0;
 
 out_variant_clear:

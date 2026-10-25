@@ -1,5 +1,10 @@
 # Handoff — Moto G60 hanoip mainline
 
+## >>> Wi-Fi FUNCIONANDO (25/10/2026) — work/wifi-20261025/v3/
+wlan0 conecta (AccessDenied_5G WPA2, DHCP, ping, apk update OK). Ver docs/kernel/checkpoint-2026-10-25-wifi.txt.
+Precisa de /run/mmi-unit-info.conf (privado, work/wifi-20261025/private/)
+antes de /sbin/load-wifi. Próximo: conectar com wpa_supplicant (pmOS).
+
 ## >>> GOLD ATUAL: work/GOLD-20261025-1047/ (v2, promovida 25/10/2026 10:47 -03)
 Retorno padrão; a GOLD-20261025-0126 fica preservada. Ver GOLD.txt na pasta.
 

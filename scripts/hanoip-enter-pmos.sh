@@ -10,6 +10,8 @@ TARBALL=${1:-/tmp/pmos-rootfs.tar.gz}
 
 while read -r source target type rest; do
     case "$target" in "$ROOT"|"$ROOT"/*) continue ;; esac
+    # Read-only firmware mounts made by load-wifi are the only exception.
+    case "$target:$rest" in /mnt/ro/*:ro,*) continue ;; esac
     case "$type" in
         rootfs|ramfs|tmpfs|proc|sysfs|devtmpfs|devpts|configfs|debugfs|tracefs) ;;
         *) echo "Refusing: $target is mounted as $type" >&2; exit 1 ;;
