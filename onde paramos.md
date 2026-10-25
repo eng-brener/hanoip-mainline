@@ -13,6 +13,14 @@ Armadilha: em `sh`, `cmd ... &` recebe stdin de /dev/null (o tar falhou e o
 /lib/modules/7.3.0 foi apagado antes; reinstalado). Nunca apagar antes de
 extrair.
 
+Estado no fechamento de 26/10/2026: telefone ligado na v2 (7.3), pmOS +
+Plasma, Wi-Fi e BT ativos; rootfs com /lib/modules 7.1.0 (GOLD v4) e 7.3.0
+(v2). README.md reescrito com o estado atual (sem os exemplos de flash).
+Tudo no `main` do GitHub. Container `hanoip-kernel73` mantém a árvore 7.3
+(branch hanoip-7.3-prs = v2). Próximos passos sugeridos: ligar a carga da
+bateria (precisa de autorização: escreve no carregador do PMIC) ou começar o
+áudio (WCD937x + aw882xx no DT do U-Boot). GOLD v5 só se o usuário promover.
+
 ## Kernel migrado para o Linux 7.3 mainline (25/10/2026, noite) — v1
 
 Variante validada em dois boots: `work/kernel-7.3/v1/` (ler README.txt).

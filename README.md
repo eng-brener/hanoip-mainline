@@ -1,153 +1,93 @@
-# U-Boot + Kernel Mainline para Motorola Moto G60 (hanoip / SM7150)
+# postmarketOS + Linux 7.3 mainline no Motorola Moto G60 (hanoip / SM7150)
 
-> **Regra atual: nenhum flash nem gravação em partições do celular.** Os exemplos
-> antigos de flash abaixo são históricos e não devem ser executados.
-> **Checkpoint 2026-10-24:** boot temporário em RAM com shell USB, correção QUP
-> e **UFS funcionando em leitura**, com discos e partições em somente leitura.
-> Veja [o checkpoint UFS](docs/kernel/checkpoint-2026-10-24-ufs-leitura.txt).
-> A etapa de display já criou DRM/DSI ativo em 1080×2460 a 60 Hz, com DSC e
-> `msmdrmfb`; o usuário confirmou a mensagem visível na tela. Veja
-> [o checkpoint de display](docs/kernel/checkpoint-2026-10-24-display.txt).
-> As seções com datas de agosto abaixo são histórico do port.
+Port do U-Boot mainline e do kernel Linux mainline (fork
+[sm7150-mainline](https://github.com/sm7150-mainline/linux)) para o Moto G60
+(codename `hanoip`, Snapdragon 730G / `sm7150` / `sdmmagpie`), com
+postmarketOS e Plasma Mobile rodando de verdade.
 
-Port do U-Boot mainline (fork sm7150-mainline/u-boot) e kernel Linux mainline
-(fork sm7150-mainline/linux) para o Moto G60 (codename `hanoip`,
-SoC Qualcomm Snapdragon 730G / `sm7150` / `sdmmagpie`).
+> **Regra do projeto: nenhum flash.** U-Boot e kernel sobem só por
+> `fastboot boot` (em RAM). A única área gravável do celular é a região não
+> alocada no fim da partição `super` (espaço do slot B; o slot ativo é o A),
+> onde mora o rootfs do pmOS. Metadados LP, partições `_a`, `userdata`,
+> `persist` e `metadata` nunca são gravados. Detalhes em [AGENTS.md](AGENTS.md).
 
-## 📚 DOCUMENTAÇÃO COMPLETA EM `docs/`
+## Estado atual (26/10/2026)
 
-**LEIA `docs/README.md` PRIMEIRO** — documenta tudo: estado atual do U-Boot
-e kernel, como compilar, como flashar, como bootar, hardware, e segurança.
+| Item | Estado |
+|---|---|
+| Kernel | **Linux 7.3** (upstream v7.3 + 160 patches) — `work/kernel-7.3/v2/` |
+| Retorno padrão (GOLD v4) | Linux 7.1 (kernel #10) — `work/GOLD-20261025-1659/` |
+| Sistema | postmarketOS v26.06 + Plasma Mobile, rootfs ext4 no fim do `super` |
+| Display | DSI 1080×2460 @ 60 Hz com DSC, painel Tianma ILI7807S, brilho (WLED) |
+| GPU | Adreno 618 com Freedreno/Mesa, KWin com OpenGL |
+| Touch | ILI7807S TDDI por SPI, firmware só na RAM, segue a energia do painel |
+| Rede | Wi-Fi WCN3990 (NetworkManager), USB NCM + SSH em 172.16.42.1 |
+| Bluetooth | WCN3990 por UART (hci0) |
+| Armazenamento | UFS, todos os blocos somente leitura exceto o rootfs |
+| CPU | 8 CPUs, CPUfreq (qcom-cpufreq-hw), CPUidle local |
+| Bateria | telemetria (PM6150 QG + SMB5); **carga ainda desligada** |
+| Pendente | carga da bateria, áudio (WCD937x + Awinic aw882xx), suspend/resume, modem, câmera, sensores |
+
+## Como bootar (só volátil)
+
+Com o celular no fastboot da Motorola (power + volume para baixo):
 
 ```
-docs/
-├── README.md          ← comece por aqui (índice geral + estado)
-├── uboot/
-│   ├── estado.md      ← U-Boot funcional + watchdog fix (2026-08-13)
-│   ├── build.md       ← como compilar
-│   ├── flash.md       ← como flashar/instalar
-│   ├── boot.md        ← como bootar/testar
-│   └── hardware.md    ← SoC, partições, UFS multi-LUN, RAM
-├── kernel/
-│   ├── estado.md      ← kernel em andamento + causa raiz do reset
-│   ├── build.md       ← como compilar
-│   ├── boot.md        ← como bootar e debugar
-│   ├── dts.md         ← DTS do hanoip
-│   ├── progresso-2026-08-13.md ← LCDB + watchdog + DTB embutido do U-Boot
-│   └── pm6150l-lcdb-known-good.md ← mapa de registros do LCDB PM6150L
-├── scripts/
-│   └── README.md      ← referência de todos os scripts
-└── seguranca/
-    └── README.md      ← como recuperar, o que NÃO fazer
+fastboot boot work/kernel-7.3/v2/u-boot-hanoip-pmos-v1.img   # espere o fastboot do U-Boot
+fastboot boot work/kernel-7.3/v2/kernel-hanoip-pmos-7.3-v2.img
 ```
 
-## Status resumido (2026-08-13)
+Para a GOLD v4, use uma **cópia** das imagens de `work/GOLD-20261025-1659/`
+(a pasta é somente leitura e o helper grava um log ao lado da imagem). O
+Plasma sobe em ~30–40 s. SSH: `ssh root@172.16.42.1` (só por chave).
+O helper `work/hanoip-display-20261024/boot-volatile.py` faz os dois passos.
 
-- **U-Boot: ✅ FUNCIONAL** (persistente no slot A, fastboot, UFS multi-LUN)
-  + watchdog do boot parado antes do handoff ao kernel (`wdt_stop_all()`)
-- **Kernel mainline: 🔧 EM ANDAMENTO** — boota (tela cinza) mas reiniciava
-  a cada ~30s (CAUSA RAIZ: watchdog do boot; fix no U-Boot aplicado, validação
-  pendente). Driver LCDB PM6150L (skeleton read-only) compilado.
-- ⚠️ **DESCOBERTA CRÍTICA**: via `fastboot boot`, o kernel usa o **DTB
-  embutido do U-Boot** (`boot_with_embedded_fdt`), não o DTB do boot.img do
-  kernel. Editar o DTS do U-Boot para bootargs/ramoops valerem.
+Como funciona: o ABL carrega o U-Boot como `boot.img`; o U-Boot passa ao
+kernel o **DTB embutido nele** (o DT que vale é o de `uboot-sm7150/`). O
+initramfs sobe display, USB, UFS (RO), Wi-Fi, BT e bateria, confere os
+metadados LP e o ext4 no offset, monta o rootfs por `/dev/loop7` e faz
+`switch_root` para o OpenRC.
 
-## Arquivos
+## Onde está cada coisa
 
-- `uboot-sm7150/` - fork do U-Boot (branch tauchgang) com DTS do hanoip
-- `kernel-mainline/` - fork do kernel mainline (branch v7.2) com DTS do hanoip
-- `dump/` - dumps das partições do device
-- `rom_stock/` - ROM stock Motorola (Android 12, para recuperação)
-- `pmaports2/` - pmaports (config do kernel, device packages)
-- `docs/` - documentação completa
-- `work/` - artefatos (boot.img, dtb, etc)
-- `build.sh` - script reproduzível de build do U-Boot
+- `onde paramos.md` — handoff detalhado, comece por aqui.
+- `AGENTS.md` — regras de segurança do aparelho e estado resumido.
+- `work/kernel-7.3/v2/` — kernel 7.3: `patches/` (160 patches sobre v7.3),
+  config, imagens, módulos e `README.txt` com a reconstrução.
+- `work/GOLD-20261025-1659/` — GOLD v4 (7.1), somente leitura, com
+  `GOLD.txt` e `SHA256SUMS`. GOLDs anteriores em `work/GOLD-*`.
+- `work/pmos-super-20261025/` — `build-rootfs.sh` + `overlay/` recriam o
+  rootfs pmOS do zero; `write-super-tail.sh` é o procedimento de gravação.
+- `kernel-mainline/` — fonte do kernel 7.1 (#10) da GOLD v4.
+- `uboot-sm7150/` — U-Boot (fork sm7150-mainline) com os DTs do hanoip.
+- `scripts/` — scripts do initramfs e helpers de boot.
+- `docs/kernel/` — checkpoints de cada etapa.
 
-## Status: U-BOOT FUNCIONAL (persistente no slot A)
+## Lições do port
 
-O U-Boot é o **bootloader ativo do device** (flashado no slot A). Boota de
-forma persistente, com fastboot, UFS multi-LUN, display, bootmenu e console
-USB serial.
+1. **DT do U-Boot**: com `fastboot boot`, o kernel usa o DTB embutido no
+   U-Boot, não o do `boot.img`. Mudanças de DT vão no `uboot-sm7150/`.
+2. **Memória**: o `/memory` não pode ser 4 GiB cheio. A RAM vai de
+   `0x80000000` a `0x17dd00000`; declarar 4 GiB faz o U-Boot relocar para
+   memória inexistente.
+3. **OF_EMBED**: com `OF_SEPARATE` + header v3, o ABL perde o DTB anexado;
+   o U-Boot usa `CONFIG_OF_EMBED`.
+4. **UFS multi-LUN**: as partições ficam espalhadas por LUNs (LUN1 =
+   super/userdata, LUN4 = `_a`, LUN5 = `_b`).
+5. **Watchdog**: o U-Boot precisa parar o WDT (`wdt_stop_all()`) antes de
+   entregar ao kernel, senão o aparelho reinicia em 30 s.
+6. **Somente leitura**: uma partição só aparece como RO através do disco;
+   fixe o RO de cada partição antes de liberar o disco para escrita.
+7. **TDDI**: o ILI7807S perde o firmware do touch quando o painel desliga;
+   o driver do touch é um *panel follower* e recarrega a IRAM.
+8. **polkit**: precisa da variante `polkit-elogind`, senão brilho, loja e
+   NetworkManager falham por falta de sessão.
 
-## Funcionalidades validadas
+## Histórico
 
-- **Boot persistente**: U-Boot flashado na partição `boot_a`, boota sem
-  depender de `fastboot boot`.
-- **Fastboot funcional**: `product: motorola-hanoip`, version 0.4.
-- **Flash UFS multi-LUN**: `fastboot flash boot_a/vendor_boot_a/dtbo_a`
-  funciona (o hanoip divide as partições entre LUNs: LUN1=super/userdata,
-  LUN4=partições _a, LUN5=partições _b).
-- **Display + bootmenu**: logo do U-Boot, menu com navegação por botões.
-- **Console limpo**: avisos de boot corrigidos (UFS reset, ref_clk, GENI).
-- **Bootstd**: escaneia os devices UFS (bootflow scan).
-- **Watchdog**: parado antes do kernel (`wdt_stop_all` em board_preboot_os
-  e fastboot_boot) — 2026-08-13.
-
-## Arquivos
-
-- `uboot-sm7150/` - fork do U-Boot (branch tauchgang) com o DTS do hanoip
-- `dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip.dts` - DTS do device (U-Boot)
-- `dump/` - dumps das partições do device (boot/vendor_boot/super/GPT/fw)
-- `rom_stock/` - ROM stock Motorola (Android 12, para recuperação)
-- `kernel-src/` - kernel source (downstream Motorola 4.14) do usuário
-- `work/` - artefatos (boot.img, dtb, etc)
-- `build.sh` - script reproduzível de build + empacotamento
-
-## Commits do port (no fork)
-
-1. `dts: qcom: sm7150: add Motorola Moto G60 (hanoip) support`
-2. `fastboot: support UFS multi-LUN storage (Qualcomm SM7150)`
-3. `dts: hanoip: silence boot warnings (UFS reset/ref_clk, GENI)`
-4. `qcom: boot kernel with the U-Boot embedded FDT via fastboot`
-
-## Como o boot funciona
-
-O ABL (Android Bootloader stock do Moto) carrega o U-Boot como payload do
-`boot.img` (header v3). O U-Boot roda no lugar do kernel e usa o DTB embutido
-(CONFIG_OF_EMBED). No slot A, o U-Boot é persistente.
-
-**IMPORTANTE (2026-08-13):** com `boot_with_embedded_fdt=1`, o kernel usa o
-DTB embutido do U-Boot. Para bootargs/ramoops do kernel valerem, editar o
-DTS do U-Boot (`uboot-sm7150/dts/.../sm7150-motorola-hanoip.dts`).
-
-Para flashar o U-Boot no slot A (via fastboot do U-Boot):
-```
-fastboot flash boot_a work/u-boot-hanoip-boot.img
-```
-
-Para testar sem gravar:
-```
-fastboot boot work/u-boot-hanoip-boot.img
-```
-
-## Lições do port (o que quebrou)
-
-1. **Memória RAM**: o `/memory` NÃO pode ser 4GB cheio. O device tem
-   `0x80000000` até `0x17dd00000` (size `0xfdd00000`, ~3.96GB). Os últimos
-   ~35MB são reservados para firmware. Declarar 4GB (`0x100000000`) faz o
-   U-Boot relocar para memória inexistente e crashar no `dm_init_and_scan`.
-
-2. **OF_EMBED vs OF_SEPARATE**: com `OF_SEPARATE` + header v3, o ABL
-   descomprime o gzip do kernel mas o DTB appended (fora do gzip) se perde,
-   deixando o internal FDT inválido. O U-Boot então usa o DTB stock do
-   vendor_boot (cheio de nós downstream) que crasha no `dm_scan`.
-   Com `CONFIG_OF_EMBED` o DTB fica dentro do binário e sempre é usado.
-
-3. **VID/PID USB**: o U-Boot default usa `0x0/0x0` que o Windows não
-   reconhece. Definir `USB_GADGET_VENDOR_NUM=0x18D1` / `PRODUCT_NUM=0x4EE0`
-   (Google) faz o fastboot funcionar.
-
-4. **UFS multi-LUN**: o fastboot do U-Boot assume um único device MMC. No
-   hanoip (UFS), as partições estão espalhadas por LUNs. O `fb_mmc.c` foi
-   modificado para iterar todos os devices SCSI até achar a partição.
-
-5. **Watchdog do boot (2026-08-13)**: o U-Boot inicia o WDT (`AUTOSTART`,
-   30s). Ao entregar ao kernel, não o alimenta → reset em 30s. Fix:
-   `wdt_stop_all()` antes do handoff.
-
-## Próximos passos
-
-- Validar o fix do watchdog (kernel deve ficar estável sem reset de 30s)
-- Ler dmesg (ramoops agora configurado) → confirmar o probe do LCDB
-- Port completo do driver LCDB PM6150L (voltage + enable + VREG_OK)
-- Driver de painel (avdd/avee reais), DSC, WLED, 60/90/120Hz
+Em agosto de 2026 o U-Boot chegou a ficar gravado no slot A e havia exemplos
+de flash nesta página. Depois da perda de dados numa tentativa, a regra
+passou a ser **não gravar partições**; aqueles exemplos foram removidos e não
+devem ser repetidos. A evolução etapa por etapa (USB, UFS, display, touch,
+CPUfreq/idle, Wi-Fi, BT, GPU, bateria, pmOS no `super`, kernel 7.3) está
+nos checkpoints em `docs/kernel/` e no `onde paramos.md`.
