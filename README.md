@@ -89,7 +89,11 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
   ao ADSP no Android. O TMD2755 não tem driver no mainline e o barramento
   (SE do QUP) ainda não foi achado. Sem eles: sem rotação nem brilho
   automáticos. Não há magnetômetro.
-- **Leitor de digital.** FPC1020; sem driver nem integração.
+- **Leitor de digital.** Sensor FPC (há variante Chipone). No Android, a
+  imagem é lida pelo TrustZone (app seguro `fpctzapp`) e o SPI do sensor
+  nem aparece para o Linux; o kernel só cuida dos GPIOs (IRQ 90, reset 4,
+  alimentação 30). Viabilidade muito baixa: exigiria falar com o TEE
+  (`qcomtee`) e o protocolo fechado do app da FPC.
 - **Vibração.** Vibrador LDO do PM6150 (SPMI `0x5300`, com `vmax_mv`);
   candidato ao driver `pm8xxx-vibrator` do mainline só com DT.
 - **Sensor SAR.** Semtech SX933x no I²C 1 (SE `0xa84000`, 0x28); nem o
