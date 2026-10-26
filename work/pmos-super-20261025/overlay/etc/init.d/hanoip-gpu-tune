@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Adreno 618 devfreq: simple_ondemand from 180 MHz with a 50 ms poll ramps
+# up too late and drops too early, which shows up as stutter in Plasma.
+# A 355 MHz floor and a 16 ms (one 60 Hz frame) poll removed it on hanoip
+# (2026-10-26, same result as pinning 800 MHz).
+description="Hanoip GPU frequency floor and polling"
+
+GPU=/sys/class/devfreq/5000000.gpu
+MIN_HZ=355000000
+POLL_MS=16
+
+depend() {
+	before display-manager tinydm greetd
+}
+
+start() {
+	ebegin "Tuning GPU devfreq"
+	i=0
+	while [ ! -w "$GPU/min_freq" ] && [ $i -lt 50 ]; do
+		sleep 0.1
+		i=$((i + 1))
+	done
+	[ -w "$GPU/min_freq" ] || { eend 1 "no $GPU"; return 1; }
+	echo $MIN_HZ > "$GPU/min_freq" && echo $POLL_MS > "$GPU/polling_interval"
+	eend $?
+}

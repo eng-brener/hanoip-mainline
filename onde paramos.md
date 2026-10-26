@@ -29,6 +29,13 @@ Commit pendente: um lote está no stage desde 26/10 (init/overlay pmOS,
 U-Boot pmOS, touch .ko, logs do rootfs, patches do SD). O push foi barrado
 pelo classificador (dados vindos do telefone, repo público); o usuário
 decide se sobe tudo, só código ou nada.
+Engasgos no Plasma (26/10): causa = devfreq da GPU (simple_ondemand, piso
+180 MHz, poll 50 ms) oscilando entre mínimo e máximo (124 trocas em 20 s).
+Fixar 800 MHz sumiu com eles; piso 355 MHz + poll 16 ms deu o mesmo
+resultado (usuário confirmou). Serviço OpenRC `hanoip-gpu-tune` (boot) no
+rootfs e no overlay. Medições em work/jank-20261026/. Pendente opcional:
+KWin roda sem tempo real (SCHED_OTHER; falta CAP_SYS_NICE no binário ou
+rtkit) — `setcap cap_sys_nice+ep` reaplicado a cada upgrade do kwin.
 Lista completa e agrupada do que falta: seção "O que falta" do README.md
 (inclui hardware visto no DT do Android: FPC1020, SX933x, vibrador do PMIC,
 flash/tri-LED, 4 câmeras, fsa4480; painel com modos de 90/120 Hz).

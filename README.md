@@ -57,6 +57,10 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
 - **FIFO do DSI na partida.** Alguns boots ainda mostram erros de FIFO; a
   causa da tela preta ocasional não foi fechada.
 - **90/120 Hz.** O painel do Android tem modos de 90 e 120 Hz; hoje só 60 Hz.
+- **Fluidez do Plasma.** Os engasgos vinham da GPU subindo de frequência
+  tarde; o serviço `hanoip-gpu-tune` fixa um piso de 355 MHz e reavalia a
+  cada 16 ms. Ainda dá para dar prioridade de tempo real ao KWin
+  (`CAP_SYS_NICE`), que hoje roda com prioridade normal.
 - **Touch: refinamento.** Cantos, orientação, calibração e gestos ficaram
   adiados de propósito.
 - **Botões.** Power e volume aparecem como `gpio-keys`/`pwrkey`; falta

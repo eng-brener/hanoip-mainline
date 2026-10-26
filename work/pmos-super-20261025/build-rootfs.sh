@@ -31,11 +31,13 @@ chmod 700 "$ROOT/root" "$ROOT/root/.ssh"
 chmod 600 "$ROOT/root/.ssh/authorized_keys"
 chmod 755 "$ROOT/etc/init.d/hanoip-usbnet" "$ROOT/etc/init.d/hanoip-touch" \
     "$ROOT/etc/init.d/hanoip-firmware" "$ROOT/etc/init.d/hanoip-ro-handoff" \
+    "$ROOT/etc/init.d/hanoip-gpu-tune" \
     "$ROOT/etc/local.d/"*.start
 ln -sf /etc/init.d/hanoip-touch "$ROOT/etc/runlevels/boot/hanoip-touch"
 ln -sf /etc/init.d/hanoip-firmware "$ROOT/etc/runlevels/boot/hanoip-firmware"
 # udev rule 60-hanoip-blockdev-ro takes over the initramfs RO poll loop.
 ln -sf /etc/init.d/hanoip-ro-handoff "$ROOT/etc/runlevels/sysinit/hanoip-ro-handoff"
+ln -sf /etc/init.d/hanoip-gpu-tune "$ROOT/etc/runlevels/boot/hanoip-gpu-tune"
 # NetworkManager (from the Plasma UI) owns wlan0 and D-Bus-activates
 # wpa_supplicant; no ifupdown/wpa_supplicant OpenRC services for it.
 echo hanoip > "$ROOT/etc/hostname"
