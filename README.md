@@ -45,6 +45,9 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
   no DT.
 - **Suspend/resume.** O celular nunca dorme. Desligar o painel já funciona
   (o touch recarrega o firmware), mas o suspend do sistema nunca foi testado.
+  O Android usa `deep`; com cabo e ADB conectados ele também não suspende,
+  e as estatísticas de sono do SoC (RPMh) só existem no debugfs, ausente no
+  kernel do Android.
 - **CPUidle de cluster.** Só os estados locais das CPUs estão ligados; o
   colapso de cluster deixou a tela preta e está desativado.
 - **Estabilidade prolongada.** Falta uma sessão de horas medindo
@@ -72,17 +75,21 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
 
 **Telefonia e rádio**
 - **Modem.** O modem sobe (necessário para o Wi-Fi), mas não há RIL: sem
-  chamadas, SMS ou dados móveis. No log, o modem aparece como `failed` e
-  sem objeto de SIM (não foi testado com um chip inserido).
+  chamadas, SMS ou dados móveis. Firmware `M7150_25.333.01.85R`, perfil
+  `HANOIP_LATAMDSDS_CUST` (dual SIM). Não há chip no aparelho (o Android
+  também mostra os dois slots vazios), então telefonia só pode ser testada
+  com um SIM inserido.
 - **GPS.** Passa pelo modem; não investigado.
 - **Hotspot Wi-Fi.** Não testado.
 
 **Câmera e LEDs**
-- **Câmeras.** 4 sensores, 2 atuadores de foco e EEPROMs no Android. O fork
-  tem o camss do SM7150 (de outros aparelhos), nada configurado para o
-  hanoip.
-- **Flash da câmera e LED de notificação.** Flash do PM6150L e tri-LED; não
-  investigados.
+- **Câmeras.** Principal Samsung S5KHM2 (108 MP), ultrawide S5K4H7 (8 MP),
+  OmniVision OV02B1B (2 MP) e frontal OV32B (32 MP), em dois barramentos CCI
+  e quatro CSIPHYs, com EEPROMs e 2 atuadores de foco. Nenhum desses
+  sensores tem driver no mainline; o fork tem o camss do SM7150.
+- **Flash da câmera.** PM6150L com 2 canais (flash até 1150 e 600 mA,
+  lanterna 500 mA); candidato ao `leds-qcom-flash`. O hanoip não tem LED de
+  notificação.
 
 **Sensores e periféricos**
 - **Acelerômetro/giroscópio e luz/proximidade.** ICM4x6xx e TMD2755, ligados
@@ -98,13 +105,18 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
   candidato ao driver `pm8xxx-vibrator` do mainline só com DT.
 - **Sensor SAR.** Semtech SX933x no I²C 1 (SE `0xa84000`, 0x28); nem o
   Android liga um driver nele.
-- **NFC.** Controlador NXP NQ (`qcom,nq-nci`) no I²C 0, endereço 0x28; sem
-  driver nem integração.
-- **USB host/OTG.** Hoje a USB é só gadget (NCM + serial); falta o modo host
-  e a troca de papel no Type-C.
+- **NFC.** NXP PN54x no I²C 0, endereço 0x28 (IRQ no GPIO 37, habilitação no
+  GPIO 12, modo firmware no GPIO 36). Candidato ao driver `nxp-nci` do
+  mainline, quase só DT.
+- **USB host/OTG.** Hoje a USB é só gadget (NCM + serial). O hardware faz os
+  dois papéis (`dual power role`, dwc3 em OTG, regulador de VBUS
+  `smb5-vbus`); falta a troca de papel do Type-C e esse regulador no
+  mainline.
 - **microSD.** Parado: as tentativas pediam 3,3 V num regulador que vai até
   2,95 V. Os patches estão guardados em `work/sd-20261025/saved-patches/`.
-- **Vídeo por hardware.** O Venus (decodificação) não foi ligado.
+- **Vídeo por hardware.** O Venus decodifica H.264, H.265, VP8, VP9 e MPEG-2
+  e codifica H.264, H.265 e VP8 no Android; no mainline ainda não foi ligado
+  (o fork tem um nó WIP do Venus para o SM7150).
 
 **Sistema**
 - **Boot sem computador.** Tudo sobe por `fastboot boot` a partir do Mac;
