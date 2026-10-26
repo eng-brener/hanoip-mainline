@@ -20,6 +20,15 @@ Tudo no `main` do GitHub. Container `hanoip-kernel73` mantém a árvore 7.3
 (branch hanoip-7.3-prs = v2). Próximos passos sugeridos: ligar a carga da
 bateria (precisa de autorização: escreve no carregador do PMIC) ou começar o
 áudio (WCD937x + aw882xx no DT do U-Boot). GOLD v5 só se o usuário promover.
+Coleta Android de 25-26/10 em `work/android-dump-20261026/` (LEIA-ME.txt):
+mapa I2C/SPI (NFC NXP NQ e aw882xx no I2C0/SE 0x888000, SAR no I2C1/SE
+0xa84000), carga ao vivo (500 mA SDP, FCC 3,6 A, FV 4,45 V, sem PD), rota do
+alto-falante (SEC_MI2S -> aw882xx, regs tocando), vibrador PM6150 0x5300,
+config do kernel Android. Microfone não coletado. O hanoip TEM NFC.
+Commit pendente: um lote está no stage desde 26/10 (init/overlay pmOS,
+U-Boot pmOS, touch .ko, logs do rootfs, patches do SD). O push foi barrado
+pelo classificador (dados vindos do telefone, repo público); o usuário
+decide se sobe tudo, só código ou nada.
 Lista completa e agrupada do que falta: seção "O que falta" do README.md
 (inclui hardware visto no DT do Android: FPC1020, SX933x, vibrador do PMIC,
 flash/tri-LED, 4 câmeras, fsa4480; painel com modos de 90/120 Hz).

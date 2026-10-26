@@ -36,7 +36,10 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
 - **Carga da bateria.** O SMB5 roda só em modo monitor: o celular descarrega
   mesmo no cabo (~−160 mA com a tela no máximo). Falta ligar a carga com
   limites conservadores, corte por temperatura (JEITA) e, depois, USB-PD.
-  Escreve no carregador do PMIC, então precisa de autorização.
+  Escreve no carregador do PMIC, então precisa de autorização. Referência
+  medida no Android carregando pelo USB do computador: entrada limitada a
+  500 mA, corrente de carga até 3,6 A, flutuação 4,45 V, sem step charging
+  nem JEITA por software, Type-C sem PD (aceitaria até 9 V).
 - **Porcentagem calibrada.** Hoje é estimada pela tensão. O driver já aceita
   tabela OCV, mas falta descrever a bateria (tabela e resistência interna)
   no DT.
@@ -58,8 +61,11 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
 
 **Áudio**
 - **Alto-falante, microfones e fone.** O hanoip usa codec WCD937x pelos
-  macros do LPASS, amplificador Awinic aw882xx (I²C 0x34) e chave de áudio
-  do USB-C `fsa4480`. Os nós do LPASS e do SoundWire já estão no kernel 7.3
+  macros do LPASS, amplificador Awinic aw882xx (I²C 0 = SE `0x888000`,
+  endereço 0x34) e chave de áudio do USB-C `fsa4480`. No Android o
+  alto-falante sai por `MultiMedia1 → SEC_MI2S_RX → aw882xx` (I²S, não
+  SoundWire); o aw882xx (chip ID `0x1852`) é inicializado pelo
+  `aw882xx_spk_reg.bin` do vendor. Fone e microfones passam pelo WCD937x. Os nós do LPASS e do SoundWire já estão no kernel 7.3
   v2 (PRs #65/#60 do fork), mas desligados e fora do DT do U-Boot. O pinctrl
   do LPASS está bloqueado no autoload até ser validado.
 - **Áudio Bluetooth.** Depende da pilha de áudio; não testado.
@@ -84,8 +90,12 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
   (SE do QUP) ainda não foi achado. Sem eles: sem rotação nem brilho
   automáticos. Não há magnetômetro.
 - **Leitor de digital.** FPC1020; sem driver nem integração.
-- **Vibração.** Motor do PMIC (`qpnp-vibrator-ldo`); não investigado.
-- **Sensor SAR.** Semtech SX933x; não investigado.
+- **Vibração.** Vibrador LDO do PM6150 (SPMI `0x5300`, com `vmax_mv`);
+  candidato ao driver `pm8xxx-vibrator` do mainline só com DT.
+- **Sensor SAR.** Semtech SX933x no I²C 1 (SE `0xa84000`, 0x28); nem o
+  Android liga um driver nele.
+- **NFC.** Controlador NXP NQ (`qcom,nq-nci`) no I²C 0, endereço 0x28; sem
+  driver nem integração.
 - **USB host/OTG.** Hoje a USB é só gadget (NCM + serial); falta o modo host
   e a troca de papel no Type-C.
 - **microSD.** Parado: as tentativas pediam 3,3 V num regulador que vai até
