@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-pmos-audio2.dts"
+
+/*
+ * Audio bring-up, phase 3: the Awinic AW882xx speaker amplifier on I2C2
+ * (SE 0x888000, address 0x34), reset on TLMM GPIO43 as in the vendor tree,
+ * replacing the phase 2 placeholder codec on the speaker link. The driver
+ * keeps the amplifier muted and powered down until playback and starts
+ * attenuated (snd-soc-aw882xx attenuation_db, default 18 dB).
+ */
+&i2c2 {
+	speaker_amp: audio-codec@34 {
+		compatible = "awinic,aw882xx";
+		reg = <0x34>;
+		reset-gpios = <&tlmm 43 GPIO_ACTIVE_LOW>;
+		#sound-dai-cells = <0>;
+	};
+};
+
+&{/sound/speaker-dai-link/codec} {
+	sound-dai = <&speaker_amp>;
+};

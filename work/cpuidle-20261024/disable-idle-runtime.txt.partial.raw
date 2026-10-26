@@ -1,0 +1,51 @@
+
+~ # /bin/busybox cat /proc/uptime /sys/bus/platform/devices/*.dsi/error_snapshot
+ /proc/sys/kernel/tainted; for d in /sys/devices/system/cpu/cpu[0-5]/cpuidle/sta
+te[12]; do echo 1 > $d/disable; done; /bin/busybox sleep 3; printf "\033[2J\033[
+HHANOIP - REPOUSO PROFUNDO DESLIGADO\nTeste de recuperacao em RAM\n" > /dev/tty1
+; /bin/busybox cat /sys/class/drm/card0-DSI-1/status /sys/class/drm/card0-DSI-1/
+enabled /sys/bus/platform/devices/*.dsi/error_snapshot; for d in /sys/devices/sy
+stem/cpu/cpu0/cpuidle/state*; do echo $d; /bin/busybox cat $d/disable $d/usage $
+d/rejected; done; /bin/busybox dmesg | /bin/busybox tail -20; printf '\nHANOIP_E
+ND_a3c38d0d7a10\n'
+255.04 1500.25
+irqs=2 order=ack,fifo,timeout,phy,status0,clk first=0x0,0xdddd1319,0x0,0x88888,0x8,0x8047c3 last=0x0,0xdddd1019,0x0,0x88888,0x8,0x8047c3 or=0x0,0xdddd1319,0x0,0x88888,0x8,0x8047c3 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+0
+connected
+enabled
+irqs=2 order=ack,fifo,timeout,phy,status0,clk first=0x0,0xdddd1319,0x0,0x88888,0x8,0x8047c3 last=0x0,0xdddd1019,0x0,0x88888,0x8,0x8047c3 or=0x0,0xdddd1319,0x0,0x88888,0x8,0x8047c3 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+/sys/devices/system/cpu/cpu0/cpuidle/state0
+0
+1974
+0
+/sys/devices/system/cpu/cpu0/cpuidle/state1
+1
+852
+0
+/sys/devices/system/cpu/cpu0/cpuidle/state2
+1
+1377
+2
+[   87.676031] /soc@0/display-subsystem@ae00000/display-controller@ae01000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   88.530657] /soc@0/display-subsystem@ae00000/display-controller@ae01000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   89.333420] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0
+[   90.138466] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/display-controller@ae01000
+[   90.952599] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   92.509922] HANOIP DRM: registration complete
+[   92.512467] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0
+[   93.745347] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   94.577069] msm_dpu ae01000.display-controller: bound ae94000.dsi (ops dsi_ops [msm])
+[   94.998174] Console: switching to colour dummy device 80x25
+[   95.006173] [drm:dpu_kms_hw_init:1172] dpu hardware revision:0x50020000
+[   95.013195] msm-mdss ae00000.display-subsystem: HANOIP: mapped firmware framebuffer [mem 0x9c000000-0x9d6fffff flags 0x200] before stream switch
+[   95.036689] [drm] Initialized msm 1.13.0 for ae01000.display-controller on minor 0
+[   95.044557] msm_dpu ae01000.display-controller: no GPU device was found
+[   95.290421] dsi_err_worker: status=4
+[   95.300381] Console: switching to colour frame buffer device 135x153
+[   95.307788] dsi_err_worker: status=4
+[   95.316816] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[   95.316857] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[   95.355748] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+
+HANOIP_END_a3c38d0d7a10
+~ # 

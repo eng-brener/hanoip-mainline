@@ -1,0 +1,637 @@
+[
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x4a71",
+    "text": "QSEECom_send_modified_cmd"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x4a8b",
+    "text": "QSEECom_shutdown_app"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x4aa0",
+    "text": "QSEECom_start_app"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x4ade",
+    "text": "QSEECom_send_cmd"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x609f",
+    "text": "liblog.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x60b0",
+    "text": "libc.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x60cb",
+    "text": "libhidlbase.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x60da",
+    "text": "libhidltransport.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x60ee",
+    "text": "libutils.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x60fa",
+    "text": "android.hardware.biometrics.fingerprint@2.1.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x6129",
+    "text": "com.fingerprints.extension@1.0.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x614b",
+    "text": "libhwbinder.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x615a",
+    "text": "libcutils.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x6167",
+    "text": "libQSEEComAPI.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x6178",
+    "text": "libion.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x6182",
+    "text": "com.motorola.hardware.biometric.fingerprint@1.0.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x61b5",
+    "text": "libc++.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x61bf",
+    "text": "libm.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0x61c7",
+    "text": "libdl.so"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0xc4dd",
+    "text": "fpc1540"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0xcfb3",
+    "text": "[%s] sensor test type=%d, result=%d"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0xde03",
+    "text": "fpc1020"
+  },
+  {
+    "file": "fingerprint-service-fpc",
+    "offset": "0xe206",
+    "text": "vendor.hw.fingerprint.hwid"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0xfe8",
+    "text": "QSEECom_app_load_query"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0xfff",
+    "text": "QSEECom_clear_key"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1011",
+    "text": "QSEECom_create_key"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1024",
+    "text": "QSEECom_get_app_info"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1039",
+    "text": "QSEECom_load_external_elf"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1053",
+    "text": "QSEECom_receive_req"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1067",
+    "text": "QSEECom_register_listener"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1081",
+    "text": "QSEECom_scale_bus_bandwidth"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x109d",
+    "text": "QSEECom_send_cmd"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x10ae",
+    "text": "QSEECom_send_modified_cmd"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x10c8",
+    "text": "QSEECom_send_modified_cmd_64"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x10e5",
+    "text": "QSEECom_send_modified_resp"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1100",
+    "text": "QSEECom_send_modified_resp_64"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x111e",
+    "text": "QSEECom_send_resp"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1130",
+    "text": "QSEECom_send_service_cmd"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1149",
+    "text": "QSEECom_set_bandwidth"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x115f",
+    "text": "QSEECom_shutdown_app"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1174",
+    "text": "QSEECom_start_app"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1186",
+    "text": "QSEECom_start_app_V2"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x119b",
+    "text": "QSEECom_unload_external_elf"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x11b7",
+    "text": "QSEECom_unregister_listener"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x11d3",
+    "text": "QSEECom_update_key_user_info"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x11f0",
+    "text": "QSEECom_wipe_key"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1201",
+    "text": "__QSEECom_dealloc_memory"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x121a",
+    "text": "__QSEECom_get_handle"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x122f",
+    "text": "__QSEECom_issue_send_service_cmd"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1250",
+    "text": "__QSEECom_send_modified_cmd"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x126c",
+    "text": "__QSEECom_send_modified_resp"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1289",
+    "text": "__QSEECom_validate_send_cmd_inputs"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x12ac",
+    "text": "__QSEECom_wipe_clear_key"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1b44",
+    "text": "liblog.so"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1b55",
+    "text": "libc.so"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1b69",
+    "text": "libion.so"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1b73",
+    "text": "libcutils.so"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1b80",
+    "text": "libutils.so"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1b8c",
+    "text": "libc++.so"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1b96",
+    "text": "libm.so"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1b9e",
+    "text": "libdl.so"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1ba7",
+    "text": "libQSEEComAPI.so"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x1fb8",
+    "text": "QSEECom_dealloc_memory "
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x21a1",
+    "text": "QSEECom_unload_external_elf"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x21be",
+    "text": "QSEECom_register_listener %d sb_length = 0x%x"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x22c8",
+    "text": "QSEECom_unload_external_elf "
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x249d",
+    "text": "QSEECom_Send_service_cmd passed"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x2863",
+    "text": "QSEECom_Send_service_cmd failed"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x2939",
+    "text": "QSEECom_shutdown_app, app_id = %u"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x2b17",
+    "text": "QSEECom_unregister_listener %u "
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x2e7d",
+    "text": "Error::Eror in __QSEECom_get_img_file_size()"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x309f",
+    "text": "Error::QSEECOM_IOCTL_SET_MEM_PARAM_REQ failed with ret = %d, errno = %d"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x31ed",
+    "text": "QSEECom_get_ion_handle failed, exiting"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x3296",
+    "text": "QSEECom_load_external_elf"
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "offset": "0x336f",
+    "text": "QSEECom_get_handle sb_length = 0x%x"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xc74",
+    "text": "QSEECom_app_load_query"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xc8b",
+    "text": "QSEECom_clear_key"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xc9d",
+    "text": "QSEECom_create_key"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xcb0",
+    "text": "QSEECom_get_app_info"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xcc5",
+    "text": "QSEECom_load_external_elf"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xcdf",
+    "text": "QSEECom_receive_req"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xcf3",
+    "text": "QSEECom_register_listener"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xd0d",
+    "text": "QSEECom_scale_bus_bandwidth"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xd29",
+    "text": "QSEECom_send_cmd"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xd3a",
+    "text": "QSEECom_send_modified_cmd"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xd54",
+    "text": "QSEECom_send_modified_cmd_64"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xd71",
+    "text": "QSEECom_send_modified_resp"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xd8c",
+    "text": "QSEECom_send_modified_resp_64"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xdaa",
+    "text": "QSEECom_send_resp"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xdbc",
+    "text": "QSEECom_send_service_cmd"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xdd5",
+    "text": "QSEECom_set_bandwidth"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xdeb",
+    "text": "QSEECom_shutdown_app"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xe00",
+    "text": "QSEECom_start_app"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xe12",
+    "text": "QSEECom_start_app_V2"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xe27",
+    "text": "QSEECom_unload_external_elf"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xe43",
+    "text": "QSEECom_unregister_listener"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xe5f",
+    "text": "QSEECom_update_key_user_info"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xe7c",
+    "text": "QSEECom_wipe_key"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xe8d",
+    "text": "__QSEECom_dealloc_memory"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xea6",
+    "text": "__QSEECom_get_handle"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xebb",
+    "text": "__QSEECom_issue_send_service_cmd"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xedc",
+    "text": "__QSEECom_send_modified_cmd"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xef8",
+    "text": "__QSEECom_send_modified_resp"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xf15",
+    "text": "__QSEECom_validate_send_cmd_inputs"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0xf38",
+    "text": "__QSEECom_wipe_clear_key"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x186f",
+    "text": "liblog.so"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x1880",
+    "text": "libc.so"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x1894",
+    "text": "libion.so"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x189e",
+    "text": "libcutils.so"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x18ab",
+    "text": "libutils.so"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x18b7",
+    "text": "libc++.so"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x18c1",
+    "text": "libm.so"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x18c9",
+    "text": "libdl.so"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x18d2",
+    "text": "libQSEEComAPI.so"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x1cc4",
+    "text": "QSEECom_dealloc_memory "
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x1ead",
+    "text": "QSEECom_unload_external_elf"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x1eca",
+    "text": "QSEECom_register_listener %d sb_length = 0x%x"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x1fd4",
+    "text": "QSEECom_unload_external_elf "
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x21a9",
+    "text": "QSEECom_Send_service_cmd passed"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x256f",
+    "text": "QSEECom_Send_service_cmd failed"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x2645",
+    "text": "QSEECom_shutdown_app, app_id = %u"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x2823",
+    "text": "QSEECom_unregister_listener %u "
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x2b89",
+    "text": "Error::Eror in __QSEECom_get_img_file_size()"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x2dab",
+    "text": "Error::QSEECOM_IOCTL_SET_MEM_PARAM_REQ failed with ret = %d, errno = %d"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x2ef9",
+    "text": "QSEECom_get_ion_handle failed, exiting"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x2fa2",
+    "text": "QSEECom_load_external_elf"
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "offset": "0x307b",
+    "text": "QSEECom_get_handle sb_length = 0x%x"
+  }
+]

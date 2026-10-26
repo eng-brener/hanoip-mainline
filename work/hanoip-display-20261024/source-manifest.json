@@ -1,0 +1,19 @@
+{
+  "configs/hanoip-display.fragment": "3da7860bb8c801a3c38a2750f1770b13dcba0308c4a51ff50527af78a28d52a8",
+  "configs/hanoip-uboot-display-diagnostic.fragment": "4ee1fe90387fbe328be9d876f1457c0792ed178b0b5cbe6cd86138316db9f591",
+  "scripts/hanoip-load-display.sh": "78a2e4321c6decbec9622dbb11ca0eb012ee013fff8957fd92221ffcfd1efca1",
+  "scripts/hanoip_validate_display.py": "f6cf213205328f0a699e254f76ea9a5a93ade56cdb170cfba8da6b508df17e9e",
+  "kernel-mainline/drivers/gpu/drm/panel/panel-ilitek-ili7807s.c": "1db01a23faee30eff0ce114f110e65046aa8ce2b9d7995b618f75bde3524ae0d",
+  "kernel-mainline/drivers/gpu/drm/panel/Kconfig": "555d37db9c3f97fb4b9004e7b321dbca25262e424667739192f09912a30c3331",
+  "kernel-mainline/drivers/gpu/drm/msm/dsi/dsi_host.c": "c611dd1c91782442fca2874f8ef90b39f3a5c6c1f3d5561c440ddc1334812f36",
+  "kernel-mainline/include/drm/drm_mipi_dsi.h": "c3fed5a99539bca61d8fe00c19b5df0f94d511b43b2e8554614e7f3a330e35e3",
+  "kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip-display-diagnostic.dts": "7d0b71d5028034d52e4b6e89b0bb2f7f016ab15d0afba8bc52ed875e92563341",
+  "uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip-display-diagnostic.dts": "1ed250e3ae36954c5fef1f9991144a31b910f11439203315b2e9f47512f98caa",
+  "kernel-mainline/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c": "e81ac52c3d6fdf49e1ffffe42f49d26a746f2b05501c401e7f976f29da692bea",
+  "kernel-mainline/drivers/clk/qcom/dispcc-sm7150.c": "3f5483420ebaf063cfe6d5ef33a1803ba002c10955bf8f5d969e99e3a736e60c",
+  "kernel-mainline/drivers/gpu/drm/msm/msm_drv.c": "59e5686cf6fca29dea0480f4bbedc9957d5e661ad6fa608187e92e421f7a9b96",
+  "kernel-mainline/drivers/gpu/drm/msm/msm_mdss.c": "f99701dc3916e7d6928d44a9b9d3d29a36a2d73821aaf7e9163c324006613724",
+  "kernel-mainline/arch/arm64/boot/dts/qcom/Makefile": "5d858a2cb8d5f6dd4b2b778bf98fe8576488ced7c4bfb9e12d783455ce2f4070",
+  "AGENTS.md": "a4ab69da0e90eddffe1baf82f9b611bd56b058098280b068a01362aa17dfd5b9",
+  "docs/kernel/checkpoint-2026-10-24-display.txt": "ef6500808a85fc116fcd2c0af336fb2bc6dddcfa0abc4f5e1fa21d423aee7609"
+}

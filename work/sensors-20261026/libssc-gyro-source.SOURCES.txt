@@ -1,0 +1,1 @@
+libssc source (reference only, not built here): https://codeberg.org/DylanVanAssche/libssc.git @ 033e2a3

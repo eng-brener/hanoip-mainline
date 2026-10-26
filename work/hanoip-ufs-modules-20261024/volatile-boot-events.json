@@ -1,0 +1,208 @@
+[
+  {
+    "args": [
+      "adb",
+      "-s",
+      "ZF523QJBSG",
+      "reboot",
+      "bootloader"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "ZF523QJBSG\t fastboot\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "-s",
+      "ZF523QJBSG",
+      "boot",
+      "work/hanoip-ufs-modules-20261024/u-boot-hanoip-ufs-modules.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (516 KB)                        OKAY [  0.013s]\nBooting                                            OKAY [ 10.366s]\nFinished. Total time: 10.381s\n"
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "ZF523QJBSG\t fastboot\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "????????????\t fastboot\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "getvar",
+      "product"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "product: motorola-hanoip\nFinished. Total time: 0.000s\n"
+  },
+  {
+    "args": [
+      "fastboot",
+      "boot",
+      "work/hanoip-ufs-modules-20261024/kernel-hanoip-ufs-modules.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (13664 KB)                      OKAY [  0.456s]\nBooting                                            OKAY [  0.000s]\nFinished. Total time: 0.477s\n"
+  }
+]

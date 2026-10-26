@@ -1,0 +1,538 @@
+.42) #2 SMP PREEMPT Sat Oct 24 17:48:42 UTC 2026
+[    0.000000] KASLR enabled
+[    0.000000] Machine model: Motorola Moto G60
+[    0.000000] printk: debug: ignoring loglevel setting.
+[    0.000000] efi: UEFI not found.
+[    0.000000] OF: reserved mem: 0x0000000085700000..0x00000000
+HANOIP USB SHELL; filesystems in RAM; no partitions mounted
+Linux (none) 7.1.0-sm7150 #2 SMP PREEMPT Sat Oct 24 17:48:42 UTC 2026 aarch64 Android
+~ # 85cfffff (6144 KiB) nomap non-reusable hypervisor@85700000
+[    0.000000] OF: reserved mem: 0x0000000085d00000..0x0000000085efffff (2048 KiB) nomap non-reusable xbl@85d00000
+[    0.000000] OF: reserved mem: 0x0000000085f00000..0x0000000085f1ffff (128 KiB) nomap non-reusable aop@85f00000
+[    0.000000] OF: reserved mem: 0x0000000085f20000..0x0000000085f3ffff (128 KiB) nomap non-reusable aop-cmd-db@85f20000
+[    0.000000] OF: reserved mem: 0x0000000085fff000..0x0000000085ffffff (4 KiB) nomap non-reusable sec-apps@85fff000
+[    0.000000] OF: reserved mem: 0x0000000086000000..0x00000000861fffff (2048 KiB) nomap non-reusable smem@86000000
+[    0.000000] OF: reserved mem: 0x0000000086200000..0x0000000088efffff (46080 KiB) nomap non-reusable trust-zone@86200000
+[    0.000000] OF: reserved mem: 0x000000008ab00000..0x000000008affffff (5120 KiB) nomap non-reusable camera@8ab00000
+[    0.000000] OF: reserved mem: 0x000000008b000000..0x00000000933fffff (135168 KiB) nomap non-reusable mpss@8b000000
+[    0.000000] OF: reserved mem: 0x0000000093400000..0x00000000938fffff (5120 KiB) nomap non-reusable venus@93400000
+[    0.000000] OF: reserved mem: 0x0000000093900000..0x00000000956fffff (30720 KiB) nomap non-reusable cdsp@93900000
+[    0.000000] OF: reserved mem: 0x0000000095700000..0x00000000974fffff (30720 KiB) nomap non-reusable adsp@95700000
+[    0.000000] OF: reserved mem: 0x0000000097500000..0x000000009767ffff (1536 KiB) nomap non-reusable wlan-msa@97500000
+[    0.000000] OF: reserved mem: 0x0000000097680000..0x00000000976fffff (512 KiB) nomap non-reusable npu@97680000
+[    0.000000] OF: reserved mem: 0x0000000097700000..0x000000009770ffff (64 KiB) nomap non-reusable ipa-fw@97700000
+[    0.000000] OF: reserved mem: 0x0000000097710000..0x0000000097714fff (20 KiB) nomap non-reusable ipa-gsi@97710000
+[    0.000000] OF: reserved mem: 0x0000000097715000..0x0000000097716fff (8 KiB) nomap non-reusable gpu@97715000
+[    0.000000] OF: reserved mem: 0x000000009e400000..0x000000009f7fffff (20480 KiB) nomap non-reusable qseecom@9e400000
+[    0.000000] OF: reserved mem: 0x000000009f800000..0x00000000a15fffff (30720 KiB) nomap non-reusable sec-cdsp@9f800000
+[    0.000000] OF: reserved mem: 0x000000009c000000..0x000000009d6fffff (23552 KiB) map non-reusable cont-splash@9c000000
+[    0.000000] OF: reserved mem: 0x000000009d700000..0x000000009d7fffff (1024 KiB) map non-reusable dfps-data@9d700000
+[    0.000000] OF: reserved mem: 0x000000009d800000..0x000000009dbfffff (4096 KiB) map non-reusable ramoops@9d800000
+[    0.000000] NUMA: Faking a node at [mem 0x0000000080000000-0x000000017dcfffff]
+[    0.000000] NODE_DATA(0) allocated [mem 0x17d5131c0-0x17d5158ff]
+[    0.000000] cma: Reserved 32 MiB at 0x00000000fe000000
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: MIGRATE_INFO_TYPE not supported.
+[    0.000000] psci: SMC Calling Convention v1.1
+[    0.000000] psci: OSI mode supported.
+[    0.000000] psci: [Firmware Bug]: failed to set PC mode: -3
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000080000000-0x00000000ffffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   [mem 0x0000000100000000-0x000000017dcfffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x00000000856fffff]
+[    0.000000]   node   0: [mem 0x0000000085700000-0x0000000085f3ffff]
+[    0.000000]   node   0: [mem 0x0000000085f40000-0x0000000085ffefff]
+[    0.000000]   node   0: [mem 0x0000000085fff000-0x0000000088efffff]
+[    0.000000]   node   0: [mem 0x0000000088f00000-0x000000008aafffff]
+[    0.000000]   node   0: [mem 0x000000008ab00000-0x0000000097716fff]
+[    0.000000]   node   0: [mem 0x0000000097717000-0x000000009e3fffff]
+[    0.000000]   node   0: [mem 0x000000009e400000-0x00000000a15fffff]
+[    0.000000]   node   0: [mem 0x00000000a1600000-0x000000017dcfffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x000000017dcfffff]
+[    0.000000] On node 0, zone Normal: 8960 pages in unavailable ranges
+[    0.000000] percpu: Embedded 32 pages/cpu s92568 r8192 d30312 u131072
+[    0.000000] pcpu-alloc: s92568 r8192 d30312 u131072 alloc=32*4096
+[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 [0] 4 [0] 5 [0] 6 [0] 7 
+[    0.000000] Detected VIPT I-cache on CPU0
+[    0.000000] CPU features: detected: GICv3 CPU interface
+[    0.000000] CPU features: kernel page table isolation forced ON by KASLR
+[    0.000000] CPU features: detected: Kernel page table isolation (KPTI)
+[    0.000000] CPU features: detected: ARM errata 1165522, 1319367, or 1530923
+[    0.000000] alternatives: applying boot alternatives
+[    0.000000] Kernel command line: earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops console=tty1 loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0 maxcpus=6 cpuidle.off=1 cpufreq.off=1 idle=poll
+[    0.000000] Unknown kernel command line parameters "panic_on_oops=1 idle=poll", will be passed to user space.
+[    0.000000] printk: log buffer data + meta data: 131072 + 458752 = 589824 bytes
+[    0.000000] Dentry cache hash table entries: 524288 (order: 10, 4194304 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 262144 (order: 9, 2097152 bytes, linear)
+[    0.000000] software IO TLB: area num 8.
+[    0.000000] software IO TLB: mapped [mem 0x00000000fa000000-0x00000000fe000000] (64MB)
+[    0.000000] Fallback order for Node 0: 0 
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 1039616
+[    0.000000] Policy zone: Normal
+[    0.000000] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1
+[    0.000000] ftrace: allocating 51938 entries in 204 pages
+[    0.000000] ftrace: allocated 204 pages with 4 groups
+[    0.000000] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU event tracing is enabled.
+[    0.000000] 	Trampoline variant of Tasks RCU enabled.
+[    0.000000] 	Rude variant of Tasks RCU enabled.
+[    0.000000] 	Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 100 jiffies.
+[    0.000000] RCU Tasks: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=8.
+[    0.000000] RCU Tasks Rude: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=8.
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] GICv3: 928 SPIs implemented
+[    0.000000] GICv3: 0 Extended SPIs implemented
+[    0.000000] Root IRQ handler: gic_handle_irq
+[    0.000000] GICv3: GICv3 features: 16 PPIs
+[    0.000000] GICv3: GICD_CTLR.DS=0, SCR_EL3.FIQ=1
+[    0.000000] GICv3: CPU0: found redistributor 0 region 0:0x0000000017a60000
+[    0.000000] ITS: No ITS available, not enabling LPIs
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+[    0.000000] arch_timer: cp15 timer running at 19.20MHz (virt).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x46d987e47, max_idle_ns: 440795202767 ns
+[    0.000000] sched_clock: 56 bits at 19MHz, resolution 52ns, wraps every 4398046511078ns
+[    0.000203] Console: colour dummy device 80x25
+[    0.000215] printk: legacy console [tty1] enabled
+[    0.000959] Calibrating delay l
+[missed 18714 bytes]
+[   18.405748] platform 62b52000.pinctrl: deferred probe pending: (reason unknown)
+[   18.840285] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   19.276234] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   19.712583] qnoc-sm7150 16e0000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   20.148802] gcc-sm7150 100000.clock-controller: sync_state() pending due to 1d84000.ufshc
+[   20.586155] qnoc-sm7150 1380000.interc
+[missed 411 bytes]
+[   22.788780] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 5000000.gpu
+[   23.229608] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   23.670675] gcc-sm7150 100000.clock-controller: sync_state() pending due to 18323000.cpufreq
+
+~ # /bin/busybox cat /proc/mounts /proc/partitions; /bin/busybox mount -t pstore
+ -o ro pstore /sys/fs/pstore; /bin/busybox ls -l /sys/fs/pstore; /bin/busybox ca
+t /sys/fs/pstore/console-ramoops* /sys/fs/pstore/dmesg-ramoops*; /bin/busybox um
+ount /sys/fs/pstore; printf '\nHANOIP_END_7858f744b7b1\n'
+rootfs / rootfs rw,size=1798900k,nr_inodes=449725 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=1798900k,nr_inodes=449725,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+major minor  #blocks  name
+
+   1        0       4096 ram0
+   1        1       4096 ram1
+   1        2       4096 ram2
+   1        3       4096 ram3
+   1        4       4096 ram4
+   1        5       4096 ram5
+   1        6       4096 ram6
+   1        7       4096 ram7
+   1        8       4096 ram8
+   1        9       4096 ram9
+   1       10       4096 ram10
+   1       11       4096 ram11
+   1       12       4096 ram12
+   1       13       4096 ram13
+   1       14       4096 ram14
+   1       15       4096 ram15
+total 0
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+-r--r--r--    1 root     root         33328 Aug 11 21:59 console-ramoops-0
+[    0.000000] Bootilg Linux on phqsicaL CPU 0x0000 000 Y08%1df8 %e]
+Y    0,00000] L!nux versio. 7.1.0-sl35 (Cinst@Cocainelle) (aarch64-linux-gnu-gcc Ubuntu 13.30-6ubunpu2~24,04.1) 13.3., GNU Le (GNU B)ned)ls foP Ubunt! 2.2) #$ SMP PREEMPT Sat OcT 26 !:#$208 UB "026
+[    0.00000] KAQLR efa"ded
+[     .000000] Machine mo`el: Mgorkla Motn G20
+[    0.0 0000_ printk: debue: ignorine loflevel sDtting*
+[    0.00000] efi8 UEFH lot found.
+[    0.000 00] OF recerved leM: 0x00 0008%7000&.2x0000000085cfffff (6144 KiB	 omap non-PeuSable hypervisor@<5300 00
+[    0.00 000] OF: r%aerved mel: 0x000 00008d0000 .0p0000000085eFffdf (2048 KiD) Nola@ non-reusable xbl@85d00000
+[    0.000000] OD pedrved mei: 0x00000000(5f00000..0x0000000(5f1ffff (1"( KiB( nomap fGn-reuqajle aop@84f00000
+[    0.0 000 ] ON: resgrvad mem: 0x00 000p81f20000*.0x00000000(5F1ffdf (128 KiB) Nolap nfn-reUsable aop-cm$-Db 85b20000
+[    0,000000] OB: resepved mem: 0x000400081fFf00..0x000000(5fff&ff (4 KiB) fnmap non-reqsable sec-aPps@85Fff000J[    0.000000] OF: reserved mem: 0x0000000086000000..0x00000000861fffff (2048 KiB) nomap non-reusable smem@86000000
+[    0&000000] OF: rEserve` mem:  800000000(620 000..0x000°000088efffff (44080 KIB) nomap non-reusable trust-zone@84600 0
+[    0.0000 ] OG: reserved mem: 0x000000008ab00000..0x00 000008!ffffff (5120 KiB) n}-Ap no.)reusaBle"camEra@8ib00000
+[    0.000000] OF: reserved mem: 0x000000008b000..x000 000933fffff (135060 HiB) nomap non-reusable mpss@8b000000
+[    0.000000] OF: rEserved m%m: 0x00 000093400000..0x04 0p000)38ff$ff (510 KiB) nomap nGn-reuqablg venus@93400000
+[    0.000000] OF: resepved mem2 0x0000000093;00000..0x0000000956ffFff (30720 KiB) nomap n,n-beusabhe #DsP@83901000
+K    0.000000] OF: reserved iel: 0x0000000095700000..0x00000000974fFfff (30720 KiB) nomap nonrduqable Adsp@9700000
+_    0.000 00] _F: reserved mem8 x000000 09750000.0x000000009767fdff (1536 KiB) nomap non-reusable wlan-ms`@97500000
+[    0.000000] F: resErved mem: 0x00 00004972000..0x00000076fdfff (512 KiB	 Nomap non=ReusabLe npu@9768 00
+[     *000000] OF8 reservad mel: 0x0000000097600000..0x000000097'0FfFf (64 IiB) noeap non(reusable(iPAfw@7700000
+[    0.00000] OF: reserved mem: 0x0000000097710 00..0h0000200097614fff (20 BiB) nmmap nOd-repsabhe ip!-cSi@9750020
+[    . 0000 ] OF: 2ese`~ed leí: 0x0000000097715000..0x00000009#716fff (8 KiB) .omap non-Re4sabla gpu@977a5000
+[    0. 00000 OF: resepved lem
+ 0x000  009e40800..x000000009f7f&ffF (2080 KiB) nnmap non%reus@Bda qSdecDm@9e40000
+S    0.000000] O: rdsdrved eeM8 0x00000009f80000..0h0000 000a15ffddd +520 KiÂ) .omap non-reu3able sdc-cDcp@9f00000
+    0&0 000`GF8 2eServdd mem: 0x000000009c00°000.. x0000000d6ffffd (23552 KiB) map non-reusable cont-splash@9c000000
+X    0.00000 ] OF 2e3erved mem: 0x000000009d700000..0x000000009dfFfff (1024 KiB) map non-beesa"le dps-datA@9D7000
+[    0.000000] OF: raServed meM2 08 00000 D800000"0p082000009dbdfFff (4096$KiB) map Ngn-BAusable ramoOpq@)d800000
+[    0.000000] FUA2 Daking a node at SMem  x°0000000:0000000-0p000 00017dcbffff]
+[    0&000 00] NODE_DATA(0) allocated [mem`0x17d%10f80-0x17d5156bf]
+[    0.000000] cma: Reserved 22 HiB at 0x00 000 0fe000 0
+[    0.000000] psci8 probing dor Conduit method fBom T.
+[   $0.000000] `s#i SCIv.0 det%cted in firmvare.
+Z   00.00000 ] psci: Using stAndard PQCI v0.2 function IDs
+[    0.000000] psci* MICRATE_INFO_TYP not cupported.
+[    0.000000] psci: SMC Calling ConventiOn v1.1
+[    0&0 0000] psci: KSI mode supported.
+[    0.00000] Psci2 [Firmware Bug]: failed to cet PB mode: -3
+[    0. 00000] Rone rAngep:
+[    0.000000]   DMA      [mem 0x0000000080000000-0x00000000ffFfffff]
+    0.00000 ]   DLA#2    emptx
+[    0.0000 0]   Normal   [Mem 0x0000000100000000-0x00000°017$cfffff]
+[    0.000000] Mov!ble zonE starT for each node
+[    0.000000] Early meiory node ranges*[    0.000000]   lode   0 [mem 0x0000000 8!000000-0x 0000000(6&ffffL
+     .000000]   node   0: Smem 0x0  00085300000-0x0000000001f3ffff]
+[    0.000000]   node   0: [mem 0x 000000085f40000-0X0000000085ffefdf]
+[    0.000000]!  n/dE   0: [mdm 0x0000000085fdf100-0x000000088efffFf]
+[    0&000000]   nodm   0: [mem 0x000000 88f00 000x0 000008aafffff]
+    0.000000]   node   0º Xmem 0x00000008ab00000-0x0000000097716ff`]
+[    0.000000]   node   0: [-em x000000009771&000-0x000000009e3fdfffM
+S    0.00000]   node   0: [lem 0x000000009e400000-0x00010000a15fffff]
+[    0.000000]   node   0: [mam 0x0000000a1600000-0x000000016dcfffff]
+[    0.000 00] INitlem setqp lOde 0 [mai  x0000 00080000000-0x00000007dcfffff][    000 000] Ïn node 0, zone Normal: 8960 pager in unavailable rajges[    0.00 000] pepcpu: Embedded 22 pages-cpu s92568 r0192 t30212 u13!072
+[    0,00000 pcpu-alloc2 s90568 r8192 d30312 u131072 alloC=32*4096
+[    0.00000] pcpu-alloc: [0] 0 S0] 1 [0] 2 R0] 3 0] 4 S0] 5 Y0] 6 [0] 7 
+[    0.00 000T Detected VIPT I-cachE on CPU0
+[    00 0000] CPU fe`tures: d%tectad: EIct3 CP intErf`ce
+[    0.022000\ CPU fdat4res: kernel page ta"lE isoladion force  ON by JASLR
+[    0.00000] CPU"feadures: dEteaTed: KerneL page table isglapio. (KPTI)
+[  " 0.00000] CPQ features: äEtected: ARM eBrAta 1141502, 1#19347, or 1530923
+[`   0.000000] adDernatiTeS: a`plyinf boot alternatives[    0.0 000 ] Jernel command line: darlyckn=msmßgeni_sepial,0xa88000 console=ttiMSM0,115200n8 co&sole=ptyGS0 conóole=ramgmts consode=tty1 lofleved=8 agnore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused con3oleblani=0 vt.globa,_cursor_defaudt=0 m!xcpus=6 cpuhdde.off=1 cpuf2eq.gff<1 idl%=poLl
+[    0.000000] Unkfown kernel #omm!nd line parameters "panic_on_oops=1 idle=poll", will be passed to urer rp!ce.[    0.000000] printk: log buffer dat` + deta dat`: 131072 + $5x752 = 509824 byTes
+[    0.000000] Eentry cac`e hasH ta de enTraes: 1242(8 (orDer8 10, 494304 byt%s, linear)
+[    0.000000] Inode	cache hash table entries: 262144 (order: 9, 2097152 bytes, lanea2)
+[    0.000000M sobtwa2e IO TLB: area num 8.
+[    0.000000] software IO TLB: mapped mem 0p00000000fa000 00-0x00000000fe000000] (64MB)
+[    0.000000] Fallbaak grdeb fmr Node : 0 
+[    0.000002] @tilt  zo.lists, mobility grOupilg on.  Total pa'eq: 1039616
+[    0.00000] Policy zone: Normal
+[    0.000000] me- auTo-init:"stack:all(zero), heap alloc:off, heap free:off
+[     .00000\ SLEB: HWalign=64$ OrDeR=0-, MhnObjects=0, CPUs-8, Nodes=1
+Z    0000000] ftrace: `,locating 519)5 entrie3 )n 204 pA%es
+[    0.000000] d4race: allocap%d 04 pagds 7ith 4 gvoupc
+[    0.00000] rcu: PrEemptible HiEr`rc`iaal RCU iiplement`tiOn.
+K    0.000000] rc5: 	RCU Eve*t tracing is enabhed.
+[    0.00 00Y 	TpampeliNe fariant of Tasks RCU enabled&
+[    0.000000] 	Rude variant of TaskqRCU enabLed.
+Y    0.0 0000] 	Tracing variant of Tasks CU enable$.[    0.000000] rcu: RCU calculated value gf scheduler-enlisument deLay as 00 jifdies.
+S  $ 0.00000] RCU Tasks8 Setting Shift to 3 and lim Dk 1 rcu_4`sKßcb_adjust=1 rcu_task_cpu_ids=8.
+[    0.000000] RCU T`sks Rudd: Settilg shift to 3 and lim to 1 rcu_task_cb_adjust-! rct]Task_cpu_ids=8.
+[    .000000] NR^IQS: 64, nr_irqs: 64, preallocatEd irqs: 0
+[    0.000000] ICv3 928 SPIs impeemented
+[    0.000000] GICv3: 0 Extended QPIs impnemented
+[    0.000000M Roo4 IRS"(andleb: gic_handLa[irq
+[    0.000000] GHCv2 GICv3 features: 16 PPIs
+[    0.000000] GICv: GICD_CTLRDS=0, SCR_EL3.BIQ=1[    0.000 0] GIAv3: CPU0* dound redistributor 0 region 080x0000000017a60000
+[    0.000000] ITC: No ATC available, not enabling LPI3
+[    0.000000] rcu: srcuanit: Settinw Srcõ_struCt sizes àased on contentaon.
+[    0.000020] clocksource: jaffies2 mask: 0xffffffff map_cycles:  xffffffff, maxMadde_nr: 911260446275020 ns
+[    0.00000 ] arch_timer: cp15 timer running at 19.20MHz (virt).
+[    0>00000 ] cLoCcSotrce: aRch_sys_coulter: iask8 0xfffffffFfffdf& iax_ciches: 0x46d987e47, max_idle_ns: 440795202765 ns
+[    0.000000] sc`ed_clock: 6 bits ad 19MHZ, resoLuthon 52ns, wrapr every 398046511 78ns
+[    0.000201] Conskld: colour dummy devicd 80x25
+Y    0.000212] priJtk: legacy consola [tty1] enabled
+[    0. 095] CaLibratiJg delay loop (sKipped), ta$ue calculAtEd using time &rmqUeNCy.. 38.40 BOgoMIPS (lpj919200)
+[    0.0 0)77] pid_max: default: 3"768 minimum: 301
+S    0.001188] Yama: becoming mindful.
+[    0.00584] LSM su0port for eBPF act)te
+[    0.001702] MoU.p-cache hash table entries: 8192 (order: 4, 6%5;6 "ytes, liNe!2)
+[    0&001726] Mountpoin0-cache hash table entries: 8192 (order: , 65536 b1tes, Lineiz)[    0.00245] VFR: Finashed Mounting rootfs mn ntll&s
+[    0.°0265\ rcu: @ierarchical SRCU implementAtiof. [    0.00428] rcu: 	Max pxase nn-$ElaY ins4ánces hs 400.
+[    0.004493M Timep migratien: 1 hiararchy larels9 8!children peb GroUp 1 cpossnod% ,evel    0.00549f] EFI services wmll nod be Afailable
+[    0&00589&] smp8 BranGmng up saAondary CPTs ..
+[    0.007214] Detecped TIPT I%cache on CPU1
+[    0.007393] GICv3: CPU1: fujD redIqtri"utnr 100 rdeion 0:0p000000001a80000
+Y    0,00745] CPU1: Booted secnDary prnceqsor 0ø00  00010  [0x51df805eE
+[    0.008725] DetecTed VIPT I-cache on C@U 
+[    0.00885] GICv3: CPT2: found BediStributop 200 region 0:0x000000001'aa0000
+K    0.008926Y CPU2: Bonted secondasy proadsSor 0x000000020  [0851df805e]
+[    0.010192] Detected"VIP I-cache nn CPU3
+[    0"010341] GICv3: CPU3: found redistri`utob 300 region 0:0p0000000017ac000
+[    0*01039• CPU3: Booted secondary procaCsoR  x000000300 [0x51df81u]
+[    0.11615] Detected VIPT I%c`che on PU4[    0.011888] GICv3: CPU4: found redistriButor 400 region 00x000p000017ae0000
+[    0.011925] CU4: BOgted seCondary prlaesso" 0z0000000400 [0x51df805e]
+[    0.01#400] Lepected VHPT I-ca#he on CPU5
+[    0.013557] GICv3: CPU5: found redistributor 500 region 0:0x0000000017b00000
+[    0.013595] CPU5: Bootdd 3ecojdary proCesskr 0x0000080500 [0X51df805e]
+[  ( 0.013675] smp: Brought u@ 1 nodd, 6 CPUq
+[    0.013683] SMP: Total of 6 processors activated.
+K    0.05392M CPU: Adl CPU(s( started at EL1
+[    0.013802] CPU featurds: Dete#ted: 32-bat EL0 Sup`ort
+[    0.013813] CPU featurås: deTaBted: Data cache blean to the PE not requiRe` dor I/D coherenc%
+{    0.013826] CPU fEAtures: detected: Common!n/t Prirade tran3lations
+Y  $ 0.013836] CPU features: detected: CRC32 inqtructhons
+[    0.0138$7] PU feaDures: detected0 RCpc load-acquipe (LDAPB	
+[    0.01358U CP featureq
+ detectedz LSE At/mic instru`tiOns
+[    0*1138(\ CPU featqres: detebted: Priv)leged Acce{s Never
+[     .003079\ CPU featuPes: detecped: PLUt3
+[    0.03888] CPU feaTures: detected: RAS Extensi-n SuppKrt[  ` 0&013901] CPU features: detected: XNX[    0.01#958] altepNaDivec: applying system„gide alternapives
+[    0.018918\ Memoby: 3587884K-4158464K available (17408K kernel code, 2446K rwdata, 6892K rodat`, 6272K ijiT, 433K `ss, 529956K reserved, 32768K cma-reserved)
+[    0.000293] dEvtmpfs: inidialized
+[    0.348&)] porHxtimeRs hash ta`l% %ntries: 4096 order: 4, 65536 bYtes, linear)
+[   `0,04990] Fute8 has( ta`le entries: 2008 (!31072 "qtes mn q NEMA nodes, tntal 128 KiB, libear).
+[    0 35322] 2G module reg`on fmrced by RANDOMIJ_MODULE_RÅGIMN_DULL[    0.03537] 0 paeeq In ra&ge Fob non-PLT esage
+[    0.031352M 515856 pages in rafge for PLT tsage
+[    0.03641] DEI: not present or invalid.
+[    0.038246] NET: Registered PF_NETLINK/PF_ROUTE `rotoc/l fam)ly
+[    0.03°882] DMA pre`llocatad 512 iB GFP_KERNEL pool for atomic allocationc
+[    0.038995] DMA: `raal,mcated 512 KiB FP_KARNEL|FP_DEA pogl for at/mic allocatio.s
+[    0.039049] audit: initializhnG net,in+ sqbsys ($isabLed)
+[    0.039181] audit: type=2000 audit(0.034:1): stade=initi`lized audit_enabled=0 res=1
+[    0.040464] thermal_sys: Registered therm`d govern/r 's4ep_wisE&
+[    0.040471] thermal]sys: Registerdd dhereal gOvErnor 'power_allocatop%
+[    0,040610] NET: Registered PFWQIPCRPR protocol family
+[    0.040800] hw-`reakpoilt: BounD 6 breakpoinp aod 4 vatChpoint registers.
+[    0.040936] ASID allocatkr Initialised 'ath 32768 entries
+[    0.041218] Sepial: AMB@ PL 11 UART driver
+[    0041871\ pamoOps: found existijg ifvalid buffer, size 48644, start 48708
+[    .0400)3\ pstore: Using crash dump compression: deflatE
+[    0®04!10] Prinvk: l%gacy concohe [ramoops0] %nabled
+_    0.0427)0 0Cto2e: RDgistepeD ramoops as persistdnd store ba#knd
+[    0.04"804] ramoops us)ng 08$ 0000@0x9d800000, Ecc: 0
+K    0. 046!8]"PUidle PSCA: Anitialhzed C@U PM doMaiN dop/lggy uring QI mode
+[    0051460] .soc@0/usb@a4f800/5sb@a600 00: Fixed dependency cycle(s) gidh /soC@0/spmi c40000/@mic@/typec@1500/connector
+[    0. 5q171M /soc@0/display-subsxstem@ae 000/daqplAy-coNtrolleR@ae210 0: FIped de`endency cyble(q) with -soc@0display-subsystem@ae00000/dsi@ae94000
+[    0051238] 'soc@0/dis`lay-subs9stem@`e0008 /dsi@`e94000: Bi8ed de`enden#y cycde(r) with /s/c@0/dasplay-subsystem@a%00000.dsi@ae84000/panel@
+[    0.05128] /soa@0/`isplay-Subsysdem@ae00000/dsi@ae9400: Fixed `ependenay cycles) wiTh /s/!@0/disqlay-s5bsystem@ae00000/dIpplay-cnntroller@ae01000
+K    0.051403] /sob@0/display-subsyqtem a%00000/dri@ae94000/penal@0 Fix%d dependenby cycle(s) wiTh /coc@0/display-subsYstem@ad0 000/dsi@ae94000
+[    0.01455\ /3oc@0/@isplay-sqbsystam@aE00000/pHy@ae940: Fixed dependehcy cybLu s) with$/soc@0/clock-contrnller@af00000
+[    0.0$1487] soc@0/clock-controlleR@af00000: Fixed depende.cY cycle(s) with /soc@0/display-subsystem@ae00000/phy@ae!4400
+[    0.051545] /soa@ /sp-a@c440000/pmiC@0/tqpac@1500/connector: iPed depeNdenci aycle(s) with /soc@0/usb@a¶f8800/usb@a600000
+[    0.051617] /skc@0interrupt-controller@37a0000°: FIxEd dependencq cycld(s) with /qoc@0/iftErruptcmntrole2@17a00000
+[    0.057713] /soc@0/usb@a6b880/usb@a600000: Fixed d%pendency cycle(q) with /soc@0spmi@c440000/pmic@0/typec@1!00/connector
+[ $  0.05824] /so#@0/Display-subsystem@ae00000: Fixed dependency cycle(s) 7ith /qoa@ /block-contpoller@af0000
+[    8.058509] -socP0dIsplAq-stBcystem@ae00000/displ!y-cOntroller@`e01001: Fixed dependency #yald(s) with /sfc@0/display-subsystem@aE00000/dsi@ae94000
+[    0.058582] /soc@0/display-subsystem@ae00000/dsi@aE940 2 Fixed depende.cY bycLe(s( wiTh /coc@0/display-1ubsyspem@aE0000.dsa@ae94000/pajel@0
+[    0.058639] 'soc@0/dasqlay-subsystem@ae20000/dsi@!e94 00: Fixed derendency cycle(s) widh /soc@0/display-subsystem@ae00000/displa9controller@`e010 0
+    0.05880$] /soc@p+@ésplAy-subSystem@ae00 00/dci Ae94000/panel@0: Fixe` depe~dency cycle(s) with soc@ /dhsrlaq-subsyctem@A%00 00/dci@ae94000
+[    0.058858] /soc@0/display-SubsqstEm@ae00000-phy@ad90401: Fixed depandency cyble¨r) Wiph /soC@0/clock-cont`ollar@a$0000
+[    0.059019] #soc@0/display-subsyctem@aa00000/phy@ae96400: Fihed dependency cycle(s) wi4h /soc@0/CloCk-controlla3@af000 0
+ !  0*059!08] /Soc@0/dispa1-s5"system@Ae0000: Fixed dependAncy cycle(s) with /soa@0/clck-aontrgìler@af0000
+[    0.058140] /roc@0/cloci-controller@af00000: F)xed depelde.cy cYcle(s) widH /soc@ /display-subsYstem@ae 000 /phy@ae94400
+[    0.060294] /soc@0/qpma@`4 °00/pmic@0/typec@1500/cofnector: FhXed dependancy cycle(s) with /soc@0/esb@A6f8000/5sb@!6 0000
+[    0.066995] /soc@ -rqc@18200 0/regUlators%0: Fixed depmjdency Cycl%(s) tith -skc@0/psc@820 00/2egthators%0/cmps5
+[    0. 67047] /smc@0/rsc@18200000're'ulators)0: Fiøad dependenby cycleò) GhdH /soC@0.rsa@18"00000/ðegulators-0/sIps4
+[    0.07046 /soc@0/rsc@1(r 0000/reeul`toRs-!: Fixed dEpenDafCy cycle(s) wiph /soc@0/rsc@!8200000/regulado2s-1/bob
+[    0.067279 /soc@0/Rsc@08200000/regqlapors,1: Fixel dependency cycle(s) Gith /soc@0/rsc@18200000/reeulators-1.smpa8
+[    0.070424] HugeTLB: regipdered 1. 0 UiB pAge size, Pre-allocated 0 pa'ec
+[    0.0w0445] HugaTLB: 0 KiB tmemmap can be fraed for a 1. 0 GiB pafe[    0.07046\ HugeTLB: rdgIcterdd 32.0 MiB pAEe sizE, `re-alloc`Ted 0 pages
+[    0.070489] HugeTLB: 0 KiB vmemmap c`n bd free` f'r a 12.0 MiB p@ge
+[    0.070505] HugETLB: peGistered 2.00 MiB page sizd, pra-allocated 0 pages
+K    &070519\ HTeeTLÂº   K)B biemmap c`n be frEe  flr a 2.00 MiB page
+[    0.070534] HugeTLB: registepdd 6$.0 KiB page size, pre-`llOcated 0 pages
+J    0.070547] HugeTLB:   iB vmemmat can be freed for a 64.0 KiB page
+[    0.072082] r`i$6: using neon recovery `lforithm
+[    0.088544L raid6: int64X1  gen(!  1650 MB-s
+[    0.104419] Rai$2: inT64x2  gen(  186 MB-S[   0.!"2708] raa`0: int6x4  g%l(	  19(9 MB/s
+K    0&1"9776] rAiD6: int60x( (ea.()  120 B/3
+[    .156843] ra)D6: BeonX   gen(	  2355 MB/s
+[    ,13951] 2 id6: neonx6   gen()  27 7 MBr
+[    0.190006 paId6: neofx4   ef()  2778 EBs
+[    0.208108 r!id62 negnx8   gdl()  283  M@/r
+    0&208033] ra	d6: using(ad'orithm neoNh8 Can! 0810 LB/s[    &225139E rai`6: >*, 8mp() 2108 MB/s, Bew enabled
+[    22007U iommu: Dega@l4 `o-ain Type Trad3hatadJ[    0.2"8340] iomee: DM@ DgmaIn TLB iNva|iDatikn pglicY8 {tri#t mMd
+[!   0,22896] SCSI Cbsystem iniTIalIzed[    0.22160] usbckre: registered newiNerface drave2 us`fs[    0.229200] Esbclre: R%chstera% Fes iferdace drIwaR (Ub
+[    0>229049M us"cNpe: reei#tarad ~%w d%picE drIVer qsb*[    0.229390U ppq_corE: La,uxPP A@A ver. 1 2egistered
+[    0.029410M pp{_Cnre Software vEr* 53.2 - Aopypight 2005-2007 Rodolfo EiOmet4i $gIometti@linuX.it
+K    ."29436] PTP adocK suppg2t rEgistE`E$[    0.29503] EAA B: Ver 3.0
+[    0&:"9749M scii_core: SCMI prtOcol bqs regasteRed
+[    0.21134] vgaarb: Lo#ded[    0.231605] cloc+snuòce: Svitched to #lOCksOurbe arc(_sys]cgunte0
+Y    0.231=4] VF@: D)sk q5odas Dqeot_6.60
+[    0.3"0!1] VFS: Dquo-cachd aSH 4ablE en0raes: 510 h4096 bxtE3!
+[    0.038346] FET* Reghstardd`PF_INET pr/toaol famhLy
+[    1.28•03M IP idants h`sh t!b,e en4rhes8 65536 (ordEr8 7, %24288 `y4es, hilear)
+[    .240707] `cp_LiQten_opd!ddrhas  h`sh tabe entri%s¢ 2 08 */Rder8 1$ r768 b9pes, la.ear)
+[     .24°73#@ TAble-perttrb H!3h ta`L entp)es* 6536  order* 6, 2<"144 bYtEs, lileap)
+[    0*40797] TP esda`hashEd has( ta`le !ntrIe2 3%68 (nr`dr: 6, 262144 "ytes, lindáb)
+[    0.208•9] TC `inD Ha3h pabla dftr)es: 32568 (or`eR8 8, 1048556 "ytes, lifear)
+Z    0.2415] TCP8 Hash Ta"les a/nf)gurad !sta`lh3hed 3276 bijd 3768)[    0.2$07 1]"UDP ha3h ta`le entr)ep: 208 (ob$ep 5, 131072 bytes, linear)
+[    0.24!936] ^E: Registered PF_UNIX/AFQHOCAL pRotocol Famalq
+S `  0.21980] RBI: CLS 0 b94es  d%Fa5lt 4
+[    0.2422"!] TpKinG to unpack RootFs i-age as initamf..&
+[    0,243#16] Inatialiq% system trust%D keyRingq
+    0."3502] wok)ngset: timestmp_bits=45  aNOn: 40) max_ordår=:0 b5ckat[order=0 (anon: 0)
+[    0."434] NET
+ Reeiste`dd PFALF protOCil faLily
+[    0.24440!] ay typa a3yieetbac register%d
+[     .244425] Asyalatric )AY PabseR #p509' rEgIstered
+[    0.240491] @loci l!9dr CCS	 genarac ("sg	 dphvep versign 0.4 ,oaded (m`jor 244	
+[     "24462M io cched5le2 iq-deadline regisPeRed
+[    0,244678Y io 3che$tler ky"er begistERed
+    0&244'13] io sch%dulEr "fq beEistered
+[    0(2404] xkr2 meAsuring So&tware chEcisum speed
+[    p.20505]    nEmn         (  2  3 08 MB/qecS    0.247003]    32regs          "  29!	 IB/sec
+A    0.248 69]    (regr           :  31!) MB/Sec
+[     .2@83] por: 1qi.g functimF: 8rE"3 (31! MB/seb)
+Y     .10#0\ lE`trAg-Cpe2 regi3pdRe` uN indicate `ctIvity"ol APUs[    0.254129Q simpDe-Fraeabuffer 9b000000&fb`ebufFer siE0lef": caNHop reserve(vid%o memoRp at [md- 0x1b00000x9c 2287fU
+[  $ 0&618M rimple-fraeebuFfer 9c00 000.fra-ebuffer dramebuffeR at 0x9c00000$ 0xá2280 bytes
+[    0&25605\ 3imple)framebufger 9c0000.fPamebuffer: format=a8r(g8b, mode=0(0x2460X3, linEl%ngth=4100
+[    0.309191] COnsole: switchInç to colour &rame buffer devicD 13x053
+[    0.3537%9] Fr%ahng inhtrd memorq9 #476K
+[    0.41901M rihpld-fpaMebwffer 9c0 0000bramEbudfe0: &b0: simplefb rdgistared!
+[     453(4] vrEg^S1c0p1#: SettIng 000 00-120000 uR
+[    0.452273] vreg_R8c_p8 SeTtinG 1200°0-1720000uV
+[    2.41#174] vreg_l1c_1p8: Set5ing 1616000-184000uV
+[ `  045405^ vreg_l2c_1p3: Settinc 1200000-1342000uV
+[   045423] Seraal: 8"50/1655  driTer, 4 p/bts( IQ sharinf enabled
+[    0*454108] free_L3c_1p0: SettinC 1044000-1256000uT
+[    0.456211] vreg_l4c_1p8: Setti.g 1648000-2950000qV
+[     .453151Ü vreg_l5c]1P8: Sedting 16 800%2950000uV[    0
+057379] msmYsesi!l: `rhveR initAalIzed
+Y    0.45802'] vreg_l6c_#p0: SEttilg 124800-2950000uV
+[    0.41;#66] reg_,7c_3p0: SetTing 3 00000)1312000uF
+[    .4628!E vregOlc^1p8 Sattin' 1000040-1900000uT
+[    0.46112] vbeg_lc_3ð3* SEtt)jc 2970000-310 00V
+[    0.61989] vree_h10cM3p38 SetTilg 20 00,3310u
+[    0.44"823] vree_l11c_3p3: Septinc 29500-340 000u
+K     .43654] tre'_bkb: SettiN 3296 0 -3860000QV
+[     .466611Y brd: -ku(e"loadeD
+[    0/4'175] dooP: odule lmade$
+[  ` 0.458$] Zr!m: @dded deviCe: zR`m0
+[    0.470r0] bpmi_pmib_pb c44000.spmi: PLIC arbit2 vEpóikê 65 (0850000000)[    0.476335Y #soc@0/s`mi b04000/`lic@ /typec@150coNnector: FixEd da`en$ency #yslec) sith soc@0/uSbÀa&f880.usb@`6 0000
+    0*48408] /skc@/spMi@c400000/pmhc  /p)pec@1% 0/connec4/r: Fhxe$ D%PEjdency cycld(s) whth /smc@0+u3b@a6f8800/qsb@a6 000
+K    0.486641] qcnm-pm650l%lcd` c4$0100.Cpmi:pMya@5:regplator@eb00: LCD captu0e EN 0x80 RDY 0p80
+[    0.48'325] qcom-pm6050l-lcdb c$400.cpl):@mic@7:beeqlatgr@ec 00 LCDB HNP_RT 0x1 VREE_OK 1 SC 0
+[    0&485%95] tHtnDerSxb6 ver 1. 
+[ `` 0.4801%] qcom,pm6150l-lcDb c 40000.spmi*pmis@5:b%g5dator@ec 0 HBDB roltaces LAB 5500 I@B 5500 @ST 560
+[ !  0.488623] tHun$er_bsx$ rep 1,[    0.08908U qcimpm2110l-,c`b c44 00.Spei:`mia@5:gulauOr@ec00: LDB adopTed ana"led s0Aôe froe ABL
+[    048992$] nicpf, vr  .0
+R    °.090523] qcom-pm610l-lcdb c$40000*spmi2p-ic@5
+rdaqlatmr@ea00: PE2150L LCDB pr/bed full
+[    0&491Q88] e10 0: Intel(R) PRO+100 Hetwobi DrIder    0.492440] e1000: Cg@yrig`t (a) 1989-2004 I.tel SgrporAthkn.[    0*093!(Y a500e2 Intel(R) PR-100 atwnr+ Dpiver
+[    0.412777] e100 e: Co`yright(c) 1999 % 2015 Intel Corpor!tIn.[    0, 94510] sky2: drivep version 1.30[    4.49551] VFIO - Useb Hevel ma`-dr(ver versiof: 0.3
+[    0.4943 rtc-pm0xxp c440000,cpm)2pmic@0rtc@ 00: raghstered as rtc0
+[    0&500071] rtA)pe8xxx c440000.spmi:pmic@0:rta@6001 retting sYCtel cdmcj to€170-8-!1T21:7:00 TTA (45090260)
+[    0.007$6] y2cQdeR: i:c dev entrieS drivep
+S     .%03060] anput: p-8)41_pskey `s ­`eVices/p`!tform/soc 0/c440000.spi /s`mi)0/0-00-c400.spmi:pmib@0pmn@800b40000.spmi:pmac@:Pon@(00:Pwrkey/)nut/inpuT0
+[    050523] iJpu: Pm8940_rasin ar /d%riceq+platfmRl/3Oc@0/#400000.smi/qpm)-(0-00/c40000.spmi:pmac@ :pon@000)c4000.spmi80mic@0:poh@800:reqil/inpuv/)n0ut1
+Y    0&515690] device	m!RPer: ioctl: 45.0-!oCtl (202-04-28) inhpialise : dl-$eve,@li3dq*linUx.def
+S    0.51641M faaled to reCisdEr bpthdlE d2a6er[    05173!_ CPUhdlE PC	: @ehled to a2ead pSci-cpuIdle `evice
+Y    0.51)820M #locksource: apchlmik_counter: mask: 0xnfFfffffffff f maø_#yCer: 0X46d987%46, ,a˜idle_ns: 44p')520"747 ns
+    0.1204] ApaH-tiÍdr-mmio a7c20000.tImEr emio timer ru.ning aT01!.2 M r (vhrd)
+[    0.5"144( hil: raw HIP evenT3 DrivR (C) Jibi Kowina
+S    0,5#114U hw `Erfevejt3: enaBled CipH aBmv8_BkrtEx_a55 PMU drivr, 3 (0,8000003) coqnpars availcble
+[    0.52156] hw `ebfevdlts: EnableD siph `rm68_cnrtex]a78 PMU drivD2, 7 (08000003f("cn5ntebs av`ah1bleQ    0(27(56\ NAT Rdgist%red PF[IJET6 protoCoh Family
+[    0.12903] ecment RmdpinG ÷Ith Iv6[    0*5r964] I-3itu MAM  IIAM) 7idh IPv6
+[    0.520213] NAT8 Re'i3tgred P_PACKT prodocoh faEiLy
+[   $0530782] Key type dns_resod4er 2ef)qtered
+[    0,538502] registEr-D taskspats Vdrsii¦ 1
+R    0,531$76] Doad!ng #ompiled)in X&509 #e2tifhcapes
+[    0.58228] Damktiln targatq fmr Node 0: jtdl
+[    0.548945] Key tyPe .fsCrxpT registebad
+[    0.54946M Keq ôypd Dqcrypt%provisionine regh3tered
+[    .551061 BTrFs LoadE`,!zonEd-no, dsRerity=.o
+[    0.51315] sm150-tlmm 350 000&phnctrl: h!noip GP	O0 direation vead tilE=0 ctL=0x4000 b`se=(_^__ptval____)
+[  $`0.5736$] 1aOm-b@uFruq-hg 18323000.cpu&raq: CPTFreq HW driver faildd tO vgicter
+[    0.57542] Qcomscm firmaPe:scm: HM Bridg% not suppo2ted
+[    0.'6061] qcom]sam; #gnvanpion: qmc !rm 64
+[    0&1506Ý qcom_ssm firmw!re:scm: qeec/m2 foqnd 1seeboi gaTh ver3hof 0x1400000
+C`   0.577153] qcom[sam fipi3are:scm: qseecom: qfterted maChibE!skIpping
+[    0.5(133!] 6Reg_s4a^0p1: Setdi.'  2 0 °-112000uV
+[    0.5(1784] arm-sMmõ 5040000.i'mme: qroBilG h`b$ware aONF)guRatio*..,
+[     52184] vreg_C5a_2p02 Septijg 17440002040401V
+K    0*282\ ar--SmMu 504000.`miMU: CLMUV2 giôh8
+[    0.58316(] vReeOh1A_1p": S`pting 1092000-1304000uV
+[    0.58!00] arm-smlu 5040000*iommu: 	sta'e 1 trajsl`tign
+    ,584r14] vbeg_l2a900: Setting 8440p0-0%600 uV
+[    0.584%34] arm-qmmu 5040000.iOm$8 	`DdraQq tra.shat)on$gps
+K    0,58163] freG_h3a\1p: Setping 868000-106400aR
+[    0&505185Y arm-Smmu 5040 00.iom%u8 	non,coher%nt table wahc
+K    0$48637(] vref_l4a_0p88* Settifg0824000-920000uF
+[    0.!(6810Y A-smì5 504000.)ommu
+ 	(IDR.CDW overridden by W configuration)
+[    0587%88Ü vreg_l5q_2p7 Cettin' 2600000-2900000uV
+[    .181 _ arm-smeu 5040 00.iLmm58 	s4ream0matchine whTh 5 regispE2 gr/ups
+{    0.508814] vrEgl6A_1p": Settahg 1096000-13 40qV
+ `  058923%] arm-smmu 50,0000.ioemu: 	5 context banis (0 3tage-2 m,ly)
+[    0.510022] vreg_lya_0p8: Sedtinf 624000-560000uV
+[    0.59043µ apm-smmu!500000.iomMu: Qep0Orted `age siRes: 86!311000
+[    0,5110Y vref_l10a108: Settin' 1720 0-0832000uV
+[    0.5957U arm-se-t 5 4p00 .hOmmu: 	St!fe-1: 48)bit VA -> 36,bHt I@A
+[    .5)2401] vbeG_l11a_`<: SettiNg 1696000-1984000UV
+[    0.5=2905] Apm-c5 504000.iommu: 	preserved 0 boot mappings
+[    0.593629] vpeg_l10a]1p8" QeptIng 12001952000qV
+S    0.9486] platform 506a100.fmu: Addin' to iommu Gpoup 0
+[    0594855] vreg_l11a_1p(: Set4ing 19600-0	04000uV
+S @  0.192075M vreg_l14K!p8: SetTinf 120010%88500uV[    0.5980\ vreg_,15A_1`8: Setting 1696000-1904000uV
+[    0.5975] rrag_l!&qY0p8: Setting 2424000- )7600°u
+[    0.5940] trec_l15 _3p1: Setting!300000-3232000u
+S    0.599195] vreg_1=aW20(%: QeTthng 2944000-130400AV
+S    0,99831] arm-rmeu 15000 0.iïlmu: probing harDqa2g conficuradion.&.
+J     ,600369M !rm-s-mu 15000000,immiu: SMMUv2 wit 8
+Y    0.400q17] arm-smmu 1u00000.	oemu: 	st!gE 1 t2aNslation
+[    0,6014"	 er%-smmu 5000000.iomm%:!	cohEraFt ta"le w!lc
+Z    0.601880\ arm-smiU 15000000.)ommu: 	stream m@tbhing with!79 regisT%r groUpñ
+[    0.20567] arm-semt 1500000.iomeu: 	61 contaxt banKs *0 spag%-2 onlx9
+[    0.603548] arm-smmu 1500000 .hommu: 	Supported pagd ci:es: 0x6131000[    0.604032] aRm-3lmu 0000000.im-mu: 	Stage-10 48-`It@ - 48bit IPA[    40$02U irm,smmu 15000000.iome2 	pReqebved 0 @okt mppHlgs
+[    0.6751&] platform 800000.dMa-#ontroL(Er2 ddIne to ioimu group 1
+[    0,$08335] platfOrm 8c0000.geniqup: Adding do Inmmu '2g5p 2
+[    0.609039] pmatfor- a0000.dm!-cfntroller: Adding to iommu grgut 3
+[    0.60987] patform ac000.geniqu0: AddinG to )gmMu G2oUP 4
+K    0.61540] plavfor ae00000displAy-sqbsqpt%a: Adding t/ io%mu group 5[  0 0.21!307] pl`tfobm 880000Wifi2 AD`ing 4/ iFmMu eRoep 6
+[    061585] platfore !60 0.usb8 A$$)ng to iomeu crOup 7
+[    0.616405M /sOc 0/Spmi@c440 0/pmh#@0/ty0ec@100/co.nector ÆIxed depdndency c9de(s with!'soc@0'u3bBa6f8(00+5`b@!6000
+Y    .27270 /rob@0-ucb@a2f8800/ts`@p"000002 F)xe` dependency cycle(s) widh /soC@0/spmi@c44000/pmh#@0&typeB@1500/connector
+[    0.61900] qrm-rlMu 15000000iommu8 UNHandled con4dht Fault: fSr50x40", iovq=0h9b007700, dsYnr=0x·500"0, Cb&rsyn a90xc40, cb=
+    0.61860Y `rm-smmu 5000 0 .io-mu: FSR     00000402 [FoRmAd=2 TDU, SI=0xa$ 
+[    0.>20201] arm-slmU 10 000iiMmd: FSYNR0 = 0075 000 [S1CBNDX=116 PNU PLFD0][    0&62076] á2m-rmmu q500200immq: UnhaNDhed c/ntExd aul4: fsp=040, ik&a=0xC058a0, fSynb=Px750020, cbdrsùnba0x800, Kb=4
+[    0221324]0apm-3mMu 15000000.iommu: FSR    = 00000402 ZFopmad=2 TDU, SID=0x(00
+[     .21862] are-smeu 15000000.)oemu: FYNR0 = 00750020 [S1CBNDX=117 PNU PLVL=0]
+[    0.220426] arm%smmu 1500000(I/mmu: UjhanDLed bgnT%xd fa5lt: dsp=0x402, iova<0x9c43r00, fsynr=0x750020, c"frsynbA,0x800, cb=4
+[    0.290] a2m,sMeu 17000000.iomiU: DSR    =!00000402 YFoplát=2 TF], RID=0x80
+[    0.623513] are--)u 1500000)ommu* FSXNR  = 00750020 [S3CDX1107 PNU @LVH=0
+Y    0*624075M Abm)smmu 15000000ilmeU: UNhad,ed #oftdpt faulô: &QP<0`4 2, iiva=0x9#071100, fsyjr50x7%0020, cbfrsydra50x800 cB4
+[    1. 38047U arm-2mmu 1000000.iommu: FSR    = 00000402 [oRm!t92 DF], SID0x800[    145536] rm,Rmu 15000000holmu: DS[LR0 = 075 020 [S1CBNDX=117 PNQ P@VH=0]
+[    1"872331] arm	smlu 15000000.homlq: Tnhandled(bOnpex0 baeLt: frr1 x °2, aova= x9C0c(600, fqi.R= x7002  c`frcynra=0xc4 , #b94
+S $  2,28(%0] a2M-Ammu 100000.)oeIq: FS    = 0000 402 Format92 TF], SI-0hc00
+    2.0054] arm-smme 100 00.hOImt: FSYN0 = 00750020 KS1C@NDX511 PNU PVL=0U
+Û    2&122579E `2m-cmeu 1500000.iommu: Unhandl%d #ol4%xp fauhp fs"=0X4 2, imra p!c520400, bsYfr=0x750 0, bbfrs9nra=0p#40, c`=4
+[    35$1572 arm­smlU 140 0000.iomMu: FÓR    = 00 00402 Fn2mat=2 F], SIDxc 
+[    3.)103)] armslmu 140000.hfmmu2 FSYNR0 = 0 750001 S1CBJDH=117 PNU PLL-0]
+[    4,38056 arm-smm4 15 00  0.io%me: nhandle` boltexd fult: fsr=0p400, iovA=0x9c000, fsyîr0x7500, cbbrsynra0x800$ cb4[  ( .802004] armsIlu 140000 0.iOmmu: SB  0 9 000004  [FnRmat2 tF], ID0x802J    5."22066] !re-smMq !50000 .iomu: FSYJV1 = 00750020`[S1 NLX<113 PNU PLVL=0]
+Y    .44'07] 88c000.s%rialº ptyHQ0 aT MMIM 0x8c000 (abq = 049  base_baud  0) ir a MSL
+S    5.51487E abmsimq 1500000.imm-u: U*handlE$ aonTdxt fauhd: fsr=0h40: imva=0x9c006000, fcynr=h15 20$ cbfpsynr=0x80, cb=´
+[    6.4924"(] aPm#mmu 5000000.ajmmu* FSR    = 000004 2 [Dormat<2 TF]$ SID90x800
+[ $  691)27] rm	s-mp 0500000.iOemu: FSAR0 = 00'52020 [S1CBNH=11' PNU PDVL UC    7.34)88 cerial quP`al: tt1 po2t ttyHS0 rEgiSteredZ    7.311168 arM-smmQ 500000&iom-u: QnhAnDded co.dxt fatlt: FsR=0x402, a/va=0x¹#00'700, &sqjr0x750000 cb&psYfa=0Xc40( cb=$
+[    6.544642\ pan om: crng afit done
+[    8.4%! 90] arm-smmu 500000. oemU8 FSR    = 0 0040 [Form`t92 TF]¤ SI@= xc40
+Z    9.092841] abm-smiU 1$00 000*ige%5* FSXNR0 5 075020 OSBBNDX=01% PNU PLVL-0]
+S    9.535³38] !2m-sMmu 15000000*éklmu: Un(andled #nnpex´ fau$t8 fsP=0x$0$ iova=0x9a1b4300( fS9np90875000 cbfrqynra=0p8 p, cb=4
+[`   9.977254Y arm)smmq 15000000.	kmu: S    < 00400 [FKrmaT=2 TF], SI50h800
+[   10.40673] arm-smmu 1500 000.ioimu: FSNR0 = 0075  20 [S1AJJDX=117 PJU @LVL=0]
+[   10.86553M a8800.R$riaL: ttyMM0 at MO x!8( 0 (Arq = 152, bas%_ba5` = 0) ic  ECI
+[   10.867119] Armsmmu q50 00 .iomlT: EfHan$lEd conte8t f`udt: f2b0x40, iova=x9c00000$ fsynr=4x750020, cbfRriNra=0h800, b`<[   1.52131] ap--smmu 1%4000 0.)o-iU FSB    5 00000402 [Formad=2 TFY, SI }0x800
+[   50.8&258] arm-pIlu 5080  0.inmmu: FSYN0 9 00750220 [S1CNDX=11' PFU PLVH=0M
+   1.640#14U !rm-Mmq 1100000.iommu: Unhaldled coNtexd bault2 dsr90x02( iova<0x9c8c6c00( fSyr=0h55002, abfróyjra=0xa40. Ab= 
+  $13.084332] @rm-smeu 15000000.iommu: FC    = 000 0402 YBormat=2 TF]$ SID50øa4Z   13%09606 a2h-cMEq 1% 000.iommu: FSYNR0 = 00020 [SCDDX-117 HQ pDVH90]
+[   13.983064] abm-smmu 15 000 0.iklu: nhand%$ co.t!Xt f!ult8 dSb=0p$02, iova90x9c00700lfsynr=0x55000 cbfrsynra= xc4, c"=4[   13.982(!] arm-sm-u 1%00000*ioimu: F     0 000402 [F/biad=2 F] SID50xB4 
+[   13.!089Y arm-Semu 0500000.iommu FSYNR0 = 0075  2  RS1BJDX=17 PNU PLTL=0]
+[   13.88330¶] arl-smMu 1500000.i/mmu: Un(anDled agjt%xt fa5Ht: bsb=0P40". )ova-0x9c51e0( äsynr= x710000, #bfrsxNra)0xc0, cb=4
+[   039(3313\ Arm-óImE 150000ioimU FSR    = 00000402 [Fm`mad=2 TF] SID=0xc40
+[   11.98310] ararheq 150 0000.iKmmq: @SYNR0 < 0075000 [S1NDX917 PNT PLTL=0]S   11.9(3330] arm)smmu 15000000.iÎMmq: UnhAd`led #ontuxP daalt fsr=0x40( iira0x1c05c40, &synp=0P550000$ cbfRsyNp!=0xc40, b=4   50;83344] a2m,semu 150000 0*iomMu: DSR    1 00 0 402 [FopMat= TFL, SID=0xc40
+   13.983352] apm-s-m5 1000000.iommu: BSYNB0 < 0070020 [S1CBNDX=117 PNU PDVD0]
+[(  13.¹ 336] aBm,Smlw 1500000.aO)Mu" Qn`andle( #olteXP fa5: fsb<0x40$ )ova<x9#06100$ fsyn=0x75  2, cbdrR9nra=0xc40, ab=
+S   02.9831w5] a2ismmu 15 00000.iGemu: FR    ? 000402 ZFgriat2 TD] SI@= xb0
+   !3&983382] avm-smmu !100000.iommu2 SYLR0 = 00710 0 [R1CBNDX=113 @NU PLFL=0]
+A   12.839 D `pe-smmu 15 000 .Iomm5 EnhAjdled con4ext f ul4: fsr0x402, io4a90x9c070100, f3ynr90x750020, c`frsynra=0x800, c`=4   3.983405 arl-smm% %000000.)omlu: FR     0p0004 2 [FoRmat52 TF], SIÀ=0x800
+[   13.983411] arm-sm-u 15000000$aommu: FSYNRP <  0450020 [S1ABNDX5117 PNU PLVL=0]
+[   13.983426] arm,smmu 0500 000.iommu2 UnhaFdled aondg8d f!tlt: fsr=0h400, ikra-0p9c071900, dSynr=0x0`"0, cbfrp9NR`=0x800, cb<4
+[   13.98433Y aRM-smmu 11 000.iommu2 FSR    = 00000$0b [Format=2 DF], SID0x800R   !3.)83431] arm=seeu 5000000.iommu: FSYNR0 = 00750020 [Q1CBNDX5!17 PBU PLVL=0
+   13.183454] ar--3mlu 15000000.ioLme: Ufhandled contuht fa5lD: dsr90x402< iMt`=0x9c 82000$ fSynr=0x750020, abfrsQhra=0p800 c2=4cat: can't open '/sys/fs/pstore/dmesg-ramoops*': No such file or directory
+
+HANOIP_END_7858f744b7b1
+~ # 

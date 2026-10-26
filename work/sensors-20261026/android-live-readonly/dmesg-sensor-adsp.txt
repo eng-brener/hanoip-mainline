@@ -1,0 +1,15 @@
+[    0.198916] platform soc:qcom,msm-adsprpc-mem: assigned reserved memory node adsp_region
+[    0.305561] moto sensor init!
+[    0.305570] sensor init success!
+[    0.533958] mmi_sys_temp soc:sys_temp_support: bad number of sensors-listener: -22
+[    0.534036] mmi_sys_temp soc:sys_temp_support: No configure sensors listener !
+[    0.579035] sensors_classdev_register,dt-gesture
+[    0.579052] Registered sensors device: dt-gesture,ret = 0
+[    0.610863] cam_sensor_vsync_init
+[    0.767477] ADSPRPC: Secure VMID = 22
+[    0.767478] ADSPRPC: Secure VMID = 37
+[    9.132153] adsprpc: fastrpc_rpmsg_probe: opened rpmsg channel for cdsp
+[    9.228197] adsprpc: fastrpc_rpmsg_probe: opened rpmsg channel for adsp
+[    9.893868] ADSPRPC: audio_pdr_adsprpc is uninitialzed
+[    9.894128] ADSPRPC: sensors_pdr_adsprpc is uninitialzed
+[   18.049604] ILITEK:[INFO] (ili_sensor_set_enable, 560): Gesture set enable 0!

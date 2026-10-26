@@ -1,0 +1,14 @@
+uid=0(root) gid=0(root) groups=0(root) context=u:r:magisk:s0
+Linux localhost 4.14.206—CosmicFresh-R6-Final #4 SMP PREEMPT Wed Feb 8 14:02:53 IST 2023 aarch64 Toybox
+ro.product.model=moto g(60)
+ro.product.device=hanoip
+ro.board.platform=sm6150
+ro.boot.hardware.sku=XT2135-1
+ro.boot.slot_suffix=_a
+ro.build.fingerprint=motorola/hanoip_retail/hanoip:11/S2RI32.32-20-9-9-2/1591b:user/release-keys
+ro.build.version.release=16
+ro.boot.bootloader=MBM-3.0-hanoip_retail-9522caba9cf-230725
+365
+SDMMAGPIE
+Snapdragon
+1.0

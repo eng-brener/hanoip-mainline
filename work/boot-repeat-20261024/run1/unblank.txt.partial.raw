@@ -1,0 +1,20 @@
+
+~ # echo 0 > /sys/class/graphics/fb0/blank; printf "\033[2J\033[HHANOIP - UNBLAN
+K\nTeste RAM - display ativo\n" > /dev/tty1; /bin/busybox cat /sys/class/graphic
+s/fb0/blank; /bin/busybox hexdump -n 256 /dev/fb0; /bin/busybox dmesg | /bin/bus
+ybox tail -8; printf '\nHANOIP_END_41c5d38daa8a\n'
+0
+0000000 0000 0000 0000 0000 0000 0000 0000 0000
+*
+0000100
+[   33.249944] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+[  103.381322] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  103.543578] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  103.566814] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  103.575707] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  103.628774] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  103.656886] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[  103.669643] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only
+
+HANOIP_END_41c5d38daa8a
+~ # 

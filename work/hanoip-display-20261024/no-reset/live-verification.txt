@@ -1,0 +1,53 @@
+
+~ # printf "\033[2J\033[H\033[32mHANOIP MAINLINE - DRM 1080x2460 60 Hz\033[0m\nT
+este em RAM - sem gravar particoes\n" > /dev/tty1; /bin/busybox cat /proc/mounts
+ /proc/partitions; /bin/busybox cat /sys/class/backlight/backlight/brightness; /
+bin/busybox dmesg | /bin/busybox tail -18; printf '\nHANOIP_END_ea6008292f94\n'
+rootfs / rootfs rw,size=1797868k,nr_inodes=449467 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=1797868k,nr_inodes=449467,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+debugfs /sys/kernel/debug debugfs rw,relatime 0 0
+major minor  #blocks  name
+
+   1        0       4096 ram0
+   1        1       4096 ram1
+   1        2       4096 ram2
+   1        3       4096 ram3
+   1        4       4096 ram4
+   1        5       4096 ram5
+   1        6       4096 ram6
+   1        7       4096 ram7
+   1        8       4096 ram8
+   1        9       4096 ram9
+   1       10       4096 ram10
+   1       11       4096 ram11
+   1       12       4096 ram12
+   1       13       4096 ram13
+   1       14       4096 ram14
+   1       15       4096 ram15
+512
+[   30.966712] /soc@0/display-subsystem@ae00000/display-controller@ae01000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   31.828951] /soc@0/display-subsystem@ae00000/display-controller@ae01000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   32.638695] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0
+[   33.452125] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/display-controller@ae01000
+[   34.276340] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   35.108200] HANOIP DRM: registration complete
+[   35.110492] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0
+[   36.351230] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   36.519661] random: crng init done
+[   48.922434] msm_dpu ae01000.display-controller: bound ae94000.dsi (ops dsi_ops [msm])
+[   49.347288] Console: switching to colour dummy device 80x25
+[   49.354390] [drm:dpu_kms_hw_init:1168] dpu hardware revision:0x50020000
+[   49.368665] [drm] Initialized msm 1.13.0 for ae01000.display-controller on minor 0
+[   49.376567] msm_dpu ae01000.display-controller: no GPU device was found
+[   49.604716] Console: switching to colour frame buffer device 135x153
+[   49.621365] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[   49.621401] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[   49.646502] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+
+HANOIP_END_ea6008292f94
+~ # 

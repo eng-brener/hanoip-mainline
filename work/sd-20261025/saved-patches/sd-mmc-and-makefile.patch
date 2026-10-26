@@ -1,0 +1,62 @@
+diff --git a/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile b/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile
+index 29fe9f997..605efb5ec 100644
+--- a/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile
++++ b/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile
+@@ -360,6 +360,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-wifi-diagnostic.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-cpu8-diagnostic.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-gpu-diagnostic.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-battery-diagnostic.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-sd-diagnostic.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-davinci-samsung.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-davinci-visionox.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-surya-huaxing.dtb
+diff --git a/kernel-mainline/drivers/mmc/core/regulator.c b/kernel-mainline/drivers/mmc/core/regulator.c
+index a85179f1a..0aab14f81 100644
+--- a/kernel-mainline/drivers/mmc/core/regulator.c
++++ b/kernel-mainline/drivers/mmc/core/regulator.c
+@@ -219,8 +219,26 @@ int mmc_regulator_set_vqmmc(struct mmc_host *mmc, struct mmc_ios *ios)
+ 		if (ret >= 0)
+ 			return ret;
+ 
+-		return mmc_regulator_set_voltage_if_supported(mmc->supply.vqmmc,
++		ret = mmc_regulator_set_voltage_if_supported(mmc->supply.vqmmc,
+ 						2700000, volt, 3600000);
++		if (ret >= 0)
++			return ret;
++
++		/*
++		 * Some vqmmc regulators top out below 3.3 V (for example at
++		 * 2.95 V).  SD allows 2.7-3.6 V, so use the highest supported
++		 * level in that window instead of failing the power-up.
++		 */
++		if (regulator_is_supported_voltage(mmc->supply.vqmmc,
++						   2950000, 2950000))
++			return regulator_set_voltage(mmc->supply.vqmmc,
++						     2950000, 2950000);
++		if (regulator_is_supported_voltage(mmc->supply.vqmmc,
++						   2700000, 2700000))
++			return regulator_set_voltage(mmc->supply.vqmmc,
++						     2700000, 2700000);
++
++		return ret;
+ 	default:
+ 		return -EINVAL;
+ 	}
+diff --git a/kernel-mainline/drivers/mmc/host/sdhci-msm.c b/kernel-mainline/drivers/mmc/host/sdhci-msm.c
+index 0882ce74e..6d963678a 100644
+--- a/kernel-mainline/drivers/mmc/host/sdhci-msm.c
++++ b/kernel-mainline/drivers/mmc/host/sdhci-msm.c
+@@ -2392,7 +2392,12 @@ static void sdhci_msm_set_regulator_caps(struct sdhci_msm_host *msm_host)
+ 	if (!IS_ERR(mmc->supply.vqmmc)) {
+ 		if (regulator_is_supported_voltage(supply, 1700000, 1950000))
+ 			caps |= CORE_1_8V_SUPPORT;
+-		if (regulator_is_supported_voltage(supply, 2700000, 3600000))
++		/*
++		 * Some boards use a vqmmc regulator that stops at 2.95 V.
++		 * Treat 2.7-2.95 V as 3.0 V support; the core will clamp
++		 * the 3.3 V request to the highest supported level.
++		 */
++		if (regulator_is_supported_voltage(supply, 2700000, 2950000))
+ 			caps |= CORE_3_0V_SUPPORT;
+ 
+ 		if (!caps)

@@ -1,0 +1,481 @@
+{
+  "method": "Offline ELF, DAL, HWIO and driver-data extraction with Python; not REA evidence or execution tracing.",
+  "firmware_sha256": {
+    "adsp.b00": "4b0162a17bee5a5d089418d92fdb82bba7a7afaa3dfd41b2874bffacd7aa59d3",
+    "adsp.b01": "1a3e028884bab4bb10c5b1dc9af2f552dc95a8fedc0649d2f4e97e5d0d487c89",
+    "adsp.b02": "24ad48af2fc3b8d89722804bebaa206236cd389d42b1cfc654904ff5c086cab0",
+    "adsp.b03": "8a56f29130c5711609d7b7a2e3ca99188f139c41774dab3e4856eecb657def5e",
+    "adsp.b04": "ffffa74cdbf3449741fd5d0d90e80f0a22d5561a805ab2e1cef8fb94e541ab45",
+    "adsp.b05": "5ef49fb64a078fcbe8d03514c451e6022cba2ba85b1ab483b781f682c54b8803",
+    "adsp.b06": "d9741d60c1b0b1a8a357bd49b3a36854b0db22e3061675e11eb6c24c77457b19",
+    "adsp.b07": "ff86c2dee9161e0a77d37bd371eb2f3c710644054a6b4a5fb3cbfea208158a7f",
+    "adsp.b08": "e75216c4a96802af8fa9464e77bbb41016292db920ed41b1f2a6639aaf26e792",
+    "adsp.b09": "bb5e1ea9c7a698bbb38424481332412368d22ee80a0df9e357a9b526a290a001",
+    "adsp.b10": "9f1799e3636116eb49914eff52cabe0ec3ca14b0069bba9d8cc44ff8918b42b6",
+    "adsp.b11": "372743f136760646ae7a5c9d5cbee786919602f727a3d03882757d64b20b5c49",
+    "adsp.b12": "151d64794d0f36fef1fab25cfbf31a70b011eeaf6b36751c9a4d6c5f74de79d3",
+    "adsp.b13": "ff5f06fd282c878b7521ad8fb0cb6e6c0da26ef7627318adc047a49cb3d2fc0d",
+    "adsp.b14": "d4e8412d8d2f06d917ca5c7c704224c8433ed19a630dc0d7a83ab4b488173a78",
+    "adsp.b15": "a2c8fcc8f862efe8c01984f2b0c3987b4c1363a2a32815a41c1b2e82bf241e88",
+    "adsp.b16": "0b6d9dbf62040c413d927bc4be378ede151749919b89282a5e6c061650a26a58",
+    "adsp.b17": "29217e73793d730621b7f6afbda81b9396ecbb0f9b4d69715fa5d2b474ab8e7b",
+    "adsp.b18": "8f05c944d90b4ece98703b61485088ce779de6210f3bc0402c2fbc733f1c59f0",
+    "adsp.b19": "755c6fc460c96516a1343c9ed9b923b13e7b97acb78581f5a2034cb63223364d",
+    "adsp.b20": "c8152761df83a5aa261e80c282c2fc19895c714d8773357498dc76a356420faa",
+    "adsp.b21": "eef9b6ecce4e0d64d5398b82fbb738694637fad81dfb0f7839d09a2e45de94cb",
+    "adsp.b22": "df9e99bbc79bf02b771da7a0b9fad7837002d5cc0d77ed2b550e1cbd5ef18543",
+    "adsp.b23": "eda3510b74905a8c72a404467c7b2448b4400dfdcfbd029b3c7264747afe226d",
+    "adsp.b24": "bc05ec40ce19690adfad8c1531a44da657e978f68855d901cc7c65699db70284",
+    "adsp.b25": "5114bc6d39d26618820035256b7959a1cd7dca67ded5141e5dd0315c20867e18",
+    "adsp.b26": "ee8c1d1e516d91cf91a905d5501cd98e9012ad52ca414ad680bf30a898ba4bbe",
+    "adsp.mdt": "8b2a5d21eb8f9083042772e23e033f719178c812786ab47d2d311594f9d6566b"
+  },
+  "bus_type_legend": {
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]bus type(%d, 0:I2C/1:SPI/3:I3C), MAX bus speed: %d KHz",
+    "file": "adsp.b15",
+    "offset": "0x17e690"
+  },
+  "dal_profiles": {
+    "/dev/qup_ssc": {
+      "qup_virtual_base": "0xee600000",
+      "wrapper_offset": "0x000c0000",
+      "load_firmware": 1,
+      "engines": [
+        {
+          "se_index": 0,
+          "offset": "0x00080000",
+          "protocol": "I3C",
+          "mode_flags_raw": "0x00010101",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1f00",
+            "virtual_address": "0xf02fcf00"
+          }
+        },
+        {
+          "se_index": 1,
+          "offset": "0x00084000",
+          "protocol": "I3C",
+          "mode_flags_raw": "0x00010101",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1f0c",
+            "virtual_address": "0xf02fcf0c"
+          }
+        },
+        {
+          "se_index": 2,
+          "offset": "0x00088000",
+          "protocol": "I2C",
+          "mode_flags_raw": "0x00010101",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1f18",
+            "virtual_address": "0xf02fcf18"
+          }
+        },
+        {
+          "se_index": 3,
+          "offset": "0x0008c000",
+          "protocol": "UART",
+          "mode_flags_raw": "0x00000102",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1f24",
+            "virtual_address": "0xf02fcf24"
+          }
+        },
+        {
+          "se_index": 4,
+          "offset": "0x00090000",
+          "protocol": "I2C",
+          "mode_flags_raw": "0x00010101",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1f30",
+            "virtual_address": "0xf02fcf30"
+          }
+        },
+        {
+          "se_index": 5,
+          "offset": "0x00094000",
+          "protocol": "UART",
+          "mode_flags_raw": "0x00000102",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1f3c",
+            "virtual_address": "0xf02fcf3c"
+          }
+        }
+      ]
+    },
+    "/dev/qup_ssc/11": {
+      "qup_virtual_base": "0xee600000",
+      "wrapper_offset": "0x000c0000",
+      "load_firmware": 1,
+      "engines": [
+        {
+          "se_index": 0,
+          "offset": "0x00080000",
+          "protocol": "I2C",
+          "mode_flags_raw": "0x00010101",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1eb8",
+            "virtual_address": "0xf02fceb8"
+          }
+        },
+        {
+          "se_index": 1,
+          "offset": "0x00084000",
+          "protocol": "I2C",
+          "mode_flags_raw": "0x00010101",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1ec4",
+            "virtual_address": "0xf02fcec4"
+          }
+        },
+        {
+          "se_index": 2,
+          "offset": "0x00088000",
+          "protocol": "SPI",
+          "mode_flags_raw": "0x00010101",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1ed0",
+            "virtual_address": "0xf02fced0"
+          }
+        },
+        {
+          "se_index": 3,
+          "offset": "0x0008c000",
+          "protocol": "UART",
+          "mode_flags_raw": "0x00000102",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1edc",
+            "virtual_address": "0xf02fcedc"
+          }
+        },
+        {
+          "se_index": 4,
+          "offset": "0x00090000",
+          "protocol": "I2C",
+          "mode_flags_raw": "0x00010101",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1ee8",
+            "virtual_address": "0xf02fcee8"
+          }
+        },
+        {
+          "se_index": 5,
+          "offset": "0x00094000",
+          "protocol": "UART",
+          "mode_flags_raw": "0x00000102",
+          "origin": {
+            "file": "adsp.b05",
+            "offset": "0x1ef4",
+            "virtual_address": "0xf02fcef4"
+          }
+        }
+      ]
+    }
+  },
+  "ssc_bus_records": [
+    {
+      "core_index_one_based": 1,
+      "ssc_se_index": 0,
+      "core_offset": "0x00080000",
+      "physical_address_from_lpass_map": "0x62680000",
+      "dsp_controller_irq": 86,
+      "clock": "scc_qupv3_se0_clk",
+      "scl": {
+        "ssc_gpio": 0,
+        "function": 1,
+        "encoding": "0x0001c001"
+      },
+      "sda": {
+        "ssc_gpio": 1,
+        "function": 1,
+        "encoding": "0x0001c011"
+      },
+      "origin": {
+        "file": "adsp.b09",
+        "offset": "0x297c0",
+        "virtual_address": "0xf002fd00"
+      }
+    },
+    {
+      "core_index_one_based": 2,
+      "ssc_se_index": 1,
+      "core_offset": "0x00084000",
+      "physical_address_from_lpass_map": "0x62684000",
+      "dsp_controller_irq": 87,
+      "clock": "scc_qupv3_se1_clk",
+      "scl": {
+        "ssc_gpio": 2,
+        "function": 1,
+        "encoding": "0x0001c021"
+      },
+      "sda": {
+        "ssc_gpio": 3,
+        "function": 1,
+        "encoding": "0x0001c031"
+      },
+      "origin": {
+        "file": "adsp.b09",
+        "offset": "0x2981c",
+        "virtual_address": "0xf002fd5c"
+      }
+    },
+    {
+      "core_index_one_based": 5,
+      "ssc_se_index": 4,
+      "core_offset": "0x00090000",
+      "physical_address_from_lpass_map": "0x62690000",
+      "dsp_controller_irq": 104,
+      "clock": "scc_qupv3_se4_clk",
+      "scl": {
+        "ssc_gpio": 6,
+        "function": 4,
+        "encoding": "0x0001c064"
+      },
+      "sda": {
+        "ssc_gpio": 7,
+        "function": 4,
+        "encoding": "0x0001c074"
+      },
+      "origin": {
+        "file": "adsp.b09",
+        "offset": "0x29878",
+        "virtual_address": "0xf002fdb8"
+      }
+    }
+  ],
+  "board_irq_aliases": {
+    "/tlmm/idp7150[1]": {
+      "ssc_irq_17": {
+        "gpio": 9,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x11128",
+          "virtual_address": "0xf030c128"
+        }
+      },
+      "ssc_irq_9": {
+        "gpio": 86,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x11300",
+          "virtual_address": "0xf030c300"
+        }
+      },
+      "ssc_irq_10": {
+        "gpio": 87,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x11308",
+          "virtual_address": "0xf030c308"
+        }
+      },
+      "ssc_irq_11": {
+        "gpio": 88,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x11310",
+          "virtual_address": "0xf030c310"
+        }
+      },
+      "ssc_irq_12": {
+        "gpio": 89,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x11318",
+          "virtual_address": "0xf030c318"
+        }
+      },
+      "ssc_irq_13": {
+        "gpio": 90,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x11320",
+          "virtual_address": "0xf030c320"
+        }
+      },
+      "ssc_irq_14": {
+        "gpio": 91,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x11328",
+          "virtual_address": "0xf030c328"
+        }
+      },
+      "ssc_irq_16": {
+        "gpio": 93,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x11338",
+          "virtual_address": "0xf030c338"
+        }
+      }
+    },
+    "/tlmm/qrp7150[2]": {
+      "ssc_irq_17": {
+        "gpio": 9,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x11420",
+          "virtual_address": "0xf030c420"
+        }
+      },
+      "ssc_irq_9": {
+        "gpio": 86,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x115d0",
+          "virtual_address": "0xf030c5d0"
+        }
+      },
+      "ssc_irq_10": {
+        "gpio": 87,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x115d8",
+          "virtual_address": "0xf030c5d8"
+        }
+      },
+      "ssc_irq_11": {
+        "gpio": 88,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x115e0",
+          "virtual_address": "0xf030c5e0"
+        }
+      },
+      "ssc_irq_12": {
+        "gpio": 89,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x115e8",
+          "virtual_address": "0xf030c5e8"
+        }
+      },
+      "ssc_irq_13": {
+        "gpio": 90,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x115f0",
+          "virtual_address": "0xf030c5f0"
+        }
+      },
+      "ssc_irq_14": {
+        "gpio": 91,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x115f8",
+          "virtual_address": "0xf030c5f8"
+        }
+      },
+      "ssc_irq_16": {
+        "gpio": 93,
+        "function": 0,
+        "origin": {
+          "file": "adsp.b05",
+          "offset": "0x11608",
+          "virtual_address": "0xf030c608"
+        }
+      }
+    }
+  },
+  "sensor_rails": [
+    {
+      "name": "/pmic/client/sensor_vdd",
+      "resource_names": [
+        "/pm/ldoc7/en",
+        "/pm/ldoc7/mV",
+        "/pm/ldoc7/mode"
+      ],
+      "configured_votes": [
+        {
+          "state": 0,
+          "pmic_mode_raw": 4,
+          "millivolts": 0,
+          "enable_vote": 0
+        },
+        {
+          "state": 1,
+          "pmic_mode_raw": 4,
+          "millivolts": 3312,
+          "enable_vote": 1
+        },
+        {
+          "state": 2,
+          "pmic_mode_raw": 7,
+          "millivolts": 3312,
+          "enable_vote": 1
+        }
+      ],
+      "origin": {
+        "file": "adsp.b04",
+        "offset": "0x16cb80",
+        "virtual_address": "0xf0298b80"
+      }
+    },
+    {
+      "name": "/pmic/client/sensor_vddio",
+      "resource_names": [
+        "/pm/ldoc8/en",
+        "/pm/ldoc8/mV",
+        "/pm/ldoc8/mode"
+      ],
+      "configured_votes": [
+        {
+          "state": 0,
+          "pmic_mode_raw": 4,
+          "millivolts": 0,
+          "enable_vote": 0
+        },
+        {
+          "state": 1,
+          "pmic_mode_raw": 4,
+          "millivolts": 1800,
+          "enable_vote": 1
+        },
+        {
+          "state": 2,
+          "pmic_mode_raw": 7,
+          "millivolts": 1800,
+          "enable_vote": 1
+        }
+      ],
+      "origin": {
+        "file": "adsp.b04",
+        "offset": "0x16cba4",
+        "virtual_address": "0xf0298ba4"
+      }
+    }
+  ],
+  "limits": [
+    "The bus_instance to core_index match is derived from registry and static driver configuration, not an AP transaction.",
+    "Pin function and voltage values are configured values, not live measurements.",
+    "The /11 profile contains six engines; the meaning of its suffix is not established here.",
+    "No AP access, clock ownership, security permissions or sensor identity register was tested."
+  ]
+}

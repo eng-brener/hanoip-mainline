@@ -1,0 +1,18 @@
+o 506a000.gmu
+[   18.710883] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   19.158208] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   19.606221] qnoc-sm7150 1500000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   20.056437] qnoc-sm7150 9680000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   20.506131] qnoc-sm7150 1380000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   20.954566] qnoc-sm7150 1740000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   21.402219] gcc-sm7150 100000.clock-controller: sync_state() pending due to ae00000.display-subsystem
+[   21.851362] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to ae00000.display-subsystem
+[   22.301654] gcc-sm7150 100000.clock-controller: sync_state() pending due to 18323000.cpufreq
+
+~ # /sbin/load-display; /bin/busybox cat /run/hanoip-display-loader.log; printf 
+'\nHANOIP_END_56b32f8daed6\n'
+HANOIP: display probe started (PID 142); see dmesg and /run/hanoip-display-loader.log
+HANOIP: loading cec
+
+HANOIP_END_56b32f8daed6
+~ # 

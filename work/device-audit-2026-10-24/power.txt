@@ -1,0 +1,36 @@
+=== /sys/class/power_supply/battery
+type=Battery
+status=Charging
+health=Good
+capacity=59
+voltage_now=3856926
+current_now=-553284
+temp=290
+charge_full_design=6174000
+charge_full=4939000
+charge_counter=2815230
+=== /sys/class/power_supply/bms
+type=BMS
+capacity=59
+voltage_now=3864128
+current_now=310363
+temp=290
+charge_full_design=6174000
+charge_full=4939000
+charge_counter=2815230
+=== /sys/class/power_supply/main
+type=Main
+health=Unknown
+=== /sys/class/power_supply/pc_port
+type=USB
+=== /sys/class/power_supply/usb
+type=USB_PD
+voltage_now=4969200
+=== /sys/devices/system/cpu/cpufreq/policy0
+0 1 2 3 4 5
+1804800
+1324800 1497600 1708800 1804800 
+=== /sys/devices/system/cpu/cpufreq/policy6
+6 7
+2304000
+979200 1209600 1324800 1555200 1843200 2304000 

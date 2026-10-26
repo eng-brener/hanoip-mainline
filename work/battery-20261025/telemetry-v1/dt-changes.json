@@ -1,0 +1,80 @@
+[
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/charger@1000",
+    "property": "reg",
+    "before": null,
+    "after": "00001000"
+  },
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/charger@1000",
+    "property": "compatible",
+    "before": null,
+    "after": "motorola,hanoip-smb5-monitor"
+  },
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/charger@1000",
+    "property": "status",
+    "before": null,
+    "after": "okay"
+  },
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/adc@3100/channel@8",
+    "property": "reg",
+    "before": null,
+    "after": "00000008"
+  },
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/adc@3100/channel@8",
+    "property": "label",
+    "before": null,
+    "after": "usb_in_v_div_16"
+  },
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/adc@3100/channel@8",
+    "property": "qcom,pre-scaling",
+    "before": null,
+    "after": "0000000100000010"
+  },
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/adc@3100/channel@7",
+    "property": "reg",
+    "before": null,
+    "after": "00000007"
+  },
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/adc@3100/channel@7",
+    "property": "label",
+    "before": null,
+    "after": "usb_in_i_uv"
+  },
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/adc@3100/channel@7",
+    "property": "qcom,pre-scaling",
+    "before": null,
+    "after": "0000000100000001"
+  },
+  {
+    "path": "/chosen",
+    "property": "bootargs",
+    "before": "earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops              loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0",
+    "after": "earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0"
+  },
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/qgauge@4800",
+    "property": "status",
+    "before": "disabled",
+    "after": "okay"
+  },
+  {
+    "path": "/soc@0/spmi@c440000/pmic@0/nvram@b600",
+    "property": "read-only",
+    "before": null,
+    "after": ""
+  },
+  {
+    "path": "/battery",
+    "property": "compatible",
+    "before": null,
+    "after": "simple-battery"
+  }
+]

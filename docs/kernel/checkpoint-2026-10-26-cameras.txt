@@ -1,0 +1,113 @@
+# Câmeras hanoip — levantamento somente leitura (26/10/2026)
+
+Fontes: `work/android-dump-20261025/stock-live.dts` (DT Android vivo),
+`work/android-dump-20261026/camera{,-modulos,-res,-config}.txt`,
+`coleta-estatica.txt`, `work/cameras-20261026/android-camera-dt.json`
+(subárvore câmera do DT), `android-live-readonly/` (sysfs/programas),
+`kernel-mainline/` (7.1) para cobertura mainline. Nenhum boot, nenhum
+probe, nenhuma captura, nenhuma escrita.
+
+## Hardware (4 slots, 2 CCI)
+
+| cell | CCI/master | CSIPHY | MCLK/RESET | AF | flash | eeprom | papel provável |
+|------|------------|--------|------------|----|-------|--------|----------------|
+| 0 | cci0/m0 | 0 (ace0000) | MCLK0/RST0 | sim | sim | eeprom0 | traseira principal |
+| 2 | cci0/m1 | 3 (ace6000) | MCLK3/RST3 | não | não | eeprom2 | traseira auxiliar |
+| 3 | cci0/m1 | 1 (ace2000) | MCLK1/RST1 | sim | sim | eeprom3 | traseira auxiliar |
+| 1 | cci1/m0 | 2 (ace4000) | MCLK2/RST2 | não | sim* | eeprom1 | frontal (roll 270) |
+
+* frontal com `led-flash-src` no DT (pode ser flash de tela / nó compartilhado
+entre SKUs; todos os 4 `cam-sensor` estão `status="ok"`).
+
+GPIOs: TLMM 13/23 (slot0), 16/26 (slot2), 14/24 (slot3), 15/25 (slot1, frontal).
+MCLK 24 MHz (`clock-rates 0x16e3600`), nível turbo. CCI0 37,5 MHz, CCI1
+37,22 MHz. Dois atuadores VCM (`qcom,actuator` @0/@1, VAF 2,8 V),
+3 flashes (`qcom,camera-flash` x3 no lsmod).
+
+Alimentação (nomes do stock):
+- vio (todos): pm6150_l13 = 1,8 V (1,8 V exato no DT: min=max=0x1b7740)
+- slot0 vana: camera_rear_main_avdd_2p8; vdig: pm6150_l6 (1,05–1,10 V)
+- slot2/3 vana: camera_rear_depth_wide_avdd_2p8; vdig slot3: rear_wide_dvdd_1p2
+- frontal vana: camera_front_avdd_2p8; vdig: camera_front_dvdd (1,1 V)
+- AF (VCM): camera_rear_main_wide_afvdd_2p8; clock: titan_top_gdsc
+
+## Sensores (nomes vêm do userspace, não do DT)
+
+DT downstream usa `compatible="qcom,cam-sensor"` genérico; o modelo é
+resolvido pelos blobs `/vendor/lib{,64}/camera`:
+- `com.qti.sensor.mot_{s5khm2,s5khm2_v2,ov64b,ov16a1q,ov32b,s5k4h7,ov02b1b}.so`
+- `com.qti.sensormodule.{ofilm,qtech}_mot_hanoip_*.bin` (ofilm: ov02b1b, ov64b,
+  s5khm2 x3; qtech: ov16a1q, ov32b, s5k4h7)
+- EEPROM/OTP: gt24p64b_ov16a, gt24p64e_{ov32b,ov64b,s5khm2}, hanoip
+  {ov02b1b,s5k4h7}_otp
+- Tuning: `com.qti.tuned.mot_hanoip_*.bin` (s5khm2 ~14,6 MB o maior)
+
+Mapeamento provável (G60 = 108 MP + 8 MP UW + 2 MP profundidade + 32 MP frontal,
+com segundas fontes; a confirmar contra os .bin — ver próximos passos):
+principal S5KHM2 (12000x9000) ou OV64B; frontal OV32B (6528x4880) ou S5K4H7;
+auxiliares OV16A1Q + OV02B1B. Resolução lógica exposta: traseira 4016x3016
+(bin 3x do HM2), frontal 3264x2448 (bin 2x do OV32B) — Quad Bayer.
+
+Pipeline Android: kernel `qcom,camera`/`cam-cci`/`cam-csiphy`/`cam_vfe17x`
+(vfe0 ace? `acaf000=vfe0`, `acb6000=vfe1`, `acc4000=vfe-lite0`, bps, ipe0/1,
+jpeg, fd, lrme) + HAL `android.hardware.camera.provider@2.4-service_64` +
+imgtuner + calibrações em `/vendor/etc/camera` (dual_golden/aec_golden/
+vidhance/arcsoft). Só 2 câmeras lógicas expostas (Back 90° / Front 270°).
+
+## Cobertura mainline (7.1; 7.3 a conferir)
+
+- `qcom,sm7150-camss` EXISTE no `sm7150.dtsi` do mainline (csiphy0-3, vfe0/1/
+  lite, bps, ipe, jpeg, lrme, camcc) — base pronta.
+- Atuadores: dw9714/dw9719/dw9768/dw9807-vcm, ak7375 presentes (falta saber
+  qual VCM o hanoip usa — DT não diz; checar marcação física ou .so).
+- Flash: leds-qcom-flash.c, lm3646 presentes (falta saber o chip).
+- Sensores: NENHUM dos 6-7 modelos existe no mainline (`ov64a40` ≠ `ov64b`;
+  `ov02a10/c10/e10` ≠ `ov02b1b`; sem s5khm2/ov16a/ov32b/s5k4h7).
+- EEPROM CCI: sem driver mainline equivalente (precisa nvmem custom ou
+  leitura via CCI no driver do sensor).
+
+## Evidências do aparelho (26/10, pull RO via root/stdout, hashes em
+`work/cameras-20261026/vendor-blobs/SHA256SUMS`, nada escrito no telefone)
+
+- 8 `sensormodule.*.bin` + 7 `sensor.*.so` + 6 `eeprom.*.so` puxados; tamanhos
+  conferem byte a byte com o inventário Android.
+- `persist.vendor.camera.rear.main.type` = **`old`** nesta unidade (há bins
+  s5khm2, s5khm2_v2 e s5khm2_compatible; "old" seleciona um deles no HAL).
+- Módulo ov64b referencia o atuador **`mot_hanoip_ov64b_dw9800`** → VCM DW9800
+  (o mainline tem dw9807-vcm, não dw9800; checar compatibilidade).
+- EEPROMs: GT24P64 (externo, LSC/WB/AFC/PDAF/mnf) ou OTP no próprio sensor
+  (ov02b1b, s5k4h7); libs expõem `*_eeprom_dump_bin` e checagem de CRC.
+- Resoluções máximas nos bins (u32 LE): s5khm2 até 12000x9000 (108 MP),
+  ov64b até 9248x6944 (64 MP). Logo: principal = S5KHM2 ou OV64B (segunda
+  fonte); frontal = OV32B ou S5K4H7; auxiliares = OV16A1Q + OV02B1B.
+  (O bin do ov16a não mostra modos de 16 MP em claro — modos podem estar em
+  crop/lane encoding; parser em `work/cameras-20261026/parse-sensormodule.py`.)
+- Formato dos bins parcialmente decodificado: nós de 72 B (stride 0x48),
+  header 8xu32 + nome de 32 B; sequências de modo como tripletos
+  registerData/delayUs/slaveAddr com V em passos de 8 e C sequencial — mas V
+  aponta para dentro de campos de outros nós, então NÃO é offset direto de
+  dados; a semântica exata depende do loader camx fechado. Slave addresses
+  em claro ainda pendentes (não forçar: GT24P64 é 0x50 por padrão, mas os dos
+  sensores precisam do bin ou do dmesg de probe).
+- Sysfs ao vivo (RO): 4x `cam-sensor-driver` (subdev11-14), 3x `cam-flash-dev`,
+  4x `cam-eeprom`, 1x `mot_actuator` nomeado + 1 atuador genérico, csiphy/isp/
+  cpas/ipe/jpeg/fd/lrme presentes e ligados (drivers `qcom,camera`, `cam-cci`,
+  `cam-csiphy`, `cam_vfe17x`...).
+- Limite do dmesg: só `cam_sensor_vsync_init` no ring atual; probe detalhado
+  com slave/chip-id não está no buffer (driver downstream loga via userspace).
+
+## Conclusão / próximos passos (todos ainda somente leitura)
+
+1. Resolver slot→modelo: fazer `strings` nos 7 `sensormodule.*.bin` e nos
+   `.so` de sensor (pull RO via root; arquivos ≤ ~2 MB) — eles carregam o
+   nome do sensor, slave CCI e tabelas de regs.
+2. Extrair tabelas de inicialização/modos dos .bin (contêm sequências de
+   registradores CCI) como base para drivers V4L2.
+3. Identificar VCM e chip de flash (strings nos .so / marcação física / DT
+   `qcom,camera-flash`).
+4. Conferir `qcom,sm7150-camss` no 7.3 e exemplo de port (ex.: sdm845 /
+   sm8250 com sensor + libcamera).
+5. Esforço real: escrever 2–4 drivers V4L2 de sensor do zero (o caminho
+   downstream cam_* não é portável). Não tocar CCI/CSIPHY, GPIOs ou rails
+   até existir driver candidato — risco de brownout no AVDD é baixo mas
+   sequência errada de reset/MCLK pode travar o CCI compartilhado.

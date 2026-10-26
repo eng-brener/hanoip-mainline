@@ -1,0 +1,35 @@
+{
+  "file": "work/hanoip-ufs-modules-20261024/kernel-hanoip-ufs-modules.img",
+  "bytes": 13991936,
+  "header_version": 2,
+  "page_size": 4096,
+  "dtb_addr": "0x1f00000",
+  "sha256": "2ae1d6fa0313e2251d2807ad9cc221e7366d2cc6845c4e4e13a816ffef994a42",
+  "sections": {
+    "kernel": {
+      "offset": 4096,
+      "size": 12433426,
+      "sha256": "b6373f55ea66359005a2bccd6c5ea55bd18293e27b7852bfc4aff9a6f1121e21"
+    },
+    "ramdisk": {
+      "offset": 12439552,
+      "size": 1455083,
+      "sha256": "2fc8850b39e16321848c92aaa3d453fe64603d8fc6caf9615b2afbd706c022c2"
+    },
+    "second": {
+      "offset": 13897728,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "recovery_dtbo": {
+      "offset": 13897728,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dtb": {
+      "offset": 13897728,
+      "size": 91070,
+      "sha256": "e72ab9d80e09bb2c0eb08aed549938adde4aef638b8d249af42d88715ea57d78"
+    }
+  }
+}

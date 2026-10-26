@@ -1,0 +1,87 @@
+/vendor/etc/camera:
+total 48
+-rw-r--r-- 1 root root   10 2008-12-31 13:00 aec_golden_depth.bin
+-rw-r--r-- 1 root root   10 2008-12-31 13:00 aec_golden_depth_64M.bin
+-rw-r--r-- 1 root root   10 2008-12-31 13:00 aec_golden_wide.bin
+-rw-r--r-- 1 root root   10 2008-12-31 13:00 aec_golden_wide_64M.bin
+-rw-r--r-- 1 root root  256 2008-12-31 13:00 arcsoft_calibration_u_dc.bin
+-rw-r--r-- 1 root root 2048 2008-12-31 13:00 dual_golden_depth.bin
+-rw-r--r-- 1 root root 2048 2008-12-31 13:00 dual_golden_depth_64M.bin
+-rw-r--r-- 1 root root 2048 2008-12-31 13:00 dual_golden_wide.bin
+-rw-r--r-- 1 root root 2048 2008-12-31 13:00 dual_golden_wide_64M.bin
+-rw-r--r-- 1 root root 4154 2008-12-31 13:00 vidhance_calibration
+-rw-r--r-- 1 root root 3477 2008-12-31 13:00 vidhance_calibration_64
+
+/vendor/lib/camera:
+total 56804
+-rw-r--r-- 1 root root     14000 2008-12-31 13:00 com.mot.eeprom.mot_gt24p64b_ov16a_eeprom.so
+-rw-r--r-- 1 root root     15168 2008-12-31 13:00 com.mot.eeprom.mot_gt24p64e_ov32b_eeprom.so
+-rw-r--r-- 1 root root     17276 2008-12-31 13:00 com.mot.eeprom.mot_gt24p64e_ov64b_eeprom.so
+-rw-r--r-- 1 root root     16312 2008-12-31 13:00 com.mot.eeprom.mot_gt24p64e_s5khm2_eeprom.so
+-rw-r--r-- 1 root root     12340 2008-12-31 13:00 com.mot.eeprom.mot_hanoip_ov02b1b_otp.so
+-rw-r--r-- 1 root root     17936 2008-12-31 13:00 com.mot.eeprom.mot_hanoip_s5k4h7_otp.so
+-rw-r--r-- 1 root root      3692 2008-12-31 13:00 com.qti.sensor.mot_ov02b1b.so
+-rw-r--r-- 1 root root      5336 2008-12-31 13:00 com.qti.sensor.mot_ov16a1q.so
+-rw-r--r-- 1 root root      7100 2008-12-31 13:00 com.qti.sensor.mot_ov32b.so
+-rw-r--r-- 1 root root      5024 2008-12-31 13:00 com.qti.sensor.mot_ov64b.so
+-rw-r--r-- 1 root root      7956 2008-12-31 13:00 com.qti.sensor.mot_s5k4h7.so
+-rw-r--r-- 1 root root      8252 2008-12-31 13:00 com.qti.sensor.mot_s5khm2.so
+-rw-r--r-- 1 root root      8252 2008-12-31 13:00 com.qti.sensor.mot_s5khm2_v2.so
+-rw-r--r-- 1 root root     54680 2008-12-31 13:00 com.qti.sensormodule.ofilm_mot_hanoip_ov02b1b.bin
+-rw-r--r-- 1 root root   1147360 2008-12-31 13:00 com.qti.sensormodule.ofilm_mot_hanoip_ov64b.bin
+-rw-r--r-- 1 root root   2141168 2008-12-31 13:00 com.qti.sensormodule.ofilm_mot_hanoip_s5khm2.bin
+-rw-r--r-- 1 root root   2082776 2008-12-31 13:00 com.qti.sensormodule.ofilm_mot_hanoip_s5khm2_compatible.bin
+-rw-r--r-- 1 root root   2071768 2008-12-31 13:00 com.qti.sensormodule.ofilm_mot_hanoip_s5khm2_v2.bin
+-rw-r--r-- 1 root root    306088 2008-12-31 13:00 com.qti.sensormodule.qtech_mot_hanoip_ov16a1q.bin
+-rw-r--r-- 1 root root   1054816 2008-12-31 13:00 com.qti.sensormodule.qtech_mot_hanoip_ov32b.bin
+-rw-r--r-- 1 root root    205896 2008-12-31 13:00 com.qti.sensormodule.qtech_mot_hanoip_s5k4h7.bin
+-rw-r--r-- 1 root root    594392 2008-12-31 13:00 com.qti.tuned.default.bin
+-rw-r--r-- 1 root root   1066456 2008-12-31 13:00 com.qti.tuned.mot_hanoip_ov02b1b.bin
+-rw-r--r-- 1 root root   4584504 2008-12-31 13:00 com.qti.tuned.mot_hanoip_ov16a1q.bin
+-rw-r--r-- 1 root root   4123368 2008-12-31 13:00 com.qti.tuned.mot_hanoip_ov32b.bin
+-rw-r--r-- 1 root root  10744984 2008-12-31 13:00 com.qti.tuned.mot_hanoip_ov64b.bin
+-rw-r--r-- 1 root root   2977728 2008-12-31 13:00 com.qti.tuned.mot_hanoip_s5k4h7.bin
+-rw-r--r-- 1 root root  14589696 2008-12-31 13:00 com.qti.tuned.mot_hanoip_s5khm2.bin
+-rw-r--r-- 1 root root  10961104 2008-12-31 13:00 com.qti.tuned.mot_hanoip_s5khm2_v2.bin
+drwxr-xr-x 2 root shell     4096 2008-12-31 13:00 components
+-rw-r--r-- 1 root root      1440 2008-12-31 13:00 fdconfigpreview.bin
+-rw-r--r-- 1 root root      1440 2008-12-31 13:00 fdconfigpreviewlite.bin
+-rw-r--r-- 1 root root      1440 2008-12-31 13:00 fdconfigvideo.bin
+-rw-r--r-- 1 root root      1440 2008-12-31 13:00 fdconfigvideolite.bin
+
+/vendor/lib64/camera:
+total 56848
+-rw-r--r-- 1 root root     15624 2008-12-31 13:00 com.mot.eeprom.mot_gt24p64b_ov16a_eeprom.so
+-rw-r--r-- 1 root root     15616 2008-12-31 13:00 com.mot.eeprom.mot_gt24p64e_ov32b_eeprom.so
+-rw-r--r-- 1 root root     23872 2008-12-31 13:00 com.mot.eeprom.mot_gt24p64e_ov64b_eeprom.so
+-rw-r--r-- 1 root root     23872 2008-12-31 13:00 com.mot.eeprom.mot_gt24p64e_s5khm2_eeprom.so
+-rw-r--r-- 1 root root     19728 2008-12-31 13:00 com.mot.eeprom.mot_hanoip_ov02b1b_otp.so
+-rw-r--r-- 1 root root     23904 2008-12-31 13:00 com.mot.eeprom.mot_hanoip_s5k4h7_otp.so
+-rw-r--r-- 1 root root     11000 2008-12-31 13:00 com.qti.sensor.mot_ov02b1b.so
+-rw-r--r-- 1 root root     11016 2008-12-31 13:00 com.qti.sensor.mot_ov16a1q.so
+-rw-r--r-- 1 root root     11016 2008-12-31 13:00 com.qti.sensor.mot_ov32b.so
+-rw-r--r-- 1 root root     11016 2008-12-31 13:00 com.qti.sensor.mot_ov64b.so
+-rw-r--r-- 1 root root     11040 2008-12-31 13:00 com.qti.sensor.mot_s5k4h7.so
+-rw-r--r-- 1 root root     11056 2008-12-31 13:00 com.qti.sensor.mot_s5khm2.so
+-rw-r--r-- 1 root root     11056 2008-12-31 13:00 com.qti.sensor.mot_s5khm2_v2.so
+-rw-r--r-- 1 root root     54680 2008-12-31 13:00 com.qti.sensormodule.ofilm_mot_hanoip_ov02b1b.bin
+-rw-r--r-- 1 root root   1147360 2008-12-31 13:00 com.qti.sensormodule.ofilm_mot_hanoip_ov64b.bin
+-rw-r--r-- 1 root root   2141168 2008-12-31 13:00 com.qti.sensormodule.ofilm_mot_hanoip_s5khm2.bin
+-rw-r--r-- 1 root root   2082776 2008-12-31 13:00 com.qti.sensormodule.ofilm_mot_hanoip_s5khm2_compatible.bin
+-rw-r--r-- 1 root root   2071768 2008-12-31 13:00 com.qti.sensormodule.ofilm_mot_hanoip_s5khm2_v2.bin
+-rw-r--r-- 1 root root    306088 2008-12-31 13:00 com.qti.sensormodule.qtech_mot_hanoip_ov16a1q.bin
+-rw-r--r-- 1 root root   1054816 2008-12-31 13:00 com.qti.sensormodule.qtech_mot_hanoip_ov32b.bin
+-rw-r--r-- 1 root root    205896 2008-12-31 13:00 com.qti.sensormodule.qtech_mot_hanoip_s5k4h7.bin
+-rw-r--r-- 1 root root    594392 2008-12-31 13:00 com.qti.tuned.default.bin
+-rw-r--r-- 1 root root   1066456 2008-12-31 13:00 com.qti.tuned.mot_hanoip_ov02b1b.bin
+-rw-r--r-- 1 root root   4584504 2008-12-31 13:00 com.qti.tuned.mot_hanoip_ov16a1q.bin
+-rw-r--r-- 1 root root   4123368 2008-12-31 13:00 com.qti.tuned.mot_hanoip_ov32b.bin
+-rw-r--r-- 1 root root  10744984 2008-12-31 13:00 com.qti.tuned.mot_hanoip_ov64b.bin
+-rw-r--r-- 1 root root   2977728 2008-12-31 13:00 com.qti.tuned.mot_hanoip_s5k4h7.bin
+-rw-r--r-- 1 root root  14589696 2008-12-31 13:00 com.qti.tuned.mot_hanoip_s5khm2.bin
+-rw-r--r-- 1 root root  10961104 2008-12-31 13:00 com.qti.tuned.mot_hanoip_s5khm2_v2.bin
+drwxr-xr-x 2 root shell     4096 2008-12-31 13:00 components
+-rw-r--r-- 1 root root      1440 2008-12-31 13:00 fdconfigpreview.bin
+-rw-r--r-- 1 root root      1440 2008-12-31 13:00 fdconfigpreviewlite.bin
+-rw-r--r-- 1 root root      1440 2008-12-31 13:00 fdconfigvideo.bin
+-rw-r--r-- 1 root root      1440 2008-12-31 13:00 fdconfigvideolite.bin

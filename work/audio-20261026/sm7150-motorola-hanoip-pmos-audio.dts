@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-pmos.dts"
+
+/*
+ * Audio bring-up, phase 1: start the ADSP (LPASS) with the hanoip
+ * firmware read from modem_a. The APR services (q6core, q6afe with the
+ * LPASS clocks, q6asm, q6adm/routing) come from sm7150.dtsi; no sound card
+ * or amplifier is enabled yet.
+ */
+&remoteproc_adsp {
+	firmware-name = "qcom/sm7150/motorola/hanoip/adsp.mdt";
+	status = "okay";
+};

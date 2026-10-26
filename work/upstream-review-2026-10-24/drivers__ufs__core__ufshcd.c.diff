@@ -1,0 +1,97 @@
+--- upstream/drivers/ufs/core/ufshcd.c
++++ local/drivers/ufs/core/ufshcd.c
+@@ -9902,7 +9902,12 @@
+ 
+ static int ufshcd_variant_hba_init(struct ufs_hba *hba)
+ {
+-	int err = ufshcd_vops_init(hba);
++	int err;
++
++	dev_info(hba->dev, "UFS DIAG: variant callback start (%s)\n",
++		 ufshcd_get_var_name(hba));
++	err = ufshcd_vops_init(hba);
++	dev_info(hba->dev, "UFS DIAG: variant callback returned %d\n", err);
+ 
+ 	if (err)
+ 		dev_err_probe(hba->dev, err,
+@@ -9923,32 +9928,51 @@
+ 	 * of the initialization here.
+ 	 */
+ 	err = ufshcd_init_hba_vreg(hba);
+-	if (err)
++	if (err) {
++		dev_err_probe(hba->dev, err,
++			      "UFS DIAG: generic init_hba_vreg failed\n");
+ 		goto out;
++	}
+ 
+ 	err = ufshcd_setup_hba_vreg(hba, true);
+-	if (err)
++	if (err) {
++		dev_err_probe(hba->dev, err,
++			      "UFS DIAG: generic setup_hba_vreg failed\n");
+ 		goto out;
++	}
+ 
+ 	err = ufshcd_init_clocks(hba);
+-	if (err)
++	if (err) {
++		dev_err_probe(hba->dev, err,
++			      "UFS DIAG: generic init_clocks failed\n");
+ 		goto out_disable_hba_vreg;
++	}
+ 
+ 	if (hba->dev_ref_clk_freq == REF_CLK_FREQ_INVAL)
+ 		hba->dev_ref_clk_freq = ufshcd_parse_ref_clk_property(hba);
+ 
+ 	err = ufshcd_setup_clocks(hba, true);
+-	if (err)
++	if (err) {
++		dev_err_probe(hba->dev, err,
++			      "UFS DIAG: generic setup_clocks failed\n");
+ 		goto out_disable_hba_vreg;
++	}
+ 
+ 	err = ufshcd_init_vreg(hba);
+-	if (err)
++	if (err) {
++		dev_err_probe(hba->dev, err,
++			      "UFS DIAG: generic init_vreg failed\n");
+ 		goto out_disable_clks;
++	}
+ 
+ 	err = ufshcd_setup_vreg(hba, true);
+-	if (err)
++	if (err) {
++		dev_err_probe(hba->dev, err,
++			      "UFS DIAG: generic setup_vreg failed\n");
+ 		goto out_disable_clks;
+-
++	}
++
++	dev_info(hba->dev, "UFS DIAG: generic init complete, invoking variant\n");
+ 	err = ufshcd_variant_hba_init(hba);
+ 	if (err)
+ 		goto out_disable_vreg;
+@@ -11141,13 +11165,19 @@
+ 	hba->vcc_off_delay_us = 2000;
+ 
+ 	err = ufshcd_hba_init(hba);
+-	if (err)
++	if (err) {
++		dev_err_probe(dev, err, "UFS DIAG: ufshcd_hba_init failed\n");
+ 		goto out_error;
++	}
++	dev_info(dev, "UFS DIAG: ufshcd_hba_init passed\n");
+ 
+ 	/* Read capabilities registers */
+ 	err = ufshcd_hba_capabilities(hba);
+-	if (err)
++	if (err) {
++		dev_err_probe(dev, err, "UFS DIAG: hba_capabilities failed\n");
+ 		goto out_disable;
++	}
++	dev_info(dev, "UFS DIAG: hba_capabilities passed\n");
+ 
+ 	/* Get UFS version supported by the controller */
+ 	hba->ufs_version = ufshcd_get_ufs_version(hba);

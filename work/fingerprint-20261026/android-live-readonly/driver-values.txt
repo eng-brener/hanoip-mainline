@@ -1,0 +1,10 @@
+vendor:
+fpc
+modalias:
+fpc1020
+irq:
+0
+
+irq_cnt:
+60
+

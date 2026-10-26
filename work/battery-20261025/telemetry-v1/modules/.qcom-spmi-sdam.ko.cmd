@@ -1,0 +1,1 @@
+savedcmd_qcom-spmi-sdam.ko := aarch64-linux-gnu-ld -r -EL  -maarch64elf -z noexecstack --no-warn-rwx-segments --build-id=sha1  -T /tmp/kernel-mainline/scripts/module.lds -o qcom-spmi-sdam.ko qcom-spmi-sdam.o qcom-spmi-sdam.mod.o .module-common.o

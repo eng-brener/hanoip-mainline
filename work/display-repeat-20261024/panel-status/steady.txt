@@ -1,0 +1,51 @@
+
+~ # /bin/busybox cat /proc/uptime /sys/bus/mipi-dsi/devices/*/panel_status /sys/
+class/graphics/fb0/blank /sys/class/drm/card0-DSI-1/status /sys/class/drm/card0-
+DSI-1/enabled /proc/sys/kernel/tainted; /bin/busybox cat /proc/mounts /proc/part
+itions; /bin/busybox dmesg | /bin/busybox tail -12; printf '\nHANOIP_END_57304db
+57609\n'
+54.16 305.34
+prepared=1 enabled=1 reset_logical=0 power_ret=1 power=0x9c pixel_ret=1 pixel=0x07 diagnostic_ret=1 diagnostic=0xc0
+4
+connected
+enabled
+0
+rootfs / rootfs rw,size=1797808k,nr_inodes=449452 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=1797808k,nr_inodes=449452,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+major minor  #blocks  name
+
+   1        0       4096 ram0
+   1        1       4096 ram1
+   1        2       4096 ram2
+   1        3       4096 ram3
+   1        4       4096 ram4
+   1        5       4096 ram5
+   1        6       4096 ram6
+   1        7       4096 ram7
+   1        8       4096 ram8
+   1        9       4096 ram9
+   1       10       4096 ram10
+   1       11       4096 ram11
+   1       12       4096 ram12
+   1       13       4096 ram13
+   1       14       4096 ram14
+   1       15       4096 ram15
+[   25.621744] msm_dpu ae01000.display-controller: no GPU device was found
+[   26.118075] Console: switching to colour frame buffer device 135x153
+[   26.134715] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[   26.134748] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[   26.159795] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+[   34.278450] platform 62b52000.pinctrl: deferred probe pending: (reason unknown)
+[   34.286027] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   34.294300] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   34.302834] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   34.310931] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   34.319023] gcc-sm7150 100000.clock-controller: sync_state() pending due to 18323000.cpufreq
+[   39.076195] dsi_err_worker: status=16
+
+HANOIP_END_57304db57609

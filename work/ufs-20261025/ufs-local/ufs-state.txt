@@ -1,0 +1,47 @@
+
+~ # echo STATE_BEGIN; /bin/busybox cat /proc/mounts; /bin/busybox lsmod; /bin/bu
+sybox cat /run/hanoip-ufs-loader.log; n=0; rw=0; for b in /sys/class/block/sd*; 
+do d=/dev/${b##*/}; n=$((n+1)); r=$(/bin/busybox blockdev --getro $d); [ "$r" = 
+1 ] || { rw=$((rw+1)); echo RW:$d; }; done; echo BLOCKS=$n NOT_RO=$rw; /bin/busy
+box ls -d /sys/class/block/sd?; /bin/busybox cat /sys/class/scsi_device/*/device
+/model 2>/dev/null | /bin/busybox sort | /bin/busybox uniq -c; /bin/busybox read
+link /sys/bus/platform/devices/1d84000.ufshc/iommu_group; /bin/busybox cat /sys/
+bus/platform/devices/*.dsi/error_snapshot /sys/class/drm/card0-DSI-1/enabled /pr
+oc/sys/kernel/tainted; /bin/busybox cat /proc/uptime; printf '\n%s\n' HANOIP_END
+_7d769ce399ce
+STATE_BEGIN
+rootfs / rootfs rw,size=1797532k,nr_inodes=449383 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=1797532k,nr_inodes=449383,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+Module                  Size  Used by    Tainted: G  
+ufs_qcom               49152  1 
+ufshcd_pltfrm          24576  1 ufs_qcom
+ufshcd_core           339968  2 ufs_qcom,ufshcd_pltfrm
+panel_ilitek_ili7807s    12288  0 
+msm                  1236992  1 
+qcom_wled              32768  0 
+ubwc_config            24576  1 msm
+mdt_loader             12288  1 msm
+drm_client_lib         12288  1 msm
+gpu_sched              61440  1 msm
+drm_gpuvm              45056  1 msm
+drm_exec               12288  2 msm,drm_gpuvm
+drm_display_helper    233472  2 panel_ilitek_ili7807s,msm
+cec                    53248  1 drm_display_helper
+UFS module loader returned: 0
+BLOCKS=84 NOT_RO=0
+/sys/class/block/sda  /sys/class/block/sdc  /sys/class/block/sde
+/sys/class/block/sdb  /sys/class/block/sdd  /sys/class/block/sdf
+      9 KM5V8001DM-B622 
+../../../../kernel/iommu_groups/5
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+enabled
+4096
+231.92 1330.12
+
+HANOIP_END_7d769ce399ce
+~ # 

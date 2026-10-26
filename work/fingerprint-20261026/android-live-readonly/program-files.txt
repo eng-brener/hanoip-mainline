@@ -1,0 +1,6 @@
+-rwxr-xr-x 1 root shell  25952 2008-12-31 13:00 /vendor/bin/hw/android.hardware.biometrics.fingerprint@2.1-service-chipone
+-rwxr-xr-x 1 root shell 176080 2008-12-31 13:00 /vendor/bin/hw/android.hardware.biometrics.fingerprint@2.1-service-fpc
+-rw-r--r-- 1 root root  202248 2008-12-31 13:00 /vendor/lib/hw/chipone.fingerprint.default.so
+-rw-r--r-- 1 root root   29124 2008-12-31 13:00 /vendor/lib/libQSEEComAPI.so
+-rw-r--r-- 1 root root  269344 2008-12-31 13:00 /vendor/lib64/hw/chipone.fingerprint.default.so
+-rw-r--r-- 1 root root   40824 2008-12-31 13:00 /vendor/lib64/libQSEEComAPI.so

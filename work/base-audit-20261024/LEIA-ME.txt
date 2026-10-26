@@ -1,0 +1,40 @@
+Revisão de prioridades — 24/10/2026
+
+A recomendação anterior de rede USB foi prematura. O usuário pediu para rever
+itens mais básicos; nenhuma alteração de energia/CPU foi aplicada nesta revisão.
+Coleta somente leitura: runtime.txt, aparelho no Linux #8 com display e touch.
+
+Evidência:
+- online=0-5, present/possible=0-7: apenas seis dos oito CPUs online, por maxcpus=6.
+- cpufreq.off=1 e cpuidle.off=1 explícitos. A ausência de policies e os erros de
+  registro não provam falha dos drivers enquanto essas opções estiverem ativas.
+- idle=poll está na linha, mas o boot ARM64 o informou como parâmetro desconhecido;
+  não afirmar que ele está efetivamente forçando polling. Conferir a implementação
+  ARM64 antes de atribuir consumo a esse argumento.
+- clk_ignore_unused mantém clocks sem consumidores ligados; o DISPCC preserva PLL
+  e gating herdados de ABL/U-Boot. Reset BCR MDSS continua contornado no DT diagnóstico.
+- 25 zonas térmicas com leitura válida: 36,1..38,7 °C nesta amostra. Não há evidência
+  de superaquecimento aqui. Isso não valida throttling/refrigeração sob carga.
+- power_supply só expõe tcpm-source-psy do USB-C, não bateria/gauge/carga. Drivers
+  QCOM_QG e SMB2 estão em módulos na config; ausência de battery NÃO prova que
+  basta carregar esses módulos nem que são compatíveis com este PMIC/placa.
+- Memória: bug de regmap_read LCDB foi corrigido; mapa SMMU do splash funcionou
+  no boot atual. Não há evidência nova de corrupção. Repetibilidade segue pendente.
+- LCDB ainda tem refcnt sem lock, incremento antes do sucesso e erros de leitura
+  ignorados. Auditar antes de testar desligamento/religamento do painel ou suspend.
+
+Prioridade recomendada revisada:
+1. Base reproduzível: repetição controlada do par em RAM, com logs/checks de memória,
+   shell, display e ausência de Oops. Não exigir novo refinamento do touch.
+2. Energia/CPU: medir baseline e entender dependências; reativar CPUfreq/idle em
+   variantes separadas, com telemetria térmica. Não ligar todos os recursos juntos.
+   Bateria/carga: primeiro identificar caminho e suporte real, sem programar gauge
+   ou mexer em NVM. Não priorizar CPUs 6/7 antes de entender clocks/OPPs.
+3. Confiabilidade LCDB/DISPCC e dependência do firmware, antes de suspend/resume.
+4. Rede USB/userspace/GUI depois dessa base. Touch fino segue adiado.
+
+Fontes oficiais consultadas:
+https://docs.kernel.org/admin-guide/kernel-parameters.html
+https://docs.kernel.org/admin-guide/pm/cpuidle.html
+Fontes locais: arm64/kernel, drivers/cpufreq/cpufreq.c, drivers/cpuidle/cpuidle.c,
+drivers/regulator/qcom-lcdb-regulator.c, drivers/clk/qcom/dispcc-sm7150.c.

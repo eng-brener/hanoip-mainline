@@ -1,0 +1,8 @@
+
+work/fingerprint-20261026/fpctzapp-reconstructed.elf:	file format elf32-littlearm
+
+Disassembly of section PT_LOAD#2:
+
+00000000 <PT_LOAD#2>:
+  1140dc: e59fc000     	ldr	r12, [pc]               @ 0x1140e4 <PT_LOAD#2+0x1140e4>
+  1140e0: e08cf00f     	add	pc, r12, pc

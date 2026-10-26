@@ -1,0 +1,149 @@
+
+~ # /bin/busybox mount -t debugfs debugfs /sys/kernel/debug; /bin/busybox cat /s
+ys/class/drm/card0-DSI-1/status /sys/class/drm/card0-DSI-1/enabled /sys/class/dr
+m/card0-DSI-1/modes /sys/class/graphics/fb0/name /sys/class/graphics/fb0/virtual
+_size; /bin/busybox cat /sys/kernel/debug/dri/0/state; printf '\nHANOIP_END_cdab
+791326b7\n'
+connected
+enabled
+1080x2460
+msmdrmfb
+1080,2460
+plane[43]: plane-0
+	crtc=crtc-0
+	fb=75
+		allocated by = [fbcon]
+		refcount=2
+		format=XR24 little-endian (0x34325258)
+		modifier=0x0
+		size=1080x2460
+		layers:
+			size[0]=1080x2460
+			pitch[0]=4352
+			offset[0]=0
+			obj[0]:
+				name=0
+				refcount=2
+				start=00100001
+				size=10706944
+				imported=no
+	crtc-pos=1080x2460+0+0
+	src-pos=1080.000000x2460.000000+0.000000+0.000000
+	rotation=1
+	normalized-zpos=0
+	color-encoding=ITU-R BT.601 YCbCr
+	color-range=YCbCr limited range
+	color_mgmt_changed=0
+	color-pipeline=0
+	stage=1
+	sspp[0]=sspp_2
+	multirect_mode[0]=none
+	multirect_index[0]=solo
+	src[0]=1080x2460+0+0
+	dst[0]=1080x2460+0+0
+plane[49]: plane-1
+	crtc=(null)
+	fb=0
+	crtc-pos=0x0+0+0
+	src-pos=0.000000x0.000000+0.000000+0.000000
+	rotation=1
+	normalized-zpos=0
+	color-encoding=ITU-R BT.601 YCbCr
+	color-range=YCbCr limited range
+	color_mgmt_changed=0
+	color-pipeline=0
+	stage=0
+plane[55]: plane-2
+	crtc=(null)
+	fb=0
+	crtc-pos=0x0+0+0
+	src-pos=0.000000x0.000000+0.000000+0.000000
+	rotation=1
+	normalized-zpos=0
+	color-encoding=ITU-R BT.601 YCbCr
+	color-range=YCbCr limited range
+	color_mgmt_changed=0
+	color-pipeline=0
+	stage=0
+plane[61]: plane-3
+	crtc=(null)
+	fb=0
+	crtc-pos=0x0+0+0
+	src-pos=0.000000x0.000000+0.000000+0.000000
+	rotation=1
+	normalized-zpos=0
+	color-encoding=ITU-R BT.601 YCbCr
+	color-range=YCbCr limited range
+	color_mgmt_changed=0
+	color-pipeline=0
+	stage=0
+plane[67]: plane-4
+	crtc=(null)
+	fb=0
+	crtc-pos=0x0+0+0
+	src-pos=0.000000x0.000000+0.000000+0.000000
+	rotation=1
+	normalized-zpos=0
+	color-encoding=ITU-R BT.601 YCbCr
+	color-range=YCbCr limited range
+	color_mgmt_changed=0
+	color-pipeline=0
+	stage=0
+crtc[73]: crtc-0
+	enable=1
+	active=1
+	self_refresh_active=0
+	planes_changed=1
+	mode_changed=0
+	active_changed=0
+	connectors_changed=0
+	color_mgmt_changed=0
+	plane_mask=1
+	connector_mask=1
+	encoder_mask=1
+	mode: "1080x2460": 60 343458 1080 1108 1112 1136 2460 5025 5027 5039 0x48 0x0
+	background_color=ffff000000000000
+	lm[0]=0
+	ctl[0]=0
+	lm[1]=1
+	ctl[1]=0
+crtc[74]: crtc-1
+	enable=0
+	active=0
+	self_refresh_active=0
+	planes_changed=0
+	mode_changed=0
+	active_changed=0
+	connectors_changed=0
+	color_mgmt_changed=0
+	plane_mask=0
+	connector_mask=0
+	encoder_mask=0
+	mode: "": 0 0 0 0 0 0 0 0 0 0 0x0 0x0
+	background_color=ffff000000000000
+connector[36]: DSI-1
+	crtc=crtc-0
+	self_refresh_aware=0
+	interlace_allowed=0
+	ycbcr_420_allowed=0
+	max_requested_bpc=0
+	colorspace=Default
+connector[38]: Writeback-1
+	crtc=(null)
+	self_refresh_aware=0
+	interlace_allowed=0
+	ycbcr_420_allowed=0
+	max_requested_bpc=0
+	colorspace=Default
+resource mapping:
+	pingpong=73 73 # # - - - - - - - - - 
+	mixer=73 73 # # - - - - 
+	ctl=73 # # # # # - - 
+	dspp=# # - - - - - - 
+	dsc=73 73 - - - - - - 
+	cdm=# 
+	sspp=# # - - - - - - 73 # # - - - - - 
+	cwb=- - - - 
+
+HANOIP_END_cdab791326b7
+~ # 

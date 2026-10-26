@@ -1,0 +1,44 @@
+
+~ # printf '\nHANOIP_STATUS_BEGIN\n'; cat /proc/uptime; cat /proc/mounts; cat /p
+roc/partitions; cat /sys/devices/system/cpu/online; /bin/busybox reboot --help; 
+printf '\nHANOIP_STATUS_END\n'
+
+HANOIP_STATUS_BEGIN
+191.79 1138.08
+rootfs / rootfs rw,size=1799176k,nr_inodes=449794 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=1799176k,nr_inodes=449794,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+major minor  #blocks  name
+
+   1        0       4096 ram0
+   1        1       4096 ram1
+   1        2       4096 ram2
+   1        3       4096 ram3
+   1        4       4096 ram4
+   1        5       4096 ram5
+   1        6       4096 ram6
+   1        7       4096 ram7
+   1        8       4096 ram8
+   1        9       4096 ram9
+   1       10       4096 ram10
+   1       11       4096 ram11
+   1       12       4096 ram12
+   1       13       4096 ram13
+   1       14       4096 ram14
+   1       15       4096 ram15
+0-5
+BusyBox v1.29.3-osm0sis (2018-11-17 02:42:59 AST) multi-call binary.
+
+Usage: reboot [-d DELAY] [-n] [-f]
+
+Reboot the system
+
+	-d SEC	Delay interval
+	-n	Do not sync
+	-f	Force (don't go through init)
+
+HANOIP_STATUS_END

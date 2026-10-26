@@ -1,0 +1,5 @@
+
+~ # echo MSM_BEGIN; /bin/busybox insmod /lib/hanoip-display/msm.ko; echo MSM_RET
+URN_$?; /bin/busybox sleep 5; /bin/busybox ls /sys/class/drm; /bin/busybox dmesg
+ | /bin/busybox tail -55; printf '\nHANOIP_END_f6b451bf1778\n'
+MSM_BEGIN

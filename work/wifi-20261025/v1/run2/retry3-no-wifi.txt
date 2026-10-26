@@ -1,0 +1,22 @@
+snoc-removed
+state=crashed
+[  238.118815] remoteproc remoteproc0: recovering modem
+[  238.173049] remoteproc remoteproc0: stopped remote processor modem
+[  239.640241] remoteproc remoteproc0: remote processor modem is now up
+[  241.113985] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[  241.164614] qcom_q6v5_pas 4080000.remoteproc: fatal error received: EX:kernel:0x0:tmr_slave1:0x1d1:PC=0xc06ddec0
+[  241.175215] remoteproc remoteproc0: crash detected in modem: type fatal error
+[  241.182596] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[  241.182608] remoteproc remoteproc0: handling crash #4 in modem
+--- rmtfs tail
+[RMTFS] del_client 0:137
+[RMTFS] packet; from: 1:-2
+[RMTFS] del_client 1:16385
+[RMTFS] packet; from: 1:-2
+[RMTFS] del_client 0:141
+[RMTFS] packet; from: datablock_report.txt
+dhob_report.txt
+hob_report.txt
+server_check.txt
+simlock_report.txt
+ticf.bin

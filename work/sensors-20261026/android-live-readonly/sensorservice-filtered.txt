@@ -1,0 +1,86 @@
+0x00000001) dt-gesture                | ilitek          | ver: 1 | type: com.motorola.sensor.double_tap(65566) | perm: n/a | flags: 0x00000007
+	special-trigger | maxDelay=0us | minDelay=0us | no batching | wakeUp | 
+0x0100000b) icm4x6xx Accelerometer Non-wakeup | TDK-Invensense  | ver: 306 | type: android.sensor.accelerometer(1) | perm: n/a | flags: 0x00000980
+	continuous | minRate=1.00Hz | maxRate=500.00Hz | FIFO (max,reserved) = (10000, 3000) events | non-wakeUp | 
+	highest rate level = 3, support shared mem: gralloc, 
+0x0100000c) icm4x6xx Accelerometer Wakeup | TDK-Invensense  | ver: 306 | type: android.sensor.accelerometer(1) | perm: n/a | flags: 0x00000981
+	continuous | minRate=1.00Hz | maxRate=500.00Hz | FIFO (max,reserved) = (10000, 3000) events | wakeUp | 
+	highest rate level = 3, support shared mem: gralloc, 
+0x01000029) icm4x6xx Gyroscope Non-wakeup | TDK-Invensense  | ver: 306 | type: android.sensor.gyroscope(4) | perm: n/a | flags: 0x000009c0
+	continuous | minRate=1.00Hz | maxRate=500.00Hz | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | has-additional-info, 
+	highest rate level = 3, support shared mem: gralloc, 
+0x0100002a) icm4x6xx Gyroscope Wakeup | TDK-Invensense  | ver: 306 | type: android.sensor.gyroscope(4) | perm: n/a | flags: 0x000009c1
+	continuous | minRate=1.00Hz | maxRate=500.00Hz | FIFO (max,reserved) = (10000, 0) events | wakeUp | has-additional-info, 
+	highest rate level = 3, support shared mem: gralloc, 
+0x01000033) tmd2755 Ambient Light Sensor Non-wakeup | ams AG          | ver: 256 | type: android.sensor.light(5) | perm: n/a | flags: 0x00000002
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | 
+0x01000034) tmd2755 Ambient Light Sensor Wakeup | ams AG          | ver: 256 | type: android.sensor.light(5) | perm: n/a | flags: 0x00000003
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x01000053) tmd2755 Proximity Sensor Non-wakeup | ams AG          | ver: 256 | type: android.sensor.proximity(8) | perm: n/a | flags: 0x00000042
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 300) events | non-wakeUp | has-additional-info, 
+0x01000054) tmd2755 Proximity Sensor Wakeup | ams AG          | ver: 256 | type: android.sensor.proximity(8) | perm: n/a | flags: 0x00000043
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 300) events | wakeUp | has-additional-info, 
+0x0100005b) gravity  Non-wakeup       | qualcomm        | ver: 1 | type: android.sensor.gravity(9) | perm: n/a | flags: 0x00000000
+	continuous | minRate=5.00Hz | maxRate=200.00Hz | FIFO (max,reserved) = (10000, 300) events | non-wakeUp | 
+0x0100005c) gravity  Wakeup           | qualcomm        | ver: 1 | type: android.sensor.gravity(9) | perm: n/a | flags: 0x00000001
+	continuous | minRate=5.00Hz | maxRate=200.00Hz | FIFO (max,reserved) = (10000, 300) events | wakeUp | 
+--
+0x01000098) Game Rotation Vector  Wakeup | qualcomm        | ver: 1 | type: android.sensor.game_rotation_vector(15) | perm: n/a | flags: 0x00000001
+	continuous | minRate=5.00Hz | maxRate=200.00Hz | FIFO (max,reserved) = (10000, 300) events | wakeUp | 
+0x010000a1) icm4x6xx Gyroscope-Uncalibrated Non-wakeup | TDK-Invensense  | ver: 306 | type: android.sensor.gyroscope_uncalibrated(16) | perm: n/a | flags: 0x000009c0
+	continuous | minRate=1.00Hz | maxRate=500.00Hz | FIFO (max,reserved) = (10000, 0) events | non-wakeUp | has-additional-info, 
+	highest rate level = 3, support shared mem: gralloc, 
+0x010000a2) icm4x6xx Gyroscope-Uncalibrated Wakeup | TDK-Invensense  | ver: 306 | type: android.sensor.gyroscope_uncalibrated(16) | perm: n/a | flags: 0x000009c1
+	continuous | minRate=1.00Hz | maxRate=500.00Hz | FIFO (max,reserved) = (10000, 0) events | wakeUp | has-additional-info, 
+	highest rate level = 3, support shared mem: gralloc, 
+0x010000ac) sns_smd  Wakeup           | qualcomm        | ver: 1 | type: android.sensor.significant_motion(17) | perm: n/a | flags: 0x00000005
+	one-shot | maxDelay=0us | minDelay=-1us | no batching | wakeUp | 
+0x010000b5) pedometer  Non-wakeup     | qualcomm        | ver: 1 | type: android.sensor.step_detector(18) | perm: android.permission.ACTIVITY_RECOGNITION | flags: 0x00000006
+--
+0x0100012e) motion_detect_wakeup      | qualcomm        | ver: 1 | type: android.sensor.motion_detect(30) | perm: n/a | flags: 0x00000005
+	one-shot | maxDelay=0us | minDelay=-1us | no batching | wakeUp | 
+0x0100015f) icm4x6xx Accelerometer-Uncalibrated Non-wakeup | TDK-Invensense  | ver: 306 | type: android.sensor.accelerometer_uncalibrated(35) | perm: n/a | flags: 0x00000980
+	continuous | minRate=1.00Hz | maxRate=500.00Hz | FIFO (max,reserved) = (10000, 3000) events | non-wakeUp | 
+	highest rate level = 3, support shared mem: gralloc, 
+0x01000160) icm4x6xx Accelerometer-Uncalibrated Wakeup | TDK-Invensense  | ver: 306 | type: android.sensor.accelerometer_uncalibrated(35) | perm: n/a | flags: 0x00000981
+	continuous | minRate=1.00Hz | maxRate=500.00Hz | FIFO (max,reserved) = (10000, 3000) events | wakeUp | 
+	highest rate level = 3, support shared mem: gralloc, 
+0x01000426) sns_cmc  Wakeup           | qualcomm        | ver: 1 | type:       qti.sensor.cmc(33171006) | perm: n/a | flags: 0x00000003
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (10000, 0) events | wakeUp | 
+0x0101000c) Flat Up  Wakeup           | Motorola        | ver: 256 | type: com.motorola.sensor.flat_up(65537) | perm: n/a | flags: 0x00000003
+--
+geomag fusion (no gyro) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+Recent Sensor events:
+icm4x6xx Accelerometer Non-wakeup: last 50 events
+	 1 (ts=155.959275227, wall=04:05:50.942) -0.04, 0.08, 9.92, 
+	 2 (ts=156.159275227, wall=04:05:52.942) -0.04, 0.08, 9.92, 
+	 3 (ts=156.359275227, wall=04:05:52.942) -0.04, 0.08, 9.92, 
+	 4 (ts=156.559275227, wall=04:05:52.942) -0.04, 0.08, 9.92, 
+	 5 (ts=156.759275227, wall=04:05:52.942) -0.05, 0.08, 9.92, 
+--
+Display Rotate  Non-wakeup: last 1 events
+	 1 (ts=11.822956803, wall=04:03:32.698) -1.00, 
+tmd2755 Proximity Sensor Wakeup: last 1 events
+	 1 (ts=26.368440553, wall=04:03:34.167) 5.00, 0.00, 0.00, 
+Active sensors:
+icm4x6xx Accelerometer Non-wakeup (handle=0x0100000b, connections=1)
+Display Rotate  Non-wakeup (handle=0x0100010f, connections=1)
+Camera Gesture  Wakeup (handle=0x0101002a, connections=1)
+Socket Buffer size = 984 events
+WakeLock Status: not held 
+Mode : NORMAL
+--
+	Operating Mode: NORMAL
+	 com.android.server.power.FaceDownDetector | WakeLockRefCount 0 | uid 1000 | cache size 0 | max cache size 0 | has sensor access: true
+	 icm4x6xx Accelerometer Non-wakeup 0x0100000b | first flush pending: false | pending flush events 0 
+Connection Number: 2 
+	Operating Mode: NORMAL
+	 com.android.server.wm.WindowOrientationListener$OrientationSensorJudge | WakeLockRefCount 0 | uid 1000 | cache size 0 | max cache size 0 | has sensor access: true
+	 Display Rotate  Non-wakeup 0x0100010f | first flush pending: false | pending flush events 0 
+0 open direct connections
+Previous Registrations:
+04:03:44 - 0x01000054 pid= 3574 uid=10264 samplingPeriod=   N/A  us batchingPeriod=   N/A  us result=OK (sensor, package): (tmd2755 Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl$1)
+04:03:34 + 0x01000054 pid= 3574 uid=10264 samplingPeriod=   20000us batchingPeriod=       0us result=OK (sensor, package): (tmd2755 Proximity Sensor Wakeup, com.android.systemui.util.sensors.ThresholdSensorImpl$1)
+04:03:32 + 0x0100010f pid= 2939 uid= 1000 samplingPeriod=   66667us batchingPeriod=       0us result=OK (sensor, package): (Display Rotate  Non-wakeup , com.android.server.wm.WindowOrientationListener$OrientationSensorJudge)
+04:03:28 + 0x0101002a pid= 2939 uid= 1000 samplingPeriod=       0us batchingPeriod=       0us result=OK (sensor, package): (Camera Gesture  Wakeup     , com.android.server.GestureLauncherService$GestureEventListener)
+04:03:27 + 0x0100000b pid= 2939 uid= 1000 samplingPeriod=  200000us batchingPeriod= 2000000us result=OK (sensor, package): (icm4x6xx Accelerometer Non-wakeup, com.android.server.power.FaceDownDetector)

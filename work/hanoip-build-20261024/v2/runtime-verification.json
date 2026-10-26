@@ -1,0 +1,7 @@
+{
+  "shell": true,
+  "capture_complete": true,
+  "dfps_overlap": false,
+  "stty_error": false,
+  "capture_bytes": 36990
+}

@@ -1,0 +1,4 @@
+DRM/MSM, WLED and panel compiled as manually loaded modules.
+No modules were loaded because the USB console never appeared.
+User reports the same brief text followed by a black display.
+Next action: known-good volatile boot to attempt read-only pstore collection.

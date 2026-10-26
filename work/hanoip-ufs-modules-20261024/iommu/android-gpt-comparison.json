@@ -1,0 +1,7 @@
+{
+  "command": "head -c 65536 /dev/block/sdb | sha256sum",
+  "exit": 0,
+  "stdout": "629a8ca6e6945642b045e47dad5f8c9d8559d3f4f245422d27ac3c1911f10a15  -\n",
+  "stderr": "",
+  "matches_mainline": true
+}

@@ -1,0 +1,38 @@
+bluetooth_a=/dev/sde20 ro=1
+pre dc4867b657a6bf725fed047454033a5e8c7ae4dfe2fdafbae333b777daf5a3ec
+apbtfw10.tlv
+apbtfw11.tlv
+apnv10.bin
+apnv11.bin
+crbtfw11.tlv
+crbtfw20.tlv
+crbtfw21.tlv
+crnv11.bin
+crnv20.bin
+crnv21.bin
+[  597.920769] Bluetooth: Core ver 2.22
+[  597.924668] NET: Registered PF_BLUETOOTH protocol family
+[  597.930211] Bluetooth: HCI device and connection manager initialized
+[  597.936834] Bluetooth: HCI socket layer initialized
+[  597.941899] Bluetooth: L2CAP socket layer initialized
+[  597.947144] Bluetooth: SCO socket layer initialized
+[  597.970881] Bluetooth: HCI UART driver ver 2.3
+[  597.975561] Bluetooth: HCI UART protocol H4 registered
+[  597.981019] Bluetooth: HCI UART protocol LL registered
+[  597.986585] Bluetooth: HCI UART protocol Broadcom registered
+[  597.992501] Bluetooth: HCI UART protocol QCA registered
+[  597.997998] Bluetooth: HCI UART protocol Marvell registered
+[  598.006174] Bluetooth: hci0: setting up wcn399x
+[  598.013006] Bluetooth: RFCOMM TTY layer initialized
+[  598.018138] Bluetooth: RFCOMM socket layer initialized
+[  598.023509] Bluetooth: RFCOMM ver 1.11
+[  598.137156] Bluetooth: hci0: QCA Product ID   :0x0000000a
+[  598.142880] Bluetooth: hci0: QCA SOC Version  :0x40020140
+[  598.148585] Bluetooth: hci0: QCA ROM Version  :0x00000201
+[  598.154379] Bluetooth: hci0: QCA Patch Version:0x00000001
+[  598.172814] Bluetooth: hci0: QCA controller version 0x01400201
+[  598.179036] Bluetooth: hci0: QCA Downloading qca/crbtfw21.tlv
+[  599.199077] Bluetooth: hci0: QCA Downloading qca/crnv21.bin
+[  599.348698] Bluetooth: hci0: QCA setup on UART is completed
+hci0
+post dc4867b657a6bf725fed047454033a5e8c7ae4dfe2fdafbae333b777daf5a3ec

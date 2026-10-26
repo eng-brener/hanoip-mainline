@@ -1,0 +1,33 @@
+=== /sys/class/graphics/fb0
+ls: /sys/class/graphics/fb0: No such file or directory
+=== /sys/class/backlight/backlight
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 /sys/class/backlight/backlight -> ../../devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-05/c440000.qcom,spmi:qcom,pm6150l@5:qcom,wled@d800/backlight/backlight
+--- max_brightness
+4095
+--- brightness
+4095
+--- actual_brightness
+4095
+--- bl_power
+0
+=== /sys/class/backlight/panel0-backlight
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 /sys/class/backlight/panel0-backlight -> ../../devices/platform/soc/ae00000.qcom,mdss_mdp/backlight/panel0-backlight
+--- max_brightness
+4095
+--- brightness
+4095
+--- actual_brightness
+0
+--- bl_power
+0
+=== /sys/class/leds/lcd-backlight
+ls: /sys/class/leds/lcd-backlight: No such file or directory
+total 0
+lrwxrwxrwx 1 root root    0 2026-10-24 06:07 card0 -> ../../devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0
+lrwxrwxrwx 1 root root    0 2026-10-24 06:07 card0-DSI-1 -> ../../devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1
+lrwxrwxrwx 1 root root    0 2026-10-24 06:07 card0-Virtual-1 -> ../../devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-Virtual-1
+lrwxrwxrwx 1 root root    0 2026-10-24 06:07 renderD128 -> ../../devices/platform/soc/ae00000.qcom,mdss_mdp/drm/renderD128
+lrwxrwxrwx 1 root root    0 2026-10-24 06:07 sde-crtc-0 -> ../../devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/sde-crtc-0
+lrwxrwxrwx 1 root root    0 2026-10-24 06:07 sde-crtc-1 -> ../../devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/sde-crtc-1
+-r--r--r-- 1 root root 4096 1974-07-24 15:52 version
+/d

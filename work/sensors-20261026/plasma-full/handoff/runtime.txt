@@ -1,0 +1,48 @@
+Mon Oct 26 16:52:28 UTC 2026
+491.83 3204.30
+Linux hanoip 7.3.0-sm7150 #6 SMP PREEMPT Mon Oct 26 14:04:44 UTC 2026 aarch64 Linux
+4096
+ * status: started
+ * status: started
+({'HasAccelerometer': <true>, 'AccelerometerOrientation': <'undefined'>, 'AccelerometerTilt': <'undefined'>, 'HasAmbientLight': <true>, 'LightLevelUnit': <'lux'>, 'LightLevel': <74.699996948242188>, 'HasProximity': <true>, 'ProximityNear': <false>},)
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,nosuid,noexec,relatime,size=10240k,nr_inodes=444822,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+devpts /dev/pts devpts rw,relatime,mode=620,ptmxmode=666 0 0
+/dev/sde18 /mnt/ro/modem_a ext4 ro,nosuid,nodev,noexec,relatime,norecovery 0 0
+/dev/sde20 /mnt/ro/bluetooth_a ext4 ro,nosuid,nodev,noexec,relatime,norecovery 0 0
+/dev/loop7 /mnt/pmos-base ext4 ro,nosuid,nodev,noexec,relatime,norecovery 0 0
+overlay / overlay rw,relatime,lowerdir=/mnt/pmos-base,upperdir=/run/pmos-overlay/upper,workdir=/run/pmos-overlay/work,uuid=on 0 0
+mqueue /dev/mqueue mqueue rw,nosuid,nodev,noexec,relatime 0 0
+shm /dev/shm tmpfs rw,nosuid,nodev,noexec,relatime 0 0
+securityfs /sys/kernel/security securityfs rw,nosuid,nodev,noexec,relatime 0 0
+debugfs /sys/kernel/debug debugfs rw,nosuid,nodev,noexec,relatime 0 0
+tracefs /sys/kernel/tracing tracefs rw,nosuid,nodev,noexec,relatime 0 0
+none /sys/fs/pstore pstore rw,nosuid,nodev,noexec,relatime 0 0
+bpf /sys/fs/bpf bpf rw,nosuid,nodev,noexec,relatime 0 0
+tmpfs /tmp tmpfs rw,nosuid,nodev,relatime 0 0
+cgroup2 /sys/fs/cgroup cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate 0 0
+devtmpfs /opt/ssc/dev devtmpfs rw,nosuid,noexec,relatime,size=10240k,nr_inodes=444822,mode=755 0 0
+proc /opt/ssc/proc proc rw,relatime 0 0
+sysfs /opt/ssc/sys sysfs rw,relatime 0 0
+tmpfs /run/user/10000 tmpfs rw,nosuid,nodev,relatime,size=363572k,nr_inodes=90893,mode=700,uid=10000,gid=10000 0 0
+tmpfs /run/user/0 tmpfs rw,nosuid,nodev,relatime,size=363572k,nr_inodes=90893,mode=700 0 0
+SUPER_HASH_MATCH_RO_RAM_OVERLAY
+PMOS_FULL_RO_RAM_READY
+5ea2904ba0f42c91c6a449733ced898a436807bfd5103a2a51e65805435728ad  /dev/sdb23
+5ea2904ba0f42c91c6a449733ced898a436807bfd5103a2a51e65805435728ad  /dev/sdb23
+1
+1
+1
+ 1791 root      0:00 /usr/bin/hexagonrpcd -d adsp -f /dev/fastrpc-adsp -R /usr/share/qcom -s
+ 5802 root      0:00 /sbin/pd-mapper
+ 8880 root      0:00 supervise-daemon iio-sensor-proxy --start --respawn-delay 2 --respawn-max 5 --respawn-period 1800 /usr/libexec/iio-sensor-proxy --
+ 8883 root      0:00 /usr/libexec/iio-sensor-proxy
+11937 user      0:00 /usr/bin/kwin_wayland_wrapper --xwayland
+12026 user      0:07 /usr/bin/kwin_wayland --wayland-fd 7 --socket wayland-0 --xwayland-fd 8 --xwayland-fd 9 --xwayland-display :0 --xwayland-xauthority /run/user/10000/xauth_CtiNPS --xwayland
+12626 root      0:00 sh -c date; cat /proc/uptime; uname -a; cat /proc/sys/kernel/tainted; rc-service hanoip-ssc status; rc-service iio-sensor-proxy status; gdbus call --system --dest net.hadess.SensorProxy --object-path /net/hadess/SensorProxy --method org.freedesktop.DBus.Properties.GetAll net.hadess.SensorProxy; cat /proc/mounts; cat /run/hanoip-pmos-root.log; cat /run/pmos-super-before.sha256 /run/pmos-super-after.sha256; cat /sys/class/block/sdb23/ro /sys/class/block/sdb/ro /sys/class/block/loop7/ro; ps -ef | grep -E "hexagon|iio-sensor|kwin_wayland|kscreen-doctor|plasmashell|pd-mapper"; cat /sys/bus/platform/devices/*.dsi/error_snapshot | head -c 600
+12824 root      0:00 grep -E hexagon|iio-sensor|kwin_wayland|kscreen-doctor|plasmashell|pd-mapper
+16961 user      0:12 /usr/bin/plasmashell
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x0 pre_status=0x0 post_ctrl=0x1f1 post_status=0x0

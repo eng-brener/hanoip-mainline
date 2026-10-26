@@ -1,0 +1,1 @@
+PASS: handoff, independent rails, error propagation, rollback, voltage bounds/headroom, concurrent callbacks

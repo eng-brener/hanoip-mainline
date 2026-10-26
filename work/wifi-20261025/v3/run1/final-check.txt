@@ -1,0 +1,9 @@
+modem=running crashes=0
+ssid=AccessDenied_5G
+wpa_state=COMPLETED
+round-trip min/avg/max = 24.649/25.678/26.707 ms
+erros: smmu=0 oops=0 ath10k_err=0
+tainted=4096
+ufs blocks=84 not_ro=0
+/mnt/ro/modem_a ext4 ro,nosuid,nodev,noexec,relatime,norecovery
+42500

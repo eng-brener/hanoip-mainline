@@ -1,0 +1,47 @@
+#!/bin/sh
+set -eu
+BB=/bin/busybox
+echo 'HANOIP SSC: RAM-only test starting'
+while read -r source target type rest; do
+    case "$type" in rootfs|ramfs|tmpfs|proc|sysfs|devtmpfs|devpts|configfs|debugfs|tracefs) ;;
+        *) echo "REFUSED: unexpected mount $target ($type)"; exit 1 ;;
+    esac
+done < /proc/mounts
+for b in /sys/class/block/*; do
+    [ -e "$b" ] || continue
+    n=${b##*/}
+    case "$n" in loop*|ram*|zram*) continue ;; esac
+    "$BB" blockdev --setro "/dev/$n"
+    [ "$("$BB" cat "$b/ro")" = 1 ] || exit 1
+done
+echo 'MOUNTS_RAM_ONLY; BLOCK_GUARD_OK'
+for m in cec drm_display_helper drm_exec drm_gpuvm gpu-sched drm_client_lib mdt_loader ubwc_config qcom-wled msm panel-ilitek-ili7807s; do
+    [ -e "/sys/module/$(echo "$m" | "$BB" tr - _)" ] || "$BB" insmod "/lib/hanoip-display/$m.ko" || echo "DISPLAY_OPTIONAL_FAILED $m"
+done
+echo 'DIAGNOSTICO DE SENSORES EM RAM - SEM PLASMA' > /dev/tty1 2>/dev/null || true
+for m in qcom_glink_smem qrtr-smd qcom_sysmon qcom_pil_info qcom_common qcom_q6v5 qcom_q6v5_pas fastrpc; do
+    [ -e "/sys/module/$(echo "$m" | "$BB" tr - _)" ] || "$BB" insmod "/lib/hanoip-wifi/$m.ko"
+done
+/sbin/pd-mapper > /run/ssc-pd-mapper.log 2>&1 &
+for d in dev proc sys; do
+    "$BB" mount -o bind "/$d" "/opt/ssc/$d"
+done
+R=''
+for p in /sys/class/remoteproc/remoteproc*; do
+    case "$("$BB" readlink -f "$p")" in *62400000.remoteproc*) R=$p ;; esac
+done
+[ -n "$R" ] || { echo 'ADSP_REMOTE_PROC_MISSING'; exit 1; }
+echo disabled > "$R/recovery"
+echo "ADSP_STATE $("$BB" cat "$R/state")"
+if [ "$("$BB" cat "$R/state")" = offline ]; then echo start > "$R/state"; fi
+i=0
+while [ ! -e /dev/fastrpc-adsp ] && [ "$i" -lt 30 ]; do "$BB" sleep 1; i=$((i+1)); done
+ls -l /dev/fastrpc* || { echo 'FASTRPC_DEVICE_MISSING'; exit 1; }
+"$BB" chroot /opt/ssc /usr/bin/hexagonrpcd -d adsp -f /dev/fastrpc-adsp -R /usr/share/qcom -s > /run/ssc-hexagonrpcd.log 2>&1 &
+echo "HEXAGONRPCD_PID $!"
+"$BB" sleep 5
+/sbin/qrtr-lookup > /run/ssc-qrtr.log 2>&1 || true
+echo 'SSC_ACCELEROMETER_TEST_START'
+"$BB" chroot /opt/ssc /usr/bin/ssccli --debug --sensor=accelerometer --timeout=20 > /run/ssc-accelerometer.log 2>&1 || echo "SSC_CLI_EXIT $?"
+echo 'SSC_ACCELEROMETER_TEST_FINISHED'
+"$BB" cat /run/ssc-accelerometer.log

@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "fastboot",
+      "-s",
+      "ZF523QJBSG",
+      "boot",
+      "work/hanoip-display-20261024/u-boot-hanoip-display.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (516 KB)                        OKAY [  0.013s]\nBooting                                            OKAY [ 10.393s]\nFinished. Total time: 10.407s\n"
+  },
+  {
+    "command": [
+      "fastboot",
+      "getvar",
+      "product"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "product: motorola-hanoip\nFinished. Total time: 0.000s\n"
+  },
+  {
+    "command": [
+      "fastboot",
+      "boot",
+      "work/hanoip-display-20261024/modular/kernel-hanoip-display-modular.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (15720 KB)                      OKAY [  0.522s]\nBooting                                            OKAY [  0.000s]\nFinished. Total time: 0.524s\n"
+  }
+]

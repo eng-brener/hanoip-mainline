@@ -1,0 +1,57 @@
+
+~ # /bin/busybox dd if=/dev/zero bs=4352 count=2460 2>/tmp/fb-fill.log | /bin/bu
+sybox tr "\000" "\377" > /dev/fb0; /bin/busybox cat /tmp/fb-fill.log; /bin/busyb
+ox hexdump -n 64 /dev/fb0; /bin/busybox cat /sys/class/graphics/fb0/blank; /bin/
+busybox grep -E 'msm$|dsi_isr' /proc/interrupts; /bin/busybox ls /sys/kernel/deb
+ug/dri/0 /sys/kernel/debug/regmap; /bin/busybox dmesg | /bin/busybox tail -10; p
+rintf '\nHANOIP_END_11a74cefded0\n'
+[  132.824726] fb0: Framebuffer is not in virtual address space.
+2460+0 records in
+2460+0 records out
+10705920 bytes (10.2MB) copied, 0.115954 seconds, 88.1MB/s
+0000000 ffff ffff ffff ffff ffff ffff ffff ffff
+*
+0000040
+0
+ 158:         39          0          0          0          0          0  msm_mdss     0 Edge      msm
+ 159:         30          0          0          0          0          0  msm_mdss     4 Edge      dsi_isr
+/sys/kernel/debug/dri/0:
+DSI-1             debug             gem               name
+Writeback-1       encoder-0         gem_names         shrink
+clients           encoder-1         internal_clients  state
+crtc-0            fb                kms
+crtc-1            framebuffer       mm
+
+/sys/kernel/debug/regmap:
+0-00
+0-01
+0-04
+0-05
+100000.clock-controller
+17c00000.mailbox
+1f40000.hwlock
+5090000.clock-controller
+9200000.system-cache-controller-llcc0_base
+9200000.system-cache-controller-llcc1_base
+9200000.system-cache-controller-llcc_broadcast_base
+ab00000.clock-controller
+ad00000.clock-controller
+af00000.clock-controller
+c263000.thermal-sensor-srot
+c263000.thermal-sensor-tm
+c265000.thermal-sensor-srot
+c265000.thermal-sensor-tm
+ff1000.regulator
+[   33.224779] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[   33.249944] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+[  103.381322] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  103.543578] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  103.566814] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  103.575707] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  103.628774] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  103.656886] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[  103.669643] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only
+[  132.824726] fb0: Framebuffer is not in virtual address space.
+
+HANOIP_END_11a74cefded0
+~ # 

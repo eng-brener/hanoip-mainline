@@ -1,0 +1,35 @@
+{
+  "file": "/Volumes/SSDExterno/Users/brener/developer/hanoip-mainline/work/sd-20261025/kernel-hanoip-sd-v1.img",
+  "bytes": 25047040,
+  "header_version": 2,
+  "page_size": 4096,
+  "dtb_addr": "0x1f00000",
+  "sha256": "c19d719b5612b18f8b441121b072c0e6eef24ffa7b60b5c355a372e4bdf46bd9",
+  "sections": {
+    "kernel": {
+      "offset": 4096,
+      "size": 11996683,
+      "sha256": "8cc243c1f4add976ff3b05dd3d80568ed558696ec784f750f1ffa0d12fecbadf"
+    },
+    "ramdisk": {
+      "offset": 12001280,
+      "size": 12950127,
+      "sha256": "0aa93426874deee50a30d43643b71f620abf0c30a25cad7c5205b41fb7f09075"
+    },
+    "second": {
+      "offset": 24952832,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "recovery_dtbo": {
+      "offset": 24952832,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dtb": {
+      "offset": 24952832,
+      "size": 92256,
+      "sha256": "a98f78be4f399c5d1a8e62d991c8a51f568c583bd9bb6af0b315a6807c2991d4"
+    }
+  }
+}

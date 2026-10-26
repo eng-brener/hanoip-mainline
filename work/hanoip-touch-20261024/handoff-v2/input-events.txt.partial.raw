@@ -1,0 +1,73 @@
+
+~ # /bin/busybox timeout 45 /bin/busybox hexdump -v -e '24/1 "%02x" "\n"' /dev/i
+nput/event3; /bin/busybox cat /sys/bus/spi/devices/spi6.0/stats /proc/interrupts
+; printf '\nHANOIP_END_8b86f904f536\n'
+timeout: can't execute '45': No such file or directory
+irqs=0 reports=0 rejected=0
+            CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       
+  11:       4154       2790       4602       3705        894       1405  GICv3       19 Level     arch_timer
+  13:        261          0          0          0          0          0  GICv3       37 Level     apps_rsc
+  14:          4          0          0          0          0          0  GICv3      421 Edge      aoss-qmp
+  15:          0          0          0          0          0          0  GICv3      204 Edge      smp2p-adsp
+  16:          0          0          0          0          0          0  GICv3      608 Edge      smp2p-cdsp
+  17:          0          0          0          0          0          0  GICv3      483 Edge      smp2p-modem
+  20:          0          0          0          0          0          0  pmic_arb  6365403 Edge      pm8xxx_rtc_alarm
+  21:          0          0          0          0          0          0  pmic_arb  524488 Edge      pm8941_pwrkey
+  22:          0          0          0          0          0          0  pmic_arb  532680 Edge      pm8941_resin
+  23:          0          0          0          0          0          0  GICv3      538 Level     c263000.thermal-sensor
+  24:          0          0          0          0          0          0  GICv3      540 Level     c263000.thermal-sensor
+  25:          0          0          0          0          0          0  GICv3      539 Level     c265000.thermal-sensor
+  26:          0          0          0          0          0          0  GICv3      541 Level     c265000.thermal-sensor
+  28:          0          0          0          0          0          0  GICv3       38 Level     arch_mem_timer
+  29:          0          0          0          0          0          0  GICv3       23 Level     arm-pmu
+  31:          0          0          0          0          0          0  GICv3      261 Level     arm-smmu global fault
+  32:          0          0          0          0          0          0  GICv3      263 Level     arm-smmu global fault
+  41:          0          0          0          0          0          0  GICv3       97 Level     arm-smmu global fault
+  42:          0          0          0          0          0          0  GICv3      128 Level     arm-smmu-context-fault
+  43:          0          0          0          0          0          0  GICv3      129 Level     arm-smmu-context-fault
+  44:          0          0          0          0          0          0  GICv3      130 Level     arm-smmu-context-fault
+  45:          0          0          0          0          0          0  GICv3      131 Level     arm-smmu-context-fault
+  46:          0          0          0          0          0          0  GICv3      132 Level     arm-smmu-context-fault
+  47:          0          0          0          0          0          0  GICv3      133 Level     arm-smmu-context-fault
+  48:          0          0          0          0          0          0  GICv3      134 Level     arm-smmu-context-fault
+ 122:          0          0          0          0          0          0  PDC          9 Edge      dp_hs_phy_irq
+ 123:          0          0          0          0          0          0  PDC          8 Edge      dm_hs_phy_irq
+ 124:          0          0          0          0          0          0  PDC          6 Level     ss_phy_irq
+ 126:          0          0          0          0          0          0  pmic_arb  1384654 Edge      vpd-detect
+ 127:          1          0          0          0          0          0  pmic_arb  1392846 Edge      cc-state-change
+ 128:          0          0          0          0          0          0  pmic_arb  1401038 Edge      vconn-oc
+ 129:          0          0          0          0          0          0  pmic_arb  1409230 Edge      vbus-change
+ 130:          1          0          0          0          0          0  pmic_arb  1417422 Edge      attach-detach
+ 131:          1          0          0          0          0          0  pmic_arb  1425614 Edge      legacy-cable-detect
+ 132:          0          0          0          0          0          0  pmic_arb  1433806 Edge      try-snk-src-detect
+ 133:          0          0          0          0          0          0  pmic_arb  1507536 Edge      sig-tx
+ 134:          0          0          0          0          0          0  pmic_arb  1515728 Edge      sig-rx
+ 135:          0          0          0          0          0          0  pmic_arb  1523920 Edge      msg-tx
+ 136:          0          0          0          0          0          0  pmic_arb  1532112 Edge      msg-rx
+ 137:          0          0          0          0          0          0  pmic_arb  1540304 Edge      msg-tx-failed
+ 138:          0          0          0          0          0          0  pmic_arb  1548496 Edge      msg-tx-discarded
+ 139:          0          0          0          0          0          0  pmic_arb  1556688 Edge      msg-rx-discarded
+ 148:          0          0          0          0          0          0  GICv3      635 Level     888000.i2c
+ 149:          0          0          0          0          0          0  GICv3      636 Level     qcom_geni_serial_uart0
+ 150:          0          0          0          0          0          0  msmgpio     41 Edge      88c000.serial:wakeup
+ 151:        762          0          0          0          0          0  GICv3      385 Level     a80000.spi
+ 152:          0          0          0          0          0          0  GICv3      387 Level     qcom_geni_serial_uart0
+ 153:       1248          0          0          0          0          0  GICv3      165 Level     dwc3
+ 154:          0          0          0          0          0          0  spmi-gpio    1 Edge      Volume Up
+ 155:          0          0          0          0          0          0  pmic_arb  98058508 Edge      wled_short_irq
+ 156:          0          0          0          0          0          0  pmic_arb  98050316 Edge      wled_ovp_irq
+ 158:         26          0          0          0          0          0  msm_mdss     0 Edge      msm
+ 159:         30          0          0          0          0          0  msm_mdss     4 Edge      dsi_isr
+ 160:          0          0          0          0          0          0  msmgpio      9 Edge      spi6.0
+IPI0:         35         21         39         77         29         27  Rescheduling interrupts
+IPI1:        479        847        336       1273        761        277  Function call interrupts
+IPI2:          0          0          0          0          0          0  CPU stop interrupts
+IPI3:          0          0          0          0          0          0  CPU stop NMIs
+IPI4:          0          0          0          0          0          0  Timer broadcast interrupts
+IPI5:         15         15         12          0          0          2  IRQ work interrupts
+IPI6:          0          0          0          0          0          0  CPU backtrace interrupts
+IPI7:          0          0          0          0          0          0  KGDB roundup interrupts
+ Err:          0
+
+HANOIP_END_8b86f904f536
+~ # 

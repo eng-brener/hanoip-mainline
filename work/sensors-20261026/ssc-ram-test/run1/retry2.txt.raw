@@ -1,0 +1,12 @@
+
+~ # for m in qcom_glink_smem qrtr-smd qcom_sysmon qcom_pil_info qcom_common qcom
+_q6v5 qcom_q6v5_pas fastrpc; do /bin/busybox insmod /lib/hanoip-wifi/$m.ko || br
+eak; done; (/sbin/start-sensors > /run/hanoip-sensors.log 2>&1 &); echo SSC_RETR
+Y_STARTED; printf '\nHANOIP_END_f5f35656c76e\n'
+[  162.083749] remoteproc remoteproc0: adsp is available
+[  162.084808] remoteproc remoteproc0: powering up adsp
+[  162.084849] remoteproc remoteproc0: Booting fw image qcom/sm7150/motorola/hanoip/adsp.mdt, size 8860
+[  162.085820] remoteproc remoteproc1: modem is available
+SSC_RETRY_STARTED
+
+HANOIP_END_f5f35656c76e

@@ -1,0 +1,25 @@
+total 0
+drwxr-xr-x 3 root   root      0 1974-08-13 07:24 .
+drwxr-xr-x 3 root   root      0 1974-08-13 07:24 ..
+--w--w---- 1 system system 4096 1974-08-13 07:24 dev_enable
+--w------- 1 root   root   4096 1974-08-13 07:24 hw_reset
+-r--r----- 1 system system 4096 1974-08-13 07:24 irq
+-r--r----- 1 system system 4096 1974-08-13 07:24 irq_cnt
+-r--r--r-- 1 root   root   4096 1974-08-13 07:24 modalias
+drwxr-xr-x 2 root   root      0 1974-08-13 07:24 power
+lrwxrwxrwx 1 root   root      0 1974-08-13 07:24 subsystem -> ../../../../class/fingerprint
+-rw-r--r-- 1 root   root   4096 1974-08-13 07:24 uevent
+-r--r--r-- 1 system system 4096 1974-08-13 07:24 vendor
+total 0
+drwxr-xr-x   4 root root 0 1974-08-13 07:23 .
+drwxr-xr-x 361 root root 0 1974-08-13 07:23 ..
+lrwxrwxrwx   1 root root 0 2026-10-26 04:55 driver -> ../../../../bus/platform/drivers/fpc1020
+-?????????   ? ?    ?    ?                ? driver_override
+-?????????   ? ?    ?    ?                ? modalias
+lrwxrwxrwx   1 root root 0 2026-10-26 04:56 of_node -> ../../../../firmware/devicetree/base/soc/fpc_fpc1020
+drwxr-xr-x   2 root root 0 2026-10-26 04:56 power
+lrwxrwxrwx   1 root root 0 2026-10-26 04:56 subsystem -> ../../../../bus/platform
+-?????????   ? ?    ?    ?                ? uevent
+drwxr-xr-x   3 root root 0 1974-08-13 07:23 wakeup
+cat: /sys/bus/platform/devices/soc:fpc_fpc1020/irq: No such file or directory
+cat: /sys/bus/platform/devices/soc:fpc_fpc1020/irq_cnt: No such file or directory

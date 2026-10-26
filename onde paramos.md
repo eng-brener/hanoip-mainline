@@ -1,5 +1,435 @@
 # Handoff — Moto G60 hanoip mainline
 
+## Rotação manual OK, automática adiada (26/10 ~18h)
+
+- Ponte manual FUNCIONA: `kscreen-doctor output.DSI-1.rotation.{inverted,none}`
+  (via `su user`, WAYLAND_DISPLAY=wayland-0, XDG_RUNTIME_DIR=/run/user/10000).
+  Testado com o telefone de ponta-cabeça e de volta ao normal.
+- Automática ADIADA pelo usuário. O proxy nunca decide sozinho: `ssccli`
+  recebe accel sempre (retrato Y≈+9,8, invertido Y≈-9,8, deitado Z≈+9,9),
+  mas o proxy recebe ZERO amostras via QMI (log com debug prova; luz/prox
+  fluem). Sem amostra, orientação fica `undefined`. No 1º boot Plasma ele
+  DECIDIU (retrato→`bottom-up`: inversão de 180° real e medida); nos boots
+  seguintes, silêncio — causa raiz aberta (ADSP/QMI).
+- Driver ssc do proxy IGNORA `ACCEL_MOUNT_MATRIX` do udev (testado). Registry
+  (RAM) está no vendor (-x,-y); testado +x,+y sem efeito (sem stream).
+- NÃO dar `rc-service hanoip-ssc restart`: travou o USB (precisou reboot no
+  botão). Só o restart do `iio-sensor-proxy` é seguro.
+- Boots rápidos em `work/sensors-20261026/orient-fix/` (v3-fast com +x,+y,
+  v4-base vendor; ambos sem o hash de 235 s no `pmos-root`; SSH em ~40 s).
+  v4 VALIDADA (~43 s): serviços ok, wlan0 com IP, DSI irqs=0, sdb23 RO,
+  tainted 4096 (pré-existente), ssccli accel+luz ok, KWin rodando.
+  Telefone agora na v4. Detalhes em `orient-fix/NOTAS-diagnostico.txt`.
+- Próximo da rotação (quando pedirem): ponte libssc→kscreen-doctor ou
+  retomar o stream QMI com essas evidências.
+- LED white:status VALIDADO visualmente pelo usuário (brilho 511 acende;
+  trigger de volta em pattern, feedbackd no controle).
+- NOVA GOLD 26/10 ~15h00: `work/GOLD-20261026-1500/` (GOLD.txt + SHA256SUMS,
+  somente leitura) — par v4-base-fast, retorno padrão daqui em diante.
+  U-Boot confere com perif-v5.
+
+## ESTADO ATUAL — Plasma completo + sensores SSC, 26/10/2026 (continuação)
+
+**Comece por este estado.** O celular está no kernel Linux 7.3.0-sm7150 #6
+com o U-Boot perif-v5, iniciado por `fastboot boot` em RAM. O usuário pediu
+usar a versão completa do Plasma previamente funcional e confirmou que a
+orientação automática **não gira**. Não reiniciar enquanto a tela/sessão está
+estável sem necessidade. Nenhuma partição foi escrita.
+
+A imagem de teste é
+`work/sensors-20261026/plasma-full/kernel-hanoip-pmos-full-sensors-ro-v1.img`
+(SHA256 `6400c2e15a387ed054fcb18ec3e414c5dd25e1d0be99c78b272ac6fed48891ff`).
+Ela preserva o kernel, DTB, U-Boot e rootfs instalado da variante anterior que
+carregava os periféricos, e acrescenta um initramfs para montar o rootfs
+existente somente leitura e uma camada OverlayFS inteiramente em RAM. Não
+confundir com a tentativa intermediária `work/sensors-20261026/plasma-ram/`:
+essa extraiu outro rootfs, criou sessão Plasma nova e foi abandonada. Não usar
+essa instalação.
+
+**Segurança/estado do armazenamento:** o usuário autorizou a montagem
+somente-leitura do rootfs para esta retomada. Na inicialização, todos os
+`/dev/sd*` são marcados RO; `/dev/sdb23` (super), o loop7 e o ext4 aparecem RO.
+O rootfs foi montado `ro,noload,nodev,nosuid,noexec`; `/` é OverlayFS e as
+alterações ficam em `/run/pmos-overlay` (RAM). SHA256 completo de `/dev/sdb23`
+antes/depois coincidiu; log `SUPER_HASH_MATCH_RO_RAM_OVERLAY` e
+`PMOS_FULL_RO_RAM_READY` em `/run/hanoip-pmos-root.log`. Não montar qualquer
+outra partição. O hash integral da super foi calculado duas vezes no caminho
+de boot e tornou esta partida muito lenta (~235 s até o status consultado).
+O usuário não pediu essa verificação no boot; ela foi adicionada por minha
+decisão para satisfazer uma regra de segurança. Não repetir leitura/hash
+integral no caminho de inicialização; deixar hash como auditoria separada,
+sem mudar a garantia RO/noload da montagem. O usuário reclamou explicitamente
+do atraso.
+
+**Sensores no Plasma:** `hanoip-ssc` e `iio-sensor-proxy` estão started.
+`hexagonrpcd` e `pd-mapper` estão ativos. O D-Bus de SensorProxy reportou
+HasAccelerometer=true, HasAmbientLight=true, HasProximity=true e luz ~74,7
+lux; proximidade FAR. `monitor-sensor` viu mudança de luz (76,1→74,7 lux).
+A leitura do acelerômetro em baixo nível dentro deste boot deu valores perto
+de X=0, Y=0, Z=9,9–10,1 m/s². O aplicativo do usuário confirma que a tela
+**não gira** ao mudar orientação. SensorProxy mantém
+AccelerometerOrientation=undefined e AccelerometerTilt=undefined; logo, a
+rota do Accelerometer para a política do KWin não está produzindo orientação
+útil. O detalhe anterior do firmware permanece: mount matrix zerada, libssc
+usa identidade. Proximidade foi validada no diagnóstico anterior, não foi
+confirmado evento NEAR no Plasma nesta sessão. Auto brilho não foi validado:
+`kwinoutputconfig.json` na base tem `automaticBrightness:false`, curva zero; o
+valor do proxy variou, mas a retroiluminação não foi demonstrada reagindo.
+Giroscópio produziu 665 amostras no teste SSC anterior, porém o `iio-sensor-
+proxy` empacotado só publica accel, luz, proximidade e bússola; não expõe
+este gyroscope. Não afirmar que o giroscópio está integrado ao Plasma.
+
+**Próximo passo exato:** diagnosticar AccelerometerOrientation `undefined` e
+porque KWin não gira. Use monitor-sensor com o telefone em posições físicas
+conhecidas (vertical, horizontal, tela para cima/baixo), registre leituras
+SSC XYZ e sinais do proxy. Em seguida validar a política KWin: a configuração
+salva define `autoRotation: InTabletMode`, mas o celular não tem sensor de
+modo tablet/capa; verificar temporariamente `automatic`/sempre habilitado pela
+API KScreen e observar se KWin recebe orientação. Não escrever a base: ajuste
+de teste somente em OverlayFS/RAM. Depois confira luz/proximidade e ajuste
+curva de brilho só após comprovar leitura. Retomar sessão de SSH pela rede NCM
+172.16.42.1 se disponível, ou USB serial. A chave de host SSH mudou com o
+switch_root; arquivos de sessão/host local estão em
+`work/sensors-20261026/plasma-full/known_hosts-plasma` e a saída volátil em
+`handoff/runtime.txt`. Se SSH host key não conferir, confira fingerprint via
+console; não apague chaves globais. Uptime observado no snapshot: 491,83 s,
+kernel tainted=4096 (existia na captura; causa ainda não determinada), DSI
+`error_snapshot` com irqs=0. Wi-Fi/Bluetooth subiram no autostart dessa
+variante antes da entrada no Plasma.
+
+**Artefatos desta variante:**
+- `work/sensors-20261026/plasma-full/pmos-root`: montagem RO + OverlayFS RAM;
+- `hanoip-ssc`: OpenRC que liga FastRPC/ADSP a `/opt/ssc` e inicia hexagonrpcd;
+- `sensor-bundle-fixed.tar.gz`: userspace/registry/config/firmware SSC servidos
+  a partir de cópias em RAM;
+- `ramdisk.cpio.gz`, `baseline-ramdisk.cpio.gz`, `overlay.ko`,
+  `kernel-hanoip-pmos-full-sensors-ro-v1.img`, `SHA256SUMS`;
+- `handoff/runtime.txt`: estado coletado sem guardar dados de identidade;
+  `handoff/runtime-files.tar.gz`: cópia volátil dos serviços/regras/configs;
+- `monitor-plasma.txt`: leitura D-Bus (luz variou; acelerômetro sem orientação).
+A tentativa `plasma-ram/` e comandos `kscreen-doctor` presos estão obsoletos;
+não repetir. Os serviços do Plasma completo já estão ativos neste boot.
+
+Não criar/promover GOLD, não gravar partições, não fazer commit/push. Câmeras
+e digital continuam pausadas. O foco é fazer funcionar aceleração/orientação,
+brilho e proximidade na sessão Plasma existente.
+
+
+## ATUALIZAÇÃO — giroscópio também passou, 26/10
+
+Teste de 30 s no mesmo boot RAM: **665 amostras**, resposta ao movimento
+nos três eixos, com ambos os sinais. Tainted=0; sem partições montadas.
+`ssccli --sensor=gyroscope` funciona apesar da ajuda incompleta.
+Orientação/calibração ainda pendentes (mount matrix zerada → identidade).
+Checkpoint e evidências no mesmo local do teste SSC abaixo. Os quatro
+canais foram testados: acelerômetro, giroscópio, luz e proximidade.
+Próximo: integração ao pmOS/Plasma em RAM. Sem reboot nem nova imagem.
+
+
+## ATUAL — sensores testados no celular, 26/10
+
+Acelerômetro: **382 amostras**, cerca de X=-0,07/Y=0,08/Z=9,95 m/s².
+Luz: **0 a 72,5 lux observados**. Proximidade: **FAR/NEAR alternando**,
+13 eventos/12 transições. ADSP + FastRPC + hexagonrpcd + libssc funcionaram
+no diagnóstico inteiramente em RAM, kernel #6/DT e U-Boot perif-v5.
+Tainted=0; nenhuma partição montada ou escrita. Telefone agora no diagnóstico
+USB serial, sem Plasma por intenção. Giroscópio e integração ao Plasma ainda
+não testados. Câmera/digital pausadas; seções antigas abaixo são históricas.
+
+Checkpoint: `docs/kernel/checkpoint-2026-10-26-sensores-teste-ssc.txt`.
+Kit/evidências: `work/sensors-20261026/ssc-ram-test/run1/`.
+A imagem v1 precisou corrigir ordem de módulos manualmente no mesmo boot;
+script local corrigido, imagem v1 ainda conserva ordem inicial. Próximo:
+levar serviços ao pmOS em RAM e validar rotação/brilho automáticos.
+Nenhuma nova GOLD e nenhum commit.
+
+
+## Câmeras — levantamento RO em andamento (26/10 ~13h30, não mexer na seção de sensores)
+
+Frente atual, só leitura, sem boot/probe/captura/escrita. Checkpoint:
+`docs/kernel/checkpoint-2026-10-26-cameras.txt`; blobs e parser em
+`work/cameras-20261026/` (vendor-blobs/ com SHA256SUMS, parse-sensormodule.py).
+DT Android: 4 slots (cell 0 traseira principal AF+flash csiphy0; cells 2/3
+auxiliares; cell 1 frontal), CCI0/1, MCLK 24 MHz, GPIOs 13/23, 16/26, 14/24,
+15/25; VIO L13 1,8 V, VANAs 2,8 V por câmera, VDIG L6/1,2 V/1,1 V, VCM 2,8 V.
+Blobs puxados RO conferem com o inventário; `rear.main.type`=`old` nesta
+unidade. Principal = S5KHM2 (12000x9000) ou OV64B (9248x6944, segunda fonte);
+frontal = OV32B ou S5K4H7; auxiliares = OV16A1Q + OV02B1B. VCM = DW9800
+(mainline só tem dw9807 — checar). `qcom,sm7150-camss` existe no sm7150.dtsi;
+nenhum dos sensores tem driver mainline. Formato dos sensormodule.bin
+parcialmente mapeado (nós de 72 B, triplets por modo), slave addrs em claro
+pendentes. Sysfs ao vivo: 4 sensores + 3 flashes + 4 EEPROMs com probe.
+Próximo: fechar slot→modelo e slave addrs via blobs/driver 4.14; sem probe
+ativo. (Seção de sensores abaixo está com outra IA — não editar.)
+
+## Pedido mais recente — digital parada, investigar câmeras (26/10)
+
+ATUALIZAÇÃO: usuário depois deixou câmeras de lado e pediu TESTAR SENSORES.
+Levantamento parcial de câmera salvo em
+docs/kernel/checkpoint-2026-10-26-cameras-parcial.txt. FPC segue encerrada.
+Kit de teste ADSP/FastRPC em work/sensors-20261026/ssc-ram-test/: mesmo
+kernel #6/DT e U-Boot perif-v5, registry/firmware e ferramentas em RAM.
+Boot volátil iniciado; resultado ainda precisa ser coletado em run1/.
+
+Usuário encerrou a investigação FPC. Última análise de protocolo, comandos,
+ION/QSEECOM e limites foi registrada no início de
+`docs/kernel/checkpoint-2026-10-26-fingerprint-fpc.txt`, com artefatos em
+`work/fingerprint-20261026/hal-protocol/`. Nenhum comando ao leitor/TEE,
+reset de GPIO ou escrita em partição foi executado. Não retomar digital
+sem novo pedido. Frente atual: investigação de câmeras somente leitura,
+começando pelo DT/logs/drivers e metadados Android; não iniciar captura.
+
+## >>> ESTADO ATUAL — 26/10/2026 ~14h20 (comece por aqui)
+
+Último par pmOS validado (volátil): U-Boot
+`work/perif-20261026/v5/u-boot-hanoip-pmos-perif-v5.img` (DT
+`sm7150-motorola-hanoip-pmos-perif.dts` = áudio + vibrador + flashes + LED +
+NFC) + kernel #6 `work/perif-20261026/v6-qrtr/kernel-hanoip-pmos-7.3-qrtr.img`
+(7.3 v2 + áudio + vibrador + correção do QRTR). GOLD v4 segue sendo o retorno
+padrão; nada promovido, NADA COMMITADO (git só quando o usuário pedir).
+
+**Retomada sensores, 26/10:** o usuário entrou no Android com root para
+coleta. O ADB deixou de enumerar durante a análise seguinte, depois voltou
+para a coleta FPC, sem reboot ou mudança no telefone. O firmware salvo permitiu
+mapear SSC SE0/0x62680000 para ICM (pinos SSC0/1, I3C) e SSC SE4/0x62690000
+para TMD2755 (SSC6/7, função4, I2C). Votos de alimentação: L7C=3312 mV,
+L8C=1800 mV. `/dev/qup_ssc/11` é um conjunto DAL com seis engines; não prova
+SE11 AP. Não repetir a variante/overlay AP a94000.
+
+Extrator reproduzível e mapa em `work/sensors-20261026/ssc-mapping/`;
+detalhes e limites em `docs/kernel/checkpoint-2026-10-26-sensores-ssc.txt`.
+Próximo caminho a investigar: sensors PD pelo ADSP/FastRPC + libssc, com
+filesystem/registry em RAM. O kernel já descreve FastRPC/ADSP e a lista de
+pacotes pmOS tem libssc/iio-sensor-proxy; hexagonrpcd ainda falta nessa lista.
+Isso pode reutilizar o driver TMD do DSP. Não é um teste já executado; não
+instalar ou escrever em partições. Acesso AP direto ainda carece dos clocks
+SCC, master I3C e resolução do stall anterior.
+
+**Digital FPC investigada offline, 26/10:** dump Android confirma helper
+FPC, IRQs e fpctzapp ativo. IRQ GPIO90, reset GPIO4, enable FPC GPIO29
+(GPIO30 é a alternativa Chipone). Compatible fpc1020 não identifica o chip.
+TA ARM32 importa qsee_spi_* e abre device lógico 1; devcfg torna SPI1/0x884000
+o candidato forte, sem confirmação de enumeração QSEE/estado ao vivo. O
+helper GPIO não captura imagens. Bloqueio principal: QSEECOM legado +
+protocolo HAL/TA, não resolvido por carregar qcomtee moderno. Checkpoint em
+`docs/kernel/checkpoint-2026-10-26-fingerprint-fpc.txt`; evidências e extrator
+em `work/fingerprint-20261026/`. ADB voltou: HAL ARM64 e libs QSEE coletados;
+vendor=fpc, modalias=fpc1020, irq=0, irq_cnt=60. HAL importa QSEECom_* e
+contém string fpc1540, mas propriedade vendor.hw.fingerprint.hwid vazia;
+modelo segue sem confirmação. Próximo passo local: interpretar o HAL.
+Sem bases biométricas, comandos TEE ou alterações de GPIO. Debugfs de pinos,
+clocks e reguladores indisponível; não montado. Android com root mantido.
+
+Feito e validado nesta sessão:
+- Alto-falante: pinos SSC do LPI (patch pinctrl), driver AW882xx, PipeWire
+  (PulseAudio removido), UCM, rota por udev, WirePlumber S16LE, atenuação
+  padrão 6 dB. Usuário ouviu. SEM proteção do alto-falante (plano abaixo).
+- Botões de volume: PipeWire como serviço de usuário do OpenRC (antes perdia
+  a corrida com o plasma-pa).
+- Vibrador: 2 patches (teto qcom,vib-max-microvolt 3,0 V + byte alto da
+  tensão); feedbackd vibra no perfil full.
+- Lanterna: flash traseiro white:flash (canal 1) e frontal white:flash-1
+  (canal 2) separados; botão do Plasma funciona com o flashlighthelper
+  corrigido (bug do plasma-mobile 6.6.6).
+- LED de notificação: existe, branco, no TRILED canal 1 (white:status);
+  feedbackd detecta e programa hw_pattern com o tema motorola,hanoip.json.
+  FALTA o usuário confirmar o piscar visualmente.
+- NFC: nxp-nci lê cartão (ISO14443-A); falta app (sem neard).
+- Wi-Fi intermitente: corrida do QRTR (upstream 544d85de4dc2) corrigida no
+  kernel #6 (patch ns.c, retry em -EAGAIN); 1 boot bom; confirmar em mais.
+  Logs de cada boot em /var/log/hanoip-boot/ (coletor local.d).
+
+Próximos passos sugeridos: (1) confirmar LED e Wi-Fi em mais boots;
+(2) carga da bateria — PRECISA de autorização explícita (escreve no PMIC);
+(3) proteção do alto-falante (driver com teto + monitor vendor, IV,
+speakersafetyd, filtro PipeWire); (4) suspend, 90/120 Hz, sensores.
+README "O que falta" atualizado em 26/10 ~14h20.
+
+**Sensores — tentativa interrompida após travamento (26/10):**
+O U-Boot sensor-v1, com SE11 habilitado no DT, parou no “M” e não reenumerou
+USB. Não usar esse U-Boot. Com U-Boot v5 conhecido, o initramfs RAM-only
+iniciou; sua tela preta era intencional e o DT efetivo manteve SE11 disabled.
+Uma segunda tentativa aplicou um overlay de runtime para habilitar somente
+SE11. `geni_i2c` começou o probe a 100 kHz, mas o `insmod` não retornou e o
+kernel entrou em RCU stall; CPU4 não respondeu ao NMI. Nenhuma leitura dos IDs
+0x68/0x75 ou 0x39/0x93 foi feita. Não repetir o overlay nem habilitar outros
+SEs/rails até analisar o log e mapear o controlador/rails no Android.
+
+**Atualização Android root (26/10):** coleta somente leitura confirmou
+SensorService operacional: ICM4x6xx acelerômetro/giroscópio e TMD2755
+ALS/proximidade estão disponíveis; há eventos recentes do acelerômetro e
+proximidade. O sysfs Android expõe AP I2C0 (`888000`), I2C1 (`a84000`) e I2C2
+(`a8c000`), não `a94000`; `/dev/i2c-0..2` existem e `/dev/qup_ssc` não. Os
+GENI QUPs `8c0000` e `ac0000` estão registrados, mas não há prova de que
+`bus_instance=1/5` do registry do SSC mapeie para algum deles ou para SE11.
+Logo, `/dev/qup_ssc/11` no firmware ADSP não justifica habilitar AP `a94000`.
+Registry confirma ICM 0x68/IRQ86/`sensor_vddio` e TMD 0x39/IRQ89/
+`sensor_vdd`+`sensor_vddio`. Dumps e configs em
+`work/sensors-20261026/android-live-readonly/`; resumo em
+`docs/kernel/checkpoint-2026-10-26-sensores-preparado.txt`. Próxima etapa é
+mapear offline a ligação SSC↔QUP/GPIO; não fazer scan ou escrita de registrador.
+
+Recuperação feita pelo usuário ao bootloader; restaurado o par conhecido
+U-Boot `work/perif-20261026/v5/` + kernel #6
+`work/perif-20261026/v6-qrtr/`. SSH, DSI conectado 1080x2460 e wlan0 up
+confirmados após retorno. Evidências em
+`docs/kernel/checkpoint-2026-10-26-sensores-preparado.txt` e
+`work/sensors-20261026/se11-runtime-overlay-v2/screenlog.0`.
+
+## >>> RETOMAR AQUI — áudio do alto-falante, fases 1-3 (26/10/2026, madrugada)
+
+**CAUSA DO WI-FI INTERMITENTE ACHADA E CORRIGIDA (26/10 ~14h05):** no boot ruim,
+13 ms após "modem is now up", o kernel loga "failed to announce new service"
+(net/qrtr/ns.c). Upstream 544d85de4dc2 "net: qrtr: Send HELLO message on
+endpoint register" (no 7.3) manda o nosso HELLO por delayed work e recusa
+pacotes não-HELLO com -EAGAIN até ele sair; se o HELLO do modem chega antes,
+announce_servers() desiste no -EAGAIN e (o NS não responde mais HELLO)
+ninguém reanuncia rmtfs/tqftpserv/pd-mapper -> modem espera até o DOG.
+Revert não aplica limpo (6a5719cc3ef2 MHI resume depende). Correção:
+6371514d320e "net: qrtr: ns: wait for the HELLO before announcing servers"
+(retry em -EAGAIN, 20 ms x 50). Kernel #6 em work/perif-20261026/v6-qrtr/
+(kernel-hanoip-pmos-7.3-qrtr.img + u-boot-hanoip-pmos-perif-v5.img) = PAR
+ATUAL. 1 boot validado (wlan0 em 4 s, 0 "failed to announce"); validar mais
+boots. Patches (qrtr + 2 do vibrador) em work/perif-20261026/patches/.
+LED de notificação: white:status (LPG canal 1, TRILED sink 1), feedbackd
+reconhece (FEEDBACKD_TYPE=led, trigger pattern), tema
+overlay/usr/share/feedbackd/themes/motorola,hanoip.json (eventos de LED em
+branco) instalado, mas o fbcli ainda NÃO acendeu o LED — investigar.
+
+**Wi-Fi/modem intermitente (26/10 ~13h45):** em 2 boots (perif v3 e v3-nonfc)
+o modem travou com "dog_hal_common.c:173: DOG detects stalled
+initialization" ~40 s após subir; wlan0 não aparece. No boot ruim o modem
+NUNCA falou com rmtfs/tqftpserv/pd-mapper (rmtfs.log só "registering
+services"); no boot bom (v3, mesmo par) abre modem_fs1/2/fsg e o ath10k faz
+QMI 1 s depois. Não é o NFC (falhou sem ele). Religar o modem depois do crash
+também falha (não conclusivo). Coletor /etc/local.d/hanoip-bootlogs.start
+(overlay) guarda os logs dos últimos 10 boots em /var/log/hanoip-boot/ 90 s
+após o boot; snapshot do boot bom: *-bom. Analisar o próximo boot ruim por lá.
+Perif v3 = flash traseiro white:flash (canal 1, 150 mA, lanterna do Plasma) +
+frontal white:flash-1 (canal 2, 100 mA, flash 500 mA); vibrador com fix do
+byte alto (0x5341 ficava 0: `level << 8` -> `>> 8`) e teto 3,0 V
+(qcom,vib-max-microvolt); FF máximo = 2636 mV. Lanterna do Plasma: helper KAuth
+do plasma-mobile 6.6.6 tinha use-after-free (segfault); binário corrigido
+(fonte do commit ad036102) em work/perif-20261026/flashlighthelper/ e no
+overlay. feedbackd: perfil full toca e vibra.
+NFC VALIDADO lendo cartão: DEV_UP + START_POLL pela netlink
+(work/perif-20261026/tools/nfcpoll.py) detectou ISO14443-A, SENS_RES 0400,
+SEL_RES 0x20, ID de 4 bytes (não gravado), 8 IRQs. Falta userspace (sem neard
+no Alpine). tools/vib.py = teste de vibração por FF_RUMBLE.
+
+**Periféricos 26/10 ~13h20 — work/perif-20261026/v1/** (U-Boot DT
+`sm7150-motorola-hanoip-pmos-perif.dts` = audio3 + vibrador + flash 2 canais
++ NFC; kernel = fase3b #5, sem mudança). VALIDADO: vibrador (pm8xxx_vib, 3
+pulsos sentidos), flash canais 1+2 (300 mA total, usuário viu), NFC PN54x
+(nxp-nci-i2c no i2c@888000 0x28; DEV_UP pela netlink ok, 4 IRQs no GPIO37;
+deixado DOWN). Botões: kernel entrega KEY_VOLUMEUP/DOWN; o Plasma não mudava
+o volume porque o PipeWire do autostart subia depois do plasma-pa ("Failed to
+connect context"). Correção: pipewire, pipewire-pulse e wireplumber como
+serviços de usuário do OpenRC (~/.config/rc/runlevels/default; build-rootfs
+atualizado). /etc/user/init.d/wireplumber do Alpine tem `depends()` (typo),
+o supervise-daemon compensa. Pendente: vibrador vai até 3,544 V no driver
+mainline (Android 3,0 V sem overdrive) — limitar depois; NFC sem userspace
+(sem neard no Alpine).
+
+**Atualização 26/10 tarde — fase 3b (work/audio-20261026/fase3b/, kernel #5):**
+causa do NOCLKS achada. Os pinos da SEC_MI2S são os gpio8-11 do VENDOR, em
+0x62b48000 (faixa SSC); o `lpass_tlmm` mainline começa em 0x62b52000 =
+gpio18 do vendor (mainline gpioN = vendor gpioN+18). O patch 0001 antigo
+pôs as funções nos pinos errados (DMIC/reset WCD934x) — REMOVIDO. Novo
+commit no container: variante "qcom,sm7150-lpass-lpi-ssc-pinctrl" que mapeia
+só os 4 blocos (0x62b48000, 0x4000), pinos ssc_gpio8-11; nó novo no
+...-pmos-audio2.dts. Resultado: SYSST 0x0311 (clock+PLL, igual ao Android),
+tom tocado 3x. ATENÇÃO: ler a faixa SSC inteira via /dev/mem TRAVOU o SoC
+(usuário forçou o bootloader) — nunca acessar MMIO por /dev/mem.
+Decisão do usuário: usar PipeWire (tirar o PulseAudio).
+USUÁRIO OUVIU o tom no alto-falante (aplay hw:0,0, atenuação 6 dB).
+PipeWire: `apk add postmarketos-base-ui-audio-backend-pipewire` (purga
+pulseaudio, entra pipewire-pulse/pipewire-alsa); matar o pulseaudio velho
+pelo PID antes de relançar. UCM mínimo no overlay
+(usr/share/alsa/ucm2/conf.d/sm8250/"Motorola Moto G60.conf" +
+Motorola/hanoip/HiFi.conf, verbo HiFi, dispositivo Speaker, hw:G60,0) =>
+sink alsa_output.platform-sound.HiFi__Speaker__sink padrão. Regra udev
+99-hanoip-speaker-route + /usr/libexec/hanoip-speaker-route liga a rota
+(precisa rodar depois do alsactl restore; RUN do eudev não aceita aspas).
+build-rootfs.sh ganhou o backend pipewire + alsa-utils. i2c-tools foi
+instalado no telefone só para diagnóstico. SYSST 0x4011 (UVLS) na partida é
+transitório; o driver do vendor usa a mesma checagem CLKS+PLLS.
+VOLUME BAIXO RESOLVIDO: o PipeWire abria o PCM em s24-32le e o caminho q6asm
+toca ~48 dB mais baixo nesse formato (sensores ISNDAT/VSNDAT do amp: ±0x2c
+contra ±0x2a00). Regra WirePlumber no overlay
+usr/share/wireplumber/wireplumber.conf.d/51-hanoip-speaker.conf força S16LE;
+usuário confirmou "mega alto". Causa no q6asm/ADSP com S24_LE ainda não
+investigada (bug a anotar/corrigir no kernel).
+ESTADO PARA O PRÓXIMO BOOT (26/10 ~13h): par com som = fase3b
+(u-boot-hanoip-pmos-audio-f3b.img + kernel-hanoip-pmos-7.3-audio-f3b.img,
+kernel #5); com o par v2 não há placa de som (sem ADSP no DT), o resto do
+rootfs funciona igual. Rootfs já tem: PipeWire (pulseaudio purgado), UCM,
+regra udev da rota, WirePlumber S16LE, /lib/firmware/aw882xx_spk_reg.bin
+(vendor, NÃO está no build-rootfs: copiar à mão num rootfs novo), e
+/etc/modprobe.d/hanoip-speaker.conf com attenuation_db=6 (padrão do driver
+continua 18). Os módulos 7.3 no rootfs são do build #4; aw882xx.ko não mudou
+no #5 (só o pinctrl built-in). Usuário pausou o som: retomar quando pedir.
+
+PLANO DE PROTEÇÃO DO ALTO-FALANTE (combinado com o usuário, fazer nesta ordem):
+1. Driver: controle ALSA "Speaker Volume" com teto + port do monitor do
+   vendor (DT stock: low-vol-table-down 3200/3400/3600 mV -> -4.5/-3/-1.5 dB,
+   up 3700/3500/3300; low-temp-table por temperatura do chip, frio; período
+   3000 ms; VBAT = reg0x12*6025/1023 mV; ipeak normal 9). Evita brownout
+   com bateria baixa (carga ainda desligada).
+2. IV sense: ligar a saída IV do amp (linha data1, SEC_MI2S_TX/AFE 0x1003),
+   capturar pelo ADSP, descobrir formato, validar R ≈ 6,8 Ω (Re padrão 27852;
+   calibrado 27149 está no persist — montar só com autorização).
+3. speakersafetyd (pacote Alpine existe, v2.0.0): config hanoip com
+   parâmetros térmicos conservadores, adaptar controles (vsense/isense/
+   amp_gain) no driver; depois medir tau/tr do alto-falante e refinar.
+4. PipeWire filter-chain: passa-alta ~250-300 Hz + limitador (lsp-plugins-lv2
+   disponível; conferir plugins builtin do filter-graph).
+Pendentes: controle de volume ALSA no driver (hoje só o parâmetro
+attenuation_db, padrão 18 dB), proteção/calibração, fase 4 (WCD937x).
+
+Usuário deixou o celular DESCONECTADO para voltar amanhã. Nada commitado
+(git só quando o usuário pedir). Tudo em `work/audio-20261026/`.
+
+Cadeia: app -> MultiMedia1 (q6asm) -> SEC_MI2S_RX (q6afe, LPI GPIO8-11) ->
+amplificador Awinic AW882xx (I2C2 = SE 0x888000, 0x34, reset GPIO43,
+chip ID 0x1852) -> alto-falante. Android: 48 kHz S16_LE mono, dados na
+linha 0, retorno IV na linha 1; mixer "SEC_MI2S_RX Audio Mixer
+MultiMedia1" = On (mesmo nome no mainline).
+
+- Fase 1 VALIDADA: DT `sm7150-motorola-hanoip-pmos-audio.dts` = pmos +
+  &remoteproc_adsp (firmware qcom/sm7150/motorola/hanoip/adsp.mdt, de
+  modem_a). ADSP running, PDR audio_pd up, APR q6core/q6afe/q6asm/q6adm,
+  LPASS LPI pinctrl saiu do probe adiado. fase1/.
+- Fase 2 VALIDADA: kernel com patch 0001 (LPI pinctrl: funções
+  sec_mi2s_sclk/ws/data0/data1 nos GPIO8-11, slots do vendor; qdss_cti
+  removido) + DT `...-pmos-audio2.dts` (placa sm8250 "Motorola Moto G60",
+  dai@0 MultiMedia1, dai@18 SECONDARY_MI2S_RX sd-lines 0, pinos LPI
+  16 mA). Codec placeholder `linux,spdif-dit`: qcom_snd_parse_of só faz
+  backend com platform+codec. Rota ligada + `aplay -D hw:0,0 -f S16_LE
+  -r 48000 -c 2 /dev/zero` OK, q6afe_i2s_port_prepare sd_line_mask=0x1.
+  fase2/ (kernel-hanoip-pmos-7.3-audio-f2.img + u-boot...-f2.img).
+- Fase 3 PRONTA, NÃO TESTADA: patch 0002 = driver mínimo
+  `sound/soc/codecs/aw882xx.c` (snd-soc-aw882xx, compat
+  "awinic,aw882xx"): carrega `aw882xx_spk_reg.bin` (pares LE reg/val, igual
+  aos registradores lidos no Android tocando) forçando PWDN=1/HMUTE=1 e
+  atenuação attenuation_db=18; ao tocar: I2SCTRL/PLLCTRL1 conforme
+  hw_params, PWDN=0, exige SYSST CLKS+PLLS, então HMUTE=0; ao parar mute +
+  PWDN. Sem a proteção de alto-falante do ADSP. DT `...-pmos-audio3.dts`.
+  fase3/ tem: u-boot-hanoip-pmos-audio-f3.img, kernel-...-audio-f3.img
+  (mesmo Image da fase 2), modules-7.3.0-sm7150.tar.gz (com aw882xx),
+  aw882xx_spk_reg.bin (do vendor; NÃO commitar).
+- Próximo, ao religar: bootar v2 (ou fase 3), instalar o tarball de
+  módulos da fase3 com install-rootfs-7.3.sh (EM PRIMEIRO PLANO, sem &),
+  copiar aw882xx_spk_reg.bin para /lib/firmware/ do rootfs, reiniciar na
+  fase 3, conferir probe do aw882xx (ID 0x1852), ligar a rota e tocar um
+  tom BAIXO; subir a atenuação devagar. Depois: PipeWire/WirePlumber e
+  PulseAudio rodam juntos (escolher um), mixer padrão/UCM, fase 4 (WCD937x
+  fone/microfone + fsa4480).
+- Fontes: patches/ (sobre a série v2) e o branch hanoip-7.3-audio no
+  container hanoip-kernel73; referência GPL em aw882xx-ref/ (LineageOS
+  motorola sm7250). Armadilha: label sec_mi2s_active já existe no TLMM
+  principal (gpio57); o nosso é hanoip_sec_mi2s_active.
+
 ## Retomada atual — 7.3 v2 com os PRs #70/#64/#65/#60 do fork (26/10/2026)
 
 O telefone roda `work/kernel-7.3/v2/` (ler README.txt): v1 + 4 PRs abertos do
@@ -36,6 +466,35 @@ resultado (usuário confirmou). Serviço OpenRC `hanoip-gpu-tune` (boot) no
 rootfs e no overlay. Medições em work/jank-20261026/. Pendente opcional:
 KWin roda sem tempo real (SCHED_OTHER; falta CAP_SYS_NICE no binário ou
 rtkit) — `setcap cap_sys_nice+ep` reaplicado a cada upgrade do kwin.
+Fluidez (26/10, validado pelo usuário): serviço OpenRC `hanoip-perf-tune`
+(boot, rootfs + overlay; não commitado ainda — git só quando o usuário
+pedir). Engasgos no Plasma = devfreq da GPU (simple_ondemand, piso 180 MHz,
+poll 50 ms, 124 trocas em 20 s): piso 355 MHz + poll 16 ms = igual a 800 MHz
+fixo. Travadas ao abrir apps = I/O (UFS em 50 MHz ~70% do tempo, ~184 ms de
+PSI io, angelfish em estado D, 32% iowait): UFS fixa em 200 MHz. Medições em
+work/jank-20261026/. Pendente opcional: loop7 com direct I/O e read-ahead
+maior (hoje dio=0, 128 KB), zram (não sobe), KWin sem tempo real
+(SCHED_OTHER; falta CAP_SYS_NICE/rtkit).
+Brilho e calor (26/10): faixa quente perto do USB = backlight em 100% (622 mA
+total a 100%, 382 a 50%, 262 a 25%, sistema ocioso). Hardware igual ao
+Android: 3 fileiras ativas (sink 0xd946=0x70), 25 mA/fileira, sem falhas
+(0xd808=0); o 100% do Android também é 450 nits; o padrão dele é ~26%.
+Serviço `hanoip-brightness` (boot) volta o brilho salvo do KWin para 0,6.
+BUG ANOTADO (mainline 7.3, qcom-wled.c, wled5_setup): grava a corrente das
+fileiras com WLED4_SINK_REG_STR_FULL_SCALE_CURR (0x52+n*0x10) em vez de
+WLED5_..._FULL_SCALE_CURR (0x72+n*0x10). No hanoip não afeta hoje (fileiras
+0/1 recebem 25 mA por coincidência, a 2 vem do ABL). Afetaria quem mudar
+qcom,current-limit-microamp, ligar só 3 fileiras, ou bootar sem o ABL.
+Correção de uma linha; o usuário pediu só para anotar.
+Discover "sem internet" (26/10): faltava o catálogo AppStream
+(/var/lib/swcatalog vazio). Instalado `alpine-appstream-downloader` e
+baixado o catálogo main+community; também no build-rootfs.sh.
+Apps básicos (26/10): Dolphin, Ark, Kalk, KClock, KWeather, Koko, Elisa,
+Haruna, Okular, Calindori, Plasma Phonebook, KRecorder, Spectacle, Firefox +
+mobile-config-firefox (também no build-rootfs.sh; rootfs com 1,5 GB livres). SEGURANÇA: o Plasma Mobile traz udisks2, que listava as
+109 entradas da UFS/loop para montagem pela interface; regra
+`/etc/udev/rules.d/61-hanoip-udisks-ignore.rules` (overlay também) põe
+UDISKS_IGNORE/UDISKS_AUTO=0 em sd* e loop*: 0 visíveis, RO intacto.
 Lista completa e agrupada do que falta: seção "O que falta" do README.md
 (inclui hardware visto no DT do Android: FPC1020, SX933x, vibrador do PMIC,
 flash/tri-LED, 4 câmeras, fsa4480; painel com modos de 90/120 Hz).

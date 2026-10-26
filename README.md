@@ -16,16 +16,23 @@ postmarketOS e Plasma Mobile rodando de verdade.
 | Item | Estado |
 |---|---|
 | Kernel | **Linux 7.3** (upstream v7.3 + 160 patches) — `work/kernel-7.3/v2/` |
-| Retorno padrão (GOLD v4) | Linux 7.1 (kernel #10) — `work/GOLD-20261025-1659/` |
+| Retorno padrão (GOLD 26/10) | kernel #6 7.3, boot em ~40 s — `work/GOLD-20261026-1500/` |
 | Sistema | postmarketOS v26.06 + Plasma Mobile, rootfs ext4 no fim do `super` |
 | Display | DSI 1080×2460 @ 60 Hz com DSC, painel Tianma ILI7807S, brilho (WLED) |
 | GPU | Adreno 618 com Freedreno/Mesa, KWin com OpenGL |
 | Touch | ILI7807S TDDI por SPI, firmware só na RAM, segue a energia do painel |
 | Rede | Wi-Fi WCN3990 (NetworkManager), USB NCM + SSH em 172.16.42.1 |
 | Bluetooth | WCN3990 por UART (hci0) |
+| Áudio | alto-falante (ADSP → SEC_MI2S → Awinic AW882xx) com PipeWire; **sem proteção do alto-falante ainda** |
+| Vibração | vibrador LDO do PM6150 (`pm8xxx-vibrator`, teto de 3,0 V), usado pelo Plasma (feedbackd) |
+| Lanterna e flash | PM6150L: flash traseiro (lanterna do Plasma) e flash frontal separados |
+| LED de notificação | LED branco no TRILED do PM6150L (`white:status`), ligado ao feedbackd; **acendimento confirmado visualmente** |
+| NFC | NXP PN54x (`nxp-nci`): o kernel lê cartões; falta app no Plasma |
+| Botões | power e volume (+/−) funcionando no Plasma |
 | Armazenamento | UFS, todos os blocos somente leitura exceto o rootfs |
 | CPU | 8 CPUs, CPUfreq (qcom-cpufreq-hw), CPUidle local |
 | Bateria | telemetria (PM6150 QG + SMB5); **carga ainda desligada** |
+| Par de testes atual | U-Boot `work/perif-20261026/v5/` + kernel #6 `work/perif-20261026/v6-qrtr/` (áudio + periféricos + correção do Wi-Fi) |
 | Pendente | ver [O que falta](#o-que-falta) |
 
 ## O que falta
@@ -57,24 +64,26 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
 - **FIFO do DSI na partida.** Alguns boots ainda mostram erros de FIFO; a
   causa da tela preta ocasional não foi fechada.
 - **90/120 Hz.** O painel do Android tem modos de 90 e 120 Hz; hoje só 60 Hz.
-- **Fluidez do Plasma.** Os engasgos vinham da GPU subindo de frequência
-  tarde; o serviço `hanoip-gpu-tune` fixa um piso de 355 MHz e reavalia a
-  cada 16 ms. Ainda dá para dar prioridade de tempo real ao KWin
-  (`CAP_SYS_NICE`), que hoje roda com prioridade normal.
+- **Fluidez.** Engasgos e travadas ao abrir apps vinham do devfreq da GPU
+  e da UFS reagindo devagar; o serviço `hanoip-perf-tune` aplica um piso de
+  355 MHz na GPU (reavaliação a cada 16 ms) e fixa a UFS em 200 MHz. Ainda
+  dá para melhorar: direct I/O no loop do rootfs, zram e tempo real no KWin.
 - **Touch: refinamento.** Cantos, orientação, calibração e gestos ficaram
   adiados de propósito.
-- **Botões.** Power e volume aparecem como `gpio-keys`/`pwrkey`; falta
-  conferir o mapeamento no Plasma.
 
 **Áudio**
-- **Alto-falante, microfones e fone.** O hanoip usa codec WCD937x pelos
-  macros do LPASS, amplificador Awinic aw882xx (I²C 0 = SE `0x888000`,
-  endereço 0x34) e chave de áudio do USB-C `fsa4480`. No Android o
-  alto-falante sai por `MultiMedia1 → SEC_MI2S_RX → aw882xx` (I²S, não
-  SoundWire); o aw882xx (chip ID `0x1852`) é inicializado pelo
-  `aw882xx_spk_reg.bin` do vendor. Fone e microfones passam pelo WCD937x. Os nós do LPASS e do SoundWire já estão no kernel 7.3
-  v2 (PRs #65/#60 do fork), mas desligados e fora do DT do U-Boot. O pinctrl
-  do LPASS está bloqueado no autoload até ser validado.
+- **Proteção do alto-falante (antes de usar volume alto).** No Android o ADSP
+  modela a temperatura da bobina; aqui não há proteção. Hoje o amplificador
+  começa com 6 dB de atenuação (`/etc/modprobe.d/hanoip-speaker.conf`). Plano
+  combinado, nesta ordem: (1) controle de volume ALSA com teto no driver +
+  monitor de bateria/frio do vendor (tabelas do DT stock); (2) retorno de
+  tensão/corrente (IV) do amplificador pela SEC_MI2S_TX; (3) `speakersafetyd`
+  (pacote do Alpine) com parâmetros do hanoip; (4) passa-alta + limitador no
+  PipeWire.
+- **Formato de 24 bits.** Com S24_LE o caminho do ADSP toca ~48 dB mais baixo;
+  o WirePlumber força S16LE como contorno. A causa no q6asm não foi vista.
+- **Microfones e fone.** Passam pelo codec WCD937x (macros do LPASS +
+  SoundWire) e pela chave `fsa4480` do USB-C; ainda não começou.
 - **Áudio Bluetooth.** Depende da pilha de áudio; não testado.
 
 **Telefonia e rádio**
@@ -91,27 +100,35 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
   OmniVision OV02B1B (2 MP) e frontal OV32B (32 MP), em dois barramentos CCI
   e quatro CSIPHYs, com EEPROMs e 2 atuadores de foco. Nenhum desses
   sensores tem driver no mainline; o fork tem o camss do SM7150.
-- **Flash da câmera.** PM6150L com 2 canais (flash até 1150 e 600 mA,
-  lanterna 500 mA); candidato ao `leds-qcom-flash`. O hanoip não tem LED de
-  notificação.
+- **Flash da câmera.** Os dois LEDs já acendem (traseiro e frontal), mas o
+  modo flash só será usado quando houver câmera.
+- **LED de notificação.** O feedbackd já programa o piscar por hardware no
+  `white:status`; acendimento confirmado visualmente em 26/10.
 
 **Sensores e periféricos**
 - **Acelerômetro/giroscópio e luz/proximidade.** ICM4x6xx e TMD2755, ligados
-  ao ADSP no Android. O TMD2755 não tem driver no mainline e o barramento
-  (SE do QUP) ainda não foi achado. Sem eles: sem rotação nem brilho
-  automáticos. Não há magnetômetro.
+  ao ADSP no Android. Firmware mapeado: SSC SE0/I3C (ICM) e SSC SE4/I²C
+  (TMD). Teste real via ADSP/FastRPC + libssc, com registry em RAM: 382
+  amostras do acelerômetro, luz de 0 a 72,5 lux observados e proximidade
+  alternando FAR/NEAR. Giroscópio também testado: 665 amostras com resposta nos três eixos;
+  orientação/calibração pendentes. Ver
+  `docs/kernel/checkpoint-2026-10-26-sensores-teste-ssc.txt`.
+  Integração Plasma/iio-sensor-proxy parcial: luz e proximidade chegam,
+  mas o proxy não recebe amostras do accel via QMI (enable ok, zero
+  mensagens; libssc recebe normal) e a orientação fica `undefined` —
+  rotação automática adiada. Inversão de 180° medida quando fluía.
+  Sem magnetômetro.
 - **Leitor de digital.** Sensor FPC (há variante Chipone). No Android, a
-  imagem é lida pelo TrustZone (app seguro `fpctzapp`) e o SPI do sensor
-  nem aparece para o Linux; o kernel só cuida dos GPIOs (IRQ 90, reset 4,
-  alimentação 30). Viabilidade muito baixa: exigiria falar com o TEE
-  (`qcomtee`) e o protocolo fechado do app da FPC.
-- **Vibração.** Vibrador LDO do PM6150 (SPMI `0x5300`, com `vmax_mv`);
-  candidato ao driver `pm8xxx-vibrator` do mainline só com DT.
+  captura usa o TrustZone (`fpctzapp`); o helper do kernel só controla
+  IRQ 90, reset 4 e pinctrl de alimentação 29 (30 é da alternativa Chipone).
+  Modelo exato ainda desconhecido: `fpc1020` é o compatible genérico.
+  SPI1/0x884000 é candidato forte pelos dados do TA/devcfg, sem teste AP.
+  Falta o caminho QSEECOM legado e o protocolo HAL/FPC; carregar `qcomtee`
+  moderno não fornece essa pilha. Ver o checkpoint FPC de 26/10.
 - **Sensor SAR.** Semtech SX933x no I²C 1 (SE `0xa84000`, 0x28); nem o
   Android liga um driver nele.
-- **NFC.** NXP PN54x no I²C 0, endereço 0x28 (IRQ no GPIO 37, habilitação no
-  GPIO 12, modo firmware no GPIO 36). Candidato ao driver `nxp-nci` do
-  mainline, quase só DT.
+- **NFC: aplicativos.** O kernel liga o PN54x e lê cartões (ISO 14443-A
+  testado); o Alpine não tem o `neard`, então nenhum app usa o NFC ainda.
 - **USB host/OTG.** Hoje a USB é só gadget (NCM + serial). O hardware faz os
   dois papéis (`dual power role`, dwc3 em OTG, regulador de VBUS
   `smb5-vbus`); falta a troca de papel do Type-C e esse regulador no
@@ -130,8 +147,14 @@ Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
 - **Firewall.** O kernel não tem nftables; o pmOS roda sem firewall.
 - **Térmica sob carga.** As CPUs grandes chegam a ~74 °C; o controle
   térmico existe, mas não foi validado em carga longa.
+- **Wi-Fi intermitente: confirmar a correção.** A corrida do QRTR que travava
+  o modem em metade dos boots foi corrigida no kernel #6; falta confirmar em
+  mais boots (os logs de cada boot ficam em `/var/log/hanoip-boot/`).
 - **Upstream.** As correções do hanoip (LCDB, painel, touch, DSI, SMMU,
-  bateria) ainda não foram enviadas ao fork nem ao mainline.
+  bateria, pinos SSC do LPI, vibrador, QRTR) ainda não foram enviadas ao fork
+  nem ao mainline. O helper da lanterna do Plasma Mobile 6.6.6 já tem
+  correção no master (`ad036102`); o binário corrigido é usado até o Alpine
+  atualizar.
 
 ## Como bootar (só volátil)
 
@@ -142,9 +165,14 @@ fastboot boot work/kernel-7.3/v2/u-boot-hanoip-pmos-v1.img   # espere o fastboot
 fastboot boot work/kernel-7.3/v2/kernel-hanoip-pmos-7.3-v2.img
 ```
 
-Para a GOLD v4, use uma **cópia** das imagens de `work/GOLD-20261025-1659/`
+Par de testes com áudio e periféricos (mesmos passos, U-Boot
+`work/perif-20261026/v5/u-boot-hanoip-pmos-perif-v5.img` e kernel
+`work/perif-20261026/v6-qrtr/kernel-hanoip-pmos-7.3-qrtr.img`).
+
+Para a GOLD atual, use uma **cópia** das imagens de `work/GOLD-20261026-1500/`
 (a pasta é somente leitura e o helper grava um log ao lado da imagem). O
-Plasma sobe em ~30–40 s. SSH: `ssh root@172.16.42.1` (só por chave).
+Plasma sobe em ~40 s (sem o hash integral da super no boot). SSH:
+`ssh root@172.16.42.1` (só por chave).
 O helper `work/hanoip-display-20261024/boot-volatile.py` faz os dois passos.
 
 Como funciona: o ABL carrega o U-Boot como `boot.img`; o U-Boot passa ao
@@ -159,8 +187,15 @@ metadados LP e o ext4 no offset, monta o rootfs por `/dev/loop7` e faz
 - `AGENTS.md` — regras de segurança do aparelho e estado resumido.
 - `work/kernel-7.3/v2/` — kernel 7.3: `patches/` (160 patches sobre v7.3),
   config, imagens, módulos e `README.txt` com a reconstrução.
-- `work/GOLD-20261025-1659/` — GOLD v4 (7.1), somente leitura, com
-  `GOLD.txt` e `SHA256SUMS`. GOLDs anteriores em `work/GOLD-*`.
+- `work/GOLD-20261026-1500/` — GOLD atual (kernel #6 7.3, boot rápido),
+  somente leitura, com `GOLD.txt` e `SHA256SUMS`. GOLDs anteriores em `work/GOLD-*`.
+- `work/sensors-20261026/orient-fix/` — imagens v3/v4 de boot rápido,
+  parser do registry e notas do diagnóstico de orientação.
+- `work/audio-20261026/` — áudio do alto-falante: patches do driver
+  AW882xx e dos pinos SSC do LPI, DTs e fases de bring-up.
+- `work/perif-20261026/` — vibrador, flashes, LED, NFC e a correção do QRTR:
+  patches, DTs, imagens por versão, helper da lanterna e ferramentas de teste
+  (`tools/nfcpoll.py`, `tools/vib.py`).
 - `work/pmos-super-20261025/` — `build-rootfs.sh` + `overlay/` recriam o
   rootfs pmOS do zero; `write-super-tail.sh` é o procedimento de gravação.
 - `kernel-mainline/` — fonte do kernel 7.1 (#10) da GOLD v4.
@@ -187,6 +222,18 @@ metadados LP e o ext4 no offset, monta o rootfs por `/dev/loop7` e faz
    o driver do touch é um *panel follower* e recarrega a IRAM.
 8. **polkit**: precisa da variante `polkit-elogind`, senão brilho, loja e
    NetworkManager falham por falta de sessão.
+9. **Pinos SSC do LPI**: o `lpass_tlmm` do mainline começa no gpio18 do
+   vendor (gpioN mainline = gpioN+18 vendor). Os pinos do I²S do alto-falante
+   (vendor gpio8–11, `0x62b48000`) ficam fora; uma segunda instância mapeia
+   só esses 4 blocos. Ler a faixa SSC inteira por `/dev/mem` travou o SoC.
+10. **QRTR no 7.3**: o commit `544d85de4dc2` cria uma corrida em que o modem
+    nunca recebe o anúncio do rmtfs e o watchdog dele dispara ("DOG detects
+    stalled initialization"); sintoma: Wi-Fi some em metade dos boots.
+11. **PipeWire antes do Plasma**: subindo pelo autostart ele perde a corrida
+    com o plasma-pa e as teclas de volume param; precisa ser serviço de
+    usuário do OpenRC.
+12. **Vibrador SPMI**: o `pm8xxx-vibrator` mainline gravava 0 no byte alto da
+    tensão (`<< 8` em vez de `>> 8`), então o motor quase não recebia tensão.
 
 ## Histórico
 

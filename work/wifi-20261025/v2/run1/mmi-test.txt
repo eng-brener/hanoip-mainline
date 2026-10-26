@@ -1,0 +1,36 @@
+mmi-loaded
+[  233.280185] mmi_unit_info (SMEM 134) for modem: version = 0x03, device = 'hanoip', radio_str = 'LATAM', system_rev = 0xc000, carrier = 'retbr'
+apos 40s: state=running wlan0=nao
+[  241.313405] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[  241.318927] ath10k_snoc 18800000.wifi: firmware crashed! (guid 9c131636-f26c-4b1e-ba81-4f85d69cbbe3)
+[  241.328821] ath10k_snoc 18800000.wifi: wifi fw qmi service found
+[  241.334891] ath10k_snoc 18800000.wifi: wcn3990 hw1.0 target 0x00000008 chip_id 0x00000000 sub 0000:0000
+[  241.336754] ath10k_snoc 18800000.wifi: qmi wifi fw qmi service connected
+[  241.338680] ath10k_snoc 18800000.wifi: kconfig debug 1 debugfs 1 tracing 0 dfs 0 testmode 0
+[  241.373806] ath10k_snoc 18800000.wifi: firmware ver  api 5 features wowlan,mgmt-tx-by-reference,non-bmi crc32 00000000
+[  241.386790] ath10k_snoc 18800000.wifi: board_file api 1 bmi_id N/A crc32 00000000
+[  241.396418] ath10k_snoc 18800000.wifi: htt-ver 0.0 wmi-op 4 htt-op 3 cal file max-sta 32 raw 0 hwcrypto 1
+[  241.408162] ath10k_snoc 18800000.wifi: wifi fw qmi service disconnected
+[  241.417566] ath10k_snoc 18800000.wifi: qmi indication register request completed
+[  241.427695] ath10k_snoc 18800000.wifi: qmi host capability request completed
+[  241.437491] ath10k_snoc 18800000.wifi: qmi msa mem region 0 addr 0x0x0000000097500000 size 0x4000 flag 0x00000001
+[  241.450080] ath10k_snoc 18800000.wifi: qmi msa mem region 1 addr 0x0x0000000097504000 size 0x17c000 flag 0x00000000
+[  241.462738] ath10k_snoc 18800000.wifi: qmi msa mem info request completed
+[  241.496574] ath10k_snoc 18800000.wifi: qmi msa mem ready request completed
+[  241.607885] ath10k_snoc 18800000.wifi: boot using board name 'bus=snoc,qmi-board-id=ff,qmi-chip-id=140,variant=motorola_hanoip'
+[  241.621701] ath10k_snoc 18800000.wifi: boot using board name 'bus=snoc,qmi-board-id=ff,qmi-chip-id=140'
+[  241.633298] ath10k_snoc 18800000.wifi: boot using board name 'bus=snoc,qmi-board-id=ff'
+[  241.644069] ath10k_snoc 18800000.wifi: boot fw request 'ath10k/WCN3990/hw1.0/board-2.bin': -2
+[  241.655270] ath10k_snoc 18800000.wifi: boot fw request 'ath10k/WCN3990/hw1.0/board-snoc-18800000.wifi.bin': -2
+[  241.667699] ath10k_snoc 18800000.wifi: boot fw request 'ath10k/WCN3990/hw1.0/board.bin': 0
+[  241.678219] ath10k_snoc 18800000.wifi: using board api 1
+[  241.688559] ath10k_snoc 18800000.wifi: qmi bdf download request completed
+[  241.698036] ath10k_snoc 18800000.wifi: qmi cal report request completed
+[  244.122568] ath10k_snoc 18800000.wifi: wifi fw ready event received
+[  244.133274] ath10k_snoc 18800000.wifi: total recovery count: 1
+[  271.332951] ath10k_snoc 18800000.wifi: soc power off
+[  271.342572] ath10k_snoc 18800000.wifi: could not probe fw (-110)
+[  271.355259] ath10k_snoc 18800000.wifi: cannot restart a device that hasn't been started
+lo
+rmnet_ipa0
+usb0

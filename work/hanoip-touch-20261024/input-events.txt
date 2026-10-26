@@ -1,0 +1,14 @@
+
+~ # printf "\nEVENTS_BEGIN\n"; /bin/busybox hexdump -v -e '24/1 "%02x" "\n"' /de
+v/input/event3 & cap_pid=$!; /bin/busybox sleep 35; /bin/busybox kill $cap_pid; 
+wait $cap_pid 2>/dev/null; printf "\nEVENTS_END\n"; /bin/busybox cat /sys/bus/sp
+i/devices/spi6.0/stats; printf '\nHANOIP_END_4849c5a2312c\n'
+
+EVENTS_BEGIN
+
+EVENTS_END
+irqs=0 reports=0 rejected=0
+
+HANOIP_END_4849c5a2312c
+[1]+  Terminated                 /bin/busybox hexdump -v -e "24/1 \"%02x\" \"\n\"" /dev/input/event3
+~ # 

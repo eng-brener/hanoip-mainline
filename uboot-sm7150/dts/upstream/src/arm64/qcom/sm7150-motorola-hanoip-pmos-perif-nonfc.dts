@@ -1,0 +1,7 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-pmos-perif.dts"
+
+/* Bisect: modem init stalls (DOG) with the perif DT; drop NFC only. */
+&{/soc@0/geniqup@8c0000/i2c@888000/nfc@28} {
+	status = "disabled";
+};

@@ -1,0 +1,75 @@
+00100000-002effff : cc_base
+00786018-0078601b : efuse
+00888000-0088bfff : /soc/i2c@0x888000
+008c0000-008c1fff : /soc/qcom,qupv3_0_geni_se@0x8c0000
+00a84000-00a87fff : /soc/i2c@0xa84000
+00a8c000-00a8ffff : /soc/i2c@0xa8c000
+00ac0000-00ac1fff : /soc/qcom,qupv3_1_geni_se@0xac0000
+00ff1000-00ff105f : /soc/refgen-regulator@ff1000
+01d84000-01d86fff : ufs_mem
+01d87000-01d87ddb : phy_mem
+01d90000-01d97fff : ufs_ice
+01fed000-01ff5007 : /soc/cx_ipeak@01fed000
+03400000-041c1fff : pinctrl
+05000000-0503ffff : kgsl-3d0
+05040000-0504ffff : /soc/arm,smmu-kgsl@5040000
+05090000-05098fff : cc_base
+08804000-08804fff : hc_mem
+088e0000-088e1fff : eud_base
+088e2000-088e23ff : qusb_phy_base
+090cc000-090cc2ff : lagg-base
+09910000-0991ffff : cc_base
+0a60c100-0a60ccff : /soc/ssusb@a600000/dwc3@a600000
+0ab00000-0ab0ffff : cc_base
+0ad00000-0ad0ffff : cc_base
+0af00000-0af1ffff : cc_base
+0af20000-0af200ff : /soc/mailbox@af20000
+0af21c00-0af24bff : /soc/mailbox@af20000
+0c222000-0c222007 : tsens_srot_physical
+0c223000-0c223007 : tsens_srot_physical
+0c263000-0c2631fe : tsens_tm_physical
+0c264000-0c264003 : pshold-base
+0c265000-0c2651fe : tsens_tm_physical
+0c40a000-0c42ffff : cnfg
+0c440000-0c4410ff : core
+0c600000-0e5fffff : chnls
+0e600000-0e6fffff : obsrvr
+0e700000-0e79ffff : intr
+15000000-150fffff : base
+15182200-15182207 : status-reg
+15182208-1518220f : status-reg
+15182210-15182217 : status-reg
+15182218-1518221f : status-reg
+15182220-15182227 : status-reg
+15182228-1518222f : status-reg
+15182230-15182237 : status-reg
+15182238-1518223f : status-reg
+15185000-15185fff : base
+15189000-15189fff : base
+1518d000-1518dfff : base
+15191000-15191fff : base
+15195000-15195fff : base
+15199000-15199fff : base
+1519d000-1519dfff : base
+151a1000-151a1fff : base
+17c21000-17c21fff : arch_mem_timer
+18220000-182200ff : /soc/mailbox@18220000
+18220d00-18223cff : /soc/mailbox@18220000
+80000000-856fffff : System RAM
+  80080000-819fffff : Kernel code
+  81e00000-82728fff : Kernel data
+85d00000-85dfffff : System RAM
+85f20000-85f21078 : c3f000c.qcom,cmd-db
+8a300000-8aafffff : System RAM
+97717000-9e3fffff : System RAM
+9f800000-aefa0fff : System RAM
+af000000-af03f7ff : persistent_ram
+af03f800-af07f7ff : persistent_ram
+af07f800-af0bf7ff : persistent_ram
+af0c0000-17dcfffff : System RAM
+total 0
+dr-xr-x---  2 system log       0 1974-07-24 15:52 .
+drwxr-xr-x 10 root   root      0 1974-07-24 15:52 ..
+-r--r-----  1 system log  175586 1974-07-24 15:52 console-ramoops-0
+1532216.12 258749.06
+0-7

@@ -1,0 +1,6 @@
+	ext4
+	vfat
+	f2fs
+modem_a sde18 ro=1 size=286720
+dsp_a sde19 ro=1 size=65536
+bluetooth_a sde20 ro=1 size=2048

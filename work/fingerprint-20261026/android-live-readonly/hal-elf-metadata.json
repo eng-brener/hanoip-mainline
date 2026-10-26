@@ -1,0 +1,76 @@
+[
+  {
+    "file": "fingerprint-service-fpc",
+    "elf_class": 2,
+    "machine": 183,
+    "QSEECom_imports": [
+      "QSEECom_send_modified_cmd",
+      "QSEECom_shutdown_app",
+      "QSEECom_start_app",
+      "QSEECom_send_cmd"
+    ],
+    "QSEECom_exports": []
+  },
+  {
+    "file": "libQSEEComAPI-32.so",
+    "elf_class": 1,
+    "machine": 40,
+    "QSEECom_imports": [],
+    "QSEECom_exports": [
+      "QSEECom_clear_key",
+      "QSEECom_set_bandwidth",
+      "QSEECom_start_app_V2",
+      "QSEECom_unload_external_elf",
+      "QSEECom_create_key",
+      "QSEECom_send_cmd",
+      "QSEECom_send_service_cmd",
+      "QSEECom_wipe_key",
+      "QSEECom_send_resp",
+      "QSEECom_load_external_elf",
+      "QSEECom_send_modified_cmd_64",
+      "QSEECom_start_app",
+      "QSEECom_get_app_info",
+      "QSEECom_send_modified_resp",
+      "QSEECom_update_key_user_info",
+      "QSEECom_scale_bus_bandwidth",
+      "QSEECom_send_modified_cmd",
+      "QSEECom_receive_req",
+      "QSEECom_send_modified_resp_64",
+      "QSEECom_shutdown_app",
+      "QSEECom_app_load_query",
+      "QSEECom_unregister_listener",
+      "QSEECom_register_listener"
+    ]
+  },
+  {
+    "file": "libQSEEComAPI-64.so",
+    "elf_class": 2,
+    "machine": 183,
+    "QSEECom_imports": [],
+    "QSEECom_exports": [
+      "QSEECom_unload_external_elf",
+      "QSEECom_unregister_listener",
+      "QSEECom_send_cmd",
+      "QSEECom_receive_req",
+      "QSEECom_register_listener",
+      "QSEECom_start_app",
+      "QSEECom_get_app_info",
+      "QSEECom_wipe_key",
+      "QSEECom_send_modified_resp_64",
+      "QSEECom_update_key_user_info",
+      "QSEECom_set_bandwidth",
+      "QSEECom_shutdown_app",
+      "QSEECom_scale_bus_bandwidth",
+      "QSEECom_start_app_V2",
+      "QSEECom_clear_key",
+      "QSEECom_app_load_query",
+      "QSEECom_send_modified_cmd",
+      "QSEECom_send_modified_resp",
+      "QSEECom_send_service_cmd",
+      "QSEECom_send_modified_cmd_64",
+      "QSEECom_create_key",
+      "QSEECom_send_resp",
+      "QSEECom_load_external_elf"
+    ]
+  }
+]

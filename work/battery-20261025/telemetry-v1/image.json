@@ -1,0 +1,35 @@
+{
+  "file": "/Volumes/SSDExterno/Users/brener/developer/hanoip-mainline/work/battery-20261025/telemetry-v1/kernel-hanoip-battery-telemetry-v1.img",
+  "bytes": 25583616,
+  "header_version": 2,
+  "page_size": 4096,
+  "dtb_addr": "0x1f00000",
+  "sha256": "b37bf4a689cc332b7166802e9b145669e4956a141220ea4d679b6ac3955b6fcf",
+  "sections": {
+    "kernel": {
+      "offset": 4096,
+      "size": 12436345,
+      "sha256": "c9a4a52ba522d1f97de349cc78ee22c81367c53ae99f73c0e1544c49861367b6"
+    },
+    "ramdisk": {
+      "offset": 12443648,
+      "size": 13044807,
+      "sha256": "3f4e150f54232298095b28c835e2d7eee89b957beef24c73c678fc2b81027d81"
+    },
+    "second": {
+      "offset": 25489408,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "recovery_dtbo": {
+      "offset": 25489408,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dtb": {
+      "offset": 25489408,
+      "size": 92046,
+      "sha256": "be5efff58e380e614d25fd8e18a7fb4d4c96b504c5c5d4075dca7f45d0285916"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+#!/sbin/openrc-run
+# Start every session at 60% backlight. At 100% the panel draws ~240 mA
+# more than at 50% and the WLED/LED edge near the USB port gets hot; the
+# hardware limit (25 mA per string) is the same as Android's. KWin restores
+# the brightness saved per output, so reset that value before the session.
+description="Hanoip default backlight brightness"
+
+CONF=/home/user/.config/kwinoutputconfig.json
+LEVEL=0.6
+
+depend() {
+	before display-manager tinydm greetd
+}
+
+start() {
+	ebegin "Setting default brightness to ${LEVEL}"
+	[ -f "$CONF" ] && sed -i -E "s/(\"brightness\": *)[0-9.]+/\1${LEVEL}/" "$CONF"
+	eend $?
+}

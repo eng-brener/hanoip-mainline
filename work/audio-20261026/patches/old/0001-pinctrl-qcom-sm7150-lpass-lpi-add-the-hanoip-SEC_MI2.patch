@@ -1,0 +1,98 @@
+From ce18b475ddcb22b61570d16b7c9009699f3aa734 Mon Sep 17 00:00:00 2001
+From: eng-brener <eng-brener@users.noreply.github.com>
+Date: Mon, 26 Oct 2026 02:00:21 +0000
+Subject: [PATCH 1/2] pinctrl: qcom: sm7150-lpass-lpi: add the hanoip SEC_MI2S
+ functions
+
+Motorola hanoip drives its speaker amplifier over LPI GPIO8-11: SCLK and
+WS on func3, playback data on func4 of GPIO10 and the feedback line on
+func2 of GPIO11 (vendor tree). Name those slots and drop qdss_cti, which
+sat on the same slots of GPIO9/10.
+---
+ .../pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c   | 28 ++++++++++++++-----
+ 1 file changed, 21 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
+index c3cb508e6505..0631046d4cf0 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
+@@ -16,7 +16,6 @@ enum lpass_lpi_functions {
+ 	LPI_MUX_dmic1_data,
+ 	LPI_MUX_dmic2_clk,
+ 	LPI_MUX_dmic2_data,
+-	LPI_MUX_qdss_cti,
+ 	LPI_MUX_gp_pdm,
+ 	LPI_MUX_prim_mclk_a,
+ 	LPI_MUX_prim_mclk_b,
+@@ -25,6 +24,10 @@ enum lpass_lpi_functions {
+ 	LPI_MUX_qua_mi2s_data,
+ 	LPI_MUX_qua_mi2s_sclk,
+ 	LPI_MUX_qua_mi2s_ws,
++	LPI_MUX_sec_mi2s_data0,
++	LPI_MUX_sec_mi2s_data1,
++	LPI_MUX_sec_mi2s_sclk,
++	LPI_MUX_sec_mi2s_ws,
+ 	LPI_MUX_slimbus_clk,
+ 	LPI_MUX_slimbus_data,
+ 	LPI_MUX_swr_rx_clk,
+@@ -63,7 +66,6 @@ static const char * const dmic1_clk_groups[] = { "gpio8" };
+ static const char * const dmic1_data_groups[] = { "gpio9" };
+ static const char * const dmic2_clk_groups[] = { "gpio10" };
+ static const char * const dmic2_data_groups[] = { "gpio11" };
+-static const char * const qdss_cti_groups[] = { "gpio9", "gpio10" };
+ static const char * const gp_pdm_groups[] = { "gpio10" };
+ static const char * const prim_mclk_a_groups[] = { "gpio4" };
+ static const char * const prim_mclk_b_groups[] = { "gpio11" };
+@@ -72,6 +74,10 @@ static const char * const qca_sb_data_groups[] = { "gpio12" };
+ static const char * const qua_mi2s_data_groups[] = { "gpio7", "gpio8", "gpio9", "gpio10" };
+ static const char * const qua_mi2s_sclk_groups[] = { "gpio5" };
+ static const char * const qua_mi2s_ws_groups[] = { "gpio6" };
++static const char * const sec_mi2s_data0_groups[] = { "gpio10" };
++static const char * const sec_mi2s_data1_groups[] = { "gpio11" };
++static const char * const sec_mi2s_sclk_groups[] = { "gpio8" };
++static const char * const sec_mi2s_ws_groups[] = { "gpio9" };
+ static const char * const slimbus_clk_groups[] = { "gpio0" };
+ static const char * const slimbus_data_groups[] = { "gpio2", "gpio3", "gpio4" };
+ static const char * const swr_rx_clk_groups[] = { "gpio3" };
+@@ -103,10 +109,15 @@ static const struct lpi_pingroup sm7150_groups[] = {
+ 	LPI_PINGROUP(5, 6, qua_mi2s_sclk, swr_rx_data, _, swr_tx_data),
+ 	LPI_PINGROUP(6, LPI_NO_SLEW, qua_mi2s_ws, cdc_pdm_rx, _, _),
+ 	LPI_PINGROUP(7, LPI_NO_SLEW, qua_mi2s_data, _, _, _),
+-	LPI_PINGROUP(8, LPI_NO_SLEW, dmic1_clk, _, _, _),
+-	LPI_PINGROUP(9, LPI_NO_SLEW, dmic1_data, _, qdss_cti, _),
+-	LPI_PINGROUP(10, LPI_NO_SLEW, dmic2_clk, _, gp_pdm, qdss_cti),
+-	LPI_PINGROUP(11, LPI_NO_SLEW, dmic2_data, _, _, _),
++	/*
++	 * Motorola hanoip routes its speaker amplifier I2S (SEC_MI2S in the
++	 * vendor tree) over these pins: func3 for SCLK and WS, func4 for the
++	 * playback data line and func2 for the feedback line.
++	 */
++	LPI_PINGROUP(8, LPI_NO_SLEW, dmic1_clk, _, sec_mi2s_sclk, _),
++	LPI_PINGROUP(9, LPI_NO_SLEW, dmic1_data, _, sec_mi2s_ws, _),
++	LPI_PINGROUP(10, LPI_NO_SLEW, dmic2_clk, _, gp_pdm, sec_mi2s_data0),
++	LPI_PINGROUP(11, LPI_NO_SLEW, dmic2_data, sec_mi2s_data1, _, _),
+ 	LPI_PINGROUP(12, LPI_NO_SLEW, qca_sb_data, _, _, _),
+ 	LPI_PINGROUP(13, LPI_NO_SLEW, qca_sb_clk, _, _, _),
+ };
+@@ -118,7 +129,6 @@ static const struct lpi_function sm7150_functions[] = {
+ 	LPI_FUNCTION(dmic1_data),
+ 	LPI_FUNCTION(dmic2_clk),
+ 	LPI_FUNCTION(dmic2_data),
+-	LPI_FUNCTION(qdss_cti),
+ 	LPI_FUNCTION(gp_pdm),
+ 	LPI_FUNCTION(prim_mclk_a),
+ 	LPI_FUNCTION(prim_mclk_b),
+@@ -127,6 +137,10 @@ static const struct lpi_function sm7150_functions[] = {
+ 	LPI_FUNCTION(qua_mi2s_data),
+ 	LPI_FUNCTION(qua_mi2s_sclk),
+ 	LPI_FUNCTION(qua_mi2s_ws),
++	LPI_FUNCTION(sec_mi2s_data0),
++	LPI_FUNCTION(sec_mi2s_data1),
++	LPI_FUNCTION(sec_mi2s_sclk),
++	LPI_FUNCTION(sec_mi2s_ws),
+ 	LPI_FUNCTION(slimbus_clk),
+ 	LPI_FUNCTION(slimbus_data),
+ 	LPI_FUNCTION(swr_rx_clk),
+-- 
+2.43.0
+

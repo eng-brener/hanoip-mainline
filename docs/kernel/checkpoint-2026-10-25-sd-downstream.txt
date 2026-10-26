@@ -1,0 +1,74 @@
+# Checkpoint: como o kernel downstream trata o microSD — 2026-10-25
+
+## Fonte
+
+`MotorolaMobilityLLC/kernel-msm`, branch
+`android-12-release-s2ris32.32-20-9-9-2-1` (commit `f6673a13...`), que é a
+mesma build do firmware do aparelho (`S2RI32.32-20-9-9_hanoip` no ADSP).
+
+Arquivos salvos em `work/sd-20261025/downstream/`:
+`sdhci-msm.c` (5.551 linhas), `sdhci-msm.h` e o nó stock `sdhc_2`
+(`stock-sdhc_2.dtsi`, extraído de `stock-live.dts`).
+
+## DT stock do slot
+
+```
+vdd-supply = <&vreg_l9c_3p1>;
+qcom,vdd-voltage-level = <2950000 2950000>;
+qcom,vdd-current-level = <0 800000>;
+vdd-io-supply = <&vreg_l6c_3p0>;
+qcom,vdd-io-voltage-level = <1800000 2950000>;
+qcom,vdd-io-current-level = <0 22000>;
+qcom,vdd-io-always-on;
+qcom,vdd-io-lpm-sup;
+cd-gpios = <&tlmm 69 0>;    /* flag 0 = active high */
+```
+
+## O que o driver downstream faz
+
+- `sdhci_msm_dt_parse_vreg_info()` lê `qcom,vdd-voltage-level`,
+  `qcom,vdd-io-voltage-level`, `-current-level`, `-always-on` e `-lpm-sup`.
+- `sdhci_msm_vreg_enable()` liga vdd e vdd-io já no nível **alto**:
+  2,95 V para os dois. Nunca escreve 3,3 V.
+- `sdhci_msm_set_vdd_io_vol()` alterna o vdd-io entre `low_vol_level`
+  (1,8 V) e `high_vol_level` (2,95 V).
+- O power IRQ (`sdhci_msm_pwr_irq`) trata `CORE_PWRCTL_BUS_ON/OFF` e
+  `CORE_PWRCTL_IO_LOW/HIGH`, ligando/desligando reguladores, aplicando pinctrl
+  e trocando o vdd-io; depois reconhece `BUS_SUCCESS/FAIL` e `IO_SUCCESS/FAIL`.
+- `sdhci_msm_set_regulator_caps()` anuncia 3,0 V se o nível alto for > 2,7 V
+  (2,95 V) e 1,8 V se o nível baixo for < 1,95 V. Ou seja, o cartão pode pedir
+  3,3 V no OCR, mas o driver entrega 2,95 V.
+- Card detect: `of_get_named_gpio_flags(np, "cd-gpios", ...)`; se **não** for
+  active-low, liga `MMC_CAP2_CD_ACTIVE_HIGH`. O stock do hanoip usa flag 0,
+  portanto **active high** (diferente do reference xiaomi, que usa active low).
+
+## Por que o mainline falha
+
+- O mainline `sdhci-msm` usa o framework padrão: `mmc_regulator_set_vqmmc()`
+  pede **3,3 V** para `vqmmc` no `sdhci_set_power` e no power IRQ.
+- O L6C do hanoip vai até 2,95 V; o pedido falha com
+  `unsupportable voltage range: 3300000-2944000uV`. O fallback para 2,7–3,6 V
+  também não cabe no L6C.
+- `sdhci_msm_set_regulator_caps()` do mainline só liga `CORE_3_0V_SUPPORT`
+  se o regulador cobrir 2,7–3,6 V; com L6C ele só liga `CORE_1_8V_SUPPORT`,
+  então o caminho padrão fica inconsistente.
+- O `vmmc` (L9C) é pedido em 3,3 V pelo core, enquanto o stock fixa 2,95 V.
+
+## Porte necessário antes de inserir cartão
+
+1. Adicionar ao `sdhc_2` do mainline os níveis `qcom,vdd-voltage-level` e
+   `qcom,vdd-io-voltage-level` do stock.
+2. Ensinar o `sdhci-msm` mainline a usar esses níveis (como o downstream):
+   vdd 2,95 V, vdd-io 1,8/2,95 V, sem nunca pedir 3,3 V. Isso implica gerenciar
+   o `vqmmc` no driver (ou um clamp no core) e não deixar o
+   `mmc_regulator_set_vqmmc` pedir 3,3 V.
+3. Corrigir `cd-gpios` para **GPIO_ACTIVE_HIGH** no DTS do kernel e no DTS do
+   U-Boot (o DTB efetivo é o do U-Boot).
+4. Validar sem cartão: controlador sobe, nenhum `unsupportable voltage range`,
+   vdd/vdd-io nos níveis esperados, CD IRQ registrada.
+5. Só então inserir um cartão (de preferência um sacrificial) e acompanhar
+   power IRQ, dmesg e mmcblk.
+
+Nada disso foi executado com cartão. A variante atual em `work/sd-20261025/`
+tem exatamente a combinação de 3,3 V conhecida como arriscada; **não inserir
+cartão** nela. O par de retorno seguro é GOLD v3 ou `telemetry-v1`.

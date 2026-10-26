@@ -1,0 +1,9 @@
+t1 gear=HS_GEAR3 lane=1 rate=HS_RATE_B mode=FAST_MODE link=ACTIVE dev=ACTIVE
+t2 gear=HS_GEAR3 lane=1 rate=HS_RATE_B mode=FAST_MODE link=ACTIVE dev=ACTIVE
+t3 gear=HS_GEAR3 lane=1 rate=HS_RATE_B mode=FAST_MODE link=ACTIVE dev=ACTIVE
+t4 gear=HS_GEAR3 lane=1 rate=HS_RATE_B mode=FAST_MODE link=ACTIVE dev=ACTIVE
+t5 gear=HS_GEAR3 lane=1 rate=HS_RATE_B mode=FAST_MODE link=ACTIVE dev=ACTIVE
+t6 gear=HS_GEAR3 lane=1 rate=HS_RATE_B mode=FAST_MODE link=ACTIVE dev=ACTIVE
+3221225472 bytes (3.0GB) copied, 5.987298 seconds, 513.1MB/s
+idle gear=HS_GEAR1 link=HIBERN8 dev=SLEEP rt=suspended
+devfreq cur=50000000 avail=50000000 200000000 gov=simple_ondemand trans=Total transition : 2

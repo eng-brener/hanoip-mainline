@@ -1,0 +1,24 @@
+
+~ # /bin/busybox grep "Could not open" /run/ssc-hexagonrpcd.log | /bin/busybox s
+ort -u | /bin/busybox head -25; ls /opt/ssc/usr/share/qcom/sensors; /bin/busybox
+ tail -10 /run/ssc-accelerometer.log; cat /proc/sys/kernel/tainted; printf '\nHA
+NOIP_END_c0ea8006153b\n'
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+config        registry      sns_reg.conf
+<<<<<<   value      = 00:00:00:00:00:00:00:00
+<<<<<<   translated = 0
+<<<<<< TLV:
+<<<<<<   type       = "Response" (0x11)
+<<<<<<   length     = 4
+<<<<<<   value      = 00:00:00:00
+<<<<<<   translated = 0
+
+** (ssccli:335): DEBUG: 19:46:44.797: Sensor disable request sent successfully
+** (ssccli:335): DEBUG: 19:46:44.797: Accelerometer sensor disabled
+0
+
+HANOIP_END_c0ea8006153b
+~ # 

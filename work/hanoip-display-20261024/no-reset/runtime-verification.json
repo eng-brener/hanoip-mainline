@@ -1,0 +1,24 @@
+{
+  "usb_shell": true,
+  "drm_connector": "card0-DSI-1",
+  "connector_status": "connected",
+  "connector_enabled": true,
+  "framebuffer": "msmdrmfb",
+  "width": 1080,
+  "height": 2460,
+  "refresh_hz": 60,
+  "pixel_clock_khz": 343458,
+  "dsc_blocks": 2,
+  "pitch_bytes": 4352,
+  "framebuffer_bytes": 10706944,
+  "no_ufs_or_sd_exposed": true,
+  "persistent_mounts": false,
+  "unhandled_smmu_faults": 0,
+  "visual_confirmation": "user confirmed the test message appeared on screen",
+  "known_limitations": [
+    "no GPU/touch validation",
+    "no suspend/resume or cold rail cycle",
+    "MDSS core reset omitted in diagnostic DT",
+    "legacy MSM fbdev FBINFO_VIRTFB warning"
+  ]
+}

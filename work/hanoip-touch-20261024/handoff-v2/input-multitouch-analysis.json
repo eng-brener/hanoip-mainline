@@ -1,0 +1,31 @@
+{
+  "source": "work/hanoip-touch-20261024/handoff-v2/input-multitouch-30s.txt",
+  "event_count": 4453,
+  "synchronized_frames": 690,
+  "contact_starts": 42,
+  "contact_ends": 42,
+  "max_observed_simultaneous_contacts": 2,
+  "active_contacts_at_end": 0,
+  "coordinate_ranges": {
+    "53": [
+      296,
+      1015
+    ],
+    "54": [
+      560,
+      1980
+    ]
+  },
+  "coordinates_within_bounds": true,
+  "event_code_counts": {
+    "3:57": 84,
+    "3:53": 750,
+    "3:54": 994,
+    "3:47": 985,
+    "1:330": 42,
+    "3:0": 386,
+    "3:1": 522,
+    "0:0": 690
+  },
+  "event_span_seconds": 6.731637
+}

@@ -1,0 +1,196 @@
+--- upstream/drivers/ufs/host/ufs-qcom.c
++++ local/drivers/ufs/host/ufs-qcom.c
+@@ -553,7 +553,7 @@
+  * Internal hardware sub-modules within the UTP controller control the CGCs.
+  * Hardware CGCs disable the clock to inactivate UTP sub-modules not involved
+  * in a specific operation, UTP controller CGCs are by default disabled and
+- * this function enables them (after every UFS link startup) to save some power
++ * this function enables them (after every UFS link startup) to save some powe
+  * leakage.
+  */
+ static void ufs_qcom_enable_hw_clk_gating(struct ufs_hba *hba)
+@@ -862,7 +862,7 @@
+ 		/*
+ 		 * If we are here to disable this clock it might be immediately
+ 		 * after entering into hibern8 in which case we need to make
+-		 * sure that device ref_clk is active for specific time after
++		 * sure that device ref_clk is active for specific time afte
+ 		 * hibern8 enter.
+ 		 */
+ 		if (!enable) {
+@@ -911,13 +911,13 @@
+ 
+ 	ret = icc_set_bw(host->icc_ddr, 0, mem_bw);
+ 	if (ret < 0) {
+-		dev_err(dev, "failed to set bandwidth request: %d\n", ret);
++		dev_err(dev, "UFS DIAG: ufs-ddr bandwidth request failed: %d\n", ret);
+ 		return ret;
+ 	}
+ 
+ 	ret = icc_set_bw(host->icc_cpu, 0, cfg_bw);
+ 	if (ret < 0) {
+-		dev_err(dev, "failed to set bandwidth request: %d\n", ret);
++		dev_err(dev, "UFS DIAG: cpu-ufs bandwidth request failed: %d\n", ret);
+ 		return ret;
+ 	}
+ 
+@@ -1527,37 +1527,42 @@
+ 	struct device *dev = host->hba->dev;
+ 	int ret;
+ 
++	dev_info(dev, "UFS DIAG: icc get ufs-ddr start\n");
+ 	host->icc_ddr = devm_of_icc_get(dev, "ufs-ddr");
+ 	if (IS_ERR(host->icc_ddr))
+ 		return dev_err_probe(dev, PTR_ERR(host->icc_ddr),
+-				    "failed to acquire interconnect path\n");
+-
++				    "UFS DIAG: failed to acquire ufs-ddr interconnect\n");
++
++	dev_info(dev, "UFS DIAG: icc get cpu-ufs start\n");
+ 	host->icc_cpu = devm_of_icc_get(dev, "cpu-ufs");
+ 	if (IS_ERR(host->icc_cpu))
+ 		return dev_err_probe(dev, PTR_ERR(host->icc_cpu),
+-				    "failed to acquire interconnect path\n");
++				    "UFS DIAG: failed to acquire cpu-ufs interconnect\n");
+ 
+ 	/*
+ 	 * Set Maximum bandwidth vote before initializing the UFS controller and
+ 	 * device. Ideally, a minimal interconnect vote would suffice for the
+ 	 * initialization, but a max vote would allow faster initialization.
+ 	 */
++	dev_info(dev, "UFS DIAG: icc set bandwidth start\n");
+ 	ret = ufs_qcom_icc_set_bw(host, ufs_qcom_bw_table[MODE_MAX][0][0].mem_bw,
+ 				  ufs_qcom_bw_table[MODE_MAX][0][0].cfg_bw);
+ 	if (ret < 0)
+-		return dev_err_probe(dev, ret, "failed to set bandwidth request\n");
+-
++		return dev_err_probe(dev, ret,
++				    "UFS DIAG: failed to set initial bandwidth\n");
++
++	dev_info(dev, "UFS DIAG: icc init passed\n");
+ 	return 0;
+ }
+ 
+ /**
+- * ufs_qcom_init - bind phy with controller
++ * ufs_qcom_init - bind phy with controlle
+  * @hba: host controller instance
+  *
+  * Binds PHY with controller and powers up PHY enabling clocks
+  * and regulators.
+  *
+- * Return: -EPROBE_DEFER if binding fails, returns negative error
++ * Return: -EPROBE_DEFER if binding fails, returns negative erro
+  * on phy power up failure and returns zero on success.
+  */
+ static int ufs_qcom_init(struct ufs_hba *hba)
+@@ -1577,12 +1582,14 @@
+ 	ufshcd_set_variant(hba, host);
+ 
+ 	/* Setup the optional reset control of HCI */
++	dev_info(dev, "UFS DIAG: host reset get start\n");
+ 	host->core_reset = devm_reset_control_get_optional(hba->dev, "rst");
+ 	if (IS_ERR(host->core_reset)) {
+ 		err = dev_err_probe(dev, PTR_ERR(host->core_reset),
+-				    "Failed to get reset control\n");
++				    "UFS DIAG: failed to get host reset rst\n");
+ 		goto out_variant_clear;
+ 	}
++	dev_info(dev, "UFS DIAG: host reset get passed\n");
+ 
+ 	/* Fire up the reset controller. Failure here is non-fatal. */
+ 	host->rcdev.of_node = dev->of_node;
+@@ -1594,24 +1601,31 @@
+ 		dev_warn(dev, "Failed to register reset controller\n");
+ 
+ 	if (!has_acpi_companion(dev)) {
++		dev_info(dev, "UFS DIAG: PHY get start\n");
+ 		host->generic_phy = devm_phy_get(dev, "ufsphy");
+ 		if (IS_ERR(host->generic_phy)) {
+-			err = dev_err_probe(dev, PTR_ERR(host->generic_phy), "Failed to get PHY\n");
++			err = dev_err_probe(dev, PTR_ERR(host->generic_phy),
++					   "UFS DIAG: failed to get PHY ufsphy\n");
+ 			goto out_variant_clear;
+ 		}
+-	}
+-
++		dev_info(dev, "UFS DIAG: PHY get passed\n");
++	}
++
++	dev_info(dev, "UFS DIAG: ICC init start\n");
+ 	err = ufs_qcom_icc_init(host);
+ 	if (err)
+ 		goto out_variant_clear;
+-
++	dev_info(dev, "UFS DIAG: ICC init passed\n");
++
++	dev_info(dev, "UFS DIAG: device reset GPIO get start\n");
+ 	host->device_reset = devm_gpiod_get_optional(dev, "reset",
+ 						     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(host->device_reset)) {
+ 		err = dev_err_probe(dev, PTR_ERR(host->device_reset),
+-				    "Failed to acquire device reset gpio\n");
++				    "UFS DIAG: failed to acquire device reset GPIO\n");
+ 		goto out_variant_clear;
+ 	}
++	dev_info(dev, "UFS DIAG: device reset GPIO get passed\n");
+ 
+ 	ufs_qcom_get_controller_revision(hba, &host->hw_ver.major,
+ 		&host->hw_ver.minor, &host->hw_ver.step);
+@@ -1624,9 +1638,13 @@
+ 			clki->keep_link_active = true;
+ 	}
+ 
++	dev_info(dev, "UFS DIAG: lane clocks get start\n");
+ 	err = ufs_qcom_init_lane_clks(host);
+-	if (err)
++	if (err) {
++		dev_err_probe(dev, err, "UFS DIAG: failed to acquire lane clocks\n");
+ 		goto out_variant_clear;
++	}
++	dev_info(dev, "UFS DIAG: lane clocks get passed\n");
+ 
+ 	ufs_qcom_set_caps(hba);
+ 	ufs_qcom_advertise_quirks(hba);
+@@ -1634,9 +1652,13 @@
+ 	ufs_qcom_set_phy_gear(host);
+ 	ufs_qcom_parse_gear_limits(hba);
+ 
++	dev_info(dev, "UFS DIAG: ICE init start\n");
+ 	err = ufs_qcom_ice_init(host);
+-	if (err)
++	if (err) {
++		dev_err_probe(dev, err, "UFS DIAG: failed to initialize ICE\n");
+ 		goto out_variant_clear;
++	}
++	dev_info(dev, "UFS DIAG: ICE init passed\n");
+ 
+ 	ufs_qcom_setup_clocks(hba, true, POST_CHANGE);
+ 
+@@ -1650,6 +1672,8 @@
+ 	if (drvdata && drvdata->no_phy_retention)
+ 		hba->spm_lvl = UFS_PM_LVL_5;
+ 
++	dev_info(dev, "UFS DIAG: Qualcomm variant init complete (%d lane clocks)\n",
++		 host->num_clks);
+ 	return 0;
+ 
+ out_variant_clear:
+@@ -2246,7 +2270,7 @@
+ 
+ /**
+  * ufs_qcom_fw_managed_device_reset - Reset UFS device under FW-managed design
+- * @hba: pointer to UFS host bus adapter
++ * @hba: pointer to UFS host bus adapte
+  *
+  * In the firmware-managed reset model, the power domain is powered on by genpd
+  * before the UFS controller driver probes. For subsequent resets (such as
+@@ -2957,7 +2981,7 @@
+ };
+ 
+ /**
+- * ufs_qcom_probe - probe routine of the driver
++ * ufs_qcom_probe - probe routine of the drive
+  * @pdev: pointer to Platform device handle
+  *
+  * Return: zero for success and non-zero for failure.

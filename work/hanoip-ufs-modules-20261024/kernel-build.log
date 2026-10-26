@@ -1,0 +1,70 @@
+  SYNC    include/config/auto.conf.cmd
+  UPD     kernel/config_data
+  GZIP    kernel/config_data.gz
+  CC      kernel/configs.o
+  AR      kernel/built-in.a
+  AR      built-in.a
+  AR      built-in-fixup.a
+  COPY    vmlinux.a
+  LD      vmlinux.o
+  MODPOST vmlinux.symvers
+  UPD     include/generated/utsversion.h
+  CC      init/version-timestamp.o
+  KSYMS   .tmp_vmlinux0.kallsyms.S
+  AS      .tmp_vmlinux0.kallsyms.o
+  LD      .tmp_vmlinux1
+  NM      .tmp_vmlinux1.syms
+  KSYMS   .tmp_vmlinux1.kallsyms.S
+  AS      .tmp_vmlinux1.kallsyms.o
+  LD      .tmp_vmlinux2
+  NM      .tmp_vmlinux2.syms
+  KSYMS   .tmp_vmlinux2.kallsyms.S
+  AS      .tmp_vmlinux2.kallsyms.o
+  LD      vmlinux.unstripped
+  NM      System.map
+  SORTTAB vmlinux.unstripped
+  OBJCOPY vmlinux
+  GEN     modules.builtin.modinfo
+  GEN     modules.builtin
+  OBJCOPY arch/arm64/boot/Image
+  DTC     arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip-ufs-diagnostic.dtb
+  LDS     scripts/module.lds
+  CC [M]  drivers/ufs/core/ufshcd.o
+  CC [M]  drivers/ufs/core/ufs-sysfs.o
+  CC [M]  drivers/ufs/core/ufs-mcq.o
+  CC [M]  drivers/ufs/core/ufs-txeq.o
+make[6]: 'drivers/ufs/core/ufshcd-core.mod' is up to date.
+  CC [M]  drivers/ufs/core/ufs-debugfs.o
+  LD [M]  drivers/ufs/core/ufshcd-core.o
+  MODPOST Module.symvers
+  CC [M]  drivers/ufs/core/ufshcd-core.mod.o
+  CC [M]  .module-common.o
+  LD [M]  drivers/ufs/core/ufshcd-core.ko
+  CC [M]  drivers/ufs/host/ufshcd-pltfrm.o
+  MODPOST Module.symvers
+ERROR: modpost: "ufshcd_remove" [drivers/ufs/host/ufshcd-pltfrm.ko] undefined!
+ERROR: modpost: "ufshcd_alloc_host" [drivers/ufs/host/ufshcd-pltfrm.ko] undefined!
+ERROR: modpost: "ufshcd_init" [drivers/ufs/host/ufshcd-pltfrm.ko] undefined!
+ERROR: modpost: "ufshcd_opp_config_clks" [drivers/ufs/host/ufshcd-pltfrm.ko] undefined!
+make[3]: *** [scripts/Makefile.modpost:147: Module.symvers] Error 1
+make[2]: *** [Makefile:2164: single_modules] Error 2
+make[1]: *** [/tmp/kernel-mainline/Makefile:372: __build_one_by_one] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
+make[1]: Entering directory '/tmp/kernel-mainline/drivers/ufs'
+  CC [M]  host/ufshcd-pltfrm.o
+  CC [M]  host/ufs-qcom.o
+  CC [M]  core/ufshcd.o
+  CC [M]  core/ufs-sysfs.o
+  CC [M]  core/ufs-mcq.o
+  CC [M]  core/ufs-txeq.o
+  CC [M]  core/ufs-debugfs.o
+  LD [M]  core/ufshcd-core.o
+  MODPOST Module.symvers
+  CC [M]  core/ufshcd-core.mod.o
+  CC [M]  .module-common.o
+  CC [M]  host/ufs-qcom.mod.o
+  CC [M]  host/ufshcd-pltfrm.mod.o
+  LD [M]  core/ufshcd-core.ko
+  LD [M]  host/ufs-qcom.ko
+  LD [M]  host/ufshcd-pltfrm.ko
+make[1]: Leaving directory '/tmp/kernel-mainline/drivers/ufs'

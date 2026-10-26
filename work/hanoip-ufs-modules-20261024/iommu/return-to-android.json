@@ -1,0 +1,12 @@
+[
+  {
+    "via": "USB ACM",
+    "command": "/sbin/reboot (guarded SysRq, RAM-only filesystems)"
+  },
+  {
+    "event": "Android restored",
+    "exit": 0,
+    "stdout": "4.14.206\u2014CosmicFresh-R6-Final\n_a\nuid=0(root) gid=0(root) groups=0(root) context=u:r:magisk:s0\n",
+    "stderr": ""
+  }
+]

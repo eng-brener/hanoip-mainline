@@ -1,0 +1,138 @@
+# Sensores: mapeamento SSC extraído do firmware — 26/10/2026
+
+## Resultado e alcance
+
+Análise estática do firmware ADSP salvo do próprio hanoip. O caminho de dados
+dos sensores usa o QUP dedicado do SSC. A referência `/dev/qup_ssc/11` é um
+nome de conjunto de propriedades DAL, com configurações para seis engines;
+não é evidência de ligação ao SE11 AP em 0xa94000. O significado exato do
+sufixo /11 não foi estabelecido. Não repetir a variante/overlay AP SE11.
+
+| Sensor | Registry | Engine SSC | MMIO físico derivado | SCL/SDA SSC | Protocolo configurado |
+| --- | --- | --- | --- | --- | --- |
+| ICM4x6xx | bus_instance 1 | SE0 | 0x62680000 | GPIO0/GPIO1, função 1 | I3C |
+| TMD2755 | bus_instance 5 | SE4 | 0x62690000 | GPIO6/GPIO7, função 4 | I2C |
+
+As instâncias do registry foram correlacionadas com o `core_index` de base 1
+nas tabelas de configuração do driver. Os índices SE0/SE4 também são
+confirmados pelos ponteiros dos clocks `scc_qupv3_se0_clk` e
+`scc_qupv3_se4_clk`. Os pinos são do SSC em 0x62b40000, separados da TLMM AP.
+Não confundir esses GPIO0/1/6/7 com os pinos de mesmo número da AP ou do bloco
+de áudio LPI em 0x62b50000.
+
+Isso estabelece a configuração embarcada, ainda sem transferência AP ou
+leitura de ID no Linux. O ICM tem endereço estático 0x68 e endereço I3C
+configurado 0x0a; o TMD usa 0x39. O endereço I3C dinâmico efetivo não foi lido.
+
+## Evidência do firmware real
+
+Artefatos em `work/sensors-20261026/ssc-mapping/`:
+
+- `firmware/adsp.mdt` e `adsp.b00..b26`: membros extraídos localmente do tar
+  `work/android-dump-20261025/firmware/firmware.tar`; nenhum código executado.
+- `analyze-firmware.py`: extrator reprodutível; lê somente arquivos locais,
+  valida ELF/endereços/strings/clocks antes de produzir `ssc-map.json`.
+- `ssc-map.json`: offsets, endereços virtuais, valores brutos e hashes SHA256
+  de todos os segmentos; separa os limites da inferência.
+- `hwio-ssc-map.json`: tabela HWIO com SSC_QUPV3_SE0..5 e LPASS TLMM.
+- `pointer-xrefs.txt` e `dal-qup-structs.txt`: referências e dumps de palavras
+  usados para localizar as estruturas. SHA256SUMS cobre os artefatos.
+
+Pontos de ancoragem:
+
+1. `adsp.b15+0x17e690` contém a mensagem do driver ICM que define explicitamente
+   `0:I2C/1:SPI/3:I3C`. Isso confirma a interpretação do `bus_type=3` do
+   registry, anteriormente apenas sugerida.
+2. Diretório DAL em `adsp.b04+0x1824f8`; tabela de structs em +0x181c48 e
+   tabela de dispositivos em +0x185b40. Os conjuntos `/dev/qup_ssc` e
+   `/dev/qup_ssc/11` têm `qup_cfg` e `se0_cfg..se5_cfg`, todos apontando para
+   estruturas de configuração, não para dispositivos Linux /dev.
+3. Driver de barramento em `adsp.b09+0x297c0`, +0x2981c e +0x29878 tem os
+   registros das instâncias 1, 2 e 5, com stride 0x5c. Instância 1 tem offset
+   0x80000 e encodings SCL/SDA 0x1c001/0x1c011. Instância 5 tem offset
+   0x90000 e encodings 0x1c064/0x1c074. A base QUP virtual é 0xee600000.
+4. A tabela HWIO em `adsp.b05+0xaa90` identifica SSC_QUPV3_SE0 com base
+   relativa 0x680000; +0xabe0 identifica SE4 com 0x690000. A tradução para a
+   janela LPASS 0x62000000 é corroborada pelo DT Qualcomm/Motorola de SSC
+   em sm6150-qupv3.dtsi: SSC começa em 0x62600000, wrapper em 0x626c0000.
+   Esse DT é referência de bloco compartilhado, não o DT efetivo do hanoip;
+   os pinos específicos foram extraídos do firmware do hanoip, não copiados
+   do sm6150 (que tem outro mux para SE4).
+
+## Alimentações
+
+As estruturas NPA do firmware permitem resolver os nomes abstratos:
+
+| Nome SSC | Recursos NPA | Regulador no DT do hanoip | Voto nos estados ligados |
+| --- | --- | --- | --- |
+| sensor_vdd | /pm/ldoc7/{mode,mV,en} | PM6150L L7C, vreg_l7c_3p0 | 3312 mV |
+| sensor_vddio | /pm/ldoc8/{mode,mV,en} | PM6150L L8C, vreg_l8c_1p8 | 1800 mV |
+
+Descritores em `adsp.b04+0x16cb80` e +0x16cba4. Eles apontam para listas de
+dependências em `adsp.b05+0x7cd8` e +0x7d20 e votos em `adsp.b04+0x16ca28`
+e +0x16cb50. São valores configurados, sem medição de tensão nesta etapa.
+O firmware usa modo bruto 4 no estado 1 e 7 no estado 2. Nada foi ligado ou
+alterado pela AP durante esta análise.
+
+## IRQs: correção do inventário anterior
+
+As tabelas de placa `/tlmm/idp7150[1]` e `/tlmm/qrp7150[2]` mapeiam
+`ssc_irq_9` para GPIO86/função0 e `ssc_irq_12` para GPIO89/função0. A
+propriedade `GPIOINT_PHYSICAL_ADDRESS` é 0x03400000, e o total de GPIOs é
+119, consistente com a TLMM AP. Portanto o registry DRI 86/89 é compatível
+com GPIO86/GPIO89 da TLMM AP encaminhados ao SSC; a afirmação anterior de
+que eram apenas números internos sem correspondência GPIO era forte demais.
+Roteamento/polaridade e comportamento de IRQ no Linux ainda não testados.
+Não confundir `dsp_controller_irq` nas tabelas de I2C com o DRI dos chips.
+
+## Caminho de software para o próximo teste
+
+O kernel base já tem `CONFIG_QCOM_FASTRPC=m`, `CONFIG_QCOM_Q6V5_ADSP=m` e nós
+FastRPC sob o ADSP. A variante perif inclui a base de áudio que liga o ADSP.
+A lista de pacotes do pmOS já contém libssc 0.4.3 e iio-sensor-proxy 3.9;
+hexagonrpcd não aparece nessa lista. O caminho SSC/QMI/FastRPC deve ser
+investigado primeiro: permite reutilizar os drivers ICM/TMD do DSP e evita
+exigir imediatamente um driver IIO AP novo para o TMD2755.
+
+Isso é um plano de implementação, não validação no SM7150: o suporte libssc
+existente foi demonstrado em outros SoCs. Ainda precisamos confirmar o
+attach do sensors PD, filesystem/registry atendido em RAM, anúncios QMI e
+uma amostra real. Nenhuma instalação persistente está autorizada por este
+checkpoint. Arquivos temporários e possíveis atualizações de registry
+precisam ficar em tmpfs; não repassar /persist real ao daemon com escrita.
+
+Para acesso direto AP, o checkout atual não tem SCC SM7150 em drivers/clk
+nem master I3C GENI em drivers/i3c; CONFIG_I3C está desabilitado. Somente
+adicionar um nó I2C ou compatible de ICM não resolve esses requisitos.
+
+## Pendente e estado do aparelho
+
+O ADB detectava Android com root na coleta anterior; deixou de enumerar
+durante esta etapa, antes de qualquer nova coleta ao vivo. Solicitada
+reconexão USB ao usuário. Depois voltou durante a investigação FPC: a coleta
+somente leitura constatou ausência das interfaces pinctrl/clk/regulator em
+/sys/kernel/debug; saídas salvas em android-live-readonly/*-live.txt e
+pinctrl-debug-inventory.txt. Não foi montado debugfs. Não houve reboot,
+novo boot de kernel, instalação,
+montagem de partição, escrita de registrador ou alteração no telefone.
+
+Faltam identidade exata do ICM, observação ao vivo dos pinos/clocks, attach
+do sensors PD e teste SSC no pmOS. Não executar SE11/overlay AP nem alterar
+rails para obter esses dados. O motivo exato do stall anterior segue aberto.
+
+## Fontes auxiliares e limites
+
+- Motorola GPL: branch android-12-release-s2ris32.32-20-9-9-2-1, arquivos
+  locais em `motorola-source/`. Referência SSC:
+  https://github.com/MotorolaMobilityLLC/kernel-msm/blob/android-12-release-s2ris32.32-20-9-9-2-1/arch/arm64/boot/dts/qcom/sm6150-qupv3.dtsi
+- Guia oficial Qualcomm I3C explica que a configuração SSC relaciona
+  instance_id, QUP_SSC, se_index e GPIOs; não prova dados específicos do G60:
+  https://docs.qualcomm.com/bundle/publicresource/topics/80-70014-8/i3c.html
+- Implementação postmarketOS do caminho SSC/libssc/hexagonrpcd:
+  https://gitlab.com/postmarketOS/pmaports/-/merge_requests/4050
+- Arquivos em `reference-source/` (SDM670) serviram apenas para interpretar
+  layouts de DAL/QUP/encodings. Valores de pino/rail do G60 vieram do binário
+  local; não aplicar as configurações de outra placa.
+- A skill reverse-engineer-anything foi consultada; REA MCP/decompilador não
+  estão disponíveis nesta sessão. A extração acima é de estruturas binárias
+  com Python e comparação de fontes, sem Evidence ID REA ou decompilação.

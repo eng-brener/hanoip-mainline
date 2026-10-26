@@ -1,0 +1,17 @@
+flashlighthelper corrigido (KAuth helper da lanterna do Plasma Mobile)
+
+plasma-mobile 6.6.6 (Alpine 3.24 / pmOS v26.06) tem um use-after-free em
+quicksettings/flashlight/kauth/flashlighthelper.cpp: guarda
+toString().toUtf8().constData() de um QByteArray temporário, o caminho do LED
+vira lixo, udev_device_new_from_syspath devolve NULL e o helper morre com
+SIGSEGV (Plasma: "kauth returned an error code: 8"). Corrigido no master por
+ad036102 "quicksettings: Fix flashlight not turning off" (2026-07-07).
+
+Este binário = fonte do ad036102, compilado em alpine:3.24 arm64:
+  apk add g++ cmake samurai pkgconf extra-cmake-modules qt6-qtbase-dev \
+          kauth-dev kcoreaddons-dev eudev-dev
+  cmake -S . -B b -G Ninja -DCMAKE_BUILD_TYPE=Release && cmake --build b
+Instalado em /usr/lib/libexec/kf6/kauth/flashlighthelper (original em
+/root/module-backup/flashlighthelper.orig) e no overlay do build-rootfs.
+Um `apk upgrade` do plasma-mobile sobrescreve; remover quando o Alpine
+trouxer a correção.

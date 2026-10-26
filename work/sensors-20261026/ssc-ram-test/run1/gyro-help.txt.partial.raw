@@ -1,0 +1,64 @@
+
+~ # /bin/busybox chroot /opt/ssc /usr/bin/ssccli --help; /bin/busybox chroot /op
+t/ssc /usr/bin/ssccli --sensor=gyroscope --timeout=3; printf '\nHANOIP_END_3b06d
+43177af\n'
+Usage:
+  ssccli [OPTION*] - CLI tool of libssc for Qualcomm Sensor Core sensors
+
+Help Options:
+  -h, --help       Show help options
+
+Application Options:
+  --version        Print version information and exit.
+  -v, --debug      Enable debug logs.
+  --sensor         Enable a sensor. Supported sensors: 'proximity', 'light', 'accelerometer', 'magnetometer', 'compass'
+  --timeout        Number of seconds before this will timeout [default 10]
+
+
+** (ssccli:368): [1;33mWARNING[0m **: [34m19:53:10.327[0m: Mount matrix provided by firmware is all 0, falling back to identity matrix!
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.009587 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.009587 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.012783 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.011718 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.011718 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.009587 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.012783 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.010653 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.009587 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.009587 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.011718 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.009587 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.018109 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.011718 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.009587 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.011718 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.009587 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.009587 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.011718 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.011718 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.011718 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.009587 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.010653 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.010653 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.009587 Z=0.015979 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.010653 Z=0.018109 m/s
+Gyroscope sensor measurement: X=-0.010653 Y=0.009587 Z=0.017044 m/s
+Gyroscope sensor measurement: X=-0.011718 Y=0.009587 Z=0.017044 m/s
+
+HANOIP_END_3b06d43177af
+~ # 

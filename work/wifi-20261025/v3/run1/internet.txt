@@ -1,0 +1,25 @@
+udhcpc: broadcasting discover
+udhcpc: broadcasting select for 10.0.0.41, server 10.0.0.1
+udhcpc: lease of 10.0.0.41 obtained from 10.0.0.1, lease time 1800
+    inet <ip-local>/24 scope global wlan0
+default via 10.0.0.1 dev wlan0 metric 304 
+10.0.0.0/24 dev wlan0 proto kernel scope link src 10.0.0.41 
+--- ping
+4 packets transmitted, 4 packets received, 0% packet loss
+round-trip min/avg/max = 18.840/22.125/25.086 ms
+--- dns
+PING dl-cdn.alpinelinux.org (2a04:4e42::644): 56 data bytes
+--- apk
+v3.24.3-39-g7e71067f4e8 [https://dl-cdn.alpinelinux.org/alpine/v3.24/main]
+v3.24.3-45-g4e1bac0beab [https://dl-cdn.alpinelinux.org/alpine/v3.24/community]
+0 unavailable, 3 stale; 29927 distinct packages available
+--- download
+28BD2D9CFFFF0000:error:0A000086:SSL routines:tls_post_process_server_certificate:certificate verify failed:ssl/statem/statem_clnt.c:2124:
+ssl_client: SSL_connect
+wget: error getting response: Connection reset by peer
+Command exited with non-zero status 1
+real	0m 0.10s
+user	0m 0.00s
+sys	0m 0.00s
+	signal: -41 dBm
+	rx bitrate: 433.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 1

@@ -1,0 +1,79 @@
+Revisao sm7150-mainline/linux — 2026-10-24
+
+Branch padrao consultada: v7.2.
+HEAD: fd78d17954a86ea6ceb0c535e618ea129e09f8dd.
+Committer date: 2026-06-27T03:23:27Z.
+O Makefile dessa branch identifica Linux 7.1.0; o nome da branch nao
+significa que seus fontes ja estejam na release Linux 7.2.
+O ultimo fix de resolve_btfids dessa branch ja esta no projeto local.
+
+Comparacao direcionada de 14 arquivos, nao uma comparacao integral do kernel.
+Identicos, desconsiderando novas linhas finais: Makefile, pm6150.dtsi,
+drivers/interconnect/qcom/sm7150.c, phy-qcom-qmp-ufs.c, qcom_qg.c,
+qcom_smbx.c, dsi_host.c, drm_mipi_dsi.h e resolve_btfids/main.c.
+As divergencias locais ficam em sm7150.dtsi, pinctrl-sm7150.c,
+gcc-sm7150.c e instrumentacao de ufshcd.c/ufs-qcom.c.
+
+PR 66 — prioridade para a proxima base experimental
+https://github.com/sm7150-mainline/linux/pull/66
+Aberta, nao integrada, consultada com head 704b5511f87442f39ed04e9469bdba2fbeed7a89.
+Corrige aggre1_noc -> aggre2_noc em referencias a MASTER_QUP_1.
+O driver interconnect local confirma que MASTER_QUP_1 pertence a aggre2.
+O problema existe nos dois sm7150.dtsi locais. Afeta os controladores
+do wrapper 1, inclusive SPI6 do touch e UART8 de diagnostico do hanoip.
+O autor relata validacao em sweet, nao em hanoip.
+git apply --check passou para o kernel e para a adaptacao de caminhos
+do DTS U-Boot. Nenhum patch foi aplicado aos fontes.
+
+PR 69 — relevante para o futuro handoff DRM/DSC
+https://github.com/sm7150-mainline/linux/pull/69
+Aberta, nao integrada, head 05e02f562ce93c0417f1e0c7ce1d4ab33cb8f2b2.
+O primeiro commit, fbb801e959845dc4e9898f2d980e884579340cdb, adiciona
+dsc_slice_per_pkt a mipi_dsi_device e suporte correspondente em MSM DSI.
+O segundo configura um painel Samsung de sweet; nao deve ser copiado
+como suporte ao Tianma do hanoip.
+O DT ativo extraido do Moto confirma qcom,mdss-dsc-slice-per-pkt = 2.
+O host local so suporta uma slice por pacote. Portanto a infraestrutura
+do primeiro commit e candidata concreta, mas falta implementar DSC/PPS
+e configuracao do painel Tianma local. Nao corrige sozinha o display.
+git apply --check do primeiro commit passou no kernel local.
+Revisar a consistencia da normalizacao de slice_per_pkt entre video e
+command mode para valores invalidos antes de adotar genericamente.
+
+PR 64 e issue 63 — carga e bateria PM6150/SMB5
+https://github.com/sm7150-mainline/linux/pull/64
+https://github.com/sm7150-mainline/linux/issues/63
+PR aberta, nao integrada, head 04be397a8796b9b6906057d9998ae16593dce141.
+O codigo local ainda usa a formula SMB2 para FLOAT_VOLTAGE_CFG em SMB5.
+A proposta separa faixa/passo de tensao por geracao, corrige leitura
+USBIN duplicada, estados de carga e calculos do fuel gauge.
+O charger PM6150 esta desabilitado no DTS atual do port; esses achados
+orientam sua futura habilitacao, nao demonstram problema no Android.
+Nao copiar o perfil de bateria de 5020 mAh de sweet ou de 3080 mAh de
+sunfish. O hanoip exige seu proprio perfil, limites e tabela OCV.
+A PR 64 inspecionada ainda nao corrige todos os pontos da issue 63:
+o caminho smbx_ov_status continua exigindo revisao separada.
+
+OUTRAS PROPOSTAS
+PR 67: DFPS por VFP para painel Samsung de sweet; referencia conceitual,
+pois o DT do hanoip tambem declara dfps_immediate_porch_mode_vfp.
+Nao reutilizar seus timings ou sua preferencia por 120 Hz automaticamente.
+PR 68: goodix_gtx8; nao e o touch Ilitek SPI do hanoip.
+PRs 65/60: audio e SoundWire; referencias para etapa posterior.
+PR 59: CAMSS/bandwidth; fora dos bloqueios atuais de boot/UFS/display.
+PR 58: habilitacao de gauge/carga em sunfish; referencia de integracao.
+Nao foi encontrado um patch UFS novo pronto entre as propostas abertas
+inspecionadas que resolva o link startup atual do hanoip.
+
+ARQUIVOS E LIMITES
+base/: copias dos arquivos consultados na branch, fixadas pelo SHA acima.
+pr64/: drivers propostos na PR 64, para revisao, sem perfil Xiaomi.
+*.diff: comparacoes locais com a base ou com os drivers propostos.
+pr66-qup.patch: commit 66 reconstruido dos hunks publicados.
+pr66-qup-uboot.patch: mesmos hunks com caminhos do DTS U-Boot.
+pr69-dsc-core.patch: primeiro commit da PR 69, sem painel Samsung.
+comparison.json: resultado da comparacao direcionada.
+open-prs.json: metadados e descricoes das 12 PRs abertas consultadas.
+patch-checks.json: resultados dos tres dry-runs.
+Nenhuma compilacao ou teste no aparelho foi realizado nesta revisao.
+Aplicacao sem conflito textual nao comprova funcionamento no hardware.

@@ -1,0 +1,16 @@
+#!/bin/sh
+# Keep the logs of the last 10 boots in /var/log/hanoip-boot/ (the initramfs
+# logs live in /run, which is RAM). Snapshot 90 s after boot, past the modem
+# watchdog (~55 s) that fires when its init stalls. Stays on the phone.
+(
+	sleep 90
+	d=/var/log/hanoip-boot/$(date +%Y%m%d-%H%M%S)
+	mkdir -p "$d" || exit 0
+	cp /run/hanoip-*.log /run/rmtfs.log /run/tqftpserv.log /run/pd-mapper.log "$d"/ 2>/dev/null
+	dmesg > "$d/dmesg.txt"
+	for r in /sys/class/remoteproc/remoteproc*; do
+		echo "$(cat $r/name) $(cat $r/state)"
+	done > "$d/remoteproc.txt"
+	ls /sys/class/net > "$d/net.txt"
+	ls -1d /var/log/hanoip-boot/*/ | head -n -10 | xargs -r rm -rf
+) </dev/null >/dev/null 2>&1 &

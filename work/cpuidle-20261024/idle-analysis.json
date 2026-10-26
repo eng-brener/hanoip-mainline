@@ -1,0 +1,133 @@
+{
+  "driver": "psci_idle",
+  "governor": "menu",
+  "sample_sleep_seconds": 6,
+  "states": [
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state0",
+      "name": "WFI",
+      "disabled": 0,
+      "usage_delta": 34,
+      "time_us_delta": 18314
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state1",
+      "name": "cpu-sleep-0-0",
+      "disabled": 0,
+      "usage_delta": 149,
+      "time_us_delta": 1023433
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu0/cpuidle/state2",
+      "name": "cpu-sleep-0-1",
+      "disabled": 0,
+      "usage_delta": 198,
+      "time_us_delta": 4958513
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state0",
+      "name": "WFI",
+      "disabled": 0,
+      "usage_delta": 85,
+      "time_us_delta": 62715
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state1",
+      "name": "cpu-sleep-0-0",
+      "disabled": 0,
+      "usage_delta": 0,
+      "time_us_delta": 0
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu1/cpuidle/state2",
+      "name": "cpu-sleep-0-1",
+      "disabled": 0,
+      "usage_delta": 15,
+      "time_us_delta": 5960987
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state0",
+      "name": "WFI",
+      "disabled": 0,
+      "usage_delta": 76,
+      "time_us_delta": 32915
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state1",
+      "name": "cpu-sleep-0-0",
+      "disabled": 0,
+      "usage_delta": 4,
+      "time_us_delta": 58870
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu2/cpuidle/state2",
+      "name": "cpu-sleep-0-1",
+      "disabled": 0,
+      "usage_delta": 49,
+      "time_us_delta": 3987644
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state0",
+      "name": "WFI",
+      "disabled": 0,
+      "usage_delta": 50,
+      "time_us_delta": 39869
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state1",
+      "name": "cpu-sleep-0-0",
+      "disabled": 0,
+      "usage_delta": 0,
+      "time_us_delta": 0
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu3/cpuidle/state2",
+      "name": "cpu-sleep-0-1",
+      "disabled": 0,
+      "usage_delta": 15,
+      "time_us_delta": 4031819
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state0",
+      "name": "WFI",
+      "disabled": 0,
+      "usage_delta": 44,
+      "time_us_delta": 32845
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state1",
+      "name": "cpu-sleep-0-0",
+      "disabled": 0,
+      "usage_delta": 0,
+      "time_us_delta": 0
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu4/cpuidle/state2",
+      "name": "cpu-sleep-0-1",
+      "disabled": 0,
+      "usage_delta": 20,
+      "time_us_delta": 5994249
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state0",
+      "name": "WFI",
+      "disabled": 0,
+      "usage_delta": 36,
+      "time_us_delta": 31563
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state1",
+      "name": "cpu-sleep-0-0",
+      "disabled": 0,
+      "usage_delta": 0,
+      "time_us_delta": 0
+    },
+    {
+      "path": "/sys/devices/system/cpu/cpu5/cpuidle/state2",
+      "name": "cpu-sleep-0-1",
+      "disabled": 0,
+      "usage_delta": 11,
+      "time_us_delta": 5998675
+    }
+  ]
+}

@@ -1,0 +1,5511 @@
+[
+  {
+    "name": "$x.0",
+    "value": "0x12000",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x12008",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_start_main",
+    "value": "0x12008",
+    "size": 64,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x12048",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x122ec",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x12a78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x12ae4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x12b50",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x12bc4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x12bd4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.15",
+    "value": "0x12c88",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.16",
+    "value": "0x12cbc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.17",
+    "value": "0x12d08",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.18",
+    "value": "0x12d44",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.19",
+    "value": "0x12d78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x123f8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.20",
+    "value": "0x12dac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.21",
+    "value": "0x12de0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.22",
+    "value": "0x12e20",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.23",
+    "value": "0x12ef4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.24",
+    "value": "0x12f34",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.25",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1256c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.30",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.31",
+    "value": "0x1300c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.32",
+    "value": "0x13014",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.33",
+    "value": "0x1303c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.34",
+    "value": "0x13050",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x12674",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x1277c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x12888",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x12990",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x12a14",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZN7android4hidl4base4V1_05IBaseD0Ev",
+    "value": "0x13014",
+    "size": 40,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN7android4hidl4base4V1_05IBaseD1Ev",
+    "value": "0x1300c",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN7android8hardware8hidl_vecIhEC2ERKNSt3__16vectorIhNS3_9allocatorIhEEEE",
+    "value": "0x12f34",
+    "size": 208,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNK7android4hidl4base4V1_05IBase8isRemoteEv",
+    "value": "0x13004",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNK7android8hardware10biometrics11fingerprint4V2_122IBiometricsFingerprint8isRemoteEv",
+    "value": "0x13004",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N7android4hidl4base4V1_05IBaseD0Ev",
+    "value": "0x13050",
+    "size": 48,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N7android4hidl4base4V1_05IBaseD1Ev",
+    "value": "0x1303c",
+    "size": 20,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x138a0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x13b58",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x13f5c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x14050",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.24",
+    "value": "0x140a0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.25",
+    "value": "0x140f8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.26",
+    "value": "0x1414c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.27",
+    "value": "0x141ac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.28",
+    "value": "0x14238",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.29",
+    "value": "0x1425c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x13080",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.30",
+    "value": "0x1434c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.31",
+    "value": "0x14444",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.32",
+    "value": "0x14504",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.33",
+    "value": "0x14574",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.34",
+    "value": "0x14768",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.35",
+    "value": "0x149f0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.36",
+    "value": "0x14a50",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.37",
+    "value": "0x14c60",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.38",
+    "value": "0x14c60",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.39",
+    "value": "0x14c6c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x130cc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.40",
+    "value": "0x14d68",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.41",
+    "value": "0x14eac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x13120",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x13178",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x131d8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x132bc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x13854",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZN7android8hardware8hidl_vecINS0_11hidl_stringEEC2ERKNSt3__16vectorIS2_NS4_9allocatorIS2_EEEE",
+    "value": "0x13f5c",
+    "size": 244,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNK3com8motorola8hardware9biometric11fingerprint4V1_016IMotoFingerPrint8isRemoteEv",
+    "value": "0x13004",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__114basic_ifstreamIcNS_11char_traitsIcEEED0Ev",
+    "value": "0x140f8",
+    "size": 84,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__114basic_ifstreamIcNS_11char_traitsIcEEED1Ev",
+    "value": "0x13854",
+    "size": 76,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__116__throw_bad_castEv",
+    "value": "0x14c60",
+    "size": 12,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__125__throw_bad_function_callEv",
+    "value": "0x14c60",
+    "size": 12,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_NSt3__114basic_ifstreamIcNS_11char_traitsIcEEED0Ev",
+    "value": "0x1414c",
+    "size": 96,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_NSt3__114basic_ifstreamIcNS_11char_traitsIcEEED1Ev",
+    "value": "0x140a0",
+    "size": 88,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x152e8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x1535c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x154e4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.15",
+    "value": "0x155fc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.16",
+    "value": "0x15604",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.17",
+    "value": "0x15778",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.18",
+    "value": "0x159f4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x14fcc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.20",
+    "value": "0x15e0c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.21",
+    "value": "0x15e44",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.22",
+    "value": "0x15e7c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.23",
+    "value": "0x15eb4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.24",
+    "value": "0x15eec",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.25",
+    "value": "0x15f3c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.26",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.27",
+    "value": "0x15f78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.28",
+    "value": "0x15f78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.29",
+    "value": "0x15f78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x150b4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.30",
+    "value": "0x15f78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.36",
+    "value": "0x15f78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.37",
+    "value": "0x15f78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.38",
+    "value": "0x15f78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.39",
+    "value": "0x15f78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x151a4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.40",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.45",
+    "value": "0x15f7c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.46",
+    "value": "0x15f84",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.47",
+    "value": "0x15fac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.48",
+    "value": "0x15fc0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.49",
+    "value": "0x15ff0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x151d0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.50",
+    "value": "0x16124",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.51",
+    "value": "0x16128",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.52",
+    "value": "0x1612c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.53",
+    "value": "0x16164",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.54",
+    "value": "0x16124",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.55",
+    "value": "0x16128",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.56",
+    "value": "0x1617c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x15200",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x15238",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x1526c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x152a8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZNKSt3__110__function6__funcIZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest15beginSensorTestERKN7android2spINS7_22IMotSensorTestCallbackEEEE3$_0NS_9allocatorISG_EEFvRKNSA_8hardware8hidl_vecINS2_12fingerprints9extension4V1_010SensorTestEEEEE7__cloneEPNS0_6__baseISS_EE",
+    "value": "0x16164",
+    "size": 24,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNKSt3__110__function6__funcIZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest15beginSensorTestERKN7android2spINS7_22IMotSensorTestCallbackEEEE3$_0NS_9allocatorISG_EEFvRKNSA_8hardware8hidl_vecINS2_12fingerprints9extension4V1_010SensorTestEEEEE7__cloneEv",
+    "value": "0x1612c",
+    "size": 56,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__110__function6__funcIZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest15beginSensorTestERKN7android2spINS7_22IMotSensorTestCallbackEEEE3$_0NS_9allocatorISG_EEFvRKNSA_8hardware8hidl_vecINS2_12fingerprints9extension4V1_010SensorTestEEEEE18destroy_deallocateEv",
+    "value": "0x16128",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__110__function6__funcIZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest15beginSensorTestERKN7android2spINS7_22IMotSensorTestCallbackEEEE3$_0NS_9allocatorISG_EEFvRKNSA_8hardware8hidl_vecINS2_12fingerprints9extension4V1_010SensorTestEEEEE7destroyEv",
+    "value": "0x16124",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__110__function6__funcIZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest15beginSensorTestERKN7android2spINS7_22IMotSensorTestCallbackEEEE3$_0NS_9allocatorISG_EEFvRKNSA_8hardware8hidl_vecINS2_12fingerprints9extension4V1_010SensorTestEEEEED0Ev",
+    "value": "0x16128",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__110__function6__funcIZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest15beginSensorTestERKN7android2spINS7_22IMotSensorTestCallbackEEEE3$_0NS_9allocatorISG_EEFvRKNSA_8hardware8hidl_vecINS2_12fingerprints9extension4V1_010SensorTestEEEEEclESR_",
+    "value": "0x1617c",
+    "size": 172,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation32FPCFingerprintSensorTestCallbackD0Ev",
+    "value": "0x15f84",
+    "size": 40,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation32FPCFingerprintSensorTestCallbackD1Ev",
+    "value": "0x15f7c",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_026IMotoFingerPrintSensorTestD0Ev",
+    "value": "0x15f78",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_026IMotoFingerPrintSensorTestD1Ev",
+    "value": "0x15f78",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN7android8hardware20hidl_death_recipientD0Ev",
+    "value": "0x15f78",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN7android8hardware20hidl_death_recipientD1Ev",
+    "value": "0x15f78",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN7android8hardware8hidl_vecIN3com12fingerprints9extension4V1_010SensorTestEE8copyFromIS7_EEvRKT_m",
+    "value": "0x15ff0",
+    "size": 308,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNK3com12fingerprints9extension4V1_019ISensorTestCallback8isRemoteEv",
+    "value": "0x13004",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNK3com8motorola8hardware9biometric11fingerprint4V1_026IMotoFingerPrintSensorTest8isRemoteEv",
+    "value": "0x13004",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__110__function6__baseIFvRKN7android8hardware8hidl_vecIN3com12fingerprints9extension4V1_010SensorTestEEEEED2Ev",
+    "value": "0x16124",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com8motorola8hardware9biometric11fingerprint4V1_014implementation32FPCFingerprintSensorTestCallbackD0Ev",
+    "value": "0x15fc0",
+    "size": 48,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com8motorola8hardware9biometric11fingerprint4V1_014implementation32FPCFingerprintSensorTestCallbackD1Ev",
+    "value": "0x15fac",
+    "size": 20,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com8motorola8hardware9biometric11fingerprint4V1_026IMotoFingerPrintSensorTestD0Ev",
+    "value": "0x15f78",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com8motorola8hardware9biometric11fingerprint4V1_026IMotoFingerPrintSensorTestD1Ev",
+    "value": "0x15f78",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N7android8hardware20hidl_death_recipientD0Ev",
+    "value": "0x15f78",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N7android8hardware20hidl_death_recipientD1Ev",
+    "value": "0x15f78",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x16228",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1628c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x16824",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x16d60",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x16e98",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x173c0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.15",
+    "value": "0x174e0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.16",
+    "value": "0x175c8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.17",
+    "value": "0x17804",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.18",
+    "value": "0x1789c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.19",
+    "value": "0x179e4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x162cc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.20",
+    "value": "0x17b40",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.21",
+    "value": "0x17e14",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.22",
+    "value": "0x17e2c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.23",
+    "value": "0x17fd4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.24",
+    "value": "0x1819c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1634c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x1638c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x16490",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x164c0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x16514",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x166a0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x16740",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL8snprintfPcU17pass_object_size1mPKcz",
+    "value": "0x166a0",
+    "size": 160,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "capture_image",
+    "value": "0x17e2c",
+    "size": 424,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "do_authenticate",
+    "value": "0x16824",
+    "size": 1340,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "do_enroll",
+    "value": "0x16e98",
+    "size": 1320,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "do_enumerate",
+    "value": "0x1789c",
+    "size": 328,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "do_remove",
+    "value": "0x175c8",
+    "size": 572,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "hal_work_func",
+    "value": "0x1628c",
+    "size": 64,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "log_capture_status",
+    "value": "0x1819c",
+    "size": 124,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "send_notification",
+    "value": "0x17fd4",
+    "size": 456,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x18218",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x18390",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x18438",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x18604",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x187b0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x18acc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x18b78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL7sprintfPcU17pass_object_size1PKcz",
+    "value": "0x18acc",
+    "size": 172,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZL8snprintfPcU17pass_object_size1mPKcz",
+    "value": "0x18390",
+    "size": 168,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x18bec",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x18c6c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x18cd0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x18d80",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x18e3c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "worker_function",
+    "value": "0x18d80",
+    "size": 188,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x18ea8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x18fcc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x19730",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x197d4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x19958",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x199a8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x19a18",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.15",
+    "value": "0x19af8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.16",
+    "value": "0x19b78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.17",
+    "value": "0x19c48",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.18",
+    "value": "0x19d04",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.19",
+    "value": "0x19dc8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x190c4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.20",
+    "value": "0x19e38",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.21",
+    "value": "0x19f1c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.22",
+    "value": "0x1a004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.23",
+    "value": "0x1a15c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.24",
+    "value": "0x1a35c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.26",
+    "value": "0x1a8e0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.27",
+    "value": "0x1aa94",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.28",
+    "value": "0x1ab5c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.29",
+    "value": "0x1aba4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1912c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.30",
+    "value": "0x1ac4c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x192d0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x19338",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x193c8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x19498",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x1959c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x196b0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "cancel_capture",
+    "value": "0x19af8",
+    "size": 128,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "capture_images",
+    "value": "0x1a8e0",
+    "size": 436,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "clear_cancel_image_injection",
+    "value": "0x199a8",
+    "size": 112,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "do_capture",
+    "value": "0x1a004",
+    "size": 344,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "do_enroll",
+    "value": "0x1a35c",
+    "size": 1412,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "do_verify",
+    "value": "0x1a15c",
+    "size": 512,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "free_captured_images",
+    "value": "0x19f1c",
+    "size": 232,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "get_build_info",
+    "value": "0x19d04",
+    "size": 196,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "get_build_info_callback",
+    "value": "0x1ac4c",
+    "size": 108,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "get_enroll_challenge",
+    "value": "0x19c48",
+    "size": 188,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "get_sensor_size",
+    "value": "0x192d0",
+    "size": 104,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "handle_image_injection",
+    "value": "0x197d4",
+    "size": 388,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "handle_image_subscription",
+    "value": "0x193c8",
+    "size": 208,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "handle_image_subscription_auth",
+    "value": "0x1959c",
+    "size": 276,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "handle_image_subscription_enroll",
+    "value": "0x19498",
+    "size": 260,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "handle_subscription_callback",
+    "value": "0x19e38",
+    "size": 228,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "is_img_inj_enabled",
+    "value": "0x196b0",
+    "size": 128,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "load_test_db",
+    "value": "0x1aa94",
+    "size": 200,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "restore_regular_db",
+    "value": "0x1aba4",
+    "size": 168,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "save_test_db",
+    "value": "0x1ab5c",
+    "size": 72,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "set_cancel_image_injection",
+    "value": "0x19958",
+    "size": 80,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "set_enroll_token",
+    "value": "0x19b78",
+    "size": 208,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "set_img_inj_cb",
+    "value": "0x19730",
+    "size": 164,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "set_img_subscr_cb",
+    "value": "0x19338",
+    "size": 144,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "start_capture",
+    "value": "0x19a18",
+    "size": 224,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x1acb8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x1b590",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x1b9f0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x1ba90",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x1af70",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1aff8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x1b098",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x1b26c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x1b3b8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x1b414",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x1b530",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x1b58c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL8snprintfPcU17pass_object_size1mPKcz",
+    "value": "0x1b9f0",
+    "size": 160,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "cancel_capture",
+    "value": "0x1b530",
+    "size": 92,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "cancel_sensor_test",
+    "value": "0x1b3b8",
+    "size": 92,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "capture",
+    "value": "0x1b414",
+    "size": 284,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "do_capture",
+    "value": "0x1ba90",
+    "size": 420,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "do_run_sensor_test",
+    "value": "0x1b590",
+    "size": 1120,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "get_mqt_config",
+    "value": "0x1acb8",
+    "size": 696,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "get_sensor_info",
+    "value": "0x1aff8",
+    "size": 160,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "get_sensor_tests",
+    "value": "0x1b098",
+    "size": 468,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "run_sensor_test",
+    "value": "0x1b26c",
+    "size": 332,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x1bc34",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1bca4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x1c3d8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1c488",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x1c57c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x1c5e8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x1c64c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x1c748",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x1c79c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x1c7e4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL8snprintfPcU17pass_object_size1mPKcz",
+    "value": "0x1c7e4",
+    "size": 160,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "get_config",
+    "value": "0x1c5e8",
+    "size": 100,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "get_enabled",
+    "value": "0x1c748",
+    "size": 84,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "nav_loop",
+    "value": "0x1bca4",
+    "size": 1844,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "set_config",
+    "value": "0x1c57c",
+    "size": 108,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "set_enabled",
+    "value": "0x1c64c",
+    "size": 252,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x1c884",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1c920",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x1c9c0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1ca60",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x1cbc4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x1cc20",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x1cc8c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "get_force",
+    "value": "0x1c920",
+    "size": 160,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "is_supported",
+    "value": "0x1c9c0",
+    "size": 160,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "read_config",
+    "value": "0x1cc20",
+    "size": 108,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "set_auth_mode",
+    "value": "0x1cbc4",
+    "size": 92,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "store_calibration_data",
+    "value": "0x1ca60",
+    "size": 356,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x1cce0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1cfd8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x1d040",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1d09c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x1d354",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1d3f4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x1d488",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL8snprintfPcU17pass_object_size1mPKcz",
+    "value": "0x1d354",
+    "size": 160,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x1d650",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1d6a8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x1d80c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1da38",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x1dacc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x1db58",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x1dcb4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1deb4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL8snprintfPcU17pass_object_size1mPKcz",
+    "value": "0x1deb4",
+    "size": 168,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x1df5c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1dfd4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x1e578",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x1e584",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x1e598",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x1e5a4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.15",
+    "value": "0x1e5b0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.16",
+    "value": "0x1e5c0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1e014",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x1e240",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x1e2e0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x1e3c0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x1e3d0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x1e560",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x1e56c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL8snprintfPcU17pass_object_size1mPKcz",
+    "value": "0x1e240",
+    "size": 160,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "log_build_info_callback",
+    "value": "0x1e3d0",
+    "size": 400,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1e5c8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x1e620",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1e690",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x1e748",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x1e7f0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x1e86c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1e9ac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x1eb9c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1ed20",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x1edec",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x1ee78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x1efc0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x1f0f8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x1fb70",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x1fc18",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL7sprintfPcU17pass_object_size1PKcz",
+    "value": "0x1fc18",
+    "size": 172,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZL8snprintfPcU17pass_object_size1mPKcz",
+    "value": "0x1fb70",
+    "size": 168,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_fpc_tee_kpi_start",
+    "value": "0x1eb9c",
+    "size": 388,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_kpi_ctrl",
+    "value": "0x1efc0",
+    "size": 312,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_kpi_next_sequence",
+    "value": "0x1e9ac",
+    "size": 496,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "kpi_print_all_results",
+    "value": "0x1f0f8",
+    "size": 2680,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1fcc4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x1fd28",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x1fd58",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x1fdac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x1fdcc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x1fdec",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x1fe38",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x1ff4c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x1ffd8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x204b4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x2050c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x20608",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x20690",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x207ac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL7sprintfPcU17pass_object_size1PKcz",
+    "value": "0x207ac",
+    "size": 172,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_sensortest_test_command",
+    "value": "0x20608",
+    "size": 136,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "readHardwareID",
+    "value": "0x20690",
+    "size": 284,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x20858",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x208b4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x20924",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x209c8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x20a7c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x20ad8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x20adc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x20ae0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x20ea0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x20f40",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x21060",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL8snprintfPcU17pass_object_size1mPKcz",
+    "value": "0x20ea0",
+    "size": 160,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "fpc_write_db_blob_to_file",
+    "value": "0x20f40",
+    "size": 288,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x21438",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x21a60",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x21ae8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x21af0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.15",
+    "value": "0x21b94",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.16",
+    "value": "0x21c2c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.17",
+    "value": "0x21e24",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.18",
+    "value": "0x21ff8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.19",
+    "value": "0x220e8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x21470",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.20",
+    "value": "0x221a0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.21",
+    "value": "0x22258",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.22",
+    "value": "0x22298",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.23",
+    "value": "0x2230c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x21478",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x21588",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x215c4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x2163c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x216c0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x219d0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_capture_image_internal",
+    "value": "0x216c0",
+    "size": 784,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "sensor_command",
+    "value": "0x21478",
+    "size": 272,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x2237c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x228ac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x22910",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x2297c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x229d0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x16124",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x223e0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x22434",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x224dc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x2254c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x22608",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x226ac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x2273c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x227ac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x22a30",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x22a74",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x22bc8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x22c2c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x22d64",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x22df0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x22ef0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x230ec",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x230f0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x2345c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x2346c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x2369c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x23728",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x2384c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.15",
+    "value": "0x23920",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.16",
+    "value": "0x23a14",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.17",
+    "value": "0x23aa4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.18",
+    "value": "0x23bd0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.19",
+    "value": "0x23bd8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.20",
+    "value": "0x23c80",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.21",
+    "value": "0x23e3c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.22",
+    "value": "0x23f5c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.23",
+    "value": "0x24120",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.24",
+    "value": "0x24244",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.25",
+    "value": "0x24410",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.26",
+    "value": "0x24534",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.27",
+    "value": "0x24578",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.28",
+    "value": "0x245f0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.29",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.43",
+    "value": "0x246a4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.44",
+    "value": "0x16124",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.45",
+    "value": "0x16128",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.46",
+    "value": "0x246b4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.47",
+    "value": "0x246f0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.48",
+    "value": "0x16124",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.49",
+    "value": "0x16128",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x231f0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.50",
+    "value": "0x2470c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x23284",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x2331c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x233b8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x23454",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering12getBuildInfoENSt3__18functionIFvRKN7android8hardware11hidl_stringEEEEEN3$_08__invokeEPKcPv",
+    "value": "0x246a4",
+    "size": 16,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNK3com12fingerprints9extension4V1_023IFingerprintEngineering8isRemoteEv",
+    "value": "0x13004",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__110__function6__baseIFvRKN7android8hardware8hidl_vecIhEEEED2Ev",
+    "value": "0x16124",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNSt3__110__function6__funcIPFvRKN7android8hardware8hidl_vecIhEEENS_9allocatorIS9_EES8_ED0Ev",
+    "value": "0x16128",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x24718",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x2471c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x24848",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x248ec",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x24960",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x15f7c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x15fac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x15f84",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x15fc0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x2480c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZNK3com12fingerprints9extension4V1_022IFingerprintNavigation8isRemoteEv",
+    "value": "0x13004",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x249a0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x249a4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x24b0c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x24b8c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x24c44",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x24ca4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x15f7c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x15fac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x15f84",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x15fc0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x24a94",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZNK3com12fingerprints9extension4V1_022IFingerprintSenseTouch8isRemoteEv",
+    "value": "0x13004",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x24df4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x24e2c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x254c8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x25788",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x25a78",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x25b28",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x25e18",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.15",
+    "value": "0x25f48",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.16",
+    "value": "0x26148",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.17",
+    "value": "0x13004",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x24fac",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.31",
+    "value": "0x26278",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.32",
+    "value": "0x262f0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.33",
+    "value": "0x26370",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.34",
+    "value": "0x263ec",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.35",
+    "value": "0x26470",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.36",
+    "value": "0x264f0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.38",
+    "value": "0x15ff0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x24fbc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x25270",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x25308",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x253a0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x254c0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTestD0Ev",
+    "value": "0x262f0",
+    "size": 128,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTestD1Ev",
+    "value": "0x26278",
+    "size": 120,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN7android8hardware8hidl_vecIN3com12fingerprints9extension4V1_010SensorTestEE8copyFromINSt3__16vectorIS6_NS9_9allocatorIS6_EEEEEEvRKT_m",
+    "value": "0x15ff0",
+    "size": 308,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZN7android8hardware8hidl_vecIN3com12fingerprints9extension4V1_010SensorTestEEaSERKNSt3__16vectorIS6_NS8_9allocatorIS6_EEEE",
+    "value": "0x25a78",
+    "size": 176,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZNK3com12fingerprints9extension4V1_022IFingerprintSensorTest8isRemoteEv",
+    "value": "0x13004",
+    "size": 8,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZThn8_N3com12fingerprints9extension4V1_014implementation21FingerprintSensorTestD0Ev",
+    "value": "0x263ec",
+    "size": 132,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZThn8_N3com12fingerprints9extension4V1_014implementation21FingerprintSensorTestD1Ev",
+    "value": "0x26370",
+    "size": 124,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com12fingerprints9extension4V1_014implementation21FingerprintSensorTestD0Ev",
+    "value": "0x264f0",
+    "size": 136,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com12fingerprints9extension4V1_014implementation21FingerprintSensorTestD1Ev",
+    "value": "0x26470",
+    "size": 128,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "__FINI_ARRAY__",
+    "value": "0x27020",
+    "size": 8,
+    "info": 17,
+    "section": 19
+  },
+  {
+    "name": "__INIT_ARRAY__",
+    "value": "0x27010",
+    "size": 8,
+    "info": 17,
+    "section": 18
+  },
+  {
+    "name": "__PREINIT_ARRAY__",
+    "value": "0x27000",
+    "size": 8,
+    "info": 17,
+    "section": 17
+  },
+  {
+    "name": "_start",
+    "value": "0x12000",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "main",
+    "value": "0x12048",
+    "size": 676,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation15MotoFingerPrint11getInstanceEv",
+    "value": "0x14050",
+    "size": 80,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest11getInstanceEv",
+    "value": "0x15f3c",
+    "size": 60,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl4initEv",
+    "value": "0x12bc4",
+    "size": 16,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidlC1Ev",
+    "value": "0x12990",
+    "size": 132,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl10on_removedEPvjjj",
+    "value": "0x12888",
+    "size": 264,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl10postEnrollEv",
+    "value": "0x12d08",
+    "size": 60,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl11on_acquiredEPvi",
+    "value": "0x122ec",
+    "size": 268,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl12authenticateEmj",
+    "value": "0x12ef4",
+    "size": 64,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl12on_enumerateEPvjjj",
+    "value": "0x12674",
+    "size": 264,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl14setActiveGroupEjRKN7android8hardware11hidl_stringE",
+    "value": "0x12e20",
+    "size": 212,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl16on_authenticatedEPvjjPKhj",
+    "value": "0x123f8",
+    "size": 372,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl16on_enroll_resultEPvjjj",
+    "value": "0x1256c",
+    "size": 264,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl18getAuthenticatorIdEv",
+    "value": "0x12d44",
+    "size": 52,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl6cancelEv",
+    "value": "0x12d78",
+    "size": 52,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl6enrollERKN7android8hardware10hidl_arrayIhLm69EJEEEjj",
+    "value": "0x12cbc",
+    "size": 76,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl6removeEjj",
+    "value": "0x12de0",
+    "size": 64,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl8on_errorEPvi",
+    "value": "0x1277c",
+    "size": 268,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl9enumerateEv",
+    "value": "0x12dac",
+    "size": 52,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl9preEnrollEv",
+    "value": "0x12c88",
+    "size": 52,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidl9setNotifyERKN7android2spINS0_8hardware10biometrics11fingerprint4V2_136IBiometricsFingerprintClientCallbackEEE",
+    "value": "0x12bd4",
+    "size": 180,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidlD0Ev",
+    "value": "0x12ae4",
+    "size": 108,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN8fpc_hidlD1Ev",
+    "value": "0x12a14",
+    "size": 100,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTV8fpc_hidl",
+    "value": "0x27030",
+    "size": 312,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZTv0_n24_N8fpc_hidlD0Ev",
+    "value": "0x12b50",
+    "size": 116,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N8fpc_hidlD1Ev",
+    "value": "0x12a78",
+    "size": 108,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_authenticate",
+    "value": "0x16740",
+    "size": 228,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_cancel",
+    "value": "0x173c0",
+    "size": 288,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_enroll",
+    "value": "0x16d60",
+    "size": 312,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_enumerate",
+    "value": "0x17804",
+    "size": 152,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_get_authenticator_id",
+    "value": "0x164c0",
+    "size": 84,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_hal_close",
+    "value": "0x179e4",
+    "size": 348,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_hal_open",
+    "value": "0x17b40",
+    "size": 724,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_post_enroll",
+    "value": "0x16490",
+    "size": 48,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_pre_enroll",
+    "value": "0x1638c",
+    "size": 260,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_remove",
+    "value": "0x174e0",
+    "size": 232,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_set_active_group",
+    "value": "0x16514",
+    "size": 396,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation15MotoFingerPrint12sendFodEventENS4_16IMotFodEventTypeERKN7android8hardware8hidl_vecIaEENSt3__18functionIFvNS4_18IMotFodEventResultESD_EEE",
+    "value": "0x131d8",
+    "size": 228,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation15MotoFingerPrint15getHardwareInfoENSt3__18functionIFvRKNS4_18FingerHardWareInfoEEEE",
+    "value": "0x132bc",
+    "size": 1432,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation15MotoFingerPrint17getCheckinVersionENSt3__18functionIFvRKN7android8hardware11hidl_stringEEEE",
+    "value": "0x138a0",
+    "size": 696,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation15MotoFingerPrint24getUnlockPerformanceDataENSt3__18functionIFvRKN7android8hardware8hidl_vecINSA_11hidl_stringEEEEEE",
+    "value": "0x13b58",
+    "size": 1028,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation15MotoFingerPrintD0Ev",
+    "value": "0x13120",
+    "size": 88,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation15MotoFingerPrintD1Ev",
+    "value": "0x13080",
+    "size": 76,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTVN3com8motorola8hardware9biometric11fingerprint4V1_014implementation15MotoFingerPrintE",
+    "value": "0x27168",
+    "size": 264,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZTv0_n24_N3com8motorola8hardware9biometric11fingerprint4V1_014implementation15MotoFingerPrintD0Ev",
+    "value": "0x13178",
+    "size": 96,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com8motorola8hardware9biometric11fingerprint4V1_014implementation15MotoFingerPrintD1Ev",
+    "value": "0x130cc",
+    "size": 84,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_set_finger_lost_detection",
+    "value": "0x17e14",
+    "size": 24,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest11getInstanceEv",
+    "value": "0x24fac",
+    "size": 16,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest11serviceDiedEmRKN7android2wpINS7_4hidl4base4V1_05IBaseEEE",
+    "value": "0x154e4",
+    "size": 280,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest13getSensorInfoEv",
+    "value": "0x15eec",
+    "size": 80,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest15beginSensorTestERKN7android2spINS4_22IMotSensorTestCallbackEEE",
+    "value": "0x15778",
+    "size": 636,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest16checkerboardTestEv",
+    "value": "0x15e44",
+    "size": 56,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest16finishSensorTestEj",
+    "value": "0x15604",
+    "size": 372,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest16imagequalityTestEv",
+    "value": "0x15e7c",
+    "size": 56,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest17otpvalidationTestEv",
+    "value": "0x15eb4",
+    "size": 56,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest17processSensorTestEiPKc",
+    "value": "0x159f4",
+    "size": 1048,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest18onSensorTestResultENS4_15IMotEventResultEPc",
+    "value": "0x1535c",
+    "size": 392,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest8selfTestEv",
+    "value": "0x15e0c",
+    "size": 56,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestC1Ev",
+    "value": "0x14fcc",
+    "size": 232,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestD0Ev",
+    "value": "0x15238",
+    "size": 52,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestD1Ev",
+    "value": "0x151a4",
+    "size": 44,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestD2Ev",
+    "value": "0x150b4",
+    "size": 240,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com8motorola8hardware9biometric11fingerprint4V1_014implementation32FPCFingerprintSensorTestCallback8onResultERKNS_12fingerprints9extension4V1_016SensorTestResultE",
+    "value": "0x152e8",
+    "size": 116,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTCN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestE0_N7android4hidl4base4V1_05IBaseE",
+    "value": "0x27760",
+    "size": 232,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZTCN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestE0_NS4_26IMotoFingerPrintSensorTestE",
+    "value": "0x27640",
+    "size": 288,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZTCN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestE8_N7android8hardware20hidl_death_recipientE",
+    "value": "0x27848",
+    "size": 152,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZTTN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestE",
+    "value": "0x27508",
+    "size": 72,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZTVN3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestE",
+    "value": "0x273b0",
+    "size": 344,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZTVN3com8motorola8hardware9biometric11fingerprint4V1_014implementation32FPCFingerprintSensorTestCallbackE",
+    "value": "0x27550",
+    "size": 240,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZThn8_N3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTest11serviceDiedEmRKN7android2wpINS7_4hidl4base4V1_05IBaseEEE",
+    "value": "0x155fc",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZThn8_N3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestD0Ev",
+    "value": "0x1526c",
+    "size": 60,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZThn8_N3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestD1Ev",
+    "value": "0x151d0",
+    "size": 48,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestD0Ev",
+    "value": "0x152a8",
+    "size": 64,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com8motorola8hardware9biometric11fingerprint4V1_014implementation25MotoFingerPrintSensorTestD1Ev",
+    "value": "0x15200",
+    "size": 56,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "checkin_enroll_data",
+    "value": "0x18218",
+    "size": 376,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "checkin_lib_version",
+    "value": "0x18b78",
+    "size": 116,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "checkin_temp_data",
+    "value": "0x187b0",
+    "size": 796,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "checkin_unlock_data",
+    "value": "0x18604",
+    "size": 428,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "node_write",
+    "value": "0x18438",
+    "size": 460,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fingerprint_hal_do_async_work",
+    "value": "0x16228",
+    "size": 100,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fingerprint_hal_goto_idle",
+    "value": "0x162cc",
+    "size": 128,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fingerprint_hal_resume",
+    "value": "0x1634c",
+    "size": 64,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "add_engineering_service",
+    "value": "0x230ec",
+    "size": 4,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "add_navigation_service",
+    "value": "0x24718",
+    "size": 4,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "add_sense_touch_service",
+    "value": "0x249a0",
+    "size": 4,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "add_sensortest_service",
+    "value": "0x24df4",
+    "size": 56,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "create_input_device",
+    "value": "0x1d09c",
+    "size": 696,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "destroy_input_device",
+    "value": "0x1d3f4",
+    "size": 148,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_engineering_destroy",
+    "value": "0x19dc8",
+    "size": 112,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_engineering_new",
+    "value": "0x1912c",
+    "size": 420,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_error_str",
+    "value": "0x22a30",
+    "size": 68,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_navigation_destroy",
+    "value": "0x1c79c",
+    "size": 72,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_navigation_new",
+    "value": "0x1c488",
+    "size": 244,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_navigation_pause",
+    "value": "0x1c3d8",
+    "size": 176,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_navigation_resume",
+    "value": "0x1bc34",
+    "size": 112,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_sense_touch_destroy",
+    "value": "0x1cc8c",
+    "size": 84,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_sense_touch_get_config",
+    "value": "0x1cfd8",
+    "size": 104,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_sense_touch_load_config",
+    "value": "0x1cce0",
+    "size": 760,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_sense_touch_new",
+    "value": "0x1c884",
+    "size": 156,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_sensortest_destroy",
+    "value": "0x1b58c",
+    "size": 4,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_sensortest_new",
+    "value": "0x1af70",
+    "size": 136,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_authorize_enrol",
+    "value": "0x20924",
+    "size": 164,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_begin_enrol",
+    "value": "0x223e0",
+    "size": 84,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_bio_init",
+    "value": "0x229d0",
+    "size": 96,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_bio_release",
+    "value": "0x16124",
+    "size": 4,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_capture_image_with_time",
+    "value": "0x219d0",
+    "size": 144,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_clear_cancel",
+    "value": "0x2230c",
+    "size": 112,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_delete_template",
+    "value": "0x228ac",
+    "size": 100,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_end_enrol",
+    "value": "0x224dc",
+    "size": 112,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_engineering_enabled",
+    "value": "0x1e560",
+    "size": 12,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_enrol",
+    "value": "0x22434",
+    "size": 168,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_force_sensor_enabled",
+    "value": "0x1e5a4",
+    "size": 12,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_auth_result",
+    "value": "0x209c8",
+    "size": 180,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_enrol_challenge",
+    "value": "0x208b4",
+    "size": 112,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_finger_ids",
+    "value": "0x227ac",
+    "size": 256,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_identify_statistics",
+    "value": "0x226ac",
+    "size": 144,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_max_number_of_templates",
+    "value": "0x1e5c0",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_template_db_id",
+    "value": "0x22910",
+    "size": 108,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_identify_image_status",
+    "value": "0x2254c",
+    "size": 188,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_init",
+    "value": "0x1df5c",
+    "size": 120,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_init_hw_auth",
+    "value": "0x22ef0",
+    "size": 508,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_kpi_start",
+    "value": "0x1ed20",
+    "size": 204,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_kpi_start_sequence",
+    "value": "0x1e86c",
+    "size": 320,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_kpi_stop",
+    "value": "0x1ee78",
+    "size": 328,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_kpi_stop_sequence",
+    "value": "0x1edec",
+    "size": 140,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_load_template_db",
+    "value": "0x20adc",
+    "size": 4,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_log_build_info",
+    "value": "0x1e3c0",
+    "size": 16,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_log_to_file_enabled",
+    "value": "0x1e598",
+    "size": 12,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_navigation_enabled",
+    "value": "0x1e578",
+    "size": 12,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_release",
+    "value": "0x1dfd4",
+    "size": 64,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_sensetouch_enabled",
+    "value": "0x1e5b0",
+    "size": 16,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_sensor_cancelled",
+    "value": "0x21438",
+    "size": 56,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_sensor_init",
+    "value": "0x221a0",
+    "size": 184,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_sensor_release",
+    "value": "0x22258",
+    "size": 64,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_sensortest_enabled",
+    "value": "0x1e56c",
+    "size": 12,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_set_auth_challenge",
+    "value": "0x20858",
+    "size": 92,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_set_cancel",
+    "value": "0x22298",
+    "size": 116,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_set_gid",
+    "value": "0x2237c",
+    "size": 100,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_store_template_db",
+    "value": "0x20ad8",
+    "size": 4,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_update_template",
+    "value": "0x2273c",
+    "size": 112,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_wait_for_button_down_force",
+    "value": "0x21c2c",
+    "size": 504,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_wait_for_button_up_force",
+    "value": "0x21e24",
+    "size": 468,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_write_ta_log",
+    "value": "0x1e014",
+    "size": 556,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_worker_destroy",
+    "value": "0x18e3c",
+    "size": 108,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_worker_join_task",
+    "value": "0x18c6c",
+    "size": 100,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_worker_new",
+    "value": "0x18cd0",
+    "size": 176,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_worker_run_task",
+    "value": "0x18bec",
+    "size": 128,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "g_finger_lost_detection",
+    "value": "0x29a70",
+    "size": 1,
+    "info": 17,
+    "section": 24
+  },
+  {
+    "name": "report_input_event",
+    "value": "0x1d488",
+    "size": 456,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_hal_ext_free_image",
+    "value": "0x190c4",
+    "size": 104,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_hal_ext_get_enhanced_image",
+    "value": "0x18fcc",
+    "size": 248,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_hal_ext_get_raw_image",
+    "value": "0x18ea8",
+    "size": 292,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_capture_image",
+    "value": "0x2163c",
+    "size": 132,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_debug_disable_check_pixels",
+    "value": "0x1e5c8",
+    "size": 88,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_debug_get_raw_size",
+    "value": "0x1e620",
+    "size": 112,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_debug_inject",
+    "value": "0x1e748",
+    "size": 168,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_debug_retrieve",
+    "value": "0x1e690",
+    "size": 184,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_early_stop_ctrl",
+    "value": "0x21a60",
+    "size": 136,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_build_info",
+    "value": "0x1e2e0",
+    "size": 224,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_last_cac_result",
+    "value": "0x21ae8",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_sensor_info",
+    "value": "0x1e7f0",
+    "size": 124,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_identify",
+    "value": "0x22608",
+    "size": 164,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_load_empty_db",
+    "value": "0x2297c",
+    "size": 84,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_set_token_validation_enable",
+    "value": "0x20a7c",
+    "size": 92,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_sensortest_tests",
+    "value": "0x27940",
+    "size": 672,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "fpc_tee_get_mqt_limits",
+    "value": "0x220e8",
+    "size": 184,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_sensor_otp_info",
+    "value": "0x21ff8",
+    "size": 240,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_sensortest_capture_uncalibrated",
+    "value": "0x204b4",
+    "size": 88,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_sensortest_get_log",
+    "value": "0x2050c",
+    "size": 252,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_sensortest_is_test_supported",
+    "value": "0x1ff4c",
+    "size": 140,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_sensortest_run_test",
+    "value": "0x1ffd8",
+    "size": 1244,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_irq_clear_cancel",
+    "value": "0x1dacc",
+    "size": 140,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_irq_init",
+    "value": "0x1d6a8",
+    "size": 356,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_irq_release",
+    "value": "0x1d650",
+    "size": 88,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_irq_set_cancel",
+    "value": "0x1da38",
+    "size": 148,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_irq_wait",
+    "value": "0x1d80c",
+    "size": 556,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_nav_exit",
+    "value": "0x1fdcc",
+    "size": 32,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_nav_get_config",
+    "value": "0x1fd58",
+    "size": 84,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_nav_get_debug_buffer",
+    "value": "0x1fe38",
+    "size": 276,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_nav_get_debug_buffer_size",
+    "value": "0x1fdec",
+    "size": 76,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_nav_init",
+    "value": "0x1fdac",
+    "size": 32,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_nav_poll_data",
+    "value": "0x1fcc4",
+    "size": 100,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_nav_set_config",
+    "value": "0x1fd28",
+    "size": 48,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_navigation_debug_enabled",
+    "value": "0x1e584",
+    "size": 20,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_sense_touch_set_auth_mode",
+    "value": "0x1d040",
+    "size": 92,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_get_sensor_force_value",
+    "value": "0x21af0",
+    "size": 164,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_is_sensor_force_supported",
+    "value": "0x21b94",
+    "size": 152,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_irq_status",
+    "value": "0x1db58",
+    "size": 348,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_irq_wakeup_disable",
+    "value": "0x13004",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_irq_wakeup_enable",
+    "value": "0x13004",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_sysfs_path_by_attr",
+    "value": "0x1dcb4",
+    "size": 512,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tac_alloc_shared",
+    "value": "0x22c2c",
+    "size": 312,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tac_free_shared",
+    "value": "0x22d64",
+    "size": 140,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tac_open",
+    "value": "0x22a74",
+    "size": 340,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tac_release",
+    "value": "0x22bc8",
+    "size": 100,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tac_transfer",
+    "value": "0x22df0",
+    "size": 256,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_check_finger_lost",
+    "value": "0x215c4",
+    "size": 120,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_status_irq",
+    "value": "0x21470",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_wait_finger_down",
+    "value": "0x21588",
+    "size": 60,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_load_template_db_host",
+    "value": "0x21060",
+    "size": 984,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "fpc_tee_store_template_db_host",
+    "value": "0x20ae0",
+    "size": 960,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation19sendCaptureCallbackEP18fpc_capture_data_tN7android2spINS2_21IImageCaptureCallbackEEE",
+    "value": "0x2346c",
+    "size": 560,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering11instantiateEP15fpc_engineering",
+    "value": "0x230f0",
+    "size": 256,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering11serviceDiedEmRKN7android2wpINS5_4hidl4base4V1_05IBaseEEE",
+    "value": "0x23aa4",
+    "size": 300,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering12getBuildInfoENSt3__18functionIFvRKN7android8hardware11hidl_stringEEEE",
+    "value": "0x245f0",
+    "size": 180,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering12startCaptureERKN7android2spINS2_21IImageCaptureCallbackEEEj",
+    "value": "0x24244",
+    "size": 460,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering13cancelCaptureEv",
+    "value": "0x24410",
+    "size": 292,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering13getSensorSizeENSt3__18functionIFvRKNS2_10SensorSizeEEEE",
+    "value": "0x23bd8",
+    "size": 168,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering14setEnrollTokenERKN7android8hardware8hidl_vecIhEE",
+    "value": "0x24534",
+    "size": 68,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering16onInjectCallbackERKN7android8hardware8hidl_vecIhEE",
+    "value": "0x2384c",
+    "size": 212,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering18getEnrollChallengeEv",
+    "value": "0x24578",
+    "size": 120,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering18stopImageInjectionEv",
+    "value": "0x24120",
+    "size": 292,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering19startImageInjectionERKN7android2spINS2_23IImageInjectionCallbackEEE",
+    "value": "0x23f5c",
+    "size": 452,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering21stopImageSubscriptionEv",
+    "value": "0x23e3c",
+    "size": 288,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering22startImageSubscriptionERKN7android2spINS2_21IImageCaptureCallbackEEE",
+    "value": "0x23c80",
+    "size": 444,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering7onImageEPvP18fpc_capture_data_t",
+    "value": "0x2369c",
+    "size": 140,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering8onCancelEPv",
+    "value": "0x23a14",
+    "size": 144,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering8onInjectEPvP18fpc_hal_img_data_t",
+    "value": "0x23920",
+    "size": 244,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineering9onCaptureEPvP18fpc_capture_data_t",
+    "value": "0x23728",
+    "size": 292,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineeringD0Ev",
+    "value": "0x233b8",
+    "size": 156,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation22FingerprintEngineeringD1Ev",
+    "value": "0x231f0",
+    "size": 148,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTVN3com12fingerprints9extension4V1_014implementation22FingerprintEngineeringE",
+    "value": "0x27d20",
+    "size": 368,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZThn8_N3com12fingerprints9extension4V1_014implementation22FingerprintEngineering11serviceDiedEmRKN7android2wpINS5_4hidl4base4V1_05IBaseEEE",
+    "value": "0x23bd0",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZThn8_N3com12fingerprints9extension4V1_014implementation22FingerprintEngineeringD0Ev",
+    "value": "0x23454",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZThn8_N3com12fingerprints9extension4V1_014implementation22FingerprintEngineeringD1Ev",
+    "value": "0x23284",
+    "size": 152,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com12fingerprints9extension4V1_014implementation22FingerprintEngineeringD0Ev",
+    "value": "0x2345c",
+    "size": 16,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com12fingerprints9extension4V1_014implementation22FingerprintEngineeringD1Ev",
+    "value": "0x2331c",
+    "size": 156,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintNavigation11instantiateEP14fpc_navigation",
+    "value": "0x2471c",
+    "size": 240,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintNavigation13setNavigationEb",
+    "value": "0x2480c",
+    "size": 60,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintNavigation19getNavigationConfigENSt3__18functionIFvRKNS2_16NavigationConfigEEEE",
+    "value": "0x24848",
+    "size": 164,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintNavigation19setNavigationConfigERKNS2_16NavigationConfigE",
+    "value": "0x248ec",
+    "size": 116,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintNavigation9isEnabledEv",
+    "value": "0x24960",
+    "size": 64,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintNavigationD0Ev",
+    "value": "0x15f84",
+    "size": 40,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintNavigationD1Ev",
+    "value": "0x15f7c",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTVN3com12fingerprints9extension4V1_014implementation21FingerprintNavigationE",
+    "value": "0x27ed8",
+    "size": 264,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZTv0_n24_N3com12fingerprints9extension4V1_014implementation21FingerprintNavigationD0Ev",
+    "value": "0x15fc0",
+    "size": 48,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com12fingerprints9extension4V1_014implementation21FingerprintNavigationD1Ev",
+    "value": "0x15fac",
+    "size": 20,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouch10readConfigENSt3__18functionIFvRKNS2_16SenseTouchConfigEEEE",
+    "value": "0x24ca4",
+    "size": 336,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouch11instantiateEP15fpc_sense_touch",
+    "value": "0x249a4",
+    "size": 240,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouch11isSupportedEv",
+    "value": "0x24b0c",
+    "size": 128,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouch11setAuthModeENS2_28SenseTouchAuthenticationModeEj",
+    "value": "0x24c44",
+    "size": 96,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouch17finishCalibrationEjj",
+    "value": "0x24b8c",
+    "size": 184,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouch8getForceEv",
+    "value": "0x24a94",
+    "size": 120,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouchD0Ev",
+    "value": "0x15f84",
+    "size": 40,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouchD1Ev",
+    "value": "0x15f7c",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTVN3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouchE",
+    "value": "0x27fe0",
+    "size": 272,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZTv0_n24_N3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouchD0Ev",
+    "value": "0x15fc0",
+    "size": 48,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTv0_n24_N3com12fingerprints9extension4V1_014implementation21FingerprintSenseTouchD1Ev",
+    "value": "0x15fac",
+    "size": 20,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest11instantiateEP22fpc_hal_ext_sensortest",
+    "value": "0x24e2c",
+    "size": 384,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest11serviceDiedEmRKN7android2wpINS5_4hidl4base4V1_05IBaseEEE",
+    "value": "0x253a0",
+    "size": 288,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest12testOnResultEPvP36fpc_hal_ext_sensortest_test_result_t",
+    "value": "0x24fbc",
+    "size": 692,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest13cancelCaptureEv",
+    "value": "0x26148",
+    "size": 304,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest13getSensorInfoENSt3__18functionIFvRKNS2_10SensorInfoEEEE",
+    "value": "0x254c8",
+    "size": 704,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest13runSensorTestERKN7android2spINS2_19ISensorTestCallbackEEERKNS2_10SensorTestERKNS2_15SensorTestInputE",
+    "value": "0x25b28",
+    "size": 752,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest14captureOnErrorEPvi",
+    "value": "0x25308",
+    "size": 152,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest14getSensorTestsENSt3__18functionIFvRKN7android8hardware8hidl_vecINS2_10SensorTestEEEEEE",
+    "value": "0x25788",
+    "size": 752,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest16cancelSensorTestEv",
+    "value": "0x25e18",
+    "size": 304,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest17captureOnAcquiredEPvi",
+    "value": "0x25270",
+    "size": 152,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest7captureERKN7android2spINS2_26ISensorTestCaptureCallbackEEEbb",
+    "value": "0x25f48",
+    "size": 512,
+    "info": 18,
+    "section": 14
+  },
+  {
+    "name": "_ZTVN3com12fingerprints9extension4V1_014implementation21FingerprintSensorTestE",
+    "value": "0x280f0",
+    "size": 336,
+    "info": 17,
+    "section": 20
+  },
+  {
+    "name": "_ZThn8_N3com12fingerprints9extension4V1_014implementation21FingerprintSensorTest11serviceDiedEmRKN7android2wpINS5_4hidl4base4V1_05IBaseEEE",
+    "value": "0x254c0",
+    "size": 8,
+    "info": 18,
+    "section": 14
+  }
+]

@@ -1,0 +1,45 @@
+
+~ # /bin/busybox grep -Ei "accelerometer|[XYZ]:|sample|reading|timeout|error|fou
+nd|failed" /run/ssc-accelerometer.log | /bin/busybox tail -30; /bin/busybox tail
+ -8 /run/ssc-hexagonrpcd.log; printf '\nHANOIP_END_ca23fb0be2e0\n'
+Accelerometer sensor measurement: X=-0.074260 Y=0.091028 Z=9.950818 m/s²
+Accelerometer sensor measurement: X=-0.079051 Y=0.076655 Z=9.955608 m/s²
+Accelerometer sensor measurement: X=-0.067073 Y=0.086237 Z=9.948422 m/s²
+Accelerometer sensor measurement: X=-0.079051 Y=0.081446 Z=9.946027 m/s²
+Accelerometer sensor measurement: X=-0.071864 Y=0.086237 Z=9.948422 m/s²
+Accelerometer sensor measurement: X=-0.074260 Y=0.079051 Z=9.950818 m/s²
+Accelerometer sensor measurement: X=-0.064678 Y=0.086237 Z=9.950818 m/s²
+Accelerometer sensor measurement: X=-0.076655 Y=0.081446 Z=9.955608 m/s²
+Accelerometer sensor measurement: X=-0.069469 Y=0.081446 Z=9.958004 m/s²
+Accelerometer sensor measurement: X=-0.069469 Y=0.081446 Z=9.955608 m/s²
+Accelerometer sensor measurement: X=-0.071864 Y=0.081446 Z=9.948422 m/s²
+Accelerometer sensor measurement: X=-0.067073 Y=0.086237 Z=9.941236 m/s²
+Accelerometer sensor measurement: X=-0.067073 Y=0.083842 Z=9.955608 m/s²
+Accelerometer sensor measurement: X=-0.064678 Y=0.086237 Z=9.941236 m/s²
+Accelerometer sensor measurement: X=-0.069469 Y=0.076655 Z=9.955608 m/s²
+Accelerometer sensor measurement: X=-0.064678 Y=0.081446 Z=9.948422 m/s²
+Accelerometer sensor measurement: X=-0.074260 Y=0.091028 Z=9.950818 m/s²
+Accelerometer sensor measurement: X=-0.067073 Y=0.074260 Z=9.948422 m/s²
+Accelerometer sensor measurement: X=-0.067073 Y=0.086237 Z=9.962795 m/s²
+Accelerometer sensor measurement: X=-0.071864 Y=0.076655 Z=9.955608 m/s²
+Accelerometer sensor measurement: X=-0.074260 Y=0.091028 Z=9.960400 m/s²
+Accelerometer sensor measurement: X=-0.069469 Y=0.079051 Z=9.965191 m/s²
+Accelerometer sensor measurement: X=-0.076655 Y=0.086237 Z=9.943631 m/s²
+Accelerometer sensor measurement: X=-0.071864 Y=0.074260 Z=9.955608 m/s²
+Accelerometer sensor measurement: X=-0.069469 Y=0.081446 Z=9.960400 m/s²
+Accelerometer sensor measurement: X=-0.067073 Y=0.081446 Z=9.946027 m/s²
+Accelerometer sensor measurement: X=-0.067073 Y=0.079051 Z=9.953214 m/s²
+Accelerometer sensor measurement: X=-0.074260 Y=0.083842 Z=9.946027 m/s²
+Accelerometer sensor measurement: X=-0.067073 Y=0.083842 Z=9.950818 m/s²
+** (ssccli:335): DEBUG: 19:46:44.797: Accelerometer sensor disabled
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+
+HANOIP_END_ca23fb0be2e0
+~ # 

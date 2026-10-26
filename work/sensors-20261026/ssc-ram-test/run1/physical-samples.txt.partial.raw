@@ -1,0 +1,48 @@
+
+~ # /bin/busybox tail -16 /run/ssc-light.log; /bin/busybox tail -16 /run/ssc-pro
+ximity.log; /bin/busybox grep -c "Accelerometer sensor measurement" /run/ssc-acc
+elerometer.log; cat /proc/sys/kernel/tainted; cat /proc/mounts; printf '\nHANOIP
+_END_0c13a5a51c60\n'
+Light sensor measurement: 1.600000 Lux
+Light sensor measurement: 0.000000 Lux
+Light sensor measurement: 25.299999 Lux
+Light sensor measurement: 15.700000 Lux
+Light sensor measurement: 70.900002 Lux
+Light sensor measurement: 16.799999 Lux
+Light sensor measurement: 3.300000 Lux
+Light sensor measurement: 0.000000 Lux
+Light sensor measurement: 1.100000 Lux
+Light sensor measurement: 35.400002 Lux
+Light sensor measurement: 71.699997 Lux
+Light sensor measurement: 13.700000 Lux
+Light sensor measurement: 2.200000 Lux
+Light sensor measurement: 0.000000 Lux
+Light sensor measurement: 49.400002 Lux
+Light sensor measurement: 72.500000 Lux
+Proximity sensor measurement: FAR
+Proximity sensor measurement: NEAR
+Proximity sensor measurement: FAR
+Proximity sensor measurement: NEAR
+Proximity sensor measurement: FAR
+Proximity sensor measurement: NEAR
+Proximity sensor measurement: FAR
+Proximity sensor measurement: NEAR
+Proximity sensor measurement: FAR
+Proximity sensor measurement: NEAR
+Proximity sensor measurement: FAR
+Proximity sensor measurement: NEAR
+Proximity sensor measurement: FAR
+382
+0
+rootfs / rootfs rw,size=1776740k,nr_inodes=444185 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=1776740k,nr_inodes=444185,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+devtmpfs /opt/ssc/dev devtmpfs rw,relatime,size=1776740k,nr_inodes=444185,mode=755 0 0
+proc /opt/ssc/proc proc rw,relatime 0 0
+sysfs /opt/ssc/sys sysfs rw,relatime 0 0
+
+HANOIP_END_0c13a5a51c60

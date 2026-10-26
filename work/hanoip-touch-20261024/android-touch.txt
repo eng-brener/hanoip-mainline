@@ -1,0 +1,36 @@
+uid=0(root) gid=0(root) groups=0(root) context=u:r:magisk:s0
+Linux localhost 4.14.206—CosmicFresh-R6-Final #4 SMP PREEMPT Wed Feb 8 14:02:53 IST 2023 aarch64 Toybox
+/proc/ilitek:
+change_list
+debug_level
+debug_message
+debug_message_switch
+fw_pc_counter
+fw_process
+fw_upgrade
+get_debug_mode_data
+ioctl
+mp_lcm_off_test
+mp_lcm_on_test
+rw_tp_reg
+show_delta_data
+show_raw_data
+ver_info
+
+/proc/ilitek:
+change_list
+debug_level
+debug_message
+debug_message_switch
+fw_pc_counter
+fw_process
+fw_upgrade
+get_debug_mode_data
+ioctl
+mp_lcm_off_test
+mp_lcm_on_test
+rw_tp_reg
+show_delta_data
+show_raw_data
+ver_info
+cat: /proc/bus/input/devices: Permission denied

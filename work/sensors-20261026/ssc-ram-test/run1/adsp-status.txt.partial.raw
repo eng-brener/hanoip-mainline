@@ -1,0 +1,32 @@
+
+~ # cat /run/hanoip-sensors.log; cat /run/ssc-hexagonrpcd.log; cat /run/ssc-qrtr
+.log; /bin/busybox tail -25 /run/ssc-accelerometer.log; /bin/busybox dmesg | /bi
+n/busybox tail -18; printf '\nHANOIP_END_d9268e8c0b36\n'
+HANOIP SSC: RAM-only test starting
+MOUNTS_RAM_ONLY; BLOCK_GUARD_OK
+insmod: can't insert '/lib/hanoip-wifi/qcom_common.ko': unknown symbol in module, or unknown parameter
+cat: can't open '/run/ssc-hexagonrpcd.log': No such file or directory
+cat: can't open '/run/ssc-qrtr.log': No such file or directory
+tail: can't open '/run/ssc-accelerometer.log': No such file or directory
+tail: no files
+[   12.261181] platform 62b52000.pinctrl: deferred probe pending: platform: wait for supplier /soc@0/remoteproc@62400000/glink-edge/apr/service@4/clock-controller
+[   12.261232] platform 62b48000.pinctrl: deferred probe pending: platform: wait for supplier /soc@0/remoteproc@62400000/glink-edge/apr/service@4/clock-controller
+[   12.261265] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   12.261288] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   12.261309] qnoc-sm7150 16e0000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   12.261329] gcc-sm7150 100000.clock-controller: sync_state() pending due to 1d84000.ufshc
+[   12.261352] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1e40000.ipa
+[   12.261373] qnoc-sm7150 1620000.interconnect: sync_state() pending due to 1e40000.ipa
+[   12.261393] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1e40000.ipa
+[   12.261414] qnoc-sm7150 1700000.interconnect: sync_state() pending due to 1e40000.ipa
+[   12.261437] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   12.261459] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   12.261481] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   12.261503] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   12.261523] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1e40000.ipa
+[   12.261543] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   12.261579] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 4080000.remoteproc
+[   12.261599] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 62400000.remoteproc
+
+HANOIP_END_d9268e8c0b36
+~ # 

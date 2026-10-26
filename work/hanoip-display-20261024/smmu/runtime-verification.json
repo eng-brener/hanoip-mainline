@@ -1,0 +1,11 @@
+{
+  "usb_shell": true,
+  "mdss_initial_domain": "identity",
+  "ufs_devices_exposed": false,
+  "persistent_filesystems_mounted": false,
+  "smmu_unhandled_faults_in_live_dmesg": 0,
+  "modules_loaded": 11,
+  "drm_connector_created": false,
+  "blocker": "MDSS -110; DISPCC power domain defined but not registered",
+  "lcdb_regmap_read_destination": "unsigned int; prior corruption fix preserved"
+}

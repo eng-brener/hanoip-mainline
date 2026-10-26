@@ -1,0 +1,22 @@
+0
+online=0-7
+offline=
+[    0.016010] CPU features: detected: Spectre-v2
+[    0.016049] CPU features: detected: Spectre-BHB
+[    0.016082] Detected PIPT I-cache on CPU6
+[    0.016461] GICv3: CPU6: found redistributor 600 region 0:0x0000000017b20000
+[    0.016520] CPU6: Booted secondary processor 0x0000000600 [0x51df804e]
+[    0.018623] Detected PIPT I-cache on CPU7
+[    0.019029] GICv3: CPU7: found redistributor 700 region 0:0x0000000017b40000
+[    0.019091] CPU7: Booted secondary processor 0x0000000700 [0x51df804e]
+== policy0 cpus=0 1 2 3 4 5 drv=qcom-cpufreq-hw 300000-1804800 gov=schedutil cur=1248000
+300000 576000 768000 1017600 1248000 1324800 1497600 1612800 1708800 1804800 
+== policy6 cpus=6 7 drv=qcom-cpufreq-hw 300000-2304000 gov=schedutil cur=1555200
+300000 652800 806400 979200 1094400 1209600 1324800 1555200 1708800 1843200 1939200 2169600 2208000 2304000 
+cpu0 cap=382 idle=WFI(22398) cpu-sleep-0-0(1134) cpu-sleep-0-1(2364) 
+cpu6 cap=1024 idle=WFI(14590) cpu-sleep-1-0(289) cpu-sleep-1-1(1068) 
+/sys/class/bluetooth: hci0  /sys/class/net: lo rmnet_ipa0 usb0 wlan0 
+running
+irqs=1
+44800
+0

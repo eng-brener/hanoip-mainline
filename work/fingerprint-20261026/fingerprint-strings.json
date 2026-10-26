@@ -1,0 +1,3082 @@
+[
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0xe18",
+    "text": "fpc,fpc1020"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x112c",
+    "text": "fpc1020_init"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1139",
+    "text": "fpc1020"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x115b",
+    "text": "cannot set reset pin direction"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1193",
+    "text": "could not request irq %d"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x11b5",
+    "text": "fpc1020_probe"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1227",
+    "text": "fpc1020_create_sysfs"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x12a8",
+    "text": "irq_cnt"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x12b4",
+    "text": "hw_reset"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x12bd",
+    "text": "reset pin is invalid"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x12d3",
+    "text": "IRQ after reset %d"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x12fb",
+    "text": "fpc1020_remove"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1396",
+    "text": "description=FPC1020 Fingerprint sensor device driver."
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x140f",
+    "text": "name=fpc1020_mmi"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1429",
+    "text": "alias=of:N*T*Cfpc,fpc1020"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1443",
+    "text": "alias=of:N*T*Cfpc,fpc1020C*"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1628",
+    "text": "irq_set_irq_wake"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1828",
+    "text": "devm_free_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1a28",
+    "text": "gpiod_to_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1c68",
+    "text": "devm_request_threaded_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1f98",
+    "text": "fpc1020_mmi"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0xf961",
+    "text": "/localrepo/hudson/workspace/S2RI32.32-20-9-9_hanoip-retail_user_mr-ms-r2-stable5.2_r-qsh2019_release-keys_derivative_cid/platform/kernel/msm-4.14/../../motorola/kernel/modules/drivers/input/misc/fpc_fps_mmi"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0xff48",
+    "text": "irqdomain.h"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0xff6b",
+    "text": "irq.h"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0xff83",
+    "text": "irqdesc.h"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0xff90",
+    "text": "irqreturn.h"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0xff9f",
+    "text": "irqhandler.h"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1003a",
+    "text": "fpc1020_tee.c"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x10615",
+    "text": "/localrepo/hudson/workspace/S2RI32.32-20-9-9_hanoip-retail_user_mr-ms-r2-stable5.2_r-qsh2019_release-keys_derivative_cid/platform/out/target/product/hanoip/obj/kernel/msm-4.14/../../motorola/kernel/modules/drivers/input/misc/fpc_fps_mmi"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x10a42",
+    "text": "fpc1020_mmi.mod.c"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x10eb4",
+    "text": "/localrepo/hudson/workspace/S2RI32.32-20-9-9_hanoip-retail_user_mr-ms-r2-stable5.2_r-qsh2019_release-keys_derivative_cid/platform/kernel/msm-4.14/../../motorola/kernel/modules/drivers/input/misc/fpc_fps_mmi/fpc1020_tee.c"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x118cf",
+    "text": "in_hrtirq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x14c34",
+    "text": "sched_reset_on_fork"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x158c2",
+    "text": "poweroff"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15904",
+    "text": "poweroff_late"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15920",
+    "text": "suspend_noirq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1592e",
+    "text": "resume_noirq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1593b",
+    "text": "freeze_noirq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15948",
+    "text": "thaw_noirq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15953",
+    "text": "poweroff_noirq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15962",
+    "text": "restore_noirq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15bf2",
+    "text": "power"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15bf8",
+    "text": "power_state"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15c42",
+    "text": "is_noirq_suspended"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15c8f",
+    "text": "wakeirq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15c97",
+    "text": "wake_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x15e26",
+    "text": "irq_safe"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16278",
+    "text": "irq_domain_bus_token"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x162a6",
+    "text": "irq_fwspec"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x162b5",
+    "text": "irq_hw_number_t"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x162e0",
+    "text": "hwirq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16333",
+    "text": "irq_common_data"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16356",
+    "text": "irq_startup"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16362",
+    "text": "irq_shutdown"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1636f",
+    "text": "irq_enable"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1637a",
+    "text": "irq_disable"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16386",
+    "text": "irq_ack"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1638e",
+    "text": "irq_mask"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16397",
+    "text": "irq_mask_ack"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x163a4",
+    "text": "irq_unmask"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x163af",
+    "text": "irq_eoi"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x163b7",
+    "text": "irq_set_affinity"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x163c8",
+    "text": "irq_retrigger"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x163d6",
+    "text": "irq_set_type"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x163e3",
+    "text": "irq_set_wake"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x163f0",
+    "text": "irq_bus_lock"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x163fd",
+    "text": "irq_bus_sync_unlock"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16411",
+    "text": "irq_cpu_online"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16420",
+    "text": "irq_cpu_offline"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16430",
+    "text": "irq_suspend"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1643c",
+    "text": "irq_resume"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16447",
+    "text": "irq_pm_shutdown"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16457",
+    "text": "irq_calc_mask"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16465",
+    "text": "irq_print_chip"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16474",
+    "text": "irq_request_resources"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1648a",
+    "text": "irq_release_resources"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x164a0",
+    "text": "irq_compose_msi_msg"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x164bc",
+    "text": "irq_write_msi_msg"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x164ce",
+    "text": "irq_get_irqchip_state"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x164e4",
+    "text": "IRQCHIP_STATE_PENDING"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x164fa",
+    "text": "IRQCHIP_STATE_ACTIVE"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1650f",
+    "text": "IRQCHIP_STATE_MASKED"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16524",
+    "text": "IRQCHIP_STATE_LINE_LEVEL"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1653d",
+    "text": "irqchip_irq_state"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1654f",
+    "text": "irq_set_irqchip_state"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16565",
+    "text": "irq_set_vcpu_affinity"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16599",
+    "text": "irq_chip"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x165bf",
+    "text": "irq_data"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x165dd",
+    "text": "irq_domain_ops"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1660c",
+    "text": "irqs_per_chip"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16624",
+    "text": "irq_flags_to_clear"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16637",
+    "text": "irq_flags_to_set"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16651",
+    "text": "IRQ_GC_INIT_MASK_CACHE"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16668",
+    "text": "IRQ_GC_INIT_NESTED_LOCK"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16680",
+    "text": "IRQ_GC_MASK_CACHE_PER_TYPE"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1669b",
+    "text": "IRQ_GC_NO_MASK"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x166aa",
+    "text": "IRQ_GC_BE_IO"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x166b7",
+    "text": "irq_gc_flags"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x166e2",
+    "text": "irq_base"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x166eb",
+    "text": "irq_cnt"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16779",
+    "text": "irq_chip_regs"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1678f",
+    "text": "kstat_irqs"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1679a",
+    "text": "handle_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x167ac",
+    "text": "IRQ_NONE"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x167b5",
+    "text": "IRQ_HANDLED"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x167c1",
+    "text": "IRQ_WAKE_THREAD"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x167d1",
+    "text": "irqreturn"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x167db",
+    "text": "irqreturn_t"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x167e7",
+    "text": "irq_handler_t"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1683c",
+    "text": "irqaction"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16899",
+    "text": "irq_count"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x168b2",
+    "text": "irqs_unhandled"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1692a",
+    "text": "irq_affinity_notify"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x169be",
+    "text": "parent_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x169c9",
+    "text": "irq_desc"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x169d2",
+    "text": "irq_flow_handler_t"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x169f5",
+    "text": "irq_chip_type"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16a03",
+    "text": "irq_chip_generic"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16a14",
+    "text": "irq_domain_chip_generic"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16a2c",
+    "text": "hwirq_max"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16a36",
+    "text": "revmap_direct_max_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16a72",
+    "text": "irq_domain"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16cf8",
+    "text": "devm_request_threaded_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16e80",
+    "text": "gpiod_to_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16eae",
+    "text": "irq_set_irq_wake"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x16ebf",
+    "text": "devm_free_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x170b0",
+    "text": "fpc1020_of_match"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x170c1",
+    "text": "fpc1020_driver"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1711f",
+    "text": "dev_attr_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1712c",
+    "text": "dev_attr_irq_cnt"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1713d",
+    "text": "dev_attr_hw_reset"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x17171",
+    "text": "fpc1020_pm_ops"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x171d9",
+    "text": "fpc1020_request_named_gpio"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x171f4",
+    "text": "fpc1020"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1720e",
+    "text": "irq_gpio"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x17217",
+    "text": "irq_num"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x17228",
+    "text": "fpc1020_data"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1726e",
+    "text": "__gpio_to_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1727c",
+    "text": "gpio_to_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x17295",
+    "text": "fpc1020_create_sysfs"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x172da",
+    "text": "enable_irq_wake"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x17340",
+    "text": "hw_reset"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x17377",
+    "text": "fpc1020_init"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x17384",
+    "text": "fpc1020_exit"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x17391",
+    "text": "fpc1020_probe"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1739f",
+    "text": "fpc1020_remove"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x173ae",
+    "text": "fpc1020_irq_handler"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x173d1",
+    "text": "irq_get"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x173d9",
+    "text": "irq_cnt_get"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x173e5",
+    "text": "hw_reset_set"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1740c",
+    "text": "fpc1020_suspend"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1741c",
+    "text": "fpc1020_resume"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1743d",
+    "text": "irq_exit"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1748a",
+    "text": "../../motorola/kernel/modules/drivers/input/misc/fpc_fps_mmi/fpc1020_mmi.mod.c"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b269",
+    "text": "fpc1020_mmi.mod.c"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b2ee",
+    "text": "fpc1020_tee.c"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b30e",
+    "text": "fpc1020_driver"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b31d",
+    "text": "fpc1020_probe"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b32b",
+    "text": "fpc1020_create_sysfs"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b340",
+    "text": "fpc1020_irq_handler"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b354",
+    "text": "fpc1020_create_sysfs.dev_no"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b370",
+    "text": "fpc1020_create_sysfs.fingerprint_class"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b397",
+    "text": "fpc1020_remove"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b3a6",
+    "text": "fpc1020_create_sysfs.__key"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b3d2",
+    "text": "dev_attr_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b3ee",
+    "text": "irq_get"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b3f6",
+    "text": "irq_cnt_get"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b402",
+    "text": "hw_reset_set"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b429",
+    "text": "fpc1020_suspend"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b439",
+    "text": "fpc1020_resume"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b4cc",
+    "text": "fpc1020_of_match"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b537",
+    "text": "fpc1020_pm_ops"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b575",
+    "text": "dev_attr_irq_cnt"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b586",
+    "text": "dev_attr_hw_reset"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b5ea",
+    "text": "devm_request_threaded_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b6be",
+    "text": "gpiod_to_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b769",
+    "text": "devm_free_irq"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b78e",
+    "text": "__mod_of__fpc1020_of_match_device_table"
+  },
+  {
+    "file": "fpc1020_mmi.ko",
+    "offset": "0x1b81a",
+    "text": "irq_set_irq_wake"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x80dd8",
+    "text": "Unknown reason %d, returning FPC_ERROR_SENSOR"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x80ec5",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/fpc_bio/src/preproc/fpc_bio_sw29_63e3c6da70.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84362",
+    "text": "{\"buildid_md5\":\"31193ede7fff401e933be6749c3b1bc1\",\"manifest_tag\":\"\",\"host\":\"sheldon-VirtualBox\",\"date\":\"2021-02-24T11:36:48+08:00\",\"FPC_BUILD_TYPE\":\"debug\",\"ENGINEERING\":true,\"SENSORTEST\":true,\"IDENTIFY_AT_ENROL\":false,\"LIVENESS_DETECTION\":false,\"EXTENDED_LOGGING\":false,\"NAVIGATION\":true,\"sha-fpc_bio\":\"8f0391b6\",\"sha-prodtestlib\":\"f33282e6\",\"sha-fpc_c_core\":\"9b536dc\",\"sha-fpc_lib\":\"5480c0b\",\"sha-cac\":\"31697b5\",\"sha-fpc_bio_interface\":\"cf4cb5b\",\"sha-fpc_sensor_interface\":\"ed23433\",\"sha-sensor_sdk\":\"a906e41\",\"sha-sensor_driver\":\"75e3d34\",\"sha-sensor_access\":\"93114f0\",\"sha-sensor_settings\":\"31fa75c\",\"sha-sensor_config\":\"4988d85\",\"sha-capacitance_estimator\":\"f33282e6\",\"sha-tools_core\":\"bd2b452\",\"sha-production_test_limits\":\"715da3f\",\"sha-ctl\":\"66e8d99\",\"sha-manifests\":\"192b6cb0\"}"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84a8c",
+    "text": "fpc_sensor_check_finger_lost"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84ae6",
+    "text": "%s, Failed to set mode FPC_SENSOR_MODE_FINGER_DETECT_DOWN %d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84b23",
+    "text": "fpc_sensor_wakeup_setup"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84b3b",
+    "text": "%s, Failed to set mode FPC_SENSOR_MODE_FINGER_DETECT_UP %d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84b76",
+    "text": "fpc_sensor_finger_lost_wakeup_setup"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84bb8",
+    "text": "fpc_sensor_wakeup_qualification"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84bd8",
+    "text": "fpc_sensor_get_dfd_zone_count"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84bf6",
+    "text": "%s, Failed to set mode FPC_SENSOR_MODE_DEEP_SLEEP %d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84c2b",
+    "text": "fpc_sensor_deep_sleep"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84c5c",
+    "text": "fpc_sensor_communication_start"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84cd7",
+    "text": "fpc_sensor_communication_stop"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84cf5",
+    "text": "%s, Failed to set mode FPC_SENSOR_MODE_IDLE %d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x84d24",
+    "text": "fpc_device_power_wakeup"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x856e2",
+    "text": "%s invalid fpc_nav_sensor_if"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x858cb",
+    "text": "%s fpc_force_sensor_get_value_awake failed %d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x859a5",
+    "text": "%s, Failed to active hw nav mode, reset to wait finger up"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x85b15",
+    "text": "fpc_sensor_if_afd_get_zone_status"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x85b37",
+    "text": "%s: fpc1020_read_register failed %#X."
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x85b86",
+    "text": "fpc_sensor_if_finger_detect_wakeup_setup"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x85be4",
+    "text": "%s, Failed to set mode FPC_SENSOR_MODE_FINGER_DETECT_%s, status: %#X"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x85c75",
+    "text": "fpc_sensor_get_hwinfo"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x85cec",
+    "text": "fpc_sensor_if_image_start"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x85d68",
+    "text": "fpc_sensor_if_image_capture"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x85dd5",
+    "text": "%s use presetting subarea coverage failed subarea_coverage 0x0FFF"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x85ef1",
+    "text": "%s, Error during a sensor reset"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86170",
+    "text": "fpc_sensor_if_image_stop"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86324",
+    "text": "Could not send command soft reset"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86379",
+    "text": "Could not send command soft reset 0x%08x"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86aa2",
+    "text": "[FPC_SENSOR_SDK][E]"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86afc",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/fpc_sensor_driver_capture.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86c2c",
+    "text": "[FPC_SENSOR_SDK][D]"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86c62",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/fpc_sensor_driver_common.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86cf4",
+    "text": "%s: Could not send command soft reset (0x%08x)"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86d23",
+    "text": "sensor_driver_reset"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86d6a",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/fpc_sensor_driver.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86dc2",
+    "text": "fpc_sensor_driver_open"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86eaf",
+    "text": "fpc_sensor_driver_calibrate"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86ef3",
+    "text": "fpc_sensor_driver_set_mode"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86f7b",
+    "text": "fpc_sensor_driver_get_coverage"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x86fe7",
+    "text": "fpc_sensor_driver_defective_pixel_update"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x87029",
+    "text": "fpc_sensor_driver_populate_fq"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x87238",
+    "text": "[FPC_SENSOR_SDK][I]"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x87392",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/fpc_sensor_driver_osc_calibrate.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x876db",
+    "text": "%s hwid: 0x%04x"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x87715",
+    "text": "%s companion_hwid: 0x%04x"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8802d",
+    "text": "1511_g145_smic_0x1012 rev Module Test Specification FPC1511-G175 v2 #TESTDATA"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8807b",
+    "text": "1511_g145_smic_0x1013 rev Module Test Specification FPC1511-G175 v2 #TESTDATA"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x880c9",
+    "text": "1511_g175_smic_0x1012 rev Module Test Specification FPC1511-G175 v2 #TESTDATA"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x88117",
+    "text": "1511_g175_smic_0x1013 rev Module Test Specification FPC1511-G175 v2 #TESTDATA"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x88360",
+    "text": "#RESET_PIXEL"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8ede0",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_settings/src/fpc_settings.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8ee9b",
+    "text": "fpc_settings_reset_register"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8f3df",
+    "text": "SNRPRESET"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8fbac",
+    "text": "fpc_sensortest_init_ctl"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8fbc4",
+    "text": "%s could not send command soft reset 0x%08x"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8fc87",
+    "text": "fpc_sensortest_destroy_ctl"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8fca2",
+    "text": "fpc_sensortest_ctl_get_log"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8fccc",
+    "text": "fpc_sensortest_run_ctl_test"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8fe9c",
+    "text": "fpc_test_is_reset_pixel_test_supported"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8ff26",
+    "text": "%s, Failed to set mode FPC_SENSOR_MODE_DEEP_SLEEP 0x%08x"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8ffaf",
+    "text": "fpc_test_run_reset_pixel_test"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x8ffcd",
+    "text": "<--%s fpc_test_reset_pixel_test failed."
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x90561",
+    "text": "<--fpc_sensor_driver_image_data_factory failed with error: 0x%08x"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x905a3",
+    "text": "<--fpc_sensor_driver_capture_image failed with error: 0x%08x"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x90611",
+    "text": "fpc_test_reset_pixel_test"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9062b",
+    "text": "<--%s init_reset_pixel_test_based_on_test_level failed with: %d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9066b",
+    "text": "<--%s, reset pixel test failed %d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x906c5",
+    "text": "%s: sensor irq fail on entry 0x%08x"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x90701",
+    "text": "%s: irq read fail 0, ret=%d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9071d",
+    "text": "%s failed to read IRQ register ret 0x%08x"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x90762",
+    "text": "%s failed to read IRQ register 0x%08x"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x90788",
+    "text": "fpc_sensor_selftest_capture"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x907a4",
+    "text": "%s IRQ not clear prior to capture (0x%x)"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x907ec",
+    "text": "%s IRQ not LOW after clear (0x%x)"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9080e",
+    "text": "fpc_sensor_selftest_irq"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x90826",
+    "text": "%s IRQ not correct IRQ register = %d should be = 0"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x90e29",
+    "text": "Reset Pixel Test, median: %d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x90e46",
+    "text": "Reset Pixel Test pass: %s"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x91a17",
+    "text": "When applied delta to limits_preset it was %f < 0"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x91b46",
+    "text": "When applied delta to limits_preset it was %d < 0"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x930d5",
+    "text": "reset_pixels_image"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x932dd",
+    "text": "CTL INFO:Defective Pixels: Reset pixels test failed!"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x93312",
+    "text": "CTL INFO:Number of pixel errors in reset pixels test: %u"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x934cc",
+    "text": "reset_pixels_test"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x94828",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_access/src/fpc_access.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x948b8",
+    "text": "%s, HWID = [0x%02x, 0x%02x]"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x948d4",
+    "text": "%s, COMP HWID = [0x%02x, 0x%02x]"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x94b5f",
+    "text": "%s, IRQ error bit set after data fetch"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x94d19",
+    "text": "fpc_access_read_sensor_hwid"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x94e3e",
+    "text": "pre_sw_reset_2060"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x94e6d",
+    "text": "%s timeout in analog blocks ready signal for fpc2060"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x94fbf",
+    "text": "%s, wait irq failed, %d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x95016",
+    "text": "%s - Timeout, polled: %u times(%llu us) without IRQ being set"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x95089",
+    "text": "post_sw_reset_2060"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x950d0",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_access/src/fpc_access_otp_v1.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9519a",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_access/src/fpc_access_otp_v2.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x955ba",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/fpc_bio/src/pfe/fpc_bio_sw29_c27abb6b83.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x95761",
+    "text": "FpcBioSensorInfo: image_width=%d image_height=%d sensor_type=%d coating_type=%d companion_chip_type=%d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9587c",
+    "text": "MQT: limits_preset=%d cropping=%d,%d,%d,%d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x958be",
+    "text": "MQT: coverage=%d signal_power=%f contrast_strength=%f noise_fp=%f"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x95c1a",
+    "text": "fpc_hw_get_sensor_size_for_type"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x95c65",
+    "text": "fpc_hw_get_sensor_details_for_hardware_id"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x95fb8",
+    "text": "FPC1020 (A1)"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x95fe4",
+    "text": "FPC1024"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96010",
+    "text": "FPC1020 (A2)"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9603c",
+    "text": "FPC1020 (A3)"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96068",
+    "text": "FPC1020 (A4/A5)"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96094",
+    "text": "FPC1320"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x960c0",
+    "text": "FPC1021"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x960ec",
+    "text": "FPC1025"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96118",
+    "text": "FPC1321"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96144",
+    "text": "FPC1022"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96170",
+    "text": "FPC1035"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9619c",
+    "text": "FPC1235"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x961c8",
+    "text": "FPC1140"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x961f4",
+    "text": "FPC1145"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96220",
+    "text": "FPC1245"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9624c",
+    "text": "FPC1262"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96278",
+    "text": "FPC1263"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x962a4",
+    "text": "FPC1264"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x962d0",
+    "text": "FPC1265"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x962fc",
+    "text": "FPC1266"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96328",
+    "text": "FPC1267"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96354",
+    "text": "FPC1267"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96380",
+    "text": "FPC1267"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x963ac",
+    "text": "FPC1267"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x963d8",
+    "text": "FPC1268"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96404",
+    "text": "FPC1028"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96430",
+    "text": "FPC1228_G175"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9645c",
+    "text": "FPC1229_G175"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96488",
+    "text": "FPC1229_G175_SS"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x964b4",
+    "text": "FPC1075"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x964e0",
+    "text": "FPC1272_G175"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9650c",
+    "text": "FPC1291_S"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96538",
+    "text": "FPC1291_G175"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96564",
+    "text": "FPC1291_Z120"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96590",
+    "text": "FPC1272_Z"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x965bc",
+    "text": "FPC1228_Z"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x965e8",
+    "text": "FPC1261_S"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96614",
+    "text": "FPC1511_S"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96640",
+    "text": "FPC1511_G175"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9666c",
+    "text": "FPC1611"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x96698",
+    "text": "FPC1511_G145"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x966c4",
+    "text": "FPC1620_DEV"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x966f0",
+    "text": "FPC1521_S"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9707c",
+    "text": "<--%s fpc_sensor_power_wakeup failed %#X"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x97100",
+    "text": "%s fpc_sensor_hal_set_idle_mode failed %d"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x97190",
+    "text": "%s read IRQ failed (%#X)"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x971a9",
+    "text": "%s fpc1020_read_register 0x%X"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x971c7",
+    "text": "%s fpc1020_read_register failed %#X"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9734b",
+    "text": "nav_image_reset"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x97397",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/afd/fpc_sensor_driver_afd_v1.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9746a",
+    "text": "reset_afd_registers"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x975a0",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/afd/fpc_sensor_driver_afd_v2.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9786c",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/afd/fpc_sensor_driver_afd_v3.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9790d",
+    "text": "reset_calibration_data"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x97a09",
+    "text": "%s: calibration failed for plate %u - powering down AFD!"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x97b2c",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/fpc_sensor_driver_cac_if.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x97d02",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/dfd/fpc_sensor_driver_dfd_v1.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x97ec4",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/dfd/fpc_sensor_driver_dfd_v2.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x97fd4",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/dfd/fpc_sensor_driver_dfd_v3.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x98415",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/dfd/fpc_sensor_driver_dfd_v4.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x986c7",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/dp/fpc_sensor_driver_dp_v1.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x987f3",
+    "text": "dp_calibrate_reset_pixel"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9880c",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/dp/fpc_sensor_driver_dp_v2.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x98935",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/dp/fpc_sensor_driver_dp_v3.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x98a0b",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_driver/src/fpc_sensor_driver_image_utils.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9a1ee",
+    "text": "Image constant test: fpc_hw_get_sensor_details_for_hardware_id() failed"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9a459",
+    "text": "Image drive test: init_image_drive_test_based_on_hwid() failed"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bc72",
+    "text": "Module Test Specification FPC1228"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bc94",
+    "text": "Module Test Specification FPC1261-S"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bcb8",
+    "text": "Module Test Specification FPC1291-G175"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bcdf",
+    "text": "Module Test Specification FPC1291-G175 Single Supply"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bd14",
+    "text": "Module Test Specification FPC1291-Z120"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bd3b",
+    "text": "Module Test Specification FPC1291-S"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bd5f",
+    "text": "Limits from FPC1321 test limits"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bd7f",
+    "text": "Module Test Specification FPC1020"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bda1",
+    "text": "Module Test Specification FPC1024"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bdc3",
+    "text": "Module Test Specification FPC1025"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bde5",
+    "text": "Module Test Specification FPC1028"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9be07",
+    "text": "Module Test Specification FPC1075"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9be29",
+    "text": "Module Test Specification FPC1510, not supported"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9be5a",
+    "text": "Module Test Specification FPC1510"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bea9",
+    "text": "Module Test Specification FPC1511-G175"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bed0",
+    "text": "Module Test Specification FPC1229"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9bef2",
+    "text": "Module Test Specification FPC1229-SS"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9d1c9",
+    "text": "snr_preset"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9d2e4",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/sensor_access/src/fpc_access_crc.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x9d6b6",
+    "text": "fpc_algo_nav_reset_image_estimation"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x110919",
+    "text": "@/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/prodtestlib/tools_bio/src/fpc_bio_utils_math.c"
+  },
+  {
+    "file": "fpctzapp.b02",
+    "offset": "0x1109d9",
+    "text": "/home/sheldon/1521s_lenovo_doha_sw28.3.0_branches/prodtestlib/tools_bio/src/fpc_internal_calculate_coverage.c"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xdf29",
+    "text": "nav_image_reset"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xe2c7",
+    "text": "fpc_sensor_finger_lost_wakeup_setup"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xe69f",
+    "text": "qsee_prng_getdata"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xe6b1",
+    "text": "fpc_sensortest_destroy_ctl"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xe849",
+    "text": "qsee_spi_full_duplex"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xea0b",
+    "text": "fpc_hw_get_sensor_fab"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xeb54",
+    "text": "fpc_sensor_driver_defective_pixel_update"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xef79",
+    "text": "qsee_register_shared_buffer"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xf061",
+    "text": "fpc_pal_wait_irq"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xf072",
+    "text": "qsee_prepare_shared_buf_for_secure_read"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xf264",
+    "text": "fpc_sensor_driver_close"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xf578",
+    "text": "qsee_log_set_mask"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xf630",
+    "text": "ce2_internal_sensor_determine_vddtx_fpc1290"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xf6ce",
+    "text": "qsee_fts_integrity_protect"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xf9f8",
+    "text": "init_reset_pixel_test"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0xfcd4",
+    "text": "fpc_pal_acknowledge_irq"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x10401",
+    "text": "qsee_fts_encrypt"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x10513",
+    "text": "fpc_sensor_wakeup_setup"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x10602",
+    "text": "qsee_decapsulate_inter_app_message"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x10625",
+    "text": "ce2_internal_fpc1290_add_metadata_for_zebra_image"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x1071f",
+    "text": "fpc_sensor_driver_set_calibration_data"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x10aff",
+    "text": "fpc_sensor_driver_image_data_factory"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x10e98",
+    "text": "qsee_spi_write"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x10ff4",
+    "text": "ce2_internal_sensor_reset_with_rec_settings"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x11050",
+    "text": "fpc_sensor_get_finger_detect_limit"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x110e6",
+    "text": "ctl_test_run_without_reset"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x11406",
+    "text": "fpc_ta_sensortest_module"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x115c7",
+    "text": "fpc_sensor_wakeup_qualification"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x11622",
+    "text": "fpc_ta_sensor_module"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x116f5",
+    "text": "fpc_sensortest_init_ctl"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x117a5",
+    "text": "qsee_prepare_shared_buf_for_nosecure_read"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x12066",
+    "text": "fpc_sensor_get_dfd_zone_count"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x122aa",
+    "text": "fpc_navigation_reset"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x12796",
+    "text": "fpc_hw_get_sensor_supported_companions_for_type"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x12be0",
+    "text": "qsee_log"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x12c42",
+    "text": "fpc_sensor_driver_get_calibration_data_size"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x12ec0",
+    "text": "fpc_sensor_driver_get_calibration_data"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x131b2",
+    "text": "fpc_sensor_driver_get_default_capture_config"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x13978",
+    "text": "fpc_sensortest_ctl_get_log"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x13ba1",
+    "text": "qsee_spi_open"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x13f25",
+    "text": "fpc_match_result_reset"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x140bf",
+    "text": "fpc_sensor_driver_get_coverage"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x14746",
+    "text": "qsee_fts_decrypt"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x148b8",
+    "text": "qsee_fts_integrity_verify"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x14a61",
+    "text": "init_image_constant_test_based_on_hwid"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x14b8e",
+    "text": "qsee_spi_close"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x14c57",
+    "text": "fpc_device_reset_image_data_factory"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x15295",
+    "text": "qsee_malloc"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x153b4",
+    "text": "fpc_sensor_get_handle"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x15dd5",
+    "text": "qsee_deregister_shared_buffer"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x15e0b",
+    "text": "fpc_sensor_driver_set_mode"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x1607d",
+    "text": "fpc_device_power_wakeup"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x160b3",
+    "text": "qsee_free"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x16189",
+    "text": "fpc_hw_get_sensor_hardware_id"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x163b5",
+    "text": "fpc_test_is_reset_pixel_test_supported"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x164bd",
+    "text": "fpc_sensor_communication_start"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x16567",
+    "text": "fpc_hw_get_sensor_info_for_descriptor"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x165fe",
+    "text": "fpc_sensor_driver_capture_image"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x166f7",
+    "text": "ce_internal_sensor_get_hwid"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x168f7",
+    "text": "nav_debug_reset"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x16bee",
+    "text": "ce2_internal_fpc1290_calibrate"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x16c67",
+    "text": "ctl_sensor_powerup"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x16dd6",
+    "text": "fpc_sensor_deep_sleep"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x16fb2",
+    "text": "qsee_realloc"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x173b4",
+    "text": "sensor_driver_reset"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x1755d",
+    "text": "fpc_sensor_communication_stop"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x177d3",
+    "text": "ce2_internal_fpc1510_add_metadata_for_zebra_image"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x17aba",
+    "text": "fpc_test_run_reset_pixel_test"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x17b5c",
+    "text": "fpc_sensor_is_afd_calibrated"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x17cdb",
+    "text": "fpc_sensor_check_finger_lost"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x17e30",
+    "text": "ce2_internal_fpc1510_calibrate"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x181a3",
+    "text": "fpc_hw_get_sensor_type"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x18449",
+    "text": "init_image_drive_test_based_on_hwid"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x184ff",
+    "text": "qsee_hmac"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x18647",
+    "text": "qsee_get_uptime"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x18668",
+    "text": "fpc_sensor_driver_calibrate"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x188a5",
+    "text": "fpc_sensor_driver_populate_fq"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x18941",
+    "text": "fpc_access_read_sensor_hwid"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x1895d",
+    "text": "fpc_sensortest_ctl_get_log_size"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x189a4",
+    "text": "fpc_hw_get_sensor_size_for_type"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x18c7c",
+    "text": "ctl_sensor_reset"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x193d9",
+    "text": "fpc_settings_reset_register"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x1949d",
+    "text": "fpc_algo_nav_reset_image_estimation"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x194d3",
+    "text": "init_reset_pixel_test_based_on_test_level"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x19625",
+    "text": "fpc_hw_get_sensor_revision"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x1967e",
+    "text": "fpc_sensortest_run_ctl_test"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x1976e",
+    "text": "reset_pixel_test"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x19879",
+    "text": "fpc_sensor_driver_open"
+  },
+  {
+    "file": "fpctzapp.b07",
+    "offset": "0x19899",
+    "text": "fpc_hw_get_sensor_details_for_hardware_id"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x1a36",
+    "text": "&fpsensor_dev->wq_irq_return"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x1ca1",
+    "text": "[fpCoreDriver][SN=%d]  get irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x1d43",
+    "text": "[fpCoreDriver][SN=%d]  irq thread reqquest success!"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x1d78",
+    "text": "[fpCoreDriver][SN=%d]  irq thread request failed , retval =%d "
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x1e6d",
+    "text": "[fpCoreDriver][SN=%d] %s: chip reset command"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x1e9b",
+    "text": "[fpCoreDriver][SN=%d] %s: chip ENable IRQ command"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x1ece",
+    "text": "[fpCoreDriver][SN=%d] %s: chip disable IRQ command"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x1f98",
+    "text": "[fpCoreDriver][SN=%d] %s: FPSENSOR_IOC_ENABLE_POWER ======"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x1fd4",
+    "text": "[fpCoreDriver][SN=%d] %s: FPSENSOR_IOC_DISABLE_POWER ======"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x21c1",
+    "text": "[fpCoreDriver][SN=%d] Failed to request irq GPIO. ret = %d"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x21fd",
+    "text": "fp-gpio-reset"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x220b",
+    "text": "[fpCoreDriver][SN=%d] Failed to request reset GPIO. ret = %d"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x22c1",
+    "text": "[fpCoreDriver][SN=%d] setup fpsensor irq gpio for input failed!error[%d]"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x230b",
+    "text": "[fpCoreDriver][SN=%d] fpsensor irq gpio to irq failed!"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x2343",
+    "text": "fpsensor_disable_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x2389",
+    "text": "[fpCoreDriver][SN=%d] %s, irq already disabled"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x23fe",
+    "text": "[fpCoreDriver][SN=%d] %s, disble_irq. irq = %d"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x26b0",
+    "text": "irq_set_irq_wake"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x26f0",
+    "text": "devm_request_threaded_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x2730",
+    "text": "gpiod_to_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x27f0",
+    "text": "enable_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x2b70",
+    "text": "devm_free_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x2bb0",
+    "text": "disable_irq_nosync"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x51db",
+    "text": "in_hrtirq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x6864",
+    "text": "css_reset"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x7677",
+    "text": "sched_reset_on_fork"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x9278",
+    "text": "nway_reset"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x92f7",
+    "text": "rx_coalesce_usecs_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x930d",
+    "text": "rx_max_coalesced_frames_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x9353",
+    "text": "tx_coalesce_usecs_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x9369",
+    "text": "tx_max_coalesced_frames_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x992d",
+    "text": "reset"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xa70e",
+    "text": "poweroff"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xa750",
+    "text": "poweroff_late"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xa76c",
+    "text": "suspend_noirq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xa77a",
+    "text": "resume_noirq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xa787",
+    "text": "freeze_noirq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xa794",
+    "text": "thaw_noirq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xa79f",
+    "text": "poweroff_noirq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xa7ae",
+    "text": "restore_noirq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xaa2e",
+    "text": "power"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xaa34",
+    "text": "power_state"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xaa7e",
+    "text": "is_noirq_suspended"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xaac0",
+    "text": "wakeirq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xaac8",
+    "text": "wake_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xac41",
+    "text": "irq_safe"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb07f",
+    "text": "irq_domain_bus_token"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb0ad",
+    "text": "irq_fwspec"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb0bc",
+    "text": "irq_hw_number_t"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb0de",
+    "text": "hwirq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb131",
+    "text": "irq_common_data"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb154",
+    "text": "irq_startup"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb160",
+    "text": "irq_shutdown"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb16d",
+    "text": "irq_enable"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb178",
+    "text": "irq_disable"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb184",
+    "text": "irq_ack"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb18c",
+    "text": "irq_mask"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb195",
+    "text": "irq_mask_ack"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb1a2",
+    "text": "irq_unmask"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb1ad",
+    "text": "irq_eoi"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb1b5",
+    "text": "irq_set_affinity"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb1c6",
+    "text": "irq_retrigger"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb1d4",
+    "text": "irq_set_type"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb1e1",
+    "text": "irq_set_wake"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb1ee",
+    "text": "irq_bus_lock"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb1fb",
+    "text": "irq_bus_sync_unlock"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb20f",
+    "text": "irq_cpu_online"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb21e",
+    "text": "irq_cpu_offline"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb22e",
+    "text": "irq_suspend"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb23a",
+    "text": "irq_resume"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb245",
+    "text": "irq_pm_shutdown"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb255",
+    "text": "irq_calc_mask"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb263",
+    "text": "irq_print_chip"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb272",
+    "text": "irq_request_resources"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb288",
+    "text": "irq_release_resources"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb29e",
+    "text": "irq_compose_msi_msg"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb2ba",
+    "text": "irq_write_msi_msg"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb2cc",
+    "text": "irq_get_irqchip_state"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb2e2",
+    "text": "IRQCHIP_STATE_PENDING"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb2f8",
+    "text": "IRQCHIP_STATE_ACTIVE"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb30d",
+    "text": "IRQCHIP_STATE_MASKED"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb322",
+    "text": "IRQCHIP_STATE_LINE_LEVEL"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb33b",
+    "text": "irqchip_irq_state"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb34d",
+    "text": "irq_set_irqchip_state"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb363",
+    "text": "irq_set_vcpu_affinity"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb397",
+    "text": "irq_chip"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb3bd",
+    "text": "irq_data"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb3db",
+    "text": "irq_domain_ops"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb40a",
+    "text": "irqs_per_chip"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb422",
+    "text": "irq_flags_to_clear"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb435",
+    "text": "irq_flags_to_set"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb44f",
+    "text": "IRQ_GC_INIT_MASK_CACHE"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb466",
+    "text": "IRQ_GC_INIT_NESTED_LOCK"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb47e",
+    "text": "IRQ_GC_MASK_CACHE_PER_TYPE"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb499",
+    "text": "IRQ_GC_NO_MASK"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb4a8",
+    "text": "IRQ_GC_BE_IO"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb4b5",
+    "text": "irq_gc_flags"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb4e0",
+    "text": "irq_base"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb4e9",
+    "text": "irq_cnt"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb577",
+    "text": "irq_chip_regs"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb58d",
+    "text": "kstat_irqs"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb598",
+    "text": "handle_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb5aa",
+    "text": "IRQ_NONE"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb5b3",
+    "text": "IRQ_HANDLED"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb5bf",
+    "text": "IRQ_WAKE_THREAD"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb5cf",
+    "text": "irqreturn"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb5d9",
+    "text": "irqreturn_t"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb5e5",
+    "text": "irq_handler_t"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb62b",
+    "text": "irqaction"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb688",
+    "text": "irq_count"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb6a1",
+    "text": "irqs_unhandled"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb719",
+    "text": "irq_affinity_notify"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb7ad",
+    "text": "parent_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb7b8",
+    "text": "irq_desc"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb7c1",
+    "text": "irq_flow_handler_t"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb7e4",
+    "text": "irq_chip_type"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb7f2",
+    "text": "irq_chip_generic"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb803",
+    "text": "irq_domain_chip_generic"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb81b",
+    "text": "hwirq_max"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb825",
+    "text": "revmap_direct_max_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0xb861",
+    "text": "irq_domain"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x107cc",
+    "text": "devm_request_threaded_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x107e6",
+    "text": "devm_free_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x108e7",
+    "text": "gpiod_to_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10907",
+    "text": "irq_set_irq_wake"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10918",
+    "text": "disable_irq_nosync"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x1094e",
+    "text": "enable_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10b06",
+    "text": "irq_enabled"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10b12",
+    "text": "RcvIRQ"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10b19",
+    "text": "irq_gpio"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10b22",
+    "text": "reset_gpio"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10b2d",
+    "text": "power_gpio"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10b38",
+    "text": "wq_irq_return"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10cd7",
+    "text": "fpsensor_disable_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10cf9",
+    "text": "setRcvIRQ"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10d8a",
+    "text": "fpsensor_hw_reset"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10e99",
+    "text": "fpsensor_enable_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10ec3",
+    "text": "fpsensor_irq_gpio_cfg"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10eee",
+    "text": "__gpio_to_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10efc",
+    "text": "gpio_to_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x10f15",
+    "text": "enable_irq_wake"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x11043",
+    "text": "fpsensor_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x317b2",
+    "text": "irqdomain.h"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x317d5",
+    "text": "irq.h"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x317ed",
+    "text": "irqdesc.h"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x317fa",
+    "text": "irqreturn.h"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x31809",
+    "text": "irqhandler.h"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x33b40",
+    "text": "fpsensor_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x33c29",
+    "text": "devm_request_threaded_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x33cde",
+    "text": "gpiod_to_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x33cf1",
+    "text": "enable_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x33dab",
+    "text": "devm_free_irq"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x33e3f",
+    "text": "irq_set_irq_wake"
+  },
+  {
+    "file": "fpsensor_spi_tee.ko",
+    "offset": "0x33ed6",
+    "text": "disable_irq_nosync"
+  }
+]

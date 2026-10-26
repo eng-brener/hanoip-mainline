@@ -1,0 +1,8 @@
+
+~ # (/bin/busybox chroot /opt/ssc /usr/bin/ssccli --sensor=gyroscope --timeout=3
+0 > /run/ssc-gyroscope.log 2>&1 &); echo GYROSCOPE_RUNNING; printf '\nHANOIP_END
+_8cb19d1b234e\n'
+GYROSCOPE_RUNNING
+
+HANOIP_END_8cb19d1b234e
+~ # 

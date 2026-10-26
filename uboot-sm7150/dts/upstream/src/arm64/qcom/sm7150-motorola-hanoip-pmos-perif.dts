@@ -1,0 +1,84 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include <dt-bindings/interrupt-controller/irq.h>
+#include "sm7150-motorola-hanoip-pmos-audio3.dts"
+
+/*
+ * Peripherals on top of the audio DT: vibrator, both flash LED channels
+ * and the NFC controller, as described by the vendor tree.
+ */
+
+/* LDO vibrator; the vendor runs it at 3.0 V without overdrive. */
+&pm6150_vib {
+	qcom,vib-max-microvolt = <3000000>;
+	status = "okay";
+};
+
+/*
+ * Channel 1 is the rear flash (vendor flash_0, up to 1150 mA) and channel 2
+ * the front one (flash_1, up to 600 mA); torch is 500 mA max on both. Keep
+ * them as separate LEDs, the rear one first so the Plasma flashlight (it
+ * looks for *:flash) picks it, and stay well below the vendor limits.
+ */
+&pm6150l_flash {
+	led-1 {
+		led-sources = <1>;
+		led-max-microamp = <150000>;
+	};
+
+	led-2 {
+		function = LED_FUNCTION_FLASH;
+		function-enumerator = <1>;
+		color = <LED_COLOR_ID_WHITE>;
+		led-sources = <2>;
+		led-max-microamp = <100000>;
+		flash-max-microamp = <500000>;
+		flash-max-timeout-us = <1280000>;
+	};
+};
+
+/*
+ * Notification LED: one white LED on TRILED sink 1 (LPG channel 1, the
+ * vendor "charging" LED). Sinks 2 and 3 light nothing on their own.
+ */
+&pm6150l_lpg {
+	status = "okay";
+
+	led@1 {
+		reg = <1>;
+		color = <LED_COLOR_ID_WHITE>;
+		function = LED_FUNCTION_STATUS;
+	};
+};
+
+/* NXP PN54x (vendor qcom,nq-nci): IRQ GPIO37, VEN GPIO12, firmware GPIO36. */
+&i2c2 {
+	nfc@28 {
+		compatible = "nxp,nxp-nci-i2c";
+		reg = <0x28>;
+
+		interrupt-parent = <&tlmm>;
+		interrupts = <37 IRQ_TYPE_EDGE_RISING>;
+
+		enable-gpios = <&tlmm 12 GPIO_ACTIVE_HIGH>;
+		firmware-gpios = <&tlmm 36 GPIO_ACTIVE_HIGH>;
+
+		pinctrl-0 = <&nfc_int_active>, <&nfc_enable_active>;
+		pinctrl-names = "default";
+	};
+};
+
+&tlmm {
+	nfc_int_active: nfc-int-active-state {
+		pins = "gpio37";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-pull-down;
+	};
+
+	nfc_enable_active: nfc-enable-active-state {
+		pins = "gpio12", "gpio36";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+};

@@ -1,0 +1,40 @@
+
+~ # echo READ_BEGIN; BB=/bin/busybox; for d in /dev/sd?; do echo "$d ro=$($BB bl
+ockdev --getro $d) size=$($BB blockdev --getsize64 $d)"; done; for i in 1 2 3; d
+o $BB dd if=/dev/sdb bs=65536 count=1 2>/dev/null | $BB sha256sum; done; echo 3 
+> /proc/sys/vm/drop_caches; echo SEQ_sda_256MiB; t0=$($BB cut -d' ' -f1 /proc/up
+time); $BB dd if=/dev/sda of=/dev/null bs=1048576 count=256 2>&1 | $BB tail -1; 
+t1=$($BB cut -d' ' -f1 /proc/uptime); echo "t0=$t0 t1=$t1"; echo 3 > /proc/sys/v
+m/drop_caches; echo SEQ_sde_256MiB; t0=$($BB cut -d' ' -f1 /proc/uptime); $BB dd
+ if=/dev/sde of=/dev/null bs=1048576 count=256 2>&1 | $BB tail -1; t1=$($BB cut 
+-d' ' -f1 /proc/uptime); echo "t0=$t0 t1=$t1"; for d in /dev/sd?; do $BB blockde
+v --getro $d; done | $BB sort | $BB uniq -c; $BB cat /sys/bus/platform/devices/*
+.dsi/error_snapshot /proc/sys/kernel/tainted /sys/class/thermal/thermal_zone0/te
+mp; $BB dmesg | $BB grep -ciE "ufshcd.*(error|fail|timeout|abort)|smmu.*fault|I/
+O error|Oops"; printf '\n%s\n' HANOIP_END_34a3ec74fed2
+READ_BEGIN
+/dev/sda ro=1 size=16777216
+/dev/sdb ro=1 size=126844141568
+/dev/sdc ro=1 size=8388608
+/dev/sdd ro=1 size=8388608
+/dev/sde ro=1 size=536870912
+/dev/sdf ro=1 size=536870912
+629a8ca6e6945642b045e47dad5f8c9d8559d3f4f245422d27ac3c1911f10a15  -
+629a8ca6e6945642b045e47dad5f8c9d8559d3f4f245422d27ac3c1911f10a15  -
+629a8ca6e6945642b045e47dad5f8c9d8559d3f4f245422d27ac3c1911f10a15  -
+[  249.010919] busybox (132): drop_caches: 3
+SEQ_sda_256MiB
+16777216 bytes (16.0MB) copied, 0.087671 seconds, 182.5MB/s
+t0=249.01 t1=249.10
+[  249.121438] busybox (132): drop_caches: 3
+SEQ_sde_256MiB
+268435456 bytes (256.0MB) copied, 0.496941 seconds, 515.2MB/s
+t0=249.12 t1=249.62
+      6 1
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+4096
+39000
+7
+
+HANOIP_END_34a3ec74fed2
+~ # 

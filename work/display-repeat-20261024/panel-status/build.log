@@ -1,0 +1,7 @@
+make[6]: 'drivers/media/cec/core/cec.mod' is up to date.
+make[6]: 'drivers/gpu/drm/clients/drm_client_lib.mod' is up to date.
+make[6]: 'drivers/gpu/drm/scheduler/gpu-sched.mod' is up to date.
+make[6]: 'drivers/gpu/drm/display/drm_display_helper.mod' is up to date.
+make[6]: 'drivers/gpu/drm/msm/msm.mod' is up to date.
+  MODPOST Module.symvers
+  LD [M]  drivers/gpu/drm/panel/panel-ilitek-ili7807s.ko

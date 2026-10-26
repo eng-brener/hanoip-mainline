@@ -1,0 +1,42 @@
+#!/sbin/openrc-run
+# Devfreq floors that remove Plasma stutter and app-launch stalls on hanoip
+# (measured 2026-10-26, confirmed by the user on the phone):
+#  - Adreno 618: simple_ondemand from 180 MHz with a 50 ms poll ramped up
+#    too late (124 frequency changes in 20 s of scrolling). A 355 MHz floor
+#    and a 16 ms (one 60 Hz frame) poll behave like a fixed 800 MHz.
+#  - UFS: simple_ondemand stayed at 50 MHz ~70% of the time while apps were
+#    loading (~184 ms of I/O stalls per launch burst). Only two levels
+#    exist; keep 200 MHz, the link still hibernates when idle.
+description="Hanoip GPU and UFS devfreq floors"
+
+GPU=/sys/class/devfreq/5000000.gpu
+UFS=/sys/class/devfreq/1d84000.ufshc
+
+depend() {
+	before display-manager tinydm greetd
+}
+
+wait_for() {
+	i=0
+	while [ ! -w "$1" ] && [ $i -lt 50 ]; do
+		sleep 0.1
+		i=$((i + 1))
+	done
+	[ -w "$1" ]
+}
+
+start() {
+	ebegin "Setting GPU and UFS devfreq floors"
+	ret=0
+	if wait_for "$GPU/min_freq"; then
+		echo 355000000 > "$GPU/min_freq" && echo 16 > "$GPU/polling_interval" || ret=1
+	else
+		ewarn "no $GPU"; ret=1
+	fi
+	if wait_for "$UFS/min_freq"; then
+		echo 200000000 > "$UFS/min_freq" || ret=1
+	else
+		ewarn "no $UFS"; ret=1
+	fi
+	eend $ret
+}

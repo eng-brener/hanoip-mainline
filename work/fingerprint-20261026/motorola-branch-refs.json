@@ -1,0 +1,12 @@
+[
+  {
+    "ref": "refs/heads/android-12-release-s2ris32.32-20-7-5",
+    "node_id": "MDM6UmVmMTc4MTk3OTEwOnJlZnMvaGVhZHMvYW5kcm9pZC0xMi1yZWxlYXNlLXMycmlzMzIuMzItMjAtNy01",
+    "url": "https://api.github.com/repos/MotorolaMobilityLLC/motorola-kernel-modules/git/refs/heads/android-12-release-s2ris32.32-20-7-5",
+    "object": {
+      "sha": "f138159d1ddc0d84c9c9aa86cbe87a5dfc3dabb4",
+      "type": "commit",
+      "url": "https://api.github.com/repos/MotorolaMobilityLLC/motorola-kernel-modules/git/commits/f138159d1ddc0d84c9c9aa86cbe87a5dfc3dabb4"
+    }
+  }
+]

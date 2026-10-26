@@ -1,0 +1,17 @@
+{
+  "ram_end": "0x17dd00000",
+  "memory_matches_known_good": true,
+  "reserved_memory_matches_known_good": true,
+  "reserved_ranges": 22,
+  "reserved_ranges_do_not_overlap": true,
+  "ufs_disabled": true,
+  "uboot_ignores_legacy_header_addresses": true,
+  "wled_strings": [
+    0,
+    1,
+    2
+  ],
+  "initial_brightness": 512,
+  "touch_irq": "TLMM9 falling edge",
+  "mdss_core_reset_omitted": true
+}

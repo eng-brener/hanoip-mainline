@@ -1,0 +1,4 @@
+
+~ # /sbin/reboot
+HANOIP: resetting the RAM-only diagnostic system
+[  322.677829] sysrq: Resetting

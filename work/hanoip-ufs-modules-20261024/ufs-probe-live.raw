@@ -1,0 +1,31 @@
+
+~ # /bin/busybox kill $(/bin/busybox cat /run/hanoip-ufs-readonly.pid)
+~ # /bin/busybox rm -f /run/hanoip-ufs-started
+~ # /bin/busybox cat > /run/hanoip-load-ufs-v2 <<'HANOIP_EOF'
+> #!/bin/sh
+> # Load only after the USB shell is connected. Never mount/format any disk.
+> set -e
+> BB=/bin/busybox
+> while read -r source target type rest; do
+>     case "$type" in
+>         rootfs|ramfs|tmpfs|proc|sysfs|devtmpfs|devpts|configfs|debugfs|tracefs
+) ;;
+>         *) echo "Refusing UFS test: $target is mounted as $type" >&2; exit 1 ;
+;
+>     esac
+> done < /proc/mounts
+> [ ! -e /run/hanoip-ufs-started ] || { echo 'UFS test already started'; exit 1;
+ }
+> for module in ufshcd-core ufshcd-pltfrm ufs-qcom; do
+>     [ -f "/lib/hanoip-ufs/$module.ko" ] || { echo "Missing $module.ko" >&2; ex
+it 1; }
+> done
+> "$BB" touch /run/hanoip-ufs-started
+> 
+> # BLKROSET changes kernel state, not storage contents. Cover whole disks and
+> # partitions as they enumerate. No automounter or filesystem service is run.
+> (
+>     set +e
+>     while :; do
+>         for disk in /dev/sd*; do
+>             [ -

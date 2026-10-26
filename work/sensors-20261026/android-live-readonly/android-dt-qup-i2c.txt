@@ -1,0 +1,18 @@
+total 0
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 0-0028 -> ../../../devices/platform/soc/888000.i2c/i2c-0/0-0028
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 0-0034 -> ../../../devices/platform/soc/888000.i2c/i2c-0/0-0034
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 1-0028 -> ../../../devices/platform/soc/a84000.i2c/i2c-1/1-0028
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 i2c-0 -> ../../../devices/platform/soc/888000.i2c/i2c-0
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 i2c-1 -> ../../../devices/platform/soc/a84000.i2c/i2c-1
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 i2c-2 -> ../../../devices/platform/soc/a8c000.i2c/i2c-2
+
+--- platform QUP/I2C ---
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 888000.i2c -> ../../../devices/platform/soc/888000.i2c
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 88c000.qcom,qup_uart -> ../../../devices/platform/soc/88c000.qcom,qup_uart
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 8c0000.qcom,qupv3_0_geni_se -> ../../../devices/platform/soc/8c0000.qcom,qupv3_0_geni_se
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 8c0000.qcom,qupv3_0_geni_se:qcom,iommu_qupv3_0_geni_se_cb -> ../../../devices/platform/soc/8c0000.qcom,qupv3_0_geni_se/8c0000.qcom,qupv3_0_geni_se:qcom,iommu_qupv3_0_geni_se_cb
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 a84000.i2c -> ../../../devices/platform/soc/a84000.i2c
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 a88000.qcom,qup_uart -> ../../../devices/platform/soc/a88000.qcom,qup_uart
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 a8c000.i2c -> ../../../devices/platform/soc/a8c000.i2c
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 ac0000.qcom,qupv3_1_geni_se -> ../../../devices/platform/soc/ac0000.qcom,qupv3_1_geni_se
+lrwxrwxrwx 1 root root 0 2026-10-26 04:06 ac0000.qcom,qupv3_1_geni_se:qcom,iommu_qupv3_1_geni_se_cb -> ../../../devices/platform/soc/ac0000.qcom,qupv3_1_geni_se/ac0000.qcom,qupv3_1_geni_se:qcom,iommu_qupv3_1_geni_se_cb

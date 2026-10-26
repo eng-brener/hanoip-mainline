@@ -1,0 +1,6 @@
+lrwxrwxrwx 1 root root 0 2026-10-26 04:55 /sys/bus/platform/devices/soc:fpc_fpc1020/driver -> ../../../../bus/platform/drivers/fpc1020
+lrwxrwxrwx 1 root root 0 1974-08-13 07:24 /sys/class/fingerprint/fpc1020 -> ../../devices/virtual/fingerprint/fpc1020
+
+/sys/class/fingerprint:
+total 0
+lrwxrwxrwx 1 root root 0 1974-08-13 07:24 fpc1020 -> ../../devices/virtual/fingerprint/fpc1020

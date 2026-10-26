@@ -1,0 +1,27 @@
+hci0 Set Public Address complete, options: 
+hci0:	Primary controller
+	current settings: br/edr 
+	name 
+	short name 
+hci0:	Configuration options
+hci0 Set Powered complete, settings: powered br/edr 
+confirm_name succeeded for <addr>
+hci0 dev_found: <addr> type BR/EDR rssi -55 flags 0x0000 
+hci0 dev_found: <addr> type BR/EDR rssi -55 flags 0x0003 
+hci0 dev_found: <addr> type LE Public rssi -58 flags 0x0000 
+hci0 dev_found: <addr> type LE Public rssi -96 flags 0x0000 
+hci0 dev_found: <addr> type LE Public rssi -98 flags 0x0000 
+hci0 dev_found: <addr> type LE Public rssi -98 flags 0x0004 
+hci0 dev_found: <addr> type LE Public rssi -98 flags 0x0020 
+hci0 dev_found: <addr> type LE Random rssi -48 flags 0x0000 
+hci0 dev_found: <addr> type LE Random rssi -53 flags 0x0004 
+hci0 dev_found: <addr> type LE Random rssi -54 flags 0x0000 
+hci0 dev_found: <addr> type LE Random rssi -55 flags 0x0004 
+hci0 dev_found: <addr> type LE Random rssi -61 flags 0x0004 
+hci0 dev_found: <addr> type LE Random rssi -64 flags 0x0000 
+hci0 dev_found: <addr> type LE Random rssi -64 flags 0x0004 
+hci0 dev_found: <addr> type LE Random rssi -66 flags 0x0004 
+hci0 dev_found: <addr> type LE Random rssi -85 flags 0x0000 
+hci0 dev_found: <addr> type LE Random rssi -85 flags 0x0004 
+hci0 dev_found: <addr> type LE Random rssi -88 flags 0x0000 
+hci0 dev_found: <addr> type LE Random rssi -91 flags 0x0000 

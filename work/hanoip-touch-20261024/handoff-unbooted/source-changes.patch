@@ -1,0 +1,181 @@
+diff --git a/README.md b/README.md
+index fc2b2b79d..3bca8b483 100644
+--- a/README.md
++++ b/README.md
+@@ -1,5 +1,15 @@
+ # U-Boot + Kernel Mainline para Motorola Moto G60 (hanoip / SM7150)
+ 
++> **Regra atual: nenhum flash nem gravação em partições do celular.** Os exemplos
++> antigos de flash abaixo são históricos e não devem ser executados.
++> **Checkpoint 2026-10-24:** boot temporário em RAM com shell USB, correção QUP
++> e **UFS funcionando em leitura**, com discos e partições em somente leitura.
++> Veja [o checkpoint UFS](docs/kernel/checkpoint-2026-10-24-ufs-leitura.txt).
++> A etapa de display já criou DRM/DSI ativo em 1080×2460 a 60 Hz, com DSC e
++> `msmdrmfb`; o usuário confirmou a mensagem visível na tela. Veja
++> [o checkpoint de display](docs/kernel/checkpoint-2026-10-24-display.txt).
++> As seções com datas de agosto abaixo são histórico do port.
++
+ Port do U-Boot mainline (fork sm7150-mainline/u-boot) e kernel Linux mainline
+ (fork sm7150-mainline/linux) para o Moto G60 (codename `hanoip`,
+ SoC Qualcomm Snapdragon 730G / `sm7150` / `sdmmagpie`).
+@@ -140,4 +150,4 @@ fastboot boot work/u-boot-hanoip-boot.img
+ - Validar o fix do watchdog (kernel deve ficar estável sem reset de 30s)
+ - Ler dmesg (ramoops agora configurado) → confirmar o probe do LCDB
+ - Port completo do driver LCDB PM6150L (voltage + enable + VREG_OK)
+-- Driver de painel (avdd/avee reais), DSC, WLED, 60/90/120Hz
+\ No newline at end of file
++- Driver de painel (avdd/avee reais), DSC, WLED, 60/90/120Hz
+diff --git a/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile b/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile
+index ccf095bec..d0e14d6f1 100644
+--- a/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile
++++ b/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile
+@@ -348,6 +348,10 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-xiaomi-curtana.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-xiaomi-joyeuse.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-google-sunfish.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-diagnostic.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-ufs-diagnostic.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-display-diagnostic.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-touch-diagnostic.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-davinci-samsung.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-davinci-visionox.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-surya-huaxing.dtb
+diff --git a/kernel-mainline/drivers/gpu/drm/msm/msm_iommu.c b/kernel-mainline/drivers/gpu/drm/msm/msm_iommu.c
+index 897e42c8d..66ab90753 100644
+--- a/kernel-mainline/drivers/gpu/drm/msm/msm_iommu.c
++++ b/kernel-mainline/drivers/gpu/drm/msm/msm_iommu.c
+@@ -7,6 +7,7 @@
+ #include <linux/adreno-smmu-priv.h>
+ #include <linux/io-pgtable.h>
+ #include <linux/kmemleak.h>
++#include <linux/of_address.h>
+ #include "msm_drv.h"
+ #include "msm_gpu_trace.h"
+ #include "msm_mmu.h"
+@@ -723,6 +724,34 @@ static const struct msm_mmu_funcs funcs = {
+ 		.set_stall = msm_iommu_set_stall,
+ };
+ 
++static int msm_iommu_hanoip_firmware_map(struct msm_iommu *iommu, struct device *dev)
++{
++	struct device_node *memory;
++	struct resource region;
++	int ret;
++
++	if (!of_machine_is_compatible("motorola,hanoip") ||
++	    !of_device_is_compatible(dev->of_node, "qcom,sm7150-mdss"))
++		return 0;
++	memory = of_parse_phandle(dev->of_node, "memory-region", 0);
++	if (!memory)
++		return 0;
++	ret = of_address_to_resource(memory, 0, &region);
++	of_node_put(memory);
++	if (ret)
++		return ret;
++	/* Only the separately reserved, collected hanoip splash range is allowed. */
++	if (region.start != 0x9c000000 || resource_size(&region) != 0x1700000)
++		return -EINVAL;
++	ret = iommu_map(iommu->domain, region.start, region.start,
++			resource_size(&region), IOMMU_READ, GFP_KERNEL);
++	if (ret)
++		return ret;
++	iommu->base.firmware_start = region.start;
++	dev_info(dev, "HANOIP: mapped firmware framebuffer %pr before DMA attach\n", &region);
++	return 0;
++}
++
+ struct msm_mmu *msm_iommu_new(struct device *dev, unsigned long quirks)
+ {
+ 	struct iommu_domain *domain;
+@@ -749,6 +778,13 @@ struct msm_mmu *msm_iommu_new(struct device *dev, unsigned long quirks)
+ 
+ 	mutex_init(&iommu->init_lock);
+ 
++	ret = msm_iommu_hanoip_firmware_map(iommu, dev);
++	if (ret) {
++		iommu_domain_free(domain);
++		kfree(iommu);
++		return ERR_PTR(ret);
++	}
++
+ 	ret = iommu_attach_device(iommu->domain, dev);
+ 	if (ret) {
+ 		iommu_domain_free(domain);
+diff --git a/kernel-mainline/drivers/gpu/drm/msm/msm_kms.c b/kernel-mainline/drivers/gpu/drm/msm/msm_kms.c
+index e5d0ea629..e43fc0908 100644
+--- a/kernel-mainline/drivers/gpu/drm/msm/msm_kms.c
++++ b/kernel-mainline/drivers/gpu/drm/msm/msm_kms.c
+@@ -185,6 +185,7 @@ struct drm_gpuvm *msm_kms_init_vm(struct drm_device *dev, struct device *mdss_de
+ 	struct msm_drm_private *priv = dev->dev_private;
+ 	struct msm_kms *kms = priv->kms;
+ 	struct device *iommu_dev;
++	u64 iova_size = 0x100000000ULL - 0x1000;
+ 
+ 	/*
+ 	 * IOMMUs can be a part of MDSS device tree binding, or the
+@@ -203,8 +204,11 @@ struct drm_gpuvm *msm_kms_init_vm(struct drm_device *dev, struct device *mdss_de
+ 	if (IS_ERR(mmu))
+ 		return ERR_CAST(mmu);
+ 
++	/* Keep allocations below the reserved firmware scanout mapping. */
++	if (mmu->firmware_start)
++		iova_size = mmu->firmware_start - 0x1000;
+ 	vm = msm_gem_vm_create(dev, mmu, "mdp_kms",
+-			       0x1000, 0x100000000 - 0x1000, true);
++			       0x1000, iova_size, true);
+ 	if (IS_ERR(vm)) {
+ 		dev_err(mdp_dev, "vm create, error %pe\n", vm);
+ 		mmu->funcs->destroy(mmu);
+diff --git a/kernel-mainline/drivers/gpu/drm/msm/msm_mmu.h b/kernel-mainline/drivers/gpu/drm/msm/msm_mmu.h
+index 8915662fb..d36e9c12b 100644
+--- a/kernel-mainline/drivers/gpu/drm/msm/msm_mmu.h
++++ b/kernel-mainline/drivers/gpu/drm/msm/msm_mmu.h
+@@ -56,6 +56,8 @@ struct msm_mmu {
+ 	int (*handler)(void *arg, unsigned long iova, int flags, void *data);
+ 	void *arg;
+ 	enum msm_mmu_type type;
++	/* Optional firmware scanout mapping, excluded from display allocations. */
++	u64 firmware_start;
+ 
+ 	/**
+ 	 * @prealloc: pre-allocated pages for pgtable
+@@ -72,6 +74,7 @@ static inline void msm_mmu_init(struct msm_mmu *mmu, struct device *dev,
+ 	mmu->dev = dev;
+ 	mmu->funcs = funcs;
+ 	mmu->type = type;
++	mmu->firmware_start = 0;
+ }
+ 
+ struct msm_mmu *msm_iommu_new(struct device *dev, unsigned long quirks);
+diff --git a/kernel-mainline/drivers/input/touchscreen/Kconfig b/kernel-mainline/drivers/input/touchscreen/Kconfig
+index 80f47b313..9a9e4de06 100644
+--- a/kernel-mainline/drivers/input/touchscreen/Kconfig
++++ b/kernel-mainline/drivers/input/touchscreen/Kconfig
+@@ -518,6 +518,15 @@ config TOUCHSCREEN_ILI210X
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called ili210x.
+ 
++config TOUCHSCREEN_HANOIP_ILITEK_SPI
++	tristate "Experimental Moto G60 Ilitek ILI7807 SPI touchscreen"
++	depends on SPI && OF && GPIOLIB
++	select CRC32
++	help
++	  Minimal hanoip SPI bring-up with the collected stock firmware loaded
++	  and verified in the controller's internal RAM. No controller flash
++	  programming, factory interfaces, gestures or suspend support.
++
+ config TOUCHSCREEN_ILITEK
+ 	tristate "Ilitek I2C 213X/23XX/25XX/Lego Series Touch ICs"
+ 	depends on I2C
+diff --git a/kernel-mainline/drivers/input/touchscreen/Makefile b/kernel-mainline/drivers/input/touchscreen/Makefile
+index 9e4c36f03..942464d4a 100644
+--- a/kernel-mainline/drivers/input/touchscreen/Makefile
++++ b/kernel-mainline/drivers/input/touchscreen/Makefile
+@@ -56,6 +56,7 @@ obj-$(CONFIG_TOUCHSCREEN_HYNITRON_CSTXXX)	+= hynitron_cstxxx.o
+ obj-$(CONFIG_TOUCHSCREEN_HYNITRON_CST816X)	+= hynitron-cst816x.o
+ obj-$(CONFIG_TOUCHSCREEN_ILI210X)	+= ili210x.o
+ obj-$(CONFIG_TOUCHSCREEN_ILITEK)	+= ilitek_ts_i2c.o
++obj-$(CONFIG_TOUCHSCREEN_HANOIP_ILITEK_SPI)	+= ilitek-hanoip-spi.o
+ obj-$(CONFIG_TOUCHSCREEN_IMAGIS)	+= imagis.o
+ obj-$(CONFIG_TOUCHSCREEN_IMX6UL_TSC)	+= imx6ul_tsc.o
+ obj-$(CONFIG_TOUCHSCREEN_INEXIO)	+= inexio.o

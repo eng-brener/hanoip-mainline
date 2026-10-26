@@ -1,0 +1,151 @@
+diff --git a/kernel-mainline/drivers/gpu/drm/panel/panel-ilitek-ili7807s.c b/kernel-mainline/drivers/gpu/drm/panel/panel-ilitek-ili7807s.c
+index bc1028278..b979eb3e7 100644
+--- a/kernel-mainline/drivers/gpu/drm/panel/panel-ilitek-ili7807s.c
++++ b/kernel-mainline/drivers/gpu/drm/panel/panel-ilitek-ili7807s.c
+@@ -18,6 +18,8 @@
+ 
+ #include <video/mipi_display.h>
+ 
++#include <drm/display/drm_dsc.h>
++#include <drm/display/drm_dsc_helper.h>
+ #include <drm/drm_mipi_dsi.h>
+ #include <drm/drm_modes.h>
+ #include <drm/drm_panel.h>
+@@ -29,12 +31,14 @@ struct panel_desc {
+ 	enum mipi_dsi_pixel_format format;
+ 	unsigned long mode_flags;
+ 	void (*init)(struct mipi_dsi_multi_context *dsi_ctx);
++	bool dsc;
+ };
+ 
+ struct ili7807s {
+ 	struct drm_panel panel;
+ 	struct mipi_dsi_device *dsi;
+ 	const struct panel_desc *desc;
++	struct drm_dsc_config dsc;
+ 
+ 	struct regulator_bulk_data *supplies;
+ 	struct gpio_desc *reset_gpio;
+@@ -53,6 +57,17 @@ static inline struct ili7807s *to_ili7807s(struct drm_panel *panel)
+ 
+ static void ili7807s_reset(struct ili7807s *ctx)
+ {
++	if (ctx->desc->dsc) {
++		/* GPIO_ACTIVE_LOW: electrical high 4 ms, low 1 ms, high 12 ms. */
++		gpiod_set_value_cansleep(ctx->reset_gpio, 0);
++		usleep_range(4000, 5000);
++		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
++		usleep_range(1000, 2000);
++		gpiod_set_value_cansleep(ctx->reset_gpio, 0);
++		usleep_range(12000, 13000);
++		return;
++	}
++
+ 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+ 	usleep_range(10000, 11000);
+ 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+@@ -108,8 +123,15 @@ static void tianma_hanoip_init_sequence(struct mipi_dsi_multi_context *dsi_ctx)
+ static int ili7807s_on(struct ili7807s *ctx)
+ {
+ 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
++	struct drm_dsc_picture_parameter_set pps;
+ 
++	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+ 	ctx->desc->init(&dsi_ctx);
++	if (ctx->desc->dsc) {
++		/* MSM DSI fills the RC parameters during mode_set, before prepare. */
++		drm_dsc_pps_payload_pack(&pps, &ctx->dsc);
++		mipi_dsi_picture_parameter_set_multi(&dsi_ctx, &pps);
++	}
+ 
+ 	return dsi_ctx.accum_err;
+ }
+@@ -118,6 +140,8 @@ static int ili7807s_off(struct ili7807s *ctx)
+ {
+ 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = ctx->dsi };
+ 
++	if (ctx->desc->dsc)
++		ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+ 	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
+ 	mipi_dsi_msleep(&dsi_ctx, 50);
+ 
+@@ -253,8 +277,8 @@ static const struct drm_display_mode tianma_hanoip_mode = {
+ 	.htotal      = 1080 + 28 + 4 + 24,
+ 
+ 	.vdisplay    = 2460,
+-	.vsync_start = 2460 + 12,
+-	.vsync_end   = 2460 + 12 + 2,
++	.vsync_start = 2460 + 2565,
++	.vsync_end   = 2460 + 2565 + 2,
+ 	.vtotal      = 2460 + 12 + 2 + 2565,
+ 
+ 	.width_mm  = 69,
+@@ -267,8 +291,9 @@ static const struct panel_desc tianma_hanoip_desc = {
+ 	.lanes      = 4,
+ 	.format     = MIPI_DSI_FMT_RGB888,
+ 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
+-		      MIPI_DSI_MODE_VIDEO_SYNC_PULSE | MIPI_DSI_MODE_LPM,
++		      MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_DSC_ALL_SLICES_IN_PKT,
+ 	.init       = tianma_hanoip_init_sequence,
++	.dsc        = true,
+ };
+ 
+ static int ili7807s_probe(struct mipi_dsi_device *dsi)
+@@ -303,6 +328,17 @@ static int ili7807s_probe(struct mipi_dsi_device *dsi)
+ 	dsi->lanes      = desc->lanes;
+ 	dsi->format     = desc->format;
+ 	dsi->mode_flags = desc->mode_flags | MIPI_DSI_MODE_LPM;
++	if (desc->dsc) {
++		ctx->dsc.dsc_version_major = 1;
++		ctx->dsc.dsc_version_minor = 1;
++		ctx->dsc.slice_width = 540;
++		ctx->dsc.slice_height = 10;
++		ctx->dsc.slice_count = desc->mode->hdisplay / ctx->dsc.slice_width;
++		ctx->dsc.bits_per_component = 8;
++		ctx->dsc.bits_per_pixel = 8 << 4;
++		ctx->dsc.block_pred_enable = true;
++		dsi->dsc = &ctx->dsc;
++	}
+ 
+ 	ctx->panel.prepare_prev_first = true;
+ 
+@@ -331,11 +367,39 @@ static const struct of_device_id ili7807s_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, ili7807s_of_match);
+ 
++/* Bring-up diagnostics: DCS reads only, no panel reconfiguration or reset. */
++static ssize_t panel_status_show(struct device *dev,
++				struct device_attribute *attr, char *buf)
++{
++	struct ili7807s *ctx = dev_get_drvdata(dev);
++	unsigned long flags = ctx->dsi->mode_flags;
++	u8 power = 0, pixel = 0, diagnostic = 0;
++	ssize_t power_ret, pixel_ret, diagnostic_ret;
++
++	if (!ctx->panel.prepared)
++		return -EAGAIN;
++	ctx->dsi->mode_flags |= MIPI_DSI_MODE_LPM;
++	power_ret = mipi_dsi_dcs_read(ctx->dsi, MIPI_DCS_GET_POWER_MODE, &power, 1);
++	pixel_ret = mipi_dsi_dcs_read(ctx->dsi, MIPI_DCS_GET_PIXEL_FORMAT, &pixel, 1);
++	diagnostic_ret = mipi_dsi_dcs_read(ctx->dsi, MIPI_DCS_GET_DIAGNOSTIC_RESULT,
++					&diagnostic, 1);
++	ctx->dsi->mode_flags = flags;
++	return sysfs_emit(buf,
++		"prepared=%d enabled=%d reset_logical=%d power_ret=%zd power=0x%02x pixel_ret=%zd pixel=0x%02x diagnostic_ret=%zd diagnostic=0x%02x\n",
++		ctx->panel.prepared, ctx->panel.enabled,
++		gpiod_get_value_cansleep(ctx->reset_gpio), power_ret, power,
++		pixel_ret, pixel, diagnostic_ret, diagnostic);
++}
++static DEVICE_ATTR_RO(panel_status);
++static struct attribute *ili7807s_attrs[] = { &dev_attr_panel_status.attr, NULL };
++ATTRIBUTE_GROUPS(ili7807s);
++
+ static struct mipi_dsi_driver ili7807s_dsi_driver = {
+ 	.probe  = ili7807s_probe,
+ 	.driver = {
+ 		.name           = "panel-ilitek-ili7807s",
+ 		.of_match_table = ili7807s_of_match,
++		.dev_groups     = ili7807s_groups,
+ 	},
+ };
+ module_mipi_dsi_driver(ili7807s_dsi_driver);

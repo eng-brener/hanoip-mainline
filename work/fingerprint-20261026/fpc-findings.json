@@ -1,0 +1,171 @@
+{
+  "method": "Local ELF/DAL extraction and LLVM disassembly; no target execution or REA Evidence ID.",
+  "input_sha256": {
+    "android-dump-20261025/partitions-a/devcfg_a.img": "651384a4418d154666e5ed57fa8268b75b2374cb4745b4167eca0e93e343c8e3",
+    "android-dump-20261025/partitions-a/tz_a.img": "35b42cbc2a4f733b77654080856e97f07ff2477c7b26db6862571392c001f25f",
+    "fingerprint-20261026/android-artifacts/android.hardware.biometrics.fingerprint@2.1-service-chipone2.rc": "47d19a74fa82adce6f7f16909afd92e094a928c653cb071ec7f457531b8fd35b",
+    "fingerprint-20261026/android-artifacts/android.hardware.biometrics.fingerprint@2.1-service-fpc2.rc": "ffb7263b697e9ecc9ff431187551067307df884133b70e3da50a57588cbc9d87",
+    "fingerprint-20261026/android-artifacts/fpc1020_mmi.ko": "0d38fa8eb3e4de6e2a3d519e65100bcfd6b7936e1b19ed58f519cab901060622",
+    "fingerprint-20261026/android-artifacts/fpctzapp.b00": "90e27045b3ffdf3d013704c3c6aed09b01d0bcbc701188b06038a4f3d1cf67df",
+    "fingerprint-20261026/android-artifacts/fpctzapp.b01": "94c6eb278323abb13a7602199d0259269125c68f83b1cefbaa65eeae894d0c20",
+    "fingerprint-20261026/android-artifacts/fpctzapp.b02": "c90e444a64cbefe080d4404e3fc9058d10eab834361db9037fc67a70813dffab",
+    "fingerprint-20261026/android-artifacts/fpctzapp.b03": "53a8ca66380d7c1f32c0f290338a2592a8fb725033298a6ecd7db429172353d0",
+    "fingerprint-20261026/android-artifacts/fpctzapp.b04": "d205abfde9c0c8faa9bd9a8e0e640aca38762022442d031bdd1c10075a7f1fbc",
+    "fingerprint-20261026/android-artifacts/fpctzapp.b05": "d4a1b5025f2680357fcf707205560860e4513c9f0caf8b4475dd72578e4c17d5",
+    "fingerprint-20261026/android-artifacts/fpctzapp.b06": "ddb1a0809372e612c7d54f277f0499ac416393280fe6e8a52897609beced5050",
+    "fingerprint-20261026/android-artifacts/fpctzapp.b07": "73f04408c52296983b976d08c9f72b6507d7e9159d3db319bcb107a30cb92edd",
+    "fingerprint-20261026/android-artifacts/fpctzapp.mdt": "ad676d9d5e69f5a98d713debb5e6c886db37e84ecc6b5a803ea53281c6b4b9a1",
+    "fingerprint-20261026/android-artifacts/fpsensor_spi_tee.ko": "ee953a734acd9b257a079b8c3c3bfb0d3e80577f73e43d632199ef00e48a8877",
+    "fingerprint-20261026/android-live-readonly/programs/fingerprint-service-fpc": "107a3352758e687d4608aa0256b77ac30e74cba9e1db5d866d015bc28c07b1d8",
+    "fingerprint-20261026/android-live-readonly/programs/libQSEEComAPI-32.so": "953957e24eee54b131a2653d129fa2f5eee428820fc465dbbfaf208f5e0181a4",
+    "fingerprint-20261026/android-live-readonly/programs/libQSEEComAPI-64.so": "7ff122dda4d29347e502e4ac35423cfea0430eeef2e0532535bb9e02e2cf30bf"
+  },
+  "android_stack": {
+    "driver": "fpc1020_mmi",
+    "trusted_app": "fpctzapp",
+    "exact_sensor_model": null,
+    "irq_gpio": 90,
+    "reset_gpio": 4,
+    "fpc_enable_gpio": 29,
+    "alternative_chipone_enable_gpio": 30
+  },
+  "trusted_app": {
+    "architecture": "ELF32 ARM/Thumb",
+    "spi_open_argument": 1,
+    "spi_open_argument_origin_vma": "0x37f0",
+    "speed_getter_hz": 4800000,
+    "speed_getter_origin_vma": "0x3834",
+    "spi_imports": [
+      "qsee_spi_full_duplex",
+      "qsee_spi_write",
+      "qsee_spi_open",
+      "qsee_spi_close"
+    ]
+  },
+  "secure_spi_controller_records": [
+    {
+      "config_index_raw": 0,
+      "packed_index_raw": "0x0",
+      "mmio": "0x880000",
+      "clock": "gcc_qupv3_wrap0_s0_clk",
+      "devcfg_file_offset": "0x9500"
+    },
+    {
+      "config_index_raw": 1,
+      "packed_index_raw": "0x101",
+      "mmio": "0x884000",
+      "clock": "gcc_qupv3_wrap0_s1_clk",
+      "devcfg_file_offset": "0x9580"
+    },
+    {
+      "config_index_raw": 5,
+      "packed_index_raw": "0x5",
+      "mmio": "0xa80000",
+      "clock": "gcc_qupv3_wrap1_s0_clk",
+      "devcfg_file_offset": "0x9600"
+    }
+  ],
+  "spi_candidate": {
+    "mmio": "0x884000",
+    "ap_tlmm_pins": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "confidence": "Strong static correlation of argument 1 with config record 1; QSEE enum mapping not validated live."
+  },
+  "limits": [
+    "Compatible fpc,fpc1020 does not identify exact silicon model.",
+    "No fingerprint templates or enrollment databases were read.",
+    "No GPIO, SPI, TEE command, enrollment or authentication was initiated.",
+    "Runtime evidence includes saved Android boot logs and read-only live driver metadata; no new fingerprint operation was tested.",
+    "Legacy QSEECOM transport and FPC HAL protocol remain implementation requirements."
+  ],
+  "android_live_metadata": {
+    "driver_values": {
+      "vendor": "fpc",
+      "modalias": "fpc1020",
+      "irq": "0",
+      "irq_cnt": "60"
+    },
+    "hwid_property": "",
+    "hal_elf": [
+      {
+        "file": "fingerprint-service-fpc",
+        "elf_class": 2,
+        "machine": 183,
+        "QSEECom_imports": [
+          "QSEECom_send_modified_cmd",
+          "QSEECom_shutdown_app",
+          "QSEECom_start_app",
+          "QSEECom_send_cmd"
+        ],
+        "QSEECom_exports": []
+      },
+      {
+        "file": "libQSEEComAPI-32.so",
+        "elf_class": 1,
+        "machine": 40,
+        "QSEECom_imports": [],
+        "QSEECom_exports": [
+          "QSEECom_clear_key",
+          "QSEECom_set_bandwidth",
+          "QSEECom_start_app_V2",
+          "QSEECom_unload_external_elf",
+          "QSEECom_create_key",
+          "QSEECom_send_cmd",
+          "QSEECom_send_service_cmd",
+          "QSEECom_wipe_key",
+          "QSEECom_send_resp",
+          "QSEECom_load_external_elf",
+          "QSEECom_send_modified_cmd_64",
+          "QSEECom_start_app",
+          "QSEECom_get_app_info",
+          "QSEECom_send_modified_resp",
+          "QSEECom_update_key_user_info",
+          "QSEECom_scale_bus_bandwidth",
+          "QSEECom_send_modified_cmd",
+          "QSEECom_receive_req",
+          "QSEECom_send_modified_resp_64",
+          "QSEECom_shutdown_app",
+          "QSEECom_app_load_query",
+          "QSEECom_unregister_listener",
+          "QSEECom_register_listener"
+        ]
+      },
+      {
+        "file": "libQSEEComAPI-64.so",
+        "elf_class": 2,
+        "machine": 183,
+        "QSEECom_imports": [],
+        "QSEECom_exports": [
+          "QSEECom_unload_external_elf",
+          "QSEECom_unregister_listener",
+          "QSEECom_send_cmd",
+          "QSEECom_receive_req",
+          "QSEECom_register_listener",
+          "QSEECom_start_app",
+          "QSEECom_get_app_info",
+          "QSEECom_wipe_key",
+          "QSEECom_send_modified_resp_64",
+          "QSEECom_update_key_user_info",
+          "QSEECom_set_bandwidth",
+          "QSEECom_shutdown_app",
+          "QSEECom_scale_bus_bandwidth",
+          "QSEECom_start_app_V2",
+          "QSEECom_clear_key",
+          "QSEECom_app_load_query",
+          "QSEECom_send_modified_cmd",
+          "QSEECom_send_modified_resp",
+          "QSEECom_send_service_cmd",
+          "QSEECom_send_modified_cmd_64",
+          "QSEECom_create_key",
+          "QSEECom_send_resp",
+          "QSEECom_load_external_elf"
+        ]
+      }
+    ],
+    "fpc1540_literal": "Present in HAL, not an observed silicon identity."
+  }
+}

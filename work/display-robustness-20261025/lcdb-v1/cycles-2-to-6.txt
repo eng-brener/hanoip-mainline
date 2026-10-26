@@ -1,0 +1,41 @@
+cycle=2 off LAB=disabled IBB=disabled
+cycle=2 on LAB=enabled IBB=enabled
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x0 pre_status=0x0 post_ctrl=0x1f1 post_status=0x0
+cycle=3 off LAB=disabled IBB=disabled
+cycle=3 on LAB=enabled IBB=enabled
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x0 pre_status=0x0 post_ctrl=0x1f1 post_status=0x0
+cycle=4 off LAB=disabled IBB=disabled
+cycle=4 on LAB=enabled IBB=enabled
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x0 pre_status=0x0 post_ctrl=0x1f1 post_status=0x0
+cycle=5 off LAB=disabled IBB=disabled
+cycle=5 on LAB=enabled IBB=enabled
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x0 pre_status=0x0 post_ctrl=0x1f1 post_status=0x0
+cycle=6 off LAB=disabled IBB=disabled
+cycle=6 on LAB=enabled IBB=enabled
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x0 pre_status=0x0 post_ctrl=0x1f1 post_status=0x0
+[    0.000000] OF: reserved mem: 0x000000009d800000..0x000000009dbfffff (4096 KiB) map non-reusable ramoops@9d800000
+[    0.000000] Kernel command line: earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops              loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0
+[    0.000000] Unknown kernel command line parameters "panic_on_oops=1", will be passed to user space.
+[    0.065305] printk: legacy console [ramoops0] enabled
+[    0.066391] pstore: Registered ramoops as persistent store backend
+[    0.066408] ramoops: using 0x400000@0x9d800000, ecc: 0
+[    0.941591] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB capture EN 0x80 VREG_OK 1 SC 0 LAB 5500 IBB 5500 BST 5650
+[    0.941600] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB adopted enabled state from ABL
+[    0.941757] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: PM6150L LCDB probed with shared-rail locking
+[    3.698370]     panic_on_oops=1
+[   58.701502] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[   59.783421] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  129.700763] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  130.770464] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  133.276798] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  134.349368] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  136.844677] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  137.924277] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  140.428686] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  141.499548] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  144.004823] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  145.079381] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+ lcdb_lab                         1    1      0 unknown  5500mV     0mA  5500mV  5500mV 
+    ae94000.dsi.0-avdd            1                                 0mA     0mV     0mV
+ lcdb_ibb                         1    1      0 unknown  5500mV     0mA  5500mV  5500mV 
+    ae94000.dsi.0-avee            1                                 0mA     0mV     0mV

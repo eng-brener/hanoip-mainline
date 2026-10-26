@@ -1,0 +1,14 @@
+[
+  {
+    "image": "work/sensors-20261026/ssc-ram-test/u-boot-hanoip-pmos-perif-v5.img",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (516 KB)                        OKAY [  0.013s]\nBooting                                            OKAY [ 10.374s]\nFinished. Total time: 10.389s\n"
+  },
+  {
+    "image": "work/sensors-20261026/ssc-ram-test/kernel-hanoip-ssc-ram-v1.img",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (55420 KB)                      OKAY [  1.818s]\nBooting                                            OKAY [  0.000s]\nFinished. Total time: 1.915s\n"
+  }
+]

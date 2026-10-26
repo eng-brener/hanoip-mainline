@@ -1,0 +1,28 @@
+
+~ # cat /run/plasma-usbnet.log; cat /run/hanoip-usbnet.log; /bin/busybox ifconfi
+g; /bin/busybox ls /sys/class/net; printf '\nHANOIP_END_c8b5b6d24645\n'
+start 843.15 6736.87
+[687] Aug 13 19:57:04 Running in background
+ready usb0 843.65 6740.32
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+usb0      Link encap:Ethernet  HWaddr 02:68:61:6E:6F:01  
+          inet addr:172.16.42.1  Bcast:172.16.42.255  Mask:255.255.255.0
+          inet6 addr: fe80::68:61ff:fe6e:6f01/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:63 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:13 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:25682 (25.0 KiB)  TX bytes:2248 (2.1 KiB)
+
+lo    usb0
+
+HANOIP_END_c8b5b6d24645
+~ # 

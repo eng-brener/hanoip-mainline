@@ -1,0 +1,4 @@
+
+~ # /bin/busybox sleep 20; cat /run/ssc-gyroscope.log; echo GYRO_KERNEL_TAINT; c
+at /proc/sys/kernel/tainted; echo GYRO_MOUNTS; cat /proc/mounts; printf '\nHANOI
+P_END_6aa33b385850\n'

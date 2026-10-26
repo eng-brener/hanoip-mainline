@@ -1,0 +1,6 @@
+{
+  "phone_path": "/vendor/firmware/FW_ILITEK_TDDI_TM.bin",
+  "bytes": 358761,
+  "sha256": "2be3ce9836bfe1ff90a32ad7b081389c0126cac47a0b058c8ecf3446248335e7",
+  "first32": "3a3037303030304146303030303030303133464646303130410d0a3a30373030"
+}

@@ -1,0 +1,32 @@
+
+~ # /bin/busybox cat /sys/bus/spi/devices/spi6.0/stats /proc/mounts /proc/partit
+ions; printf '\nHANOIP_END_1ed5fa8b3614\n'
+irqs=0 reports=0 rejected=0
+rootfs / rootfs rw,size=1797808k,nr_inodes=449452 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=1797808k,nr_inodes=449452,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+major minor  #blocks  name
+
+   1        0       4096 ram0
+   1        1       4096 ram1
+   1        2       4096 ram2
+   1        3       4096 ram3
+   1        4       4096 ram4
+   1        5       4096 ram5
+   1        6       4096 ram6
+   1        7       4096 ram7
+   1        8       4096 ram8
+   1        9       4096 ram9
+   1       10       4096 ram10
+   1       11       4096 ram11
+   1       12       4096 ram12
+   1       13       4096 ram13
+   1       14       4096 ram14
+   1       15       4096 ram15
+
+HANOIP_END_1ed5fa8b3614
+~ # 

@@ -1,0 +1,39 @@
+
+~ # /bin/busybox ls -R /sys/kernel/debug/dri/0/kms /sys/kernel/debug/dri/0/DSI-1
+ /sys/kernel/debug/dri/0/crtc-0; /bin/busybox cat /sys/kernel/debug/dri/0/fb /sy
+s/kernel/debug/dri/0/gem /sys/kernel/debug/dri/0/debug; /bin/busybox cat /sys/cl
+ass/vtconsole/vtcon*/name /sys/class/vtconsole/vtcon*/bind; printf '\nHANOIP_END
+_51983876c13a\n'
+/sys/kernel/debug/dri/0/kms
+
+/sys/kernel/debug/dri/0/DSI-1:
+edid_override  force          output_bpc     panel          vrr_range
+
+/sys/kernel/debug/dri/0/DSI-1/panel:
+
+/sys/kernel/debug/dri/0/crtc-0:
+crc     state   status
+
+/sys/kernel/debug/dri/0/crtc-0/crc:
+control  data
+fbcon fb: 1080x2460@XR24 ( 2, ID:75)
+   0: offset=0 pitch=4352, obj: 10020001: A  0 ( 2) 00100001 00000000b7e3f9f7 10706944           stolenfb                        
+      vmas: [mdp_kms: vm=00000000704ff914, 00002000, mapped]
+   flags       id ref  offset   kaddr            size     madv      name
+   00020000: A  0 ( 2) 00100000 000000009298d624 00004096           tx_gem                          
+      vmas: [mdp_kms: vm=00000000704ff914, 00001000, mapped]
+   10020001: A  0 ( 2) 00100001 00000000b7e3f9f7 10706944           stolenfb                        
+      vmas: [mdp_kms: vm=00000000704ff914, 00002000, mapped]
+Total:        2 objects,  10711040 bytes
+Active:       2 objects,  10711040 bytes
+Resident:     2 objects,  10711040 bytes
+Purgeable:    0 objects,         0 bytes
+Purged:       0 objects,         0 bytes
+cat: read error: Is a directory
+(S) dummy device
+(M) frame buffer device
+0
+1
+
+HANOIP_END_51983876c13a
+~ # 

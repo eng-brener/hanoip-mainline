@@ -1,0 +1,109 @@
+[
+  {
+    "event": "User forced return to bootloader"
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "ZF523QJBSG\t fastboot\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "-s",
+      "ZF523QJBSG",
+      "boot",
+      "work/hanoip-build-20261024/v2/u-boot-hanoip-qup-diagnostic.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (528 KB)                        OKAY [  0.013s]\nBooting                                            OKAY [ 10.366s]\nFinished. Total time: 10.381s\n"
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "ZF523QJBSG\t fastboot\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "devices"
+    ],
+    "exit": 0,
+    "stdout": "????????????\t fastboot\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "fastboot",
+      "getvar",
+      "product"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "product: motorola-hanoip\nFinished. Total time: 0.000s\n"
+  },
+  {
+    "args": [
+      "fastboot",
+      "boot",
+      "work/hanoip-build-20261024/v2/kernel-hanoip-qup-usb-shell-no-ufs.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (13112 KB)                      OKAY [  0.436s]\nBooting                                            OKAY [  0.000s]\nFinished. Total time: 0.453s\n"
+  }
+]

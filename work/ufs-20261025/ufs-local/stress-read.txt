@@ -1,0 +1,44 @@
+
+~ # echo S_BEGIN; BB=/bin/busybox; U=/sys/bus/platform/devices/1d84000.ufshc; fo
+r f in $U/power_info/* $U/rpm_lvl $U/spm_lvl $U/clkscale_enable $U/wb_on; do [ -
+f $f ] && echo "${f#$U/}=$($BB cat $f 2>&1)"; done; /sbin/load-touch; c(){ for s
+ in /sys/devices/system/cpu/cpu[0-5]/cpuidle/state2/time; do $BB cat $s; done | 
+$BB tr '\n' ' '; echo; }; echo IDLE0 $(c); for r in 1 2; do echo 3 > /proc/sys/v
+m/drop_caches; $BB dd if=/dev/sdb bs=1048576 skip=1024 count=256 2>/dev/null | $
+BB sha256sum; done; echo 3 > /proc/sys/vm/drop_caches; echo SEQ_sdb_2GiB; $BB dd
+ if=/dev/sdb of=/dev/null bs=1048576 skip=4096 count=2048 2>&1 | $BB tail -1; ec
+ho IDLE1 $(c); $BB sleep 5; echo IDLE2 $(c); for d in /dev/sd?; do $BB blockdev 
+--getro $d; done | $BB sort | $BB uniq -c; $BB cat /proc/mounts | $BB awk '{prin
+t $3}' | $BB sort -u | $BB tr '\n' ' '; echo; $BB cat /sys/class/thermal/thermal
+_zone*/temp | $BB sort -n | $BB sed -n '1p;$p'; $BB cat /sys/bus/platform/device
+s/*.dsi/error_snapshot /sys/class/drm/card0-DSI-1/enabled /proc/sy
+S_BEGIN
+power_info/dev_pm=SLEEP
+power_info/gear=HS_GEAR1
+power_info/lane=1
+power_info/link_state=HIBERN8
+power_info/mode=FAST_MODE
+power_info/rate=HS_RATE_B
+rpm_lvl=3
+spm_lvl=3
+clkscale_enable=1
+wb_on=0
+Refusing test with storage exposed
+IDLE0 228391028 219763422 211668237 225425791 234842017 227724926
+[  280.760586] busybox (132): drop_caches: 3
+45ab429dbb265ff5912a68703296961a20b1b3864f6df70de4b4971d0fdeef37  -
+[  285.706946] busybox (132): drop_caches: 3
+45ab429dbb265ff5912a68703296961a20b1b3864f6df70de4b4971d0fdeef37  -
+[  290.652865] busybox (132): drop_caches: 3
+SEQ_sdb_2GiB
+2147483648 bytes (2.0GB) copied, 4.011237 seconds, 510.6MB/s
+IDLE1 230067186 227436140 216055947 226597851 240271071 235433897
+IDLE2 232217357 229621837 217843779 228820142 242497971 237619915
+      6 1
+configfs devtmpfs proc rootfs sysfs tmpfs 
+37400
+40300
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+enabled
+cat: can't open '/proc/sy': No such file or directory
+~ # 

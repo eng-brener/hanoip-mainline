@@ -1,0 +1,36 @@
+UFS no mainline — validação 25/10/2026 (GOLD v2 em RAM, kernel #8)
+
+IDENTIDADE (sysfs mainline, só leitura): Samsung KM5V8001DM-B622 fw 1500,
+UFS 2.1 (spec 0x0210), 6 LUNs, queue depth 32, raw capacity 0xEE64000
+setores (~128 GB), sem WriteBooster. Saúde: life_time_estimation A/B 0x03,
+eol 0x01. Ler atributos WB (idn 28-31, flags 14-16) gera -22 benigno.
+LINK: sob carga HS_GEAR3 rate B x1 lane FAST_MODE; repouso HS_GEAR1,
+HIBERN8, dev SLEEP, runtime suspended; devfreq 50/200 MHz simple_ondemand;
+auto_hibern8 150 ms; rpm/spm nível 3. (descriptors.txt, gear-under-load.txt)
+LEITURA COMPLETA (fullread-result.txt): 6 LUNs rc=0; sdb 118,1 GB em 232 s
+= 520,9 MB/s; zero erros de I/O/timeout/reset; 84 blocos RO antes/depois.
+MONTAGEM SÓ LEITURA (mount-ro/, autorizada pelo usuário nesta data):
+modem_a/sde18, dsp_a/sde19, bluetooth_a/sde20 montadas ext4
+ro,noload,nodev,nosuid,noexec com bloco já RO no kernel ("ro without
+journal"/norecovery). SHA256 bruto das 3 partições idêntico ANTES, DEPOIS e
+ao lido no Android -> nada escrito. 310/310 arquivos com hash igual ao Android.
+LIMPEZA: marcadores UFS DIAG removidos das fontes (47 dev_info apagados,
+18 mensagens de erro mantidas sem prefixo); módulos recompilados W=1 sem
+avisos; v3 em v3/ com guardião RO a 0,1 s, load-ufs que só retorna após
+confirmar todos RO, e autostart com hanoip.ufs ou /etc/hanoip/autoload-ufs.
+NÃO FEITO: escrita (proibida), montagem de super/userdata (dinâmica /
+criptografada FBE), ICE, RPMB/BSG, system suspend, recuperação de erro.
+
+ESCRITA (write-test/, autorizada pelo usuário em 25/10/2026, SÓ logo_b):
+- Alvo logo_b = /dev/sdf21 (slot B inativo; slot ativo _a). Backup no Mac
+  logo_b.orig.img, SHA256 bf6fdb9e... (igual a logo_a/Android).
+- 1ª execução ABORTOU antes de escrever: ao liberar o disco sdf, as outras
+  22 partições ficaram graváveis (partições só reportavam RO via disco; o
+  guardião não marcava a flag própria delas). Trap restaurou o original
+  (hash OK), RO restabelecido, guardião religado: 84/84 RO.
+- Correção: travar cada partição do disco (exceto o alvo) antes de liberar
+  o disco. 2ª execução: só sdf+sdf21 graváveis; 32 MiB aleatórios escritos
+  com conv=fsync a 164,9 MB/s; leitura sem cache idêntica (WRITE_VERIFY_OK);
+  restauração com hash bf6fdb9e... (RESTORE_OK); 84/84 RO; sem erros de I/O.
+- Guardião do load-ufs (v3) corrigido: setro incondicional em TODO disco e
+  partição a cada 0,1 s (não confia no getro herdado do disco).

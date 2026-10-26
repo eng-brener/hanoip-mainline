@@ -1,0 +1,8 @@
+
+~ # /bin/busybox sed -i 's/for m in qcom_common qcom_pil_info qcom_q6v5 qcom_gli
+nk_smem qrtr-smd qcom_sysmon qcom_q6v5_pas fastrpc/for m in qcom_glink_smem qrtr
+-smd qcom_sysmon qcom_pil_info qcom_common qcom_q6v5 qcom_q6v5_pas fastrpc/' /sb
+in/start-sensors; /sbin/start-sensors > /run/hanoip-sensors.log 2>&1 &; printf '
+\nHANOIP_END_db6e5bc5d8e3\n'
+sh: syntax error: unexpected ";"
+~ # 

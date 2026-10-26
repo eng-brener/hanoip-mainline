@@ -1,0 +1,89 @@
+=== clkgate_enable
+1
+=== clkscale_enable
+1
+=== rpm_lvl
+
+Current Runtime PM level [3] => dev_state [SLEEP] link_state [HIBERN8]
+
+All available Runtime PM levels info:
+	Runtime PM level [0] => dev_state [ACTIVE] link_state [ACTIVE]
+	Runtime PM level [1] => dev_state [ACTIVE] link_state [HIBERN8]
+	Runtime PM level [2] => dev_state [SLEEP] link_state [ACTIVE]
+	Runtime PM level [3] => dev_state [SLEEP] link_state [HIBERN8]
+	Runtime PM level [4] => dev_state [POWERDOWN] link_state [HIBERN8]
+	Runtime PM level [5] => dev_state [POWERDOWN] link_state [OFF]
+=== spm_lvl
+
+Current System PM level [3] => dev_state [SLEEP] link_state [HIBERN8]
+
+All available System PM levels info:
+	System PM level [0] => dev_state [ACTIVE] link_state [ACTIVE]
+	System PM level [1] => dev_state [ACTIVE] link_state [HIBERN8]
+	System PM level [2] => dev_state [SLEEP] link_state [ACTIVE]
+	System PM level [3] => dev_state [SLEEP] link_state [HIBERN8]
+	System PM level [4] => dev_state [POWERDOWN] link_state [HIBERN8]
+	System PM level [5] => dev_state [POWERDOWN] link_state [OFF]
+=== max_bus_bw
+0
+=== governor
+simple_ondemand
+=== available_frequencies
+50000000 200000000
+=== cur_freq
+50000000
+=== min_freq
+50000000
+=== max_freq
+200000000
+=== /sys/class/scsi_device/0:0:0:0
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+0
+=== /sys/class/scsi_device/0:0:0:1
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+0
+=== /sys/class/scsi_device/0:0:0:2
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+0
+=== /sys/class/scsi_device/0:0:0:3
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+0
+=== /sys/class/scsi_device/0:0:0:4
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+0
+=== /sys/class/scsi_device/0:0:0:49456
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+30
+=== /sys/class/scsi_device/0:0:0:49476
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+30
+=== /sys/class/scsi_device/0:0:0:49488
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+30
+=== /sys/class/scsi_device/0:0:0:5
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+0
+Initiator
+ls: /sys/bus/platform/devices/1d84000.ufshc/iommu_group: No such file or directory
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 /dev/block/by-name/boot_a -> /dev/block/sde22
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 /dev/block/by-name/boot_b -> /dev/block/sdf22
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 /dev/block/by-name/super -> /dev/block/sdb23
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 /dev/block/by-name/userdata -> /dev/block/sdb24

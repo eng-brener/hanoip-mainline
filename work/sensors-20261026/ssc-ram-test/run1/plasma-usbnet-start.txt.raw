@@ -1,0 +1,10 @@
+
+~ # ( /bin/busybox sleep 2; G=/sys/kernel/config/usb_gadget/g1; U=$(/bin/busybox
+ cat $G/UDC); echo "" > $G/UDC; /bin/busybox mkdir -p $G/functions/ncm.usb0; ech
+o 02:68:61:6e:6f:01 > $G/functions/ncm.usb0/dev_addr; echo 02:68:61:6e:6f:02 > $
+G/functions/ncm.usb0/host_addr; /bin/busybox ln -s $G/functions/ncm.usb0 $G/conf
+igs/c.1/ncm.usb0; echo $U > $G/UDC; /sbin/start-usbnet ) > /run/plasma-usbnet.lo
+g 2>&1 & /bin/busybox true; printf '\nHANOIP_END_706b76ca4338\n'
+
+HANOIP_END_706b76ca4338
+~ # 

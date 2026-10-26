@@ -1,0 +1,10 @@
+--- upstream/drivers/clk/qcom/gcc-sm7150.c
++++ local/drivers/clk/qcom/gcc-sm7150.c
+@@ -2675,6 +2675,7 @@
+ 		.name = "ufs_phy_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = ALWAYS_ON,
+ };
+ 
+ static struct gdsc usb30_prim_gdsc = {

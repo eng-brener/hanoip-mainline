@@ -1,0 +1,41 @@
+Using .config as base
+Merging /tmp/hanoip-usb-shell.fragment
+Value of CONFIG_QCOM_IPA is redefined by fragment /tmp/hanoip-usb-shell.fragment:
+Previous value: # CONFIG_QCOM_IPA is not set
+New value: CONFIG_QCOM_IPA=n
+
+Value of CONFIG_QCOM_WDT is redefined by fragment /tmp/hanoip-usb-shell.fragment:
+Previous value: # CONFIG_QCOM_WDT is not set
+New value: CONFIG_QCOM_WDT=n
+
+Value of CONFIG_DRM_MSM is redefined by fragment /tmp/hanoip-usb-shell.fragment:
+Previous value: # CONFIG_DRM_MSM is not set
+New value: CONFIG_DRM_MSM=n
+
+Value of CONFIG_MMC_SDHCI_MSM is redefined by fragment /tmp/hanoip-usb-shell.fragment:
+Previous value: # CONFIG_MMC_SDHCI_MSM is not set
+New value: CONFIG_MMC_SDHCI_MSM=n
+
+Value of CONFIG_SCSI_UFSHCD is redefined by fragment /tmp/hanoip-usb-shell.fragment:
+Previous value: CONFIG_SCSI_UFSHCD=m
+New value: CONFIG_SCSI_UFSHCD=n
+
+Value of CONFIG_SCSI_UFS_QCOM is redefined by fragment /tmp/hanoip-usb-shell.fragment:
+Previous value: CONFIG_SCSI_UFS_QCOM=m
+New value: CONFIG_SCSI_UFS_QCOM=n
+
+Merging /tmp/hanoip-display.fragment
+Value of CONFIG_BACKLIGHT_QCOM_WLED is redefined by fragment /tmp/hanoip-display.fragment:
+Previous value: CONFIG_BACKLIGHT_QCOM_WLED=y
+New value: CONFIG_BACKLIGHT_QCOM_WLED=m
+
+Value of CONFIG_DRM_MSM is redefined by fragment /tmp/hanoip-display.fragment:
+Previous value: CONFIG_DRM_MSM=n
+New value: CONFIG_DRM_MSM=y
+
+#
+# merged configuration written to .config (needs make)
+#
+#
+# configuration written to .config
+#

@@ -1,0 +1,39 @@
+# Diagnóstico orientação — 26/10/2026 tarde (sessão SSH)
+
+## Fatos medidos
+- upright retrato: accel X≈-0,1 Y≈+9,8 Z≈+0,4 (ssccli, via libssc/FastRPC, funciona sempre)
+- upside-down: Y≈-9,8. deitado: Z≈+9,9.
+- Boot v1 (bundle vendor, orient -x,-y): proxy DECIDIU — upright→`bottom-up`, upside-down→`normal`. Inversão de 180° confirmada empiricamente.
+- Boots v2 (bundle +x,+y) e v4 (bundle vendor, sem hash): proxy NUNCA decide (`undefined`), mesmo com Y dominante por 60 s+ e múltiplos restarts.
+- Debug do proxy (G_MESSAGES_DEBUG): accel icm4x6xx descoberto, atributos OK
+  (continuous 12,5 Hz, available:yes), "Sensor enable request sent successfully",
+  mas ZERO mensagens do sensor depois. Light/prox fluem normal.
+- libssc lê mount-matrix dos atributos ADSP (placement do registry, zeros →
+  fallback identidade). Proxy ssc IGNORA ACCEL_MOUNT_MATRIX do udev
+  (testado: prop setada no device, driver mostra identity).
+- Orient "+x" é legal (ak0991x/mmc56x3x usam). Placement zeros em todos.
+- Repack íntegro: mesma lista de arquivos, mesmo init, bundle só com orient
+  trocado (v2) ou idêntico (v4). Symlinks absolutos do ramdisk pendem no Mac
+  mas resolvem no telefone — normal, não é corrupção.
+- `rc-service hanoip-ssc restart` TRAVOU o USB (SSH+serial mortos, precisou
+  reboot via botão). Restarts só do iio-sensor-proxy são seguros.
+  Hipótese: udev trigger no start derrubou o gadget; a confirmar.
+- Boot sem hash integral: funciona, SSH em ~40 s (vs ~5 min). v3-fast
+  (bundle +x,+y, sem hash) e v4-base (bundle vendor, sem hash) em
+  work/sensors-20261026/orient-fix/ + SHA256SUMS.
+
+## Em teste
+- Boot v1 original em andamento para decidir: v1 volta a decidir?
+  - SIM → repack ou timing quebram o stream QMI do accel (bisectar).
+  - NÃO → nondeterminismo do ADSP/QMI independente de arquivos.
+
+## Corrente teórica atual
+- Chip montado normal (raw upright Y=+9,8 = o que ssccli mostra).
+- Proxy (upstream): y>0 → bottom-up. Vendor orient -x,-y deveria entregar
+  y<0 (normal) SE o ADSP aplicasse ao stream QMI — mas v1 deu bottom-up,
+  logo o stream QMI provavelmente é RAW (orient só vale p/ algos no ADSP
+  ou exige placement válido).
+- Fix correto provável: 180° no nível do proxy (matriz) — mas o driver ssc
+  ignora ACCEL_MOUNT_MATRIX; ou placement com rotação no registry (exige
+  recarga ADSP = reboot); ou corrigir no KWin.
+- Próximo se v1 decidir: voltar o fix e validar de ponta-cabeça também.

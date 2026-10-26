@@ -1,0 +1,40 @@
+3145760
+state=crashed
+[  195.012830] remoteproc remoteproc0: recovering modem
+[  195.018087] ath10k_snoc 18800000.wifi: received modem crashed event
+[  195.049503] ath10k_snoc 18800000.wifi: received modem offline event
+[  195.053423] ath10k_snoc 18800000.wifi: firmware crashed! (guid 7b96f88b-6a88-40c7-84d9-c637a15ee011)
+[  195.056209] remoteproc remoteproc0: stopped remote processor modem
+[  195.065448] ath10k_snoc 18800000.wifi: (null) target 0x00000000 chip_id 0x00000000 sub 0000:0000
+[  195.065455] ath10k_snoc 18800000.wifi: kconfig debug 1 debugfs 1 tracing 0 dfs 0 testmode 0
+[  195.072011] ath10k_snoc 18800000.wifi: received modem starting event
+[  195.080874] ath10k_snoc 18800000.wifi: firmware ver  api 0 features  crc32 00000000
+[  195.103936] ath10k_snoc 18800000.wifi: board_file api 1 bmi_id N/A crc32 00000000
+[  195.111677] ath10k_snoc 18800000.wifi: htt-ver 0.0 wmi-op 0 htt-op 0 cal file max-sta 0 raw 0 hwcrypto 1
+[  195.121582] ath10k_snoc 18800000.wifi: wifi fw qmi service disconnected
+[  196.566547] ath10k_snoc 18800000.wifi: received modem running event
+[  196.573118] remoteproc remoteproc0: remote processor modem is now up
+[  197.509903] ath10k_snoc 18800000.wifi: wifi fw qmi service found
+[  197.516269] ath10k_snoc 18800000.wifi: qmi wifi fw qmi service connected
+[  197.524135] ath10k_snoc 18800000.wifi: qmi indication register request completed
+[  197.532415] ath10k_snoc 18800000.wifi: qmi host capability request completed
+[  197.540342] ath10k_snoc 18800000.wifi: qmi msa mem region 0 addr 0x0x0000000097500000 size 0x4000 flag 0x00000001
+[  197.550956] ath10k_snoc 18800000.wifi: qmi msa mem region 1 addr 0x0x0000000097504000 size 0x17c000 flag 0x00000000
+[  197.561734] ath10k_snoc 18800000.wifi: qmi msa mem info request completed
+[  197.593947] ath10k_snoc 18800000.wifi: qmi msa mem ready request completed
+[  197.705074] ath10k_snoc 18800000.wifi: qmi chip_id 0x140 chip_family 0x4002 board_id 0xff soc_id 0x40090000
+[  197.715240] ath10k_snoc 18800000.wifi: qmi fw_version 0x322903b3 fw_build_timestamp 2023-05-18 11:09 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2-00947-QCAHLSWMTPLZ-1.558119.4.586249.3
+[  197.732731] ath10k_snoc 18800000.wifi: boot using board name 'bus=snoc,qmi-board-id=ff,qmi-chip-id=140,variant=motorola_hanoip'
+[  197.744622] ath10k_snoc 18800000.wifi: boot using board name 'bus=snoc,qmi-board-id=ff,qmi-chip-id=140'
+[  197.754381] ath10k_snoc 18800000.wifi: boot using board name 'bus=snoc,qmi-board-id=ff'
+[  197.762745] ath10k_snoc 18800000.wifi: boot fw request 'ath10k/WCN3990/hw1.0/board-2.bin': -2
+[  197.771689] ath10k_snoc 18800000.wifi: boot fw request 'ath10k/WCN3990/hw1.0/board-snoc-18800000.wifi.bin': -2
+[  197.782174] ath10k_snoc 18800000.wifi: boot fw request 'ath10k/WCN3990/hw1.0/board.bin': 0
+[  197.790879] ath10k_snoc 18800000.wifi: using board api 1
+[  197.799222] ath10k_snoc 18800000.wifi: qmi bdf download request completed
+[  197.806701] ath10k_snoc 18800000.wifi: qmi cal report request completed
+[  198.039577] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[  198.170578] qcom_q6v5_pas 4080000.remoteproc: fatal error received: EX:kernel:0x0:tmr_slave1:0x1d1:PC=0xc06ddec0
+[  198.181201] remoteproc remoteproc0: crash detected in modem: type fatal error
+[  198.188579] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[  198.188592] remoteproc remoteproc0: handling crash #3 in modem

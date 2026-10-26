@@ -1,0 +1,5 @@
+{
+  "configs/hanoip-uboot-cpufreq-diagnostic.fragment": "15bd45481f44e24fd9e4f7fd9ec733cd7a8a54ce7702ca9dfde0187de13cb71a",
+  "kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip-cpufreq-diagnostic.dts": "e186f22b9a226335ae6b4fd1bb8c3c87223fe2a93962c61a7723af4f3c154fe6",
+  "uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip-cpufreq-diagnostic.dts": "e186f22b9a226335ae6b4fd1bb8c3c87223fe2a93962c61a7723af4f3c154fe6"
+}

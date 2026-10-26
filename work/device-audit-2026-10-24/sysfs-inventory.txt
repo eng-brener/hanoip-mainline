@@ -1,0 +1,136 @@
+total 0
+drwxr-xr-x  3 root root      0 2026-10-24 06:07 .
+dr-xr-xr-x 14 root root      0 1974-07-24 15:52 ..
+drwxr-xr-x  3 root root      0 2026-10-24 06:07 devicetree
+-r--------  1 root root 536692 2026-10-24 06:07 fdt
+total 0
+drwxr-xr-x  15 root root    0 2026-10-24 06:07 .
+dr-xr-xr-x  14 root root    0 1974-07-24 15:52 ..
+drwxr-xr-x   2 root root    0 2026-10-24 06:07 boot_adsp
+drwxr-xr-x   2 root root    0 2026-10-24 06:07 boot_cdsp
+drwxr-xr-x   2 root root    0 2026-10-24 06:07 cgroup
+dr-xr-xr-x   2 root root    0 2026-10-24 06:07 config
+drwxr-xr-x   2 root root    0 2026-10-24 06:07 dload
+-r--r--r--   1 root root 4096 2026-10-24 06:07 fscaps
+drwxr-xr-x   2 root root    0 2026-10-24 06:07 gpu
+drwxr-xr-x  51 root root    0 2026-10-24 06:07 iommu_groups
+drwxr-xr-x 486 root root    0 2026-10-24 06:07 irq
+drwxr-xr-x   3 root root    0 2026-10-24 06:07 mm
+-r--r--r--   1 root root   24 2026-10-24 06:07 notes
+drwxr-xr-x   4 root root    0 2026-10-24 06:07 q6audio
+-rw-r--r--   1 root root 4096 2026-10-24 06:07 rcu_expedited
+-rw-r--r--   1 root root 4096 2026-10-24 06:07 rcu_normal
+drwxr-xr-x   2 root root    0 2026-10-24 06:07 shutdown_wlan
+drwxr-xr-x 113 root root    0 2026-10-24 06:07 slab
+-rw-r--r--   1 root root 4096 2026-10-24 06:07 uevent_helper
+-r--r--r--   1 root root 4096 2026-10-24 06:07 uevent_seqnum
+drwxr-xr-x   3 root root    0 2026-10-24 06:07 wifi
+android_usb    hdcp                  mtd           scsi_device
+avtimer        hwmon                 net           scsi_disk
+backlight      i2c-adapter           npu           scsi_generic
+bdi            i2c-dev               nqx           scsi_host
+block          ieee80211             pci_bus       sensors
+bluetooth      input                 phy           smcinvoke
+bsg            iommu                 pmsg          sound
+bt-dev         ipa                   power_supply  spi_master
+ccid_usb       ipaIpv6CTTable        ppp           spidev
+devfreq        ipaNatTable           pps           subsys
+diag           ipa_adpl              ptp           thermal
+dma            ipa_odl_ctl           pwm           touchscreen
+drm            ipa_tethering_bridge  qce           tty
+dual_role_usb  kgsl                  qcom-battery  udc
+dvb            lcd_bias              qg            uio
+extcon         leds                  qg_battery    usbpd
+fastrpc        mdio_bus              qseecom       video4linux
+fingerprint    mem                   ramdump       wakeup
+firmware       misc                  rc            wlan
+glinkpkt       mmc_host              regulator     wwan_ioctl
+gpio           msm-rng               rfkill        xt_hardidletimer
+graphics       msm_sps               rpmsg         xt_idletimer
+gsi_usb        msm_usb_bridge        rtc           zram-control
+/sys/devices/platform/soc/1d87000.ufsphy_mem
+/sys/devices/platform/soc/1d87000.ufsphy_mem/phy/phy-1d87000.ufsphy_mem.0
+/sys/devices/platform/soc/1d90000.ufsice
+/sys/devices/platform/soc/soc:rpmh-regulator-ldoc3/regulator/regulator.30/1d84000.ufshc-qcom,vddp-ref-clk
+/sys/devices/platform/soc/soc:rpmh-regulator-ldoc3/regulator/regulator.30/1d87000.ufsphy_mem-vdda-pll
+/sys/devices/platform/soc/1d84000.ufshc
+/sys/devices/platform/soc/1d84000.ufshc/devfreq/1d84000.ufshc
+/sys/devices/platform/soc/soc:rpmh-regulator-ldoa12/regulator/regulator.20/1d84000.ufshc-vccq2
+/sys/devices/platform/soc/soc:rpmh-regulator-ldoa19/regulator/regulator.27/1d84000.ufshc-vcc
+/sys/devices/platform/soc/ae00000.qcom,mdss_mdp/backlight/panel0-backlight
+/sys/devices/platform/soc/soc:rpmh-regulator-ldoa4/regulator/regulator.12/1d87000.ufsphy_mem-vdda-phy
+/sys/devices/platform/soc/177004.qcom,gdsc/regulator/regulator.43/1d84000.ufshc-vdd-hba
+/sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-05/c440000.qcom,spmi:qcom,pm6150l@5:qcom,lcdb@ec00
+/sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-05/c440000.qcom,spmi:qcom,pm6150l@5:qcom,wled@d800
+I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+N: Name="qpnp_pon"
+P: Phys=qpnp_pon/input0
+S: Sysfs=/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-00/c440000.qcom,spmi:qcom,pm6150@0:qcom,power-on@800/input/input0
+U: Uniq=
+H: Handlers=event0 devfreq_boost_handle 
+B: PROP=0
+B: EV=3
+B: KEY=14000000000000 0
+
+I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+N: Name="double-tap"
+P: Phys=
+S: Sysfs=/devices/virtual/input/input1
+U: Uniq=
+H: Handlers=event1 devfreq_boost_handle 
+B: PROP=0
+B: EV=3
+B: KEY=800000000000000
+
+I: Bus=0019 Vendor=0001 Product=0001 Version=0100
+N: Name="gpio-keys"
+P: Phys=gpio-keys/input0
+S: Sysfs=/devices/platform/soc/soc:gpio_keys/input/input2
+U: Uniq=
+H: Handlers=event2 devfreq_boost_handle 
+B: PROP=0
+B: EV=3
+B: KEY=2000000 0 8000000000000 0
+
+I: Bus=001c Vendor=0000 Product=0000 Version=0000
+N: Name="ILITEK_TDDI"
+P: Phys=SPI
+S: Sysfs=/devices/platform/soc/a80000.spi/spi_master/spi2/spi2.0/input/input3
+U: Uniq=
+H: Handlers=event3 devfreq_boost_handle 
+B: PROP=2
+B: EV=b
+B: KEY=420 0 0 0 10168000000000 4d00281060000
+B: ABS=265800000000003
+
+I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+N: Name="sm6150-awinic-snd-card Headset Jack"
+P: Phys=ALSA
+S: Sysfs=/devices/platform/soc/soc:qcom,msm-audio-apr/soc:qcom,msm-audio-apr:qcom,q6core-audio/soc:qcom,msm-audio-apr:qcom,q6core-audio:sound/sound/card0/input4
+U: Uniq=
+H: Handlers=event4 
+B: PROP=0
+B: EV=21
+B: SW=f00d4
+
+I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+N: Name="sm6150-awinic-snd-card Button Jack"
+P: Phys=ALSA
+S: Sysfs=/devices/platform/soc/soc:qcom,msm-audio-apr/soc:qcom,msm-audio-apr:qcom,q6core-audio/soc:qcom,msm-audio-apr:qcom,q6core-audio:sound/sound/card0/input5
+U: Uniq=
+H: Handlers=event5 devfreq_boost_handle 
+B: PROP=0
+B: EV=3
+B: KEY=40 0 0 0 0 30 400000000 0 c000000000000 0
+
+I: Bus=0006 Vendor=001f Product=0000 Version=0000
+N: Name="uinput-fpc"
+P: Phys=
+S: Sysfs=/devices/virtual/input/input6
+U: Uniq=
+H: Handlers=event6 devfreq_boost_handle 
+B: PROP=0
+B: EV=b
+B: KEY=7c0000000000 0 0 0 0 0 0 0 0 0
+B: ABS=4
+

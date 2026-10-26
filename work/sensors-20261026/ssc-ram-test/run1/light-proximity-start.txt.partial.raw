@@ -1,0 +1,9 @@
+
+~ # (/bin/busybox chroot /opt/ssc /usr/bin/ssccli --sensor=light --timeout=35 > 
+/run/ssc-light.log 2>&1 &); (/bin/busybox chroot /opt/ssc /usr/bin/ssccli --sens
+or=proximity --timeout=35 > /run/ssc-proximity.log 2>&1 &); echo LIGHT_PROXIMITY
+_RUNNING; printf '\nHANOIP_END_711727b9a40b\n'
+LIGHT_PROXIMITY_RUNNING
+
+HANOIP_END_711727b9a40b
+~ # 

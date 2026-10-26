@@ -1,0 +1,55 @@
+sh: can't create /sys/module/ath10k_core/parameters/debug_mask: nonexistent directory
+HANOIP: UFS probe started in background (PID 507); see dmesg
+UFS module loader returned: 0
+HANOIP: UFS ready, 84 block devices, all read-only
+rc=0
+start 33.53
+modem_a /dev/sde18 pre 6a1fc4b5c25704d476a57e1c0a59983b75c9af27ca8a75412037614c6c6f45dc
+firmware links: 229
+efs modem_fs1 from modemst1 /dev/sdb14 fb8df9906f3276e1
+efs modem_fs2 from modemst2 /dev/sdb15 4a08a50eb1487a0f
+efs modem_fsg from fsg /dev/sde17 843cd5e0ff6c3af0
+efs modem_fsc from fsc /dev/sdb16 fa43239bcee7b97c
+modules loaded 38.01
+[   27.682181] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1e40000.ipa
+[   27.690313] qnoc-sm7150 1700000.interconnect: sync_state() pending due to 1e40000.ipa
+[   27.731966] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1e40000.ipa
+[   37.946156] ipa 1e40000.ipa: IPA driver initialized
+[   37.978896] ipa 1e40000.ipa: IPA driver setup completed successfully
+mpss /sys/class/remoteproc/remoteproc0 firmware=qcom/sm7150/motorola/hanoip/modem.mdt state=offline recovery=disabled
+mpss state=crashed wlan0=no after 2s at 42.85
+modem_a unchanged
+--- dmesg
+[    0.000000] OF: reserved mem: 0x0000000097500000..0x000000009767ffff (1536 KiB) nomap non-reusable wlan-msa@97500000
+[    0.000000] OF: reserved mem: 0x0000000097700000..0x000000009770ffff (64 KiB) nomap non-reusable ipa-fw@97700000
+[    0.000000] OF: reserved mem: 0x0000000097710000..0x0000000097714fff (20 KiB) nomap non-reusable ipa-gsi@97710000
+[    0.617061] arm-smmu 5040000.iommu: 	Stage-1: 48-bit VA -> 36-bit IPA
+[    0.630794] arm-smmu 15000000.iommu: 	Stage-1: 48-bit VA -> 48-bit IPA
+[    0.637395] platform 1e40000.ipa: Adding to iommu group 6
+[   27.665919] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1e40000.ipa
+[   27.674050] qnoc-sm7150 1620000.interconnect: sync_state() pending due to 1e40000.ipa
+[   27.682181] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1e40000.ipa
+[   27.690313] qnoc-sm7150 1700000.interconnect: sync_state() pending due to 1e40000.ipa
+[   27.731966] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1e40000.ipa
+[   27.748425] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 4080000.remoteproc
+[   37.923210] remoteproc remoteproc0: modem is available
+[   37.946156] ipa 1e40000.ipa: IPA driver initialized
+[   37.978896] ipa 1e40000.ipa: IPA driver setup completed successfully
+[   39.062323] remoteproc remoteproc0: powering up modem
+[   39.069470] remoteproc remoteproc0: Booting fw image qcom/sm7150/motorola/hanoip/modem.mdt, size 9100
+[   39.079176] ipa 1e40000.ipa: received modem starting event
+[   40.832686] ipa 1e40000.ipa: received modem running event
+[   40.838366] remoteproc remoteproc0: remote processor modem is now up
+[   41.249050] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[   41.803217] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[   41.886286] ath10k_snoc 18800000.wifi: qmi chip_id 0x140 chip_family 0x4002 board_id 0xff soc_id 0x40090000
+[   41.896453] ath10k_snoc 18800000.wifi: qmi fw_version 0x322903b3 fw_build_timestamp 2023-05-18 11:09 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2-00947-QCAHLSWMTPLZ-1.558119.4.586249.3
+[   42.333459] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[   42.457575] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[   42.467105] qcom_q6v5_pas 4080000.remoteproc: fatal error received: EX:kernel:0x0:tmr_slave1:0x1d1:PC=0xc06ddec0
+[   42.477653] remoteproc remoteproc0: crash detected in modem: type fatal error
+[   42.485095] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[   42.485106] remoteproc remoteproc0: handling crash #1 in modem
+lo
+rmnet_ipa0
+usb0

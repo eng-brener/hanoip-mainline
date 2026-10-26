@@ -1,0 +1,203 @@
+diff --git a/kernel-mainline/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c b/kernel-mainline/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
+index da3556eb6..b21d60d30 100644
+--- a/kernel-mainline/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
++++ b/kernel-mainline/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
+@@ -402,7 +402,10 @@ static const struct drm_private_state_funcs dpu_kms_global_state_funcs = {
+ 
+ static void dpu_kms_global_obj_fini(struct dpu_kms *dpu_kms)
+ {
++	if (!dpu_kms->global_state_initialized)
++		return;
+ 	drm_atomic_private_obj_fini(&dpu_kms->global_state);
++	dpu_kms->global_state_initialized = false;
+ }
+ 
+ static int dpu_kms_parse_data_bus_icc_path(struct dpu_kms *dpu_kms)
+@@ -1156,6 +1159,7 @@ static int dpu_kms_hw_init(struct msm_kms *kms)
+ 
+ 	drm_atomic_private_obj_init(dpu_kms->dev, &dpu_kms->global_state,
+ 				    &dpu_kms_global_state_funcs);
++	dpu_kms->global_state_initialized = true;
+ 
+ 	atomic_set(&dpu_kms->bandwidth_ref, 0);
+ 
+diff --git a/kernel-mainline/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/kernel-mainline/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+index e39831a39..d9f2034d6 100644
+--- a/kernel-mainline/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
++++ b/kernel-mainline/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+@@ -78,6 +78,7 @@ struct dpu_kms {
+ 	 * dpu_kms_global_get_state()
+ 	 */
+ 	struct drm_private_obj global_state;
++	bool global_state_initialized;
+ 
+ 	struct dpu_rm rm;
+ 
+diff --git a/kernel-mainline/drivers/gpu/drm/msm/msm_iommu.c b/kernel-mainline/drivers/gpu/drm/msm/msm_iommu.c
+index 897e42c8d..0f482a857 100644
+--- a/kernel-mainline/drivers/gpu/drm/msm/msm_iommu.c
++++ b/kernel-mainline/drivers/gpu/drm/msm/msm_iommu.c
+@@ -7,6 +7,7 @@
+ #include <linux/adreno-smmu-priv.h>
+ #include <linux/io-pgtable.h>
+ #include <linux/kmemleak.h>
++#include <linux/of_address.h>
+ #include "msm_drv.h"
+ #include "msm_gpu_trace.h"
+ #include "msm_mmu.h"
+@@ -723,6 +724,30 @@ static const struct msm_mmu_funcs funcs = {
+ 		.set_stall = msm_iommu_set_stall,
+ };
+ 
++static int msm_iommu_hanoip_firmware_reserve(struct msm_iommu *iommu, struct device *dev)
++{
++	struct device_node *memory;
++	struct resource region;
++	int ret;
++
++	if (!of_machine_is_compatible("motorola,hanoip") ||
++	    !of_device_is_compatible(dev->of_node, "qcom,sm7150-mdss"))
++		return 0;
++	memory = of_parse_phandle(dev->of_node, "memory-region", 0);
++	if (!memory)
++		return 0;
++	ret = of_address_to_resource(memory, 0, &region);
++	of_node_put(memory);
++	if (ret)
++		return ret;
++	/* Only the separately reserved, collected hanoip splash range is allowed. */
++	if (region.start != 0x9c000000 || resource_size(&region) != 0x1700000)
++		return -EINVAL;
++	/* The SMMU attach hook maps this after its page tables are ready. */
++	iommu->base.firmware_start = region.start;
++	return 0;
++}
++
+ struct msm_mmu *msm_iommu_new(struct device *dev, unsigned long quirks)
+ {
+ 	struct iommu_domain *domain;
+@@ -749,6 +774,13 @@ struct msm_mmu *msm_iommu_new(struct device *dev, unsigned long quirks)
+ 
+ 	mutex_init(&iommu->init_lock);
+ 
++	ret = msm_iommu_hanoip_firmware_reserve(iommu, dev);
++	if (ret) {
++		iommu_domain_free(domain);
++		kfree(iommu);
++		return ERR_PTR(ret);
++	}
++
+ 	ret = iommu_attach_device(iommu->domain, dev);
+ 	if (ret) {
+ 		iommu_domain_free(domain);
+diff --git a/kernel-mainline/drivers/gpu/drm/msm/msm_kms.c b/kernel-mainline/drivers/gpu/drm/msm/msm_kms.c
+index e5d0ea629..e43fc0908 100644
+--- a/kernel-mainline/drivers/gpu/drm/msm/msm_kms.c
++++ b/kernel-mainline/drivers/gpu/drm/msm/msm_kms.c
+@@ -185,6 +185,7 @@ struct drm_gpuvm *msm_kms_init_vm(struct drm_device *dev, struct device *mdss_de
+ 	struct msm_drm_private *priv = dev->dev_private;
+ 	struct msm_kms *kms = priv->kms;
+ 	struct device *iommu_dev;
++	u64 iova_size = 0x100000000ULL - 0x1000;
+ 
+ 	/*
+ 	 * IOMMUs can be a part of MDSS device tree binding, or the
+@@ -203,8 +204,11 @@ struct drm_gpuvm *msm_kms_init_vm(struct drm_device *dev, struct device *mdss_de
+ 	if (IS_ERR(mmu))
+ 		return ERR_CAST(mmu);
+ 
++	/* Keep allocations below the reserved firmware scanout mapping. */
++	if (mmu->firmware_start)
++		iova_size = mmu->firmware_start - 0x1000;
+ 	vm = msm_gem_vm_create(dev, mmu, "mdp_kms",
+-			       0x1000, 0x100000000 - 0x1000, true);
++			       0x1000, iova_size, true);
+ 	if (IS_ERR(vm)) {
+ 		dev_err(mdp_dev, "vm create, error %pe\n", vm);
+ 		mmu->funcs->destroy(mmu);
+diff --git a/kernel-mainline/drivers/gpu/drm/msm/msm_mmu.h b/kernel-mainline/drivers/gpu/drm/msm/msm_mmu.h
+index 8915662fb..d36e9c12b 100644
+--- a/kernel-mainline/drivers/gpu/drm/msm/msm_mmu.h
++++ b/kernel-mainline/drivers/gpu/drm/msm/msm_mmu.h
+@@ -56,6 +56,8 @@ struct msm_mmu {
+ 	int (*handler)(void *arg, unsigned long iova, int flags, void *data);
+ 	void *arg;
+ 	enum msm_mmu_type type;
++	/* Optional firmware scanout mapping, excluded from display allocations. */
++	u64 firmware_start;
+ 
+ 	/**
+ 	 * @prealloc: pre-allocated pages for pgtable
+@@ -72,6 +74,7 @@ static inline void msm_mmu_init(struct msm_mmu *mmu, struct device *dev,
+ 	mmu->dev = dev;
+ 	mmu->funcs = funcs;
+ 	mmu->type = type;
++	mmu->firmware_start = 0;
+ }
+ 
+ struct msm_mmu *msm_iommu_new(struct device *dev, unsigned long quirks);
+diff --git a/kernel-mainline/drivers/iommu/arm/arm-smmu/arm-smmu.c b/kernel-mainline/drivers/iommu/arm/arm-smmu/arm-smmu.c
+index 0bd21d206..5a65b3155 100644
+--- a/kernel-mainline/drivers/iommu/arm/arm-smmu/arm-smmu.c
++++ b/kernel-mainline/drivers/iommu/arm/arm-smmu/arm-smmu.c
+@@ -1165,6 +1165,37 @@ static void arm_smmu_master_install_s2crs(struct arm_smmu_master_cfg *cfg,
+ 	}
+ }
+ 
++/* Diagnostic hanoip handoff: retain ABL scanout before switching its streams. */
++static int arm_smmu_hanoip_map_splash(struct iommu_domain *domain, struct device *dev)
++{
++	struct arm_smmu_domain *smmu_domain = to_smmu_domain(domain);
++	struct device_node *memory;
++	struct resource region;
++	int ret;
++
++	if (!of_machine_is_compatible("motorola,hanoip") ||
++	    !of_device_is_compatible(dev->of_node, "qcom,sm7150-mdss"))
++		return 0;
++	memory = of_parse_phandle(dev->of_node, "memory-region", 0);
++	if (!memory)
++		return 0;
++	ret = of_address_to_resource(memory, 0, &region);
++	of_node_put(memory);
++	if (ret)
++		return ret;
++	if (region.start != 0x9c000000 || resource_size(&region) != 0x1700000)
++		return -EINVAL;
++	if (smmu_domain->hanoip_splash_mapped)
++		return 0;
++	ret = iommu_map(domain, region.start, region.start,
++			resource_size(&region), IOMMU_READ, GFP_KERNEL);
++	if (ret)
++		return dev_err_probe(dev, ret, "HANOIP: splash mapping failed\n");
++	smmu_domain->hanoip_splash_mapped = true;
++	dev_info(dev, "HANOIP: mapped firmware framebuffer %pr before stream switch\n", &region);
++	return 0;
++}
++
+ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev,
+ 			       struct iommu_domain *old)
+ {
+@@ -1205,6 +1236,10 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev,
+ 		goto rpm_put;
+ 	}
+ 
++	ret = arm_smmu_hanoip_map_splash(domain, dev);
++	if (ret)
++		goto rpm_put;
++
+ 	/* Looks ok, so add the device to the domain */
+ 	arm_smmu_master_install_s2crs(cfg, S2CR_TYPE_TRANS,
+ 				      smmu_domain->cfg.cbndx, fwspec);
+diff --git a/kernel-mainline/drivers/iommu/arm/arm-smmu/arm-smmu.h b/kernel-mainline/drivers/iommu/arm/arm-smmu/arm-smmu.h
+index 26d2e33cd..60e0c5958 100644
+--- a/kernel-mainline/drivers/iommu/arm/arm-smmu/arm-smmu.h
++++ b/kernel-mainline/drivers/iommu/arm/arm-smmu/arm-smmu.h
+@@ -376,6 +376,7 @@ enum arm_smmu_domain_stage {
+ };
+ 
+ struct arm_smmu_domain {
++	bool hanoip_splash_mapped;
+ 	struct arm_smmu_device		*smmu;
+ 	struct io_pgtable_ops		*pgtbl_ops;
+ 	unsigned long			pgtbl_quirks;

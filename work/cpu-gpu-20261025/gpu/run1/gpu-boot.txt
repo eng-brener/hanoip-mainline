@@ -1,0 +1,30 @@
+UFS module loader returned: 0
+HANOIP: UFS ready, 84 block devices, all read-only
+autostart done 36.60
+[    0.000000] OF: reserved mem: 0x0000000097715000..0x0000000097716fff (8 KiB) nomap non-reusable gpu@97715000
+[    0.761943] spmi_pmic_arb c440000.spmi: PMIC arbiter version v5 (0x50000000)
+[    0.989528] arm-smmu 15000000.iommu: probing hardware configuration...
+[    0.990413] arm-smmu 15000000.iommu: SMMUv2 with:
+[    0.990987] arm-smmu 15000000.iommu: 	stage 1 translation
+[    0.992108] arm-smmu 15000000.iommu: 	coherent table walk
+[    0.992672] arm-smmu 15000000.iommu: 	stream matching with 79 register groups
+[    0.993805] arm-smmu 15000000.iommu: 	61 context banks (0 stage-2 only)
+[    0.994719] arm-smmu 15000000.iommu: 	Supported page sizes: 0x61311000
+[    0.995506] arm-smmu 15000000.iommu: 	Stage-1: 48-bit VA -> 48-bit IPA
+[    0.996151] arm-smmu 15000000.iommu: 	preserved 0 boot mappings
+[   10.442977] HANOIP DRM: register Adreno
+[   16.642143] adreno 5000000.gpu: supply vdd not found, using dummy regulator
+[   16.934894] adreno 5000000.gpu: supply vddcx not found, using dummy regulator
+[   17.235063] msm_dpu ae01000.display-controller: bound 5000000.gpu (ops a3xx_ops [msm])
+[   17.583161] msm_dpu ae01000.display-controller: [drm:adreno_request_fw [msm]] loaded qcom/a630_sqe.fw from new location
+[   17.594374] msm_dpu ae01000.display-controller: [drm:adreno_request_fw [msm]] loaded qcom/a630_gmu.bin from new location
+[   17.609134] adreno 5000000.gpu: [drm:adreno_zap_shader_load [msm]] *ERROR* Unable to load qcom/sm7150/motorola/hanoip/a615_zap.mdt
+[   17.621254] msm_dpu ae01000.display-controller: [drm:adreno_load_gpu [msm]] *ERROR* gpu hw init failed: -2
+card0
+renderD128
+1d84000.ufshc
+5000000.gpu
+gpuss0-thermal cdev=1
+gpuss1-thermal cdev=1
+/sys/class/bluetooth: hci0  /sys/class/net: lo rmnet_ipa0 usb0 wlan0 
+irqs=0

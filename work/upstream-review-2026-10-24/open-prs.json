@@ -1,0 +1,134 @@
+[
+  {
+    "number": 69,
+    "title": "sweet: support replacement panels that need both DSC slices in one packet",
+    "url": "https://github.com/sm7150-mainline/linux/pull/69",
+    "updated_at": "2026-10-23T07:38:58Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.2",
+    "head": "05e02f562ce93c0417f1e0c7ce1d4ab33cb8f2b2",
+    "body": "Replacement LCD modules sold for the Redmi Note 10 Pro emulate the AMS667YR01 command set through a DSI bridge. ABL still selects `dsi_k6_38_0c_0a_fhd_dsc_video` for them, but on mainline they stay dark with the backlight off.\n\nThe difference to downstream is the DSC packetisation: downstream uses `qcom,mdss-dsc-slice-per-pkt = <2>`, i.e. one DSI packet per 1080px line, while mainline msm DSI always sends one packet per 540px slice. The genuine Samsung panel accepts both; these bridges only accept one packet per line.\n\n- **drm/msm/dsi: support multiple DSC slices per packet**: adds a `dsc_slice_per_pkt` field to `struct mipi_dsi_device` and derives the packet word count and packets per line from it (video and command mode). 0 keeps the current behaviour.\n- **drm/panel: ams667yr01: send two DSC slices per packet**: sets it to 2 to match downstream.\n\nTested on sweet with a replacement panel (same two patches on the `v7.1_rc3` tag): image, backlight (0–2047) and touch work. Before, the screen stayed dark. I can't test a genuine panel, but downstream drives it this way too.\n\nNote: mainline 7.3 has an equivalent flag (ffa88de8dd \"drm/mipi-dsi: add flag for sending all DSC slices in one packet\", `MIPI_DSI_MODE_DSC_ALL_SLICES_IN_PKT`, honoured by msm DSI). On a 7.3-based tree this becomes a one-line change in the panel driver, so the msm DSI commit here can be dropped when the tree moves on.\n"
+  },
+  {
+    "number": 68,
+    "title": "Input: goodix_gtx8 - follow the panel it is integrated with",
+    "url": "https://github.com/sm7150-mainline/linux/pull/68",
+    "updated_at": "2026-10-23T07:38:54Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.2",
+    "head": "4fda8008f5aeba7525a7751a67bd447da5cfaf84",
+    "body": "On sweet the GT9896 is integrated with the panel and loses power with it. While the panel is blanked, its level-triggered interrupt keeps firing (about 1800 interrupts during a 5 s blank here) and the threaded handler keeps reading the controller.\n\nThis makes `goodix_gtx8` a DRM panel follower when the touchscreen node has a `panel` phandle (added to the sweet DT):\n\n- before the panel is disabled or unprepared: interrupt off, controller powered off\n- after the panel is enabled: controller powered on, interrupt back on\n- after probe the controller stays off until the panel is enabled, so it is only ever powered while the panel is\n- panel followers leave system suspend/resume to the panel\n\nTested on sweet (7.3-based tree): 0 touch interrupts while blanked (was ~1800 per 5 s), touch works right after unblanking, and the touch supplies stay balanced over repeated blank/unblank cycles. Compile-tested on `v7.2`; the follower hooks it uses (`panel_enabled`/`panel_disabling`) already exist there.\n\nSince this driver is still under review upstream, I'm happy to send this to Jens for the next revision of the series as well.\n"
+  },
+  {
+    "number": 67,
+    "title": "drm/panel: ams667yr01: change refresh rate via the vertical front porch",
+    "url": "https://github.com/sm7150-mainline/linux/pull/67",
+    "updated_at": "2026-10-23T07:38:50Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.2",
+    "head": "d03f8b398dc05bc0caec1e63f96c3628691a90ef",
+    "body": "The 90 Hz and 60 Hz modes keep the 120 Hz porches and scale the pixel clock. The downstream driver never does that: it keeps the clock and stretches the vertical front porch (`dfps_immediate_porch_mode_vfp`, `dsi-supported-dfps-list = <120 60>`).\n\nThis switches the driver to the same scheme: every mode uses the 120 Hz pixel clock (393.4 MHz), 60 Hz doubles vtotal (vfp 20 → 2452, vtotal 4864), 90 Hz is dropped, and only 120 Hz is marked preferred. Before, `drm_connector_helper_get_modes_fixed()` marked all three as preferred, so userspace could pick any of them.\n\nTested on sweet with a replacement LCD panel: with the clock-scaled mode (on a 7.1-based tree), switching to 60 Hz with `modetest` garbles the picture and the DSI host reports errors; with this change (on a 7.3-based tree) `modetest` at 60 Hz shows a clean picture. Compile-tested on `v7.2`. I don't have a genuine AMS667YR01 to test, but the timings match downstream.\n\nKnown issue, so nobody is surprised: on my tree, switching modes at runtime (120 → 60 → 120 Hz with `modetest`) is not reliable yet. Afterwards vblank waits time out and the system gets slow, and once the RPMh link stalled. I haven't been able to tell whether that comes from the mode timings, the msm modeset path or the replacement panel's bridge. Booting and running at the preferred 120 Hz mode is not affected, and 60 Hz itself displays fine.\n"
+  },
+  {
+    "number": 66,
+    "title": "arm64: dts: qcom: sm7150: Fix QUP wrapper 1 interconnect provider",
+    "url": "https://github.com/sm7150-mainline/linux/pull/66",
+    "updated_at": "2026-10-23T07:24:26Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.2",
+    "head": "704b5511f87442f39ed04e9469bdba2fbeed7a89",
+    "body": "All QUP wrapper 1 nodes (i2c6-11, spi6-11, uart8/10/11) reference\n`&aggre1_noc MASTER_QUP_1`. In qcom,sm7150-rpmh.h the indices are per\nprovider: MASTER_QUP_1 (2) is a node of aggre2_noc (qhm_qup_north), while\nindex 2 on aggre1_noc is qhm_tsif. As a result wrapper 1 never votes the\nQUP0 BCM (bcm_qup0 = qhm_qup_center + qhm_qup_north).\n\nEffect on xiaomi-sweet: the only remaining QUP0 voter is the Bluetooth\nUART (uart3, wrapper 0). Turning Bluetooth off with the screen on causes\n`geni_i2c a84000.i2c: Timeout abort_m_cmd` / goodix -110 on the touch\ncontroller and then a hard SoC reset.\n\nEvidence (/sys/kernel/debug/interconnect/interconnect_summary):\n\nbefore:\n  qhm_tsif        <- a84000.i2c, a8c000.i2c   (wrapper 1 voting on TSIF)\n  qhm_qup_north   <- no consumers\n  qhm_qup_center  2 -> 0 when BT is turned off (only voter 88c000.serial)\n  then: geni_i2c a84000.i2c: Timeout abort_m_cmd, goodix -110, SoC reset\n\nafter:\n  qhm_qup_center  <- 888000.i2c, 890000.i2c, 88c000.serial\n  qhm_tsif        <- no consumers\n  qhm_qup_north   <- a84000.i2c, a8c000.i2c\n  5x bluetoothctl power off/on with touch in use: no hang, BT comes back\n  every time.\n\nTested on Xiaomi Redmi Note 10 Pro (sweet), kernel v7.2.\n"
+  },
+  {
+    "number": 65,
+    "title": "Xiaomi Redmi Note 10 Pro (sweet): speakers and microphone",
+    "url": "https://github.com/sm7150-mainline/linux/pull/65",
+    "updated_at": "2026-10-23T18:31:00Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.2",
+    "head": "f948f7223047ab319b97b67c9b510a35fc3175ac",
+    "body": "Audio support for Xiaomi Redmi Note 10 Pro (sweet, SM7150).\n\nSpeakers: 2x Awinic AW88263S on PRIMARY_MI2S\n- aw88261: add AW88263S variant (bindings, compatible, register\n  differences), don't touch reg 0 for AIF_RX\n- q6routing: handle S32_LE\n- sm8250 machine driver: 32-bit slots / BCLK x2 on PRIMARY_MI2S_RX,\n  only for the new \"xiaomi,sweet-sndcard\" compatible, so\n  tucana/toco/davinci (tfa9874, S16) are unchanged\n- sweet dts: both amps, widgets and routing\n\nMicrophone: WCD9370 over SoundWire, AMIC1 -> ADC1 -> TX macro\n- q6afe: HW vote response carries only the client handle, don't\n  read status from it\n- sm7150-lpass-lpi: fix swr/dmic pin functions\n- sm7150.dtsi: rx/tx/va macros and both SoundWire masters (disabled)\n- sm7150.config: QRTR_SMD=y (fixes ADSP/QRTR probe race),\n  LPASS_VA_MACRO=m\n- sweet dts: WCD9370 codec and capture DAI link\n\nADSP restart resilience:\n- wcd937x, lpass va/tx/rx macro, soundwire qcom: don't latch runtime PM\n  errors when LPASS clocks disappear during an ADSP crash, so the card\n  survives an ADSP restart instead of failing with -EBUSY\n\nTested on sweet: speakers and mic work (PipeWire, voice in Firefox),\n5/5 reboots with card and HiFi profile. UCM config:\nsm7150-mainline/alsa-ucm-conf#4\n\nNote: userspace also needs hexagonrpcd sensorspd started after rootpd,\notherwise the ADSP sensor_process watchdog crashes the ADSP at ~52 s.\nThat goes to pmaports separately.\n"
+  },
+  {
+    "number": 64,
+    "title": "sweet: charging and fuel gauge fixes (SMB5 / QG)",
+    "url": "https://github.com/sm7150-mainline/linux/pull/64",
+    "updated_at": "2026-10-22T10:15:26Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.2",
+    "head": "04be397a8796b9b6906057d9998ae16593dce141",
+    "body": "Charging and battery reporting for the Redmi Note 10 Pro (sweet, PM6150).\n\nDriver fixes (generic, apply to every SMB5 / PM6150 QG user):\n- qcom_smbx: fix float voltage encoding on SMB5 (3.6 V base, 10 mV steps)\n- qcom_smbx: don't scale USBIN voltage twice on SMB5\n- qcom_smbx: decode SMB5 charger states (inhibit = 0, pause = 6), so\n  taper reports Charging and terminate/inhibit report Full\n- qcom_qg: pick the battery current LSB from the ADC range subtype\n- qcom_qg: report status from the battery current, or from the charger\n  when one is linked via power-supplies\n- qcom_qg: estimate capacity from the battery OCV table with IR\n  compensation, and smooth it (max 1% per 20 s, monotonic per direction)\n\nsweet DT only (sm7150-xiaomi-common.dtsi untouched):\n- USB-C port dual-role with 5V/3A sink PDO, so PD charging works\n- battery: K6 Sunwoda 5020 mAh OCV table from the downstream profile,\n  4.40 V float, 200 mOhm, 2 A input limit for DCP\n- link the fuel gauge to the charger\n\nTested on sweet, 7.1 kernel:\n- FV register 0x1070 = 0x50, battery tops out at ~4.41 V\n- PD contract 5 V / 2 A, AICL settles at 2 A\n- STATUS Charging during taper, Full after termination, capacity climbs\n  to 100% without jumps\n- no qcom_qg / qcom_smbx errors in dmesg\n- checkpatch --strict: 0 errors, 0 warnings\n\nOther sm7150-xiaomi boards probably need the same dual-role connector,\nbut I only tested sweet.\n"
+  },
+  {
+    "number": 60,
+    "title": "arm64: dts: qcom: sm7150-xiaomi-davinci: working WCD9375 microphone capture",
+    "url": "https://github.com/sm7150-mainline/linux/pull/60",
+    "updated_at": "2026-08-10T18:53:03Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.2",
+    "head": "5ad991e40e8aa1e952d7fab58844e9aa4042f192",
+    "body": "Brings WCD9375 capture on Xiaomi Mi 9T (davinci) to a working state.\n\nThis continues #52 by @stsdc, rebased onto `v7.2` and fixed up until the\nmicrophone actually records. His commit is kept as-is, with authorship intact;\neverything else is on top.\n\n## What was missing\n\nFour separate problems, three of which turned out to be the same mistake.\n\n| Fix | Effect without it |\n|---|---|\n| `pinctrl`: `swr_tx_data` on LPI GPIO1 needs mux value 3, not 1 | data line never reaches the bus, `SWR bus clsh detected` on every boot, TX device stays `UNATTACHED` |\n| `swr2`: add the wakeup interrupt (`GIC_SPI 500`) | TX device never leaves runtime suspend, sixteen `IRQ sync failed to resume`, ADSP audio service restarts and the card fails with `-EBUSY` — taking the speaker down too |\n| `qcom,tx-port-mapping` `<2 3 4 5>` → `<2 2 3 4>`, 10 → 12 channels | ADCs land on the wrong ports, transport never programmed, capture reads silence |\n| capture link uses `<&swr2 1>`, not `<&swr2 0>` | `sdw_stream_add_master()` never called, master `DPn_PORT_CTRL` stays zero, controller raises `RD_FIFO_UNDERFLOW` |\n\nOne more thing found on the way: the RX and VA macro nodes carried no `status`\nproperty, so they were enabled on *every* sm7150 board - including ones with no\naudio codec described at all, such as `sm7150-google-sunfish`. They are now\ndisabled by default like the TX macro and both controllers next to them, and\ndavinci turns them on as it already did.\n\nPlus the parts #52 did not have yet: the codec node itself, the capture and VA\ndai-links, `audio-routing`, and a `MultiMedia2` frontend.\n\n### The common thread\n\nThe TX SoundWire controller on sm7150 has `qcom,dout-ports = <1>`, while the\nreference board everything was copied from — `qcm6490-idp` — has none. That\nsingle difference shifts **two** numbering schemes by one:\n\n* master **ports**: the microphone inputs start at port 2, not port 1 (which is\n  also why the `qcom,ports-*` arrays of `swr2` begin with `0xff`);\n* controller **DAIs**: `qcom_swrm_register_dais()` makes the first\n  `num_dout_ports` DAIs playback-only, so DAI 0 here is playback and is never\n  given `hw_params` in a capture link.\n\n`qcm6490-idp` can legitimately use `<1 1 2 3>` and `<&swr1 0>`; this board\ncannot.\n\n### Why capture needs its own frontend\n\nWith only `MultiMedia1`, playback and capture share one PCM, and capture cannot\nset hw params while playback is running:\n\n```\n$ aplay -D hw:0,0 tone.wav &\n$ arecord -D hw:0,0 -f S16_LE -r 48000 -c 1 -d 1 /dev/null\narecord: set_params:1462: Unable to install hw params:\n```\n\nSo userspace can never hold a source and a sink at the same time — PulseAudio\ngives up on the card entirely and falls back to `auto_null`. Adding\n`MultiMedia2` for capture follows what other boards do (RB5 plays on\n`MultiMedia2`, captures on `MultiMedia3`).\n\n## Scope\n\nEverything here is inert for the other sm7150 boards:\n\n* `sm7150.dtsi` - all the added nodes are `status = \"disabled\"`, and the wakeup\n  interrupt is on a disabled controller. Verified by building\n  `sm7150-google-sunfish.dtb`: every macro and both SoundWire controllers come\n  out disabled. Only `sm7150-xiaomi-davinci.dtsi` enables them.\n* `pinctrl-sm7150-lpass-lpi.c` - `swr_tx_data` only moves from mux slot 1 to\n  slot 3 on GPIO1; nothing is removed, GPIO2 and GPIO5 are untouched. The\n  function is requested through `tx_swr_active`, referenced solely by the TX\n  macro, which is disabled unless a board enables it. The other boards touch\n  `&lpass_tlmm` only for `gpio-line-names` and `gpio-reserved-ranges`.\n* `sm7150-xiaomi-davinci.dtsi` - this board only.\n\nTested on the Samsung panel variant; the Visionox one shares the same dtsi and\ndiffers only in the display.\n\n## Testing\n\nXiaomi Mi 9T (SM7150-AA, Samsung panel), postmarketOS, kernel `v7.2`.\n\nBoth SoundWire buses attach with no clashes, the card comes up on every boot,\nand the built-in microphone records:\n\n```\nnoise floor            -62 dBFS\nsignal to noise ratio   62 dB   (1 kHz acoustic tone)\nfrequency accuracy      200/400/800/1600/3200/6400 Hz reproduced within\n                        measurement error - no sample rate drift\nlinearity               x1.99, x1.95, x1.94 for successive input doublings\n```\n\nSpeech recordings are clean. Speaker playback is unaffected.\n\nThe microphone sits on `AMIC1` -> codec `ADC1` -> master port 2, which matches\nthe vendor routing (`\"TX SWR_ADC0\", \"ADC1_OUTPUT\"`).\n\n## Userspace note\n\n`ADC2` and `ADC3` must be left off: they share master port 2 with `ADC1`, and\nenabling them halves the signal and mixes the neighbouring channel into the\ncapture stream (noise floor goes from -62 to -20 dBFS). A UCM profile for this\nboard should disable them explicitly — that part belongs to `alsa-ucm-conf`, not\nhere.\n\n## Not included\n\nThe earpiece is still missing, and the card does not survive an ADSP restart —\n`wcd937x_soc_codec_probe()` fails with `-EBUSY` on the second probe. Both are\nexisting issues, unrelated to this series.\n"
+  },
+  {
+    "number": 59,
+    "title": "media: qcom: camss: sm7150: raise the interconnect bandwidth request",
+    "url": "https://github.com/sm7150-mainline/linux/pull/59",
+    "updated_at": "2026-08-09T07:32:21Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.2",
+    "head": "3145bda86f477beaf5c31833215ddc1b2c7dada0",
+    "body": "## media: qcom: camss: sm7150: raise the interconnect bandwidth request\n\n### Problem\n\nOn the Xiaomi Mi 9T (`xiaomi,davinci`) the front sensor, S5K3T2 at 2592x1940 raw10\n30 fps, dies within a few seconds of streaming whenever the CPU is also working the\nmemory — which on this device means any time libcamera's software debayer is running.\n\nThe visible failure is a stalled pipeline: userspace stops getting buffers and the\ncamera application hangs. The kernel log shows CSI-2 lane FIFO overflow on the\nreceiver (`CSID_CSI2_RX_IRQ_STATUS = 0x01dbc0ff`: lane 0/1/2 overflow, CRC and ECC\nerrors, incomplete frame), followed by IOMMU context faults from the write master.\n\nThe faults are a symptom. Measured during a stall: the pipeline was hung for 31\nseconds without a single new fault, while faults appeared before and after the\nwindow. The receiver dies first; the write master runs on afterwards.\n\n### Root cause\n\n`icc_res_sm7150` asks the fabric for 2 GiB/s, applied once in `camss_runtime_resume()`\nand dropped on power down. Sampling during a live stall confirms the request never\nchanges and the CAMNOC clock stays where `vfe_set_clock_rates()` puts it.\n\n### Measurements\n\nOne run of that sensor per step, on the device, nothing else changed:\n\n| interconnect request | CAMNOC clock | result |\n|---|---|---|\n| 2 GiB/s (current) | 150 MHz | stalls within seconds |\n| 3 GiB/s | 150 MHz | stalls within seconds |\n| **4 GiB/s** | 150 MHz | **runs clean, 0 IOMMU faults** |\n| 6 GiB/s | 150 MHz | runs clean, 0 IOMMU faults |\n| 2 GiB/s | 320 MHz | stalls within seconds |\n| 6 GiB/s | 320 MHz | runs clean, 0 IOMMU faults |\n\nThe last two rows separate the two resources: raising the CAMNOC clock with the old\nrequest changes nothing, raising the request with the stock clock fixes it. This patch\ntherefore touches only the request; `vfe_set_clock_rates()` is left alone.\n\nAfter the change, with no module parameters and nothing else tuned: 15 camera sessions,\n0 context faults, 0 VFE/CSID errors.\n\n### Why the number is not derived from the stream\n\nThe sensor writes about 190 MB/s (2592 × 1940 × 10 bits × 30 fps). The request that\nkeeps it alive is twenty times that. So this is not paying for the camera's own\ntraffic — it asks the fabric and the DDR behind it to run at an operating point where\na busy memory bus still leaves the receiver served.\n\nWorth stating explicitly, because the obvious \"improvement\" would make things worse: a\nbandwidth model computed from resolution × frame rate × bits would request ~0.2 GB/s,\nbelow even the current value.\n\n### Note on the constant being replaced\n\n`2097152` is not a measured figure for sm7150 — the identical constant appears for\n2290, sm6150, sm6350, sm8250 and the other platforms in this file. Mainline\n`icc_res_sm6150` carries the same value; whether that platform has the same problem is\nuntested here, and this patch does not touch it.\n\n### What was tested\n\n- Device: Xiaomi Mi 9T (`xiaomi,davinci`), postmarketOS, kernel `7.1.0-sm7150` from\n  this branch at `fd78d17954a8`.\n- Sensors exercised: front S5K3T2 through `csiphy1 → csid0 → vfe0_rdi0`, rear OV8856\n  through `csiphy3`.\n- Both libcamera (Plasma Camera) and raw V4L2 via `media-ctl` + `v4l2-ctl`.\n\n### Known limitations\n\n- All four interconnect paths are scaled together, because the experiment scaled them\n  together. Which single path carries the fix, and whether `avg` or `peak` is the one\n  that matters, is not separated.\n- One run per step of the ladder; no long soak and no cold-boot series yet.\n- Only davinci was available. Other sm7150 devices are untested.\n\nHappy to run further measurements on request — the device is on the bench.\n"
+  },
+  {
+    "number": 58,
+    "title": "arm64: dts: qcom: sunfish: enable PM6150 fuel gauge + charging",
+    "url": "https://github.com/sm7150-mainline/linux/pull/58",
+    "updated_at": "2026-07-14T17:52:43Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.2",
+    "head": "c9bdf8500b8f49a8c6876d8f4c7a2ee43d62db1a",
+    "body": "Enables the PM6150 fuel gauge and SMB2 charger on sunfish. Added a simple-battery node with the downstream 3080mAh ATL/LSN pack data and wired the charger into the gauge and the Type-C connector so TCPM actually draws power. Also makes qcom_qg report charging/discharging status instead of always UNKNOWN, using power_supply_am_i_supplied().\n\nTested on two 4a units running mainline from this tree, mine and @truongsinh's independently. Capacity/voltage/current/temp all show up under /sys/class/power_supply/qcom_qg and charging status tracks the cable correctly.\n"
+  },
+  {
+    "number": 52,
+    "title": "WCD9375 support",
+    "url": "https://github.com/sm7150-mainline/linux/pull/52",
+    "updated_at": "2026-06-11T22:53:36Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.1",
+    "head": "456364e61f980b007f06b8ae8e849a3b7d790565",
+    "body": null
+  },
+  {
+    "number": 51,
+    "title": "Add TI DRV8846 support",
+    "url": "https://github.com/sm7150-mainline/linux/pull/51",
+    "updated_at": "2026-04-05T18:13:39Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v7.0",
+    "head": "a74334db0d951be64c4a7010a2b5ddc959048e0c",
+    "body": "This PR introduces a DRV8846 motor driver (and DTS node) which is responsible for the pop-up camera mechanism.\r\nIt has been tested on Xiaomi 9T. Xiaomi 9T Pro (xiaomi-raphael) also uses this solution.\r\nThis will be useful for testing the selfie camera later.\r\n\r\nContains:\r\n- ti,drv8846 node in the  [sm7150-xiaomi-davinci.dtsi](https://github.com/sm7150-mainline/linux/compare/v7.0...stsdc:linux:stsdc/v7-add-drv8846-complimentary?expand=1#diff-44a006dafd1939579248d023c984c398330a54a8519fa5a467ad49b9a976d26b)\r\n- DT bindings for ti,drv8846\r\n- ported driver for TI DRV8846\r\n\r\nCan be tested with this GUI:  https://gist.github.com/stsdc/20dcc6e83b5ae23f25523ac0c8567085\r\nProof of work: https://mas.to/@stsdc/116026121171513287"
+  },
+  {
+    "number": 44,
+    "title": "Add support for Samsung Galaxy A71",
+    "url": "https://github.com/sm7150-mainline/linux/pull/44",
+    "updated_at": "2025-05-14T16:17:43Z",
+    "state": "open",
+    "merged_at": null,
+    "base": "v6.14",
+    "head": "df63cda91ff8c5f1b16962002f2d57006d09d70d",
+    "body": "This includes device-tree and generated panel driver."
+  }
+]

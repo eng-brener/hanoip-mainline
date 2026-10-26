@@ -1,0 +1,6097 @@
+[
+  {
+    "file": "adsp.b04",
+    "offset": "0x15e1fb",
+    "text": "uTlmm_GpioIn"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x15f646",
+    "text": "uTlmm_ConfigGpio"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x15fc69",
+    "text": "uTlmm_GpioOut"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x166413",
+    "text": "qdssc_svc_init"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x166444",
+    "text": "qup_common_init"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x166454",
+    "text": "qup_fw_init"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1665b5",
+    "text": "tlmm_core_init"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1665c4",
+    "text": "tlmm_ext_init"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x169aef",
+    "text": "/tlmm/qrp7150[2]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16caaa",
+    "text": "/pmic/client/sensor_vdd"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16cac2",
+    "text": "/node/pmic/client/sensor_vdd"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16cadf",
+    "text": "/pmic/client/sensor_vddio"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16caf9",
+    "text": "/node/pmic/client/sensor_vddio"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16da38",
+    "text": "scc_noc_bus_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16da88",
+    "text": "scc_q6_ahbm_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16dad8",
+    "text": "scc_q6_ahbs_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16db28",
+    "text": "scc_smem_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16dd58",
+    "text": "scc_sdc_proc_fclk_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16dda8",
+    "text": "scc_qupv3_2xcore_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16ddf8",
+    "text": "scc_smem_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16de48",
+    "text": "scc_sdc_proc_hclk_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16de98",
+    "text": "scc_qupv3_m_hclk_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16fe6d",
+    "text": "qupv3_sensor_gsi_irq_0"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16fe84",
+    "text": "qupv3_sensor_gsi_irq_1"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16fe9b",
+    "text": "qupv3_sensor_gsi_irq_2"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16feb2",
+    "text": "qupv3_sensor_gsi_irq_3"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16fec9",
+    "text": "qupv3_sensor_gsi_irq_4"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x16fee0",
+    "text": "qupv3_sensor_gsi_irq_5"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17014e",
+    "text": "qupv3_sensor_gsi_irq_6"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1701da",
+    "text": "top_qupv3_lpass_irq_out[2]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1701f5",
+    "text": "top_qupv3_lpass_irq_out[3]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170210",
+    "text": "top_qupv3_lpass_irq_out[4]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17022b",
+    "text": "top_qupv3_lpass_irq_out[5]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1702be",
+    "text": "qupv3_sensor_gsi_irq_7"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1702d5",
+    "text": "qupv3_sensor_gsi_irq_8"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1702ec",
+    "text": "qupv3_sensor_gsi_irq_9"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170303",
+    "text": "qupv3_sensor_gsi_irq_10"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17031b",
+    "text": "qupv3_sensor_gsi_irq_11"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17034b",
+    "text": "qupv3_sensor_gsi_irq_12"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170363",
+    "text": "qupv3_sensor_se_irq_0"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170379",
+    "text": "qupv3_sensor_se_irq_1"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17038f",
+    "text": "qupv3_sensor_se_irq_2"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1704ba",
+    "text": "qupv3_sensor_se_irq_3"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1704d0",
+    "text": "qupv3_sensor_se_irq_4"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1704e6",
+    "text": "qupv3_sensor_se_irq_5"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170a27",
+    "text": "ssc_irq_out_apcs[4]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170bbd",
+    "text": "ssc_q6_alarm_cx_irq"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170bd1",
+    "text": "ssc_q6_alarm_mx_irq"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170ddf",
+    "text": "qtmr_ssc_virt_irq_0"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170ebc",
+    "text": "vsense_ssc_q6_alarm_irq"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170f2d",
+    "text": "QUPV3_0_QUPV3_ID_1"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x170f40",
+    "text": "QUPV3_1_QUPV3_ID_1"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17130f",
+    "text": "QUPV3_0_GSI_TOP"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17131f",
+    "text": "QUPV3_0_GSI"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17132b",
+    "text": "QUPV3_0_XPU3"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171338",
+    "text": "QUPV3_0_QUPV3_SE_WRAPPER"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171351",
+    "text": "QUPV3_0_SE0"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17135d",
+    "text": "QUPV3_0_SE0_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171373",
+    "text": "QUPV3_0_SE0_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171390",
+    "text": "QUPV3_0_SE0_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1713a7",
+    "text": "QUPV3_0_SE0_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1713c0",
+    "text": "QUPV3_0_SE0_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1713d8",
+    "text": "QUPV3_0_SE0_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1713ee",
+    "text": "QUPV3_0_SE1"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1713fa",
+    "text": "QUPV3_0_SE1_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171410",
+    "text": "QUPV3_0_SE1_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17142d",
+    "text": "QUPV3_0_SE1_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171444",
+    "text": "QUPV3_0_SE1_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17145d",
+    "text": "QUPV3_0_SE1_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171475",
+    "text": "QUPV3_0_SE1_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17148b",
+    "text": "QUPV3_0_SE2"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171497",
+    "text": "QUPV3_0_SE2_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1714ad",
+    "text": "QUPV3_0_SE2_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1714ca",
+    "text": "QUPV3_0_SE2_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1714e1",
+    "text": "QUPV3_0_SE2_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1714fa",
+    "text": "QUPV3_0_SE2_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171512",
+    "text": "QUPV3_0_SE2_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171528",
+    "text": "QUPV3_0_SE3"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171534",
+    "text": "QUPV3_0_SE3_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17154a",
+    "text": "QUPV3_0_SE3_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171567",
+    "text": "QUPV3_0_SE3_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17157e",
+    "text": "QUPV3_0_SE3_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171597",
+    "text": "QUPV3_0_SE3_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1715af",
+    "text": "QUPV3_0_SE3_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1715c5",
+    "text": "QUPV3_0_SE4"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1715d1",
+    "text": "QUPV3_0_SE4_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1715e7",
+    "text": "QUPV3_0_SE4_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171604",
+    "text": "QUPV3_0_SE4_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17161b",
+    "text": "QUPV3_0_SE4_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171634",
+    "text": "QUPV3_0_SE4_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17164c",
+    "text": "QUPV3_0_SE4_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171662",
+    "text": "QUPV3_0_SE5"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17166e",
+    "text": "QUPV3_0_SE5_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171684",
+    "text": "QUPV3_0_SE5_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1716a1",
+    "text": "QUPV3_0_SE5_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1716b8",
+    "text": "QUPV3_0_SE5_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1716d1",
+    "text": "QUPV3_0_SE5_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1716e9",
+    "text": "QUPV3_0_SE5_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1716ff",
+    "text": "QUPV3_0_QUPV3_COMMON"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171714",
+    "text": "QUPV3_0_VMIDMT_SMR_48_SSD6_SID6_MA48_SP48_36"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171741",
+    "text": "QUPV3_1_GSI_TOP"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171751",
+    "text": "QUPV3_1_GSI"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17175d",
+    "text": "QUPV3_1_XPU3"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17176a",
+    "text": "QUPV3_1_QUPV3_SE_WRAPPER"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171783",
+    "text": "QUPV3_1_SE0"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17178f",
+    "text": "QUPV3_1_SE0_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1717a5",
+    "text": "QUPV3_1_SE0_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1717c2",
+    "text": "QUPV3_1_SE0_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1717d9",
+    "text": "QUPV3_1_SE0_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1717f2",
+    "text": "QUPV3_1_SE0_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17180a",
+    "text": "QUPV3_1_SE0_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171820",
+    "text": "QUPV3_1_SE1"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17182c",
+    "text": "QUPV3_1_SE1_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171842",
+    "text": "QUPV3_1_SE1_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17185f",
+    "text": "QUPV3_1_SE1_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171876",
+    "text": "QUPV3_1_SE1_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17188f",
+    "text": "QUPV3_1_SE1_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1718a7",
+    "text": "QUPV3_1_SE1_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1718bd",
+    "text": "QUPV3_1_SE2"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1718c9",
+    "text": "QUPV3_1_SE2_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1718df",
+    "text": "QUPV3_1_SE2_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1718fc",
+    "text": "QUPV3_1_SE2_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171913",
+    "text": "QUPV3_1_SE2_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17192c",
+    "text": "QUPV3_1_SE2_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171944",
+    "text": "QUPV3_1_SE2_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17195a",
+    "text": "QUPV3_1_SE3"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171966",
+    "text": "QUPV3_1_SE3_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17197c",
+    "text": "QUPV3_1_SE3_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171999",
+    "text": "QUPV3_1_SE3_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1719b0",
+    "text": "QUPV3_1_SE3_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1719c9",
+    "text": "QUPV3_1_SE3_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1719e1",
+    "text": "QUPV3_1_SE3_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1719f7",
+    "text": "QUPV3_1_SE4"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171a03",
+    "text": "QUPV3_1_SE4_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171a19",
+    "text": "QUPV3_1_SE4_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171a36",
+    "text": "QUPV3_1_SE4_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171a4d",
+    "text": "QUPV3_1_SE4_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171a66",
+    "text": "QUPV3_1_SE4_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171a7e",
+    "text": "QUPV3_1_SE4_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171a94",
+    "text": "QUPV3_1_SE5"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171aa0",
+    "text": "QUPV3_1_SE5_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171ab6",
+    "text": "QUPV3_1_SE5_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171ad3",
+    "text": "QUPV3_1_SE5_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171aea",
+    "text": "QUPV3_1_SE5_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171b03",
+    "text": "QUPV3_1_SE5_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171b1b",
+    "text": "QUPV3_1_SE5_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171b31",
+    "text": "QUPV3_1_QUPV3_COMMON"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171b46",
+    "text": "QUPV3_1_VMIDMT_SMR_48_SSD6_SID6_MA48_SP48_36"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171c62",
+    "text": "TLMM_XPU_NORTH_XN"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171c74",
+    "text": "TLMM_NORTH"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171c7f",
+    "text": "TLMM_XPU_SOUTH_XS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171c91",
+    "text": "TLMM_SOUTH"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171c9c",
+    "text": "TLMM_XPU_WEST_XW"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x171cad",
+    "text": "TLMM_WEST"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17275d",
+    "text": "QDSS_SSC_SSC_SSC_DBG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x172772",
+    "text": "QDSS_SSC_CTI_SDC_2_CTI_SDC_2_CSCTI"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x172795",
+    "text": "QDSS_SSC_CTI_1_CTI_1_CSCTI"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1727b0",
+    "text": "QDSS_SSC_STM_STM_CXSTM_2_4_4_TRUE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1727d2",
+    "text": "QDSS_SSC_FUN0_FUN0_CXATBFUNNEL_32W8SP"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1727f8",
+    "text": "QDSS_SSC_SSC_ETFETB_SSC_ETFETB_CXTMC_F32W16K"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x172825",
+    "text": "QDSS_SSC_DL_DL_DRAGONLINK_SLV_ATB32_DSB32"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17284f",
+    "text": "QDSS_SSC_DL_TPDM0_TPDM0_TPDM_ATB32_DSB32_CS3493730B"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x172883",
+    "text": "QDSS_SSC_DL_TPDM0_TPDM_ATB32_DSB32_CS3493730B_SUB"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1728b5",
+    "text": "QDSS_SSC_DL_TPDM0_TPDM_ATB32_DSB32_CS3493730B_GPR"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1728e7",
+    "text": "QDSS_SSC_DL_TPDA_TPDA_TPDA_S1_W64_D8_M64_CS3BABB64A"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17291b",
+    "text": "QDSS_SSC_QDSP6_QDSP6_QDSP6_DBG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17293a",
+    "text": "QDSS_SSC_QDSP6_CTI_0_CTI_0_CSCTI"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17295b",
+    "text": "QDSS_SSC_CTI_4_CTI_4_CSCTI"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x172976",
+    "text": "QDSS_SSC_CTI_6_CTI_6_CSCTI"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1747df",
+    "text": "TURING_RSCC_RSCC_RSC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1748fe",
+    "text": "TURING_QDSP6SS_RSCC_RSCC_RSC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x175c94",
+    "text": "AOP_RSCC_RSCC_RSC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176580",
+    "text": "SSC_QDSP6V65SS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17658f",
+    "text": "SSC_QDSP6V65SS_PUB"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1765a2",
+    "text": "SSC_QDSP6V65SS_PRIVATE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1765b9",
+    "text": "SSC_QDSP6V65SS_CSR"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1765cc",
+    "text": "SSC_QDSP6V65SS_L2VIC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1765e1",
+    "text": "SSC_QDSP6SS_QDSP6SS_QTMR_AC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1765fd",
+    "text": "SSC_QDSP6SS_QTMR_F0_0"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176613",
+    "text": "SSC_QDSP6SS_QTMR_F1_1"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176629",
+    "text": "SSC_QDSP6SS_QTMR_F2_2"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17663f",
+    "text": "SSC_QDSP6SS_QDSP6V65SS_RSCC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17665b",
+    "text": "SSC_QDSP6SS_RSCC_RSCC_RSC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176675",
+    "text": "SSC_QUPV3_QUPV3_ID_2"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17668a",
+    "text": "SSC_QUPV3_GSI_TOP"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17669c",
+    "text": "SSC_QUPV3_GSI"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1766aa",
+    "text": "SSC_QUPV3_XPU3"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1766b9",
+    "text": "SSC_QUPV3_QUPV3_SE_WRAPPER"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1766d4",
+    "text": "SSC_QUPV3_SE0"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1766e2",
+    "text": "SSC_QUPV3_SE0_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1766fa",
+    "text": "SSC_QUPV3_SE0_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176719",
+    "text": "SSC_QUPV3_SE0_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176732",
+    "text": "SSC_QUPV3_SE0_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17674d",
+    "text": "SSC_QUPV3_SE0_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176767",
+    "text": "SSC_QUPV3_SE0_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17677f",
+    "text": "SSC_QUPV3_SE1"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17678d",
+    "text": "SSC_QUPV3_SE1_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1767a5",
+    "text": "SSC_QUPV3_SE1_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1767c4",
+    "text": "SSC_QUPV3_SE1_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1767dd",
+    "text": "SSC_QUPV3_SE1_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1767f8",
+    "text": "SSC_QUPV3_SE1_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176812",
+    "text": "SSC_QUPV3_SE1_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17682a",
+    "text": "SSC_QUPV3_SE2"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176838",
+    "text": "SSC_QUPV3_SE2_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176850",
+    "text": "SSC_QUPV3_SE2_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17686f",
+    "text": "SSC_QUPV3_SE2_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176888",
+    "text": "SSC_QUPV3_SE2_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1768a3",
+    "text": "SSC_QUPV3_SE2_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1768bd",
+    "text": "SSC_QUPV3_SE2_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1768d5",
+    "text": "SSC_QUPV3_SE3"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1768e3",
+    "text": "SSC_QUPV3_SE3_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1768fb",
+    "text": "SSC_QUPV3_SE3_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17691a",
+    "text": "SSC_QUPV3_SE3_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176933",
+    "text": "SSC_QUPV3_SE3_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17694e",
+    "text": "SSC_QUPV3_SE3_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176968",
+    "text": "SSC_QUPV3_SE3_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176980",
+    "text": "SSC_QUPV3_SE4"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17698e",
+    "text": "SSC_QUPV3_SE4_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1769a6",
+    "text": "SSC_QUPV3_SE4_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1769c5",
+    "text": "SSC_QUPV3_SE4_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1769de",
+    "text": "SSC_QUPV3_SE4_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1769f9",
+    "text": "SSC_QUPV3_SE4_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176a13",
+    "text": "SSC_QUPV3_SE4_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176a2b",
+    "text": "SSC_QUPV3_SE5"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176a39",
+    "text": "SSC_QUPV3_SE5_GENI4_CFG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176a51",
+    "text": "SSC_QUPV3_SE5_GENI4_IMAGE_REGS"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176a70",
+    "text": "SSC_QUPV3_SE5_GENI4_DATA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176a89",
+    "text": "SSC_QUPV3_SE5_QUPV3_SE_DMA"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176aa4",
+    "text": "SSC_QUPV3_SE5_GENI4_IMAGE"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176abe",
+    "text": "SSC_QUPV3_SE5_QUPV3_SEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176ad6",
+    "text": "SSC_QUPV3_QUPV3_COMMON"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176aed",
+    "text": "SSC_QUPV3_VMIDMT_SMR_48_SSD6_SID6_MA48_SP48_36"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176b1c",
+    "text": "SSC_SDC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176b24",
+    "text": "SSC_SDC_DEC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176b30",
+    "text": "SSC_SDC_VMIDMT"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176b4d",
+    "text": "SCC_MCC_SSC_REG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176b5d",
+    "text": "SSC_MCC_SCC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176b69",
+    "text": "SSC_SCC_SCC_REG"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176b79",
+    "text": "SSC_LPASS_TLMM_CSR"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176c2a",
+    "text": "SSC_SSC_LPA_RSCC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176c3b",
+    "text": "SSC_RSCC_RSCC_RSC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176c4d",
+    "text": "SSC_LPASS_LPM"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176c5b",
+    "text": "SSC_QTMR_AC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176c67",
+    "text": "SSC_QTMR_F0_0"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176c75",
+    "text": "SSC_QTMR_F1_1"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176c83",
+    "text": "SSC_Q6_MPU_MPU32Q2N7S1V0_12_CL36M35L11_AHB"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176cae",
+    "text": "SSC_SDC_MPU_MPU32Q2N7S1V0_12_CL36M35L11_AHB"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176cda",
+    "text": "SSC_CX_VOLTAGE_SENSOR"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176cf0",
+    "text": "SSC_MX_VOLTAGE_SENSOR"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x176d06",
+    "text": "SSC_NOC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177615",
+    "text": "scc_qupv3_m_hclk_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17762a",
+    "text": "scc_sdc_bus_hclk_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177694",
+    "text": "+SSC_NOC"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1777a8",
+    "text": "qhs_qupv3_north"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1777f8",
+    "text": "qhs_tlmm_west"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17781c",
+    "text": "qhs_tlmm_north"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177861",
+    "text": "qhs_tlmm_south"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177879",
+    "text": "qhm_qup_north"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1778e8",
+    "text": "qhs_qupv3_center"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1778f9",
+    "text": "qhm_qupv3"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177965",
+    "text": "qhs_qupv3"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17796f",
+    "text": "srvc_ssc_noc"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1779a8",
+    "text": "srvc_ssc_noc_qhm_lpass_core"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1779ed",
+    "text": "qhm_qup_center"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177aa1",
+    "text": "scc_sleep_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177ac0",
+    "text": "Not enough PRAM memory for QUP TRE allocations."
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177af0",
+    "text": "qup_common.c"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177b5f",
+    "text": "QUP TRE mem free failed. Freeing address 0x00."
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177b8e",
+    "text": "QUP tre_pool mem refer Null Memory pointer"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177bb9",
+    "text": "QUP TRE mem free failed. Freeing unused QUP TRE memory. Addr: 0x%08x"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177bfe",
+    "text": "QUP TRE mem free failed. Invalid TRE memory. Addr: 0x%08x"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177c38",
+    "text": "QUP TRE alloc failed. Protocol requesting invalid size. Protocol: %d, Size: %d"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177c87",
+    "text": "QUP TRE alloc failed. Protocol used all its allocations. Protocol: %d, Size: %d"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177cd7",
+    "text": "QUP TRE alloc failed. No available memory in pool. Protocol: %d, Size: %d"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x177d97",
+    "text": "qup_cfg"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x178831",
+    "text": "Uart_tlmm_close failed."
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x17890d",
+    "text": "uart_tlmm_open failed."
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x180afe",
+    "text": "port_ssc_stm"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x180ba8",
+    "text": "port_ssc_etm"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x180c70",
+    "text": "qdssc_svc_task"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x181338",
+    "text": "iface_reg - ERR - qup-%d gpii-%d registered!"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x181366",
+    "text": "iface_reg - Allocating qup-%d gpii-%d"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x18138d",
+    "text": "iface_reg - ERR - qup-%d gpii-%d alloc"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1813d4",
+    "text": "iface_reg - ERR - qup-%d gpii-%d init failed!"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x181403",
+    "text": "iface_reg - ERR - qup-%d gpii-%d irq-%d isr_enable failed"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x18143e",
+    "text": "iface_reg - ERR - qup-%d gpii-%d irq-%d failed isr_enable"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x181479",
+    "text": "iface_reg - qup-%d gpii-%d register DONE!"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x18165c",
+    "text": "init_gpi_sync - ERR - QUP-%d!"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x181796",
+    "text": "gpi_reg_dump_collect - Invoked for qup-%d gpii-%d"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1817c9",
+    "text": "gpi_reg_dump_collect - Couldn't collect dumps for QUP - %d GPII - %d"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x18186d",
+    "text": "gpii_init - WARN - qup-%d gpii-%d initialized!"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x18195b",
+    "text": "gpii_init - ERR - qup-%d gpii-%d not ready"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182791",
+    "text": "tlmm_total_gpio"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1827a1",
+    "text": "tlmm_ports"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1827ac",
+    "text": "TLMMDefaultPlatformGroup"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1827c5",
+    "text": "TlmmPlatformGroups"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1829a2",
+    "text": "port_ssc_etm"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1829af",
+    "text": "port_ssc_stm"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182af7",
+    "text": "qup_cfg"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182b8c",
+    "text": "qup0_l0[1]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182b97",
+    "text": "qup0_l1[1]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182ba2",
+    "text": "qup0_l2[1]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182bad",
+    "text": "qup0_l3[1]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182bcd",
+    "text": "qup1_l0[1]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182bd8",
+    "text": "qup1_l1[1]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182bee",
+    "text": "ssc_irq_17"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182d06",
+    "text": "qup0_l0[2]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182d11",
+    "text": "qup0_l1[2]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182d30",
+    "text": "qup0_l0[3]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182d3b",
+    "text": "qup0_l1[3]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182d46",
+    "text": "qup0_l2[3]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182d51",
+    "text": "qup0_l3[3]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182d6b",
+    "text": "qup1_l2[2]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182d76",
+    "text": "qup1_l3[2]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182d81",
+    "text": "qup1_l0[3]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182d8c",
+    "text": "qup1_l1[3]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182dc8",
+    "text": "qup1_l0[0]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182dd3",
+    "text": "qup1_l1[0]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182dde",
+    "text": "qup1_l2[0]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182de9",
+    "text": "qup1_l3[0]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182ea2",
+    "text": "ssc_irq_9"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182eac",
+    "text": "ssc_irq_10"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182eb7",
+    "text": "ssc_irq_11"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182ec2",
+    "text": "ssc_irq_12"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182ecd",
+    "text": "ssc_irq_13"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182ed8",
+    "text": "ssc_irq_14"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x182eed",
+    "text": "ssc_irq_16"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1859da",
+    "text": "/dev/qup_ssc/11"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1859ea",
+    "text": "/dev/qup_ssc"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x185a4c",
+    "text": "/tlmm/idp7150[1]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x185b10",
+    "text": "/tlmm/idpcfgs"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x185b1e",
+    "text": "/tlmm/qrd7150[2]"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x185b2f",
+    "text": "/tlmm/qrdcfgs"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1864d2",
+    "text": "SSC_PRAM"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x18bc85",
+    "text": "scc_qsm_xo_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x18e12c",
+    "text": "/vcs/vdd_ssc_int"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x18f178",
+    "text": "QUP_MASTER"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x194f79",
+    "text": "Qup_Master"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x196134",
+    "text": "scc_rsc_hclk_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a027a",
+    "text": "scc_qupv3_se0_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a028c",
+    "text": "scc_qupv3_se1_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a029e",
+    "text": "scc_qupv3_se2_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a02b0",
+    "text": "scc_qupv3_se3_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a02c2",
+    "text": "scc_qupv3_se4_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a02d4",
+    "text": "scc_qupv3_se5_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a02e6",
+    "text": "scc_at_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a02f1",
+    "text": "scc_q6_atbm_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a0301",
+    "text": "scc_pclkdbg_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a0311",
+    "text": "scc_dbg_tsctr_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a0323",
+    "text": "scc_noc_atb_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7936",
+    "text": "scc_ro_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7941",
+    "text": "gcc_qupv3_wrap_1_m_ahb_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a799e",
+    "text": "gcc_qupv3_wrap_0_s_ahb_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a79b9",
+    "text": "gcc_qupv3_wrap_1_s_ahb_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a79d4",
+    "text": "gcc_qupv3_wrap0_core_2x_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a79f0",
+    "text": "gcc_qupv3_wrap0_core_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7a09",
+    "text": "gcc_qupv3_wrap1_core_2x_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7a25",
+    "text": "gcc_qupv3_wrap1_core_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7a3e",
+    "text": "gcc_qupv3_wrap0_s0_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7a55",
+    "text": "gcc_qupv3_wrap0_s1_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7a6c",
+    "text": "gcc_qupv3_wrap0_s2_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7a83",
+    "text": "gcc_qupv3_wrap0_s3_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7a9a",
+    "text": "gcc_qupv3_wrap0_s4_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7ab1",
+    "text": "gcc_qupv3_wrap0_s5_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7ac8",
+    "text": "gcc_qupv3_wrap0_s6_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7adf",
+    "text": "gcc_qupv3_wrap0_s7_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7af6",
+    "text": "gcc_qupv3_wrap1_s0_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7b0d",
+    "text": "gcc_qupv3_wrap1_s1_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7b24",
+    "text": "gcc_qupv3_wrap1_s2_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7b3b",
+    "text": "gcc_qupv3_wrap1_s3_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7b52",
+    "text": "gcc_qupv3_wrap1_s4_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7b69",
+    "text": "gcc_qupv3_wrap1_s5_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7b80",
+    "text": "gcc_qupv3_wrap1_s6_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7b97",
+    "text": "gcc_qupv3_wrap1_s7_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a7bbe",
+    "text": "gcc_qupv3_wrap_0_m_ahb_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8286",
+    "text": "scc_debug_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8294",
+    "text": "scc_q6_spm_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a82a3",
+    "text": "scc_ahb_timeout_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a82b7",
+    "text": "scc_bus_alt_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a82c7",
+    "text": "scc_crif_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a82d4",
+    "text": "scc_csr_h_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a82e2",
+    "text": "scc_data_h_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a82f1",
+    "text": "scc_noc_bus_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8301",
+    "text": "scc_q6_ahbm_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8311",
+    "text": "scc_q6_ahbs_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8321",
+    "text": "scc_q6_xpu2_client_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8338",
+    "text": "scc_q6_xpu2_config_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a834f",
+    "text": "scc_qtimer_ahb_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8362",
+    "text": "scc_qtimer_tmr_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8375",
+    "text": "scc_qupv3_2xcore_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a838a",
+    "text": "scc_qupv3_core_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a839d",
+    "text": "scc_qupv3_s_hclk_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a83b2",
+    "text": "scc_sdc_bus_hclk_noc_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a83cb",
+    "text": "scc_sdc_cti_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a83db",
+    "text": "scc_sdc_cti_pclk_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a83f0",
+    "text": "scc_sdc_dap_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8400",
+    "text": "scc_sdc_proc_fclk_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8416",
+    "text": "scc_sdc_proc_hclk_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a842c",
+    "text": "scc_sdc_qdss_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a843d",
+    "text": "scc_sdc_ts_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a844c",
+    "text": "scc_sdc_xpu2_client_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8464",
+    "text": "scc_sdc_xpu2_config_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a847c",
+    "text": "scc_smem_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8489",
+    "text": "scc_vs_cx_ahb_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a849b",
+    "text": "scc_vs_mx_ahb_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a84ad",
+    "text": "scc_pll_lv_test_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a84c1",
+    "text": "scc_pll_ref_clk_src"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a84d5",
+    "text": "scc_qupv3_se0_clk_src"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a84eb",
+    "text": "scc_qupv3_se1_clk_src"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8501",
+    "text": "scc_qupv3_se2_clk_src"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8517",
+    "text": "scc_qupv3_se3_clk_src"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a852d",
+    "text": "scc_qupv3_se4_clk_src"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8543",
+    "text": "scc_qupv3_se5_clk_src"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a8559",
+    "text": "scc_vs_vddcx_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a856a",
+    "text": "scc_vs_vddmx_clk"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a85c1",
+    "text": "scc_pll"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a85d5",
+    "text": "scc_q6"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a9790",
+    "text": "tlmm_ports"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a979b",
+    "text": "TlmmPlatformGroups"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a97ae",
+    "text": "TLMMDefaultPlatformGroup"
+  },
+  {
+    "file": "adsp.b04",
+    "offset": "0x1a9e2c",
+    "text": "/vcs/vdd_ssc_mx"
+  },
+  {
+    "file": "adsp.b05",
+    "offset": "0x1dd40",
+    "text": "SSC_PRAM"
+  },
+  {
+    "file": "adsp.b05",
+    "offset": "0x9ff48",
+    "text": "SSC_SDC"
+  },
+  {
+    "file": "adsp.b09",
+    "offset": "0x29484",
+    "text": "SSC_PRAM"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x95",
+    "text": "i2c_init: DAL_TlmmDeviceAttach Failed :0x%x"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x5ce",
+    "text": "ibi_reg:I2C_ERROR_I3C_REGISTER_CALLED_MULTIPLE_TIMES for h:0x%08x addr %02x:"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0xc98",
+    "text": "bus_iface_callback : ERROR QUP_NOTIF during command phase"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x1122",
+    "text": "spi_gpi_callback : GPI driver sending SPI_ERROR_DMA_QUP_NOTIF"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x15a2",
+    "text": "spi_plat_init: DAL_TlmmDeviceAttach failed for tlmm id %d "
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x1968",
+    "text": "qdss_ssc_csr.c"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x1999",
+    "text": "iface_active - ERR - qup-%d gpii-%d not reg!"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x19fd",
+    "text": "iface_active - ERR - qup-%d gpii-%d irq-%d isr enable"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x1a34",
+    "text": "iface_active - ERR - qup-%d gpii-%d irq-%d isr disable"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x1a95",
+    "text": "query_chan_status - ERR - qup-%d gpii-%d not ready!"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x1b9c",
+    "text": "iface_poll - ERR - qup-%d gpii-%d not ready!"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x1bca",
+    "text": "iface_poll - ERR - qup-%d gpii-%d IRQ mode!"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x1c22",
+    "text": "issue_cmd - ERR - GSI not ready for qup-%d gpii-%d!"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x1c57",
+    "text": "issue_cmd - qup-%d gpii-%d, cmd_type: %d"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x1cc6",
+    "text": "process_tre - ERR - qup-%d gpii-%d bad chan: %d!"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x2251",
+    "text": "helper_evt - ERROR - invalid QUP: %d "
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x384f",
+    "text": "scc_at_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x385a",
+    "text": "scc_pclkdbg_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x386a",
+    "text": "scc_sdc_dap_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3e31",
+    "text": "scc_qupv3_core_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3e44",
+    "text": "scc_qupv3_2xcore_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3e59",
+    "text": "scc_qupv3_m_hclk_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3e6e",
+    "text": "scc_qupv3_s_hclk_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3e83",
+    "text": "scc_qupv3_se0_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3e95",
+    "text": "scc_qupv3_se1_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3ea7",
+    "text": "scc_qupv3_se2_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3eb9",
+    "text": "scc_qupv3_se3_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3ecb",
+    "text": "scc_qupv3_se4_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3edd",
+    "text": "scc_qupv3_se5_clk"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3eef",
+    "text": "scc_qupv3_se0_clk_src"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3f05",
+    "text": "scc_qupv3_se1_clk_src"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3f1b",
+    "text": "scc_qupv3_se2_clk_src"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3f31",
+    "text": "scc_qupv3_se3_clk_src"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3f47",
+    "text": "scc_qupv3_se4_clk_src"
+  },
+  {
+    "file": "adsp.b10",
+    "offset": "0x3f5d",
+    "text": "scc_qupv3_se5_clk_src"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x8648",
+    "text": "TMD2755:%s Near %d,PDATA %d,POFF %d,PLT %d,PHT %d,BS %d, pgain1 %d,pgain2 %d, PLS %d, PLEN %dus, Drv %dmA,awT %d,pwT %d,Stu %x,Ccfg %x,oil %d"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19ae0",
+    "text": "icm4x6xa_0.accel.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19b08",
+    "text": "icm4x6xa_0.gyro.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19b30",
+    "text": "icm4x6xa_0.temp.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19b58",
+    "text": "icm4x6xa_0.md.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19b80",
+    "text": "icm4x6xa_0_platform.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19ba8",
+    "text": "icm4x6xa_0_platform.placement"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19bd0",
+    "text": "icm4x6xa_0_platform.orient"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19bf8",
+    "text": "icm4x6xa_0_platform.accel.fac_cal"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19c20",
+    "text": "icm4x6xa_0_platform.gyro.fac_cal"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19c48",
+    "text": "icm4x6xa_0_platform.temp.fac_cal"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19c70",
+    "text": "icm4x6xa_0_platform.md.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19c98",
+    "text": "icm4x6xx_0.accel.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19cc0",
+    "text": "icm4x6xx_0.gyro.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19ce8",
+    "text": "icm4x6xx_0.temp.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19d10",
+    "text": "icm4x6xx_0.md.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19d38",
+    "text": "icm4x6xx_0_platform.config"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19d60",
+    "text": "icm4x6xx_0_platform.placement"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19d88",
+    "text": "icm4x6xx_0_platform.orient"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19db0",
+    "text": "icm4x6xx_0_platform.accel.fac_cal"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19dd8",
+    "text": "icm4x6xx_0_platform.gyro.fac_cal"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19e00",
+    "text": "icm4x6xx_0_platform.temp.fac_cal"
+  },
+  {
+    "file": "adsp.b14",
+    "offset": "0x19e28",
+    "text": "icm4x6xx_0_platform.md.config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x116d8a",
+    "text": "uTlmm_GpioOut"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x119328",
+    "text": "uTlmm_GpioIn"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11bf43",
+    "text": "uTlmm_ConfigGpio"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f305",
+    "text": "qupv3_sensor_gsi_irq_0"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f31c",
+    "text": "qupv3_sensor_gsi_irq_1"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f333",
+    "text": "qupv3_sensor_gsi_irq_2"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f34a",
+    "text": "qupv3_sensor_gsi_irq_3"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f361",
+    "text": "qupv3_sensor_gsi_irq_4"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f378",
+    "text": "qupv3_sensor_gsi_irq_5"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f5e6",
+    "text": "qupv3_sensor_gsi_irq_6"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f672",
+    "text": "top_qupv3_lpass_irq_out[2]"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f68d",
+    "text": "top_qupv3_lpass_irq_out[3]"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f6a8",
+    "text": "top_qupv3_lpass_irq_out[4]"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f6c3",
+    "text": "top_qupv3_lpass_irq_out[5]"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f756",
+    "text": "qupv3_sensor_gsi_irq_7"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f76d",
+    "text": "qupv3_sensor_gsi_irq_8"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f784",
+    "text": "qupv3_sensor_gsi_irq_9"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f79b",
+    "text": "qupv3_sensor_gsi_irq_10"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f7b3",
+    "text": "qupv3_sensor_gsi_irq_11"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f7e3",
+    "text": "qupv3_sensor_gsi_irq_12"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f7fb",
+    "text": "qupv3_sensor_se_irq_0"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f811",
+    "text": "qupv3_sensor_se_irq_1"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f827",
+    "text": "qupv3_sensor_se_irq_2"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f952",
+    "text": "qupv3_sensor_se_irq_3"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f968",
+    "text": "qupv3_sensor_se_irq_4"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11f97e",
+    "text": "qupv3_sensor_se_irq_5"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x11febf",
+    "text": "ssc_irq_out_apcs[4]"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x120055",
+    "text": "ssc_q6_alarm_cx_irq"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x120069",
+    "text": "ssc_q6_alarm_mx_irq"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x120277",
+    "text": "qtmr_ssc_virt_irq_0"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x120354",
+    "text": "vsense_ssc_q6_alarm_irq"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1204df",
+    "text": "qdssc_svc_init"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x124e2d",
+    "text": "port_ssc_etm"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x124e71",
+    "text": "qdssc_svc_task"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x139fed",
+    "text": "/pmic/client/sensor_vdd"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x13a005",
+    "text": "/pmic/client/sensor_vddio"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x13a01f",
+    "text": "/pmic/client/sensor_vdd_2"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x13a039",
+    "text": "/pmic/client/sensor_vddio_2"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x13a0ae",
+    "text": "SSC_Q6"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x13a0b5",
+    "text": "0 != sns_pwr_scpm_mgr.ssc_q6_client_id"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x13a335",
+    "text": "SSC_SDC"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x13a36a",
+    "text": "scc_sleep_clk"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x14f4f6",
+    "text": "i3c_address"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x150398",
+    "text": "icm4x6xa"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1503f8",
+    "text": "icm4x6xa"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x150460",
+    "text": "icm4x6xa"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x150658",
+    "text": "icm4x6xa"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1506c8",
+    "text": "icm4x6xx"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x150728",
+    "text": "icm4x6xx"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x150790",
+    "text": "icm4x6xx"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x150990",
+    "text": "icm4x6xx"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x151e68",
+    "text": "tmd2755"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x151eb0",
+    "text": "tmd2755"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x151f04",
+    "text": "tmd2755_platform.config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x151f1c",
+    "text": "tmd2755_platform.coefficient"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x151f39",
+    "text": "tmd2755.als.config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x151f4c",
+    "text": "tmd2755.prox.config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x151f60",
+    "text": "tmd2755_platform.prox.def_config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x151f81",
+    "text": "tmd2755_platform.prox.variable"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x151fa0",
+    "text": "tmd2755_platform.prox.algo"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x151fbb",
+    "text": "tmd2755_platform.golden_value"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x152178",
+    "text": "tmd2755_platform.prox.def_config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1521c0",
+    "text": "tmd2755_platform.prox.variable"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x152210",
+    "text": "tmd2755_platform.prox.algo"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x152243",
+    "text": "tmd2755_platform.prox.fac_cal"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x152276",
+    "text": "tmd2755_platform.golden_value"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x152330",
+    "text": "tmd2755_platform.prox.fac_cal"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x152390",
+    "text": "TMD2755 - Missing prox config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1523ae",
+    "text": "TMD2755 - Receive prox variable pWTime: %d, pUseOilAlgo: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1523ea",
+    "text": "TMD2755 - Missing prox variable"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x15240a",
+    "text": "TMD2755 - Receive prox algo veryNearTh: %d, veryNearCnt: %d, contaminatedTh: %d, contaminatedCnt: %d, jitterTh: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x15247d",
+    "text": "TMD2755 - Missing prox algo"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x152499",
+    "text": "TMD2755 - prox variable pLowTh: %d, pHighTh: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1524c9",
+    "text": "tmd2755_run_mot_fac_cal photopic = %d,als_ir = %d,lux = %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x152504",
+    "text": "tmd2755_run_mot_fac_cal test_type = %d,target_lux = %d,update:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x152545",
+    "text": "tmd2755_run_mot_fac_cal SNS_MOT_FACTORY_CAL_TYPE_UNDO_CAL"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x15257f",
+    "text": "tmd2755_run_mot_fac_cal, New near: %d, far: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1525ae",
+    "text": "tmd2755_run_mot_fac_cal SNS_MOT_FACTORY_CAL_TYPE_RD"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1525e2",
+    "text": "tmd2755 interrupt test pass:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x155dc8",
+    "text": "sns_gpio_service.c:DalTlmm_GpioIn gpio %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x155e00",
+    "text": "sns_gpio_service.c:uTlmm_GpioIn gpio %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x155e38",
+    "text": "sns_gpio_service.c:DalTlmm_ConfigGpio gpio %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x155e78",
+    "text": "sns_gpio_service.c:uTlmm_ConfigGpio gpio %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x155eb0",
+    "text": "sns_gpio_service.c:DalTlmm_SetInactiveConfig gpio %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x156238",
+    "text": "sns_com_port_i2c.c:i3c_send_ccd failed 0x%X hndl:%p addr:0x%x cmd:0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1562f0",
+    "text": "sns_com_port_i2c.c:i3c_send_ccd failed 0x%X"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x15ad48",
+    "text": "sns_ak0991x_hal_island.c:i3c_mode: register_com_port() rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x15ad98",
+    "text": "sns_ak0991x_hal_island.c:i3c_mode: open() rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x15add8",
+    "text": "sns_ak0991x_hal_island.c:I3C address assigned: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x15ae18",
+    "text": "sns_ak0991x_hal_island.c:Assign I3C address failed; rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x15b030",
+    "text": "sns_ak0991x_hal_island.c:sw_rst: enter i3c failed all attempts"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163b40",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN](0x%x)cal_event, new %d, ts %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163ba0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]a cfg_evt, sr %d:%d, wmk %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163bf8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]gated cfg_evt, sr %d:%d, wmk %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163c58",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]g cfg_evt, range %d:%d, sr %d:%d, wmk %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163cc0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]g cfg_evt, ts %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163d10",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]t cfg_evt, sr %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163d60",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]md cfg_evt, ts %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163db0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]send_int_clear_msg"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163e00",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]unhandled ascp cnt %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163e50",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]md_event=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163e98",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]send_md_phy_cfg_event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163ee8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]md_armed=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163f30",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]temp raw %d, temp %d/100"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163f88",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]odr changed %d, a/g off_to_on %d %d, need_flush 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x163ff8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]st_store_pre_state done"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164048",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164088",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1640c8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]c_timer for md"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164110",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164150",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164190",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]c_timer for g postpone"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1641e0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164220",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164260",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]flushing ff"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1642a8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]fifo format not match"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1642f8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]unexpected_setting"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164348",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]reconfig_hw enter with reset fifo %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1643a8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]a/g desire/actual pub %d %d/%d %d, irq rdy %d, 1st_sample %d, rc %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164428",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN](0x%x)flush req done"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164478",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]packet/match cnt: %d %d, LPF: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1644d8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]get_packet_size zero"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164528",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]valid buf_len/packet_cnt %d %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164580",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]no valid senor data"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1645d0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]mixed_packet_err, fifo_head=0x%x, fifo_format=%d/%d, a/g off2on %d/%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164650",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]force set fifo_format to %d from %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1646b0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]force set fifo_format to %d from %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164710",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]ff empty"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164758",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]add %d A/G samples, remove this"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1647b0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]E %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1647f0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]start timer for temp, timeout period: %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164858",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]register_interrupt %d(1:IBI, 0:INT), addr:0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1648c0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]ignore this fired MD"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164910",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]MD fired"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164958",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]ascping f %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1649a0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]ascping f %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1649e8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]packet_size 0"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164a30",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]flush %d ff cnt: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164a80",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]ff is full"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164ac8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]wm %d pcnt %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164b10",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]ff emtpy"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164b58",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]hi_res bit mismatch hi_res setting %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164bc0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]A discard %d "
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164c08",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]a_sample %d, TS: %x%08x, LSB: %d %d %d, %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164c70",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]hi_res bit mismatch %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164cc8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]G discard %d "
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164d10",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]g_sample %d, TS: %x%08x, LSB: %d %d %d, %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164d78",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]drv version 0x%06x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164dc8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]a/g desire en fifo %d %d, max_wmk %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164e28",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]desire sample/report/wakeup_sdc rate %d/100 %d/100 %d/100"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164ea0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]best match odr %d(%dth)"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164ef0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]Unsupported A ODR rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164f40",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]Unsupported G ODR rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164f90",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]Unsupported T ODR rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x164fe0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]a discard %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165028",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]g discard %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165070",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]desired_wmk %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1650b8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]max_requested_wmk %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165108",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]desire/dae wmk %u %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165158",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]A/G fifo disable"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1651a8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]desire a/g %d %d, fifo format %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165208",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]fac_tsting"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165250",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]config_step %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165298",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]config_step %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1652e0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]postpone en gyro %d, %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165338",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165378",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]ASYNC_COM_PORT_ERROR %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1653c8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]strange ascp cnt"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165418",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]unknown msg id %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165468",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1654a8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1654e8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]received int reg event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165538",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]handle irq event, num: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165590",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]int_ts: %x%08x, int_status 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1655e8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]ascping %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165630",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]irq event decode failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165680",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]receive t timer event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1656d0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]remove t timer stream"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165720",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]receive postpone g timer event %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165780",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]remove postpone g stream"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1657d8",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]receive hb timer event, %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165830",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]heart_attack: Max reset tried."
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165888",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]int regs status 0x%x 0x%x 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1658e0",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]no publish sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165930",
+    "text": "sns_icm4x6xa_sensor_instance_island.c:[INVN]hb ds has been removed!"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165980",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1659b8",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]A: rr %u/100 sr %u/100 flush_period %u gated client %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165a20",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]G: rr %u/100 sr %u/100 flush_period %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165a78",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]T: rr %u sr %u flush_period %u client %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165ad0",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]a ngatd/gatd %d/%d, g client %d, md client/en %d/%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165b38",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]inst not created"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165b78",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]rail alrdy ON"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165bb8",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]replace req"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165bf8",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]inst created, new req msg_id=%d, hw_idx=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165c58",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]orphan Flush req!"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165ca0",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]restoring existing req"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165ce8",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]self testing, reject %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165d30",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]instance is NULL"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165d70",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN](0x%x)no client present, rm inst(0x%x), hw_id=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165dd0",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN](0x%x)set_client_req 0x%X(%d) 0x%X(%d) rm=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165e30",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]process_timer_events pend_state %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165e88",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]HW absent!"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165ec8",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]instance not available"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165f10",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165f48",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]s=0x%x rail_vote=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165f90",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN](%d)hb %u hfp %d bp %d fp %d sr %d/100"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x165fe8",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]flush_only %u max_batch %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166038",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166070",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]W to REG"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1660a8",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN](0x%x)flush req in"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1660f0",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]md is in, just send event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166140",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN](0x%x)reject invalid req"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166188",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]is_self_test %d, rc %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1661d0",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166208",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]Req reset cal data"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166250",
+    "text": "sns_icm4x6xa_sensor_island.c:[INVN]turn rails off s=%d rail_vote=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1662a0",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]set_acc_mode %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1662e0",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]en_gyro %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166318",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]en_gyro %d %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166358",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]Enable FIFO (Accel: %d Gyro: %d) "
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1663a8",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]Set FIFO Mode: %d(Stream:0, ByPass:1)"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166400",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]set_acc_bw %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166440",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]FF c %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166478",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]MD thrhd %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1664b0",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]fifo disabled"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1664f0",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]incorrect ff format"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166530",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]ff header %#x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166570",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]unknown header 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1665b0",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]switch_on_mclk fail rv: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1665f8",
+    "text": "sns_icm4x6xa_hal_island.c:[INVN]reg[0x%02x]=0x%02x, rc %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166640",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN](0x%x)Cal event, new %d, ts %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1666a0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]a cfg_evt, new:%d, sr %d:%d, wmk %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166700",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]gated cfg_evt, new:%d, sr %d:%d, wmk %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166768",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]g cfg_evt, new:%d, range %d:%d, sr %d:%d, wmk %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1667d8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]g cfg_evt, ts %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166828",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]t cfg_evt, sr %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166878",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]md cfg_evt"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1668c0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]unhandled ascp cnt %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166910",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]md_event=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166958",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]md_armed=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1669a0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]temp raw %d, temp %d/100"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1669f8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]odr changed %d, a/g off_to_on %d %d, need_flush 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166a68",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]icm4x6xx_st_store_pre_state done"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166ac8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166b08",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166b48",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]c md timer"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166b90",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166bd0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166c10",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]c g postpone timer"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166c60",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166ca0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166ce0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]flushing ff"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166d28",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]fifo format not match"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166d78",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]unexpected_setting"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166dc8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]reconfig_hw enter with reset fifo %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166e28",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]a/g/t desire/actual pub %d %d %d/%d %d %d, irq rdy %d, 1st_sample %d, rc %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166eb0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]flush req done"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166ef8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]warning: first sample ts < pre_record_ts"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166f60",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]warning: ts < pre_record_ts"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x166fb8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]packet/match cnt: %d %d, LPF: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167018",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]icm4x6xx_get_packet_size zero"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167070",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]valid buf_len/packet_cnt %d %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1670c8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]no valid senor data"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167118",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]mixed_packet_err, fifo_head=0x%x, fifo_format=%d/%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167188",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]adjust to ts now"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1671d8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]ff empty"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167220",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]prev/current flush ticks %u %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167278",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]add one a sample, remove this"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1672d0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]add one g sample, remove this"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167328",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167368",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]temp timer intvl: %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1673c0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]start timer for temp"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167410",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]reg int pin"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167458",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]ignore this fired MD"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1674a8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]MD fired"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1674f0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]ascping f %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167538",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]ascping f %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167580",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]ps 0"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1675c0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]flush %d ff cnt: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167610",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]ff is full"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167658",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]wm %d pcnt %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1676a0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]cur intvl/intvl_dt %d/%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1676f8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]pre_record_ts: %x%08x, pre_meas_intvl: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167760",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]meas_intvl %d est_intvl %d "
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1677b8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]ff emtpy"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167800",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]hi_res bit mismatch hi_res setting %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167868",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]A discard %d "
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1678b0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]a_sample %d, TS: %x%08x, LSB: %d %d %d, %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167918",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]hi_res bit mismatch %d:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167970",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]G discard %d "
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1679b8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]g_sample %d, TS: %x%08x, LSB: %d %d %d, %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167a20",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]drv version 0x%06x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167a70",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]a/g desire en fifo %d %d, max_wmk %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167ad0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]desire sample/report/wakeup_sdc rate %d/100 %d/100 %d/100"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167b48",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]best match odr %d(%dth)"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167b98",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]Unsupported A ODR rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167be8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]Unsupported G ODR rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167c38",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]Unsupported T ODR rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167c88",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]a discard %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167cd0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]g discard %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167d18",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]desire/dae wmk %u %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167d68",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]A/G fifo disable"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167db8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]desire a/g %d %d, fifo format %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167e18",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]fac_tsting"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167e60",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]config_step %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167ea8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]postpone en gyro %d, %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167f00",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167f40",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167f80",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]strange ascp cnt"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x167fd0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]unkown msg id %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168020",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168060",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1680a0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]received int reg event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1680f0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]int TS: %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168138",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]ascping %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168180",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]event decode fail or bad event ts"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1681e0",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]receive hb timer event, %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168238",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]heart_attack: Max reset tried."
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168290",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]int regs status 0x%x 0x%x 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1682e8",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]no publish sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168338",
+    "text": "sns_icm4x6xx_sensor_instance_island.c:[INVN]hb ds has been removed!"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168388",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1683c0",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]ICM4X6XX HW absent"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168408",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168440",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]A: rr %u/100 sr %u/100 flush_period %u gated client %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1684a8",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]G: rr %u/100 sr %u/100 flush_period %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168500",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]T: rr %u sr %u flush_period %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168550",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]a ngatd/gatd %d/%d, g client %d, md client/en %d/%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1685b8",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN](0x%x)set_client_req 0x%X(%d) 0x%X(%d) rm=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168618",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]inst not created"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168658",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]rail alrdy ON"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168698",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]inst created, new req msg_id=%d, hw_idx=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1686f8",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]self testing, reject %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168740",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]md is in, just send event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168790",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN](0x%x)reject invalid req"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1687d8",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]Req reset cal data"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168820",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]W to REG"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168858",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN](0x%x)no client present, rm inst(0x%x), hw_id=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1688b8",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN](%d)hb %u hfp %d bp %d fp %d sr %d/100"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168910",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]flush_only %u max_batch %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168960",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168998",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]flush req in"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1689d8",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]E"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168a10",
+    "text": "sns_icm4x6xx_sensor_island.c:[INVN]turn rails off s=%d rail_vote=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168a60",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]acc pwr mode %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168aa0",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]en_gyro %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168ad8",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]en_gyro %d %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168b18",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]set_acc odr %d:%dth, fdr %d:%d, rc %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168b70",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]set_gyro odr %d:%dth, fdr %d:%d, rc %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168bc8",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]icm4x6xx_set_smd_mode %d, reg=0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168c18",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]acc bw %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168c50",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]FF c %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168c88",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]MD thrhd %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168cc0",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]fifo disabled"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168d00",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]incorrect ff format"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168d40",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]ff header %#x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168d80",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]unkown header 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x168dc0",
+    "text": "sns_icm4x6xx_hal_island.c:[INVN]reg[0x%x] 0x%x, rc %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x16ca50",
+    "text": "sns_mmc56x3x_hal_island.c:enter i3c mode"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x16ca88",
+    "text": "sns_mmc56x3x_hal_island.c:i3c_mode: register_com_port() rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x16cad8",
+    "text": "sns_mmc56x3x_hal_island.c:i3c_mode: open() rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x16cb18",
+    "text": "sns_mmc56x3x_hal_island.c:I3C address assigned: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x16cb60",
+    "text": "sns_mmc56x3x_hal_island.c:assign i3c address failed; rv=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173af8",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 polling timer req encode error"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173b50",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 monitor timer req encode error"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173ba8",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 interrupt clear msg sent"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173c00",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 set_client_cfg msg_id %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173c58",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 set_client_cfg register interrupt"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173cb8",
+    "text": "sns_tmd2755_sensor_instance_island.c:param separation: switch done, AP param? %d, Lth:%d, Hth:%d, wT: %d, oil: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173d38",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 set_client_cfg timer_is_active:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173d98",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 tmd2755_run_mot_fac_cal"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173df0",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 MOT_PROXIMITY_MSGID_SNS_PROXIMITY_RECAL_CONFIG"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173e58",
+    "text": "sns_tmd2755_sensor_instance_island.c:tmd2755_inst_set_client_config: RECAL!!"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173eb8",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 tmd2755_inst_notify_event SNS_INTERRUPT_MSGID_SNS_INTERRUPT_REG_EVENT"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173f38",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755:update cal_done, recal_request %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x173f98",
+    "text": "sns_tmd2755_sensor_instance_island.c:Prox Cal complete, New PDATA %u, POFFSET %d, PILT %u, PIHT %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174008",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 tmd2755_inst_notify_event SNS_INTERRUPT_MSGID_SNS_INTERRUPT_EVENT"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174088",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 Received invalid event id=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1740e0",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 TIMER_SENSOR_REG_EVENT"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174130",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 unknown message_id %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174180",
+    "text": "sns_tmd2755_sensor_instance_island.c:tmd2755 monitor timer event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1741d0",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 TIMER_MONITOR_SENSOR_REG_EVENT"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174228",
+    "text": "sns_tmd2755_sensor_instance_island.c:TMD2755 unknown message_id %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174278",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 ALS: rr %u sr %u num_clients %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1742c8",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 PROX: rr %u sr %u num_clients %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174320",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 timer req encode error"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174368",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 tmd2755_sensor_notify_event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1743b8",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 HW absent"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1743f8",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 notify event tmd2755_set_self_test_inst_config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174458",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 pb_decode error"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174498",
+    "text": "sns_tmd2755_sensor_island.c:start_hw_detect_sequence"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1744e0",
+    "text": "sns_tmd2755_sensor_island.c:tmd2755_set_client_request ex 0x%X new 0x%X inst 0x%X rem %d emsg_id %d, nmsg_id %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174560",
+    "text": "sns_tmd2755_sensor_island.c:tmd2755_set_client_request SWAP!  %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1745b0",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 set_client_req message_id %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174600",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 SNS_PHYSICAL_SENSOR_TEST_MSGID_SNS_PHYSICAL_SENSOR_TEST_CONFIG %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174678",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 SNS_MOT_FACTORY_CAL_MSGID_SNS_PHYSICAL_SENSOR_TEST_CONFIG %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1746e8",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 SNS_MOT_FACTORY_CAL_MSGID_MOT_PROXIMITY_MSGID_SNS_PROXIMITY_RECAL_CONFIG %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174768",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 set_client_requet tmd2755_set_self_test_inst_config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1747d0",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 set_client_requet tmd2755_set_factory_cal_inst_config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174838",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 set_client_requet tmd2755_set_prox_recal_config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174898",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 set_client_requet update ALS registry"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1748f0",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 set_client_requet update PS registry"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174948",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 tmd2755_get_device_config message_id=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1749a8",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 get_device_config: sensor_type %d (ON_CHANGE)"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174a08",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 get_device_config: sensor_type %d (ap client)"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174a68",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 tmd2755_get_device_config message_id=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174ac8",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 decode error"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174b08",
+    "text": "sns_tmd2755_sensor_island.c:TMD2755 decode error"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174b48",
+    "text": "sns_tmd2755_sensor_island.c:tmd2755: sensor type:%d, msg: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174b98",
+    "text": "sns_tmd2755_sensor_island.c:tmd2755: decode test_type:%d,target_count:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174bf0",
+    "text": "sns_tmd2755_sensor_island.c:tmd2755 decode error"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174c30",
+    "text": "sns_tmd2755_hal_island.c:TMD2755 process_sensor_data status=0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174c80",
+    "text": "sns_tmd2755_hal_island.c:tmd2755_als_factory_calibration scale:%d, target:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174ce0",
+    "text": "sns_tmd2755_hal_island.c:tmd2755: gpio_state LOW? %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174d28",
+    "text": "sns_tmd2755_hal_island.c:tmd2755: gpio_state HIGH? %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174d70",
+    "text": "sns_tmd2755_hal_island.c:tmd2755_proximity_recal_start: started"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174dc0",
+    "text": "sns_tmd2755_hal_island.c:tmd2755_proximity_recal_stop"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174e08",
+    "text": "sns_tmd2755_hal_island.c:TMD2755 tmd2755_handle_sensor_als_sample, lux=%d, photopic=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174e70",
+    "text": "sns_tmd2755_hal_island.c:TMD2755 tmd2755_handle_sensor_prox_sample ORE=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174ec8",
+    "text": "sns_tmd2755_hal_island.c:TMD2755 tmd2755_handle_sensor_prox_sample adc=%d, offset=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x174f30",
+    "text": "sns_tmd2755_hal_island.c:TMD2755 tmd2755_handle_sensor_prox_sample raw_adc=%d, proximity_event_type=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x176688",
+    "text": "sns_ak0991x_sensor.c:Failed to enter I3C mode."
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ba88",
+    "text": "sns_icm4x6xa_accel_sensor.c:[INVN]icm4x6xa_accel_init finish"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bad8",
+    "text": "sns_icm4x6xa_gyro_sensor.c:[INVN]icm4x6xa_gyro_init exit"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bb20",
+    "text": "sns_icm4x6xa_hal.c:[INVN]set_acc_fsr %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bb58",
+    "text": "sns_icm4x6xa_hal.c:[INVN]set_gyro_fsr %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bb90",
+    "text": "sns_icm4x6xa_hal.c:[INVN]I3C addr: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bbc8",
+    "text": "sns_icm4x6xa_hal.c:[INVN]dmp_apex_sram_reset start"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bc08",
+    "text": "sns_icm4x6xa_hal.c:[INVN]dmp_apex_sram_reset timeout dmp:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bc50",
+    "text": "sns_icm4x6xa_hal.c:[INVN]dmp_apex_sram_reset done rv:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bc98",
+    "text": "sns_icm4x6xa_hal.c:[INVN]Trigger OTP load for ST/TRIM %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bce0",
+    "text": "sns_icm4x6xa_hal.c:[INVN]otp_reload Failure Status: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bd28",
+    "text": "sns_icm4x6xa_hal.c:[INVN]Trigger OTP load for ST/TRIM %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bd70",
+    "text": "sns_icm4x6xa_hal.c:[INVN]otp_done Failure Status: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bdb8",
+    "text": "sns_icm4x6xa_hal.c:[INVN]Trigger OTP load for ST/TRIM done"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17be00",
+    "text": "sns_icm4x6xa_hal.c:[INVN]enter i3c mode failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17be40",
+    "text": "sns_icm4x6xa_hal.c:[INVN]I3C SETMRL failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17be78",
+    "text": "sns_icm4x6xa_hal.c:[INVN]IBI disabled"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17beb0",
+    "text": "sns_icm4x6xa_hal.c:[INVN]disable IBI failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bee8",
+    "text": "sns_icm4x6xa_hal.c:[INVN]IBI enabled"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bf20",
+    "text": "sns_icm4x6xa_hal.c:[INVN]IBI enable FAILED!"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bf58",
+    "text": "sns_icm4x6xa_hal.c:[INVN]I3C SETXTIME success"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bf98",
+    "text": "sns_icm4x6xa_hal.c:[INVN]I3C GETXTIME success 0x%x 0x%x 0x%x(ibi clk freq) 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17bff8",
+    "text": "sns_icm4x6xa_hal.c:[INVN]enter i3c mode failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c038",
+    "text": "sns_icm4x6xa_hal.c:[INVN]check_soft_reset done within %d times"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c088",
+    "text": "sns_icm4x6xa_hal.c:[INVN]check_soft_reset fail within %d times"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c0d8",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Error decoding registry event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c120",
+    "text": "sns_icm4x6xa_sensor.c:[INVN](0x%x)Registry acc_cfg res_idx %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c170",
+    "text": "sns_icm4x6xa_sensor.c:[INVN](0x%x)Registry gyro_cfg res_idx %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c1c0",
+    "text": "sns_icm4x6xa_sensor.c:[INVN](0x%x)Registry is_dri:%d, hw_id:%d resolution_idx:%d, supports_sync_stream:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c238",
+    "text": "sns_icm4x6xa_sensor.c:[INVN](0x%x)Registry com_cfg bus_type:%d bus_inst:%d slave_ctrl:%d speed_KHz min:%d max:%d, reg_addr_type:%d addr: i2c:0x%x i3c:0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c2e0",
+    "text": "sns_icm4x6xa_sensor.c:[INVN](0x%x)Registry irq_cfg num:%d pull_type:%d is_chip_pin:%d drive_strength:%d trigger_type:%d rigid:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c370",
+    "text": "sns_icm4x6xa_sensor.c:[INVN](0x%x)Registry comm_placement p[0]:%u p[6]:%u p[11]:%u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c3d0",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Input Axis:%d maps to Output Axis:%d with inversion %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c430",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Input Axis:%d maps to Output Axis:%d with inversion %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c490",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Input Axis:%d maps to Output Axis:%d with inversion %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c4f0",
+    "text": "sns_icm4x6xa_sensor.c:[INVN](%#X)Read bias from registry: %d/1M %d/1M %d/M, ver:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c550",
+    "text": "sns_icm4x6xa_sensor.c:[INVN](%#X)MD config(disable:%d, threshold:%d/1k m/s2)"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c5b0",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Error decoding registry group"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c5f8",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Registry updated"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c638",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Registry update failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c678",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Error decoding REGISTRY_WRITE_EVENT"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c6c8",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Received unsupported registry event msg id %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c720",
+    "text": "sns_icm4x6xa_sensor.c:[INVN](%#X)update_registry reg_idx %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c768",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Unsupported sensor %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c7a8",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]enter i3c mode failed %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c7f0",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]sns_scp_register_com_port fail"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c838",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]pwr_rail_service not NULL"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c880",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]sns_scp_open fail"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c8c0",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]icm4x6xa common init"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c900",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Error encoding corr_mat"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c940",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Error encoding sns_registry_data_item_fields"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c998",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Error encoding sns_registry_data_item_fields"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17c9f0",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]Error encoding sns_registry_data_item_fields"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ca48",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]UNKNOWN WHOAMI 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ca88",
+    "text": "sns_icm4x6xa_sensor.c:[INVN]invn product %d, whoami 0x%x, hi_res %d, hi_range %d/%d, a_res %d, g_res %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cb00",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN](0x%x)inst_init enter"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cb48",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]invn product %d, whoami 0x%x, hi_res %d, hi_range %d/%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cbb8",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]a/g res_idx: %d %d, a/g fsr: %d %d, a/g res*1M:%d %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cc20",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]inst_cleanup enter"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cc68",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]irq_trigger_type %d, is_ibi %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ccb8",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]bus_type %d(0:I2C/1:SPI/3:I3C), MAX bus speed: %d KHz"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cd20",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]dae_valid(0): register interrupt"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cd78",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]inst_deinit inst_cleanup"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cdc8",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]start_dmp_selftest fail rv: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ce18",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]recover odr %d %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ce60",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]re-en st a discard %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cea8",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]re-en st g discard %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cef0",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]icm4x6xa_st_recover_pre_state done"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cf48",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]Unknown sensor %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cf90",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]start_factory_test() sensor %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17cfe0",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]warning, sensor is in streaming now!"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d038",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]config_step is not idle"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d088",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]run_self_test"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d0c8",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]self test invn sensor present"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d118",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]self-test test_type = %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d168",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]no dev exist"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d1a8",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]do Accel Self-Test HW"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d1f0",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]unsupported test type for this sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d248",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]run_self_test GYRO SNS_PHYSICAL_SENSOR_TEST_TYPE_FACTORY."
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d2b8",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]no dev exist"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d2f8",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]do Gyro Self-Test HW"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d340",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]unsupported test type for this sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d398",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]unsupported test type for this sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d3f0",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]unsupported test type"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d438",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN](0x%x)icm4x6xa_process_fac_test, num_samples %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d4a0",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]Sample Sums: %d/1M %d/1M %d/1M"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d4f0",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]Sample square sums: %d/1M %d/1M %d/1M"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d548",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]unknown test sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d590",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]FAILED device not stationary var[%u]=%d/1000000 %d/1000000"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d600",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN](0x%x)FAILED axis(%u) bias very large"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d658",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN](0x%x)FAILED axis(%u) zero variance"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d6b0",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN][%d](%x)fac cal pass, new bias*1k(ver:%d): %d, %d, %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d718",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN]confit_step is not idle"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d768",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN](0x%x)Before wait ST Status: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d7c0",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN](0x%x)int_status_st_done: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d810",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN](0x%x)After wait ST Failure Status: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d870",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN](0x%x)After wait ST Failure Status: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d8d0",
+    "text": "sns_icm4x6xa_sensor_instance.c:[INVN](0x%x)After wait ST Pass Status: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d928",
+    "text": "sns_icm4x6xx_accel_sensor.c:[INVN]icm4x6xx_accel_init finish"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d978",
+    "text": "sns_icm4x6xx_gyro_sensor.c:[INVN]icm4x6xx_gyro_init exit"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d9c0",
+    "text": "sns_icm4x6xx_hal.c:[INVN]enter i3c mode"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17d9f8",
+    "text": "sns_icm4x6xx_hal.c:[INVN]I3C addr: 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17da30",
+    "text": "sns_icm4x6xx_hal.c:[INVN]SETMRL failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17da68",
+    "text": "sns_icm4x6xx_hal.c:[INVN]IBI disabled"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17daa0",
+    "text": "sns_icm4x6xx_hal.c:[INVN]disable IBI failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17dad8",
+    "text": "sns_icm4x6xx_hal.c:[INVN]enter i3c mode failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17db18",
+    "text": "sns_icm4x6xx_hal.c:[INVN]enter i3c mode failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17db58",
+    "text": "sns_icm4x6xx_hal.c:[INVN]check reset done %d times"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17db98",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Error decoding registry event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17dbe0",
+    "text": "sns_icm4x6xx_sensor.c:[INVN](0x%x)Registry acc_cfg res_idx %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17dc30",
+    "text": "sns_icm4x6xx_sensor.c:[INVN](0x%x)Registry gyro_cfg res_idx %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17dc80",
+    "text": "sns_icm4x6xx_sensor.c:[INVN](0x%x)Registry is_dri:%d, hw_id:%d resolution_idx:%d, supports_sync_stream:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17dcf8",
+    "text": "sns_icm4x6xx_sensor.c:[INVN](0x%x)Registry com_cfg bus_type:%d bus_inst:%d slave_control:%d speed_KHz min:%d max:%d, reg_addr_type:%d addr: i2c:0x%x i3c:0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17dda8",
+    "text": "sns_icm4x6xx_sensor.c:[INVN](0x%x)Registry irq_cfg num:%d pull_type:%d is_chip_pin:%d drive_strength:%d trigger_type:%d rigid:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17de38",
+    "text": "sns_icm4x6xx_sensor.c:[INVN](0x%x)Registry comm_placement p[0]:%u p[6]:%u p[11]:%u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17de98",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Input Axis:%d maps to Output Axis:%d with inversion %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17def8",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Input Axis:%d maps to Output Axis:%d with inversion %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17df58",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Input Axis:%d maps to Output Axis:%d with inversion %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17dfb8",
+    "text": "sns_icm4x6xx_sensor.c:[INVN](%#X)Read bias from registry: %d/1M %d/1M %d/M, ver:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e018",
+    "text": "sns_icm4x6xx_sensor.c:[INVN](%#X)MD config(disable:%d, threshold:%d/1k m/s2)"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e078",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Error decoding registry group"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e0c0",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Received unsupported registry event msg id %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e118",
+    "text": "sns_icm4x6xx_sensor.c:[INVN](%#X)update_registry reg_idx %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e160",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Unsupported sensor %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e1a0",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]enter i3c mode failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e1e0",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]sns_scp_register_com_port fail"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e228",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]pwr_rail_service not NULL"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e270",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]sns_scp_open fail"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e2b0",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Error encoding corr_mat"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e2f0",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Error encoding sns_registry_data_item_fields"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e348",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Error encoding sns_registry_data_item_fields"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e3a0",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]Error encoding sns_registry_data_item_fields"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e3f8",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]WHOAMI 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e430",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]use_hi_res(%d), a_res_idx(%d), g_res_idx(%d)"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e488",
+    "text": "sns_icm4x6xx_sensor.c:[INVN]invn product %d, hi_res %d, hi_range %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e4d8",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]icm4x6xx_inst_init enter"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e528",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]invn product %d, whoami 0x%x, hi_res %d, hi_range %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e590",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]a/g res_idx: %d %d, a/g fsr: %d %d, a/g res*1M:%d %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e5f8",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]icm4x6xx_inst_cleanup enter"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e648",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]irq_trigger_type=%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e690",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]bus type(%d, 0:I2C/1:SPI/3:I3C), MAX bus speed: %d KHz"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e6f8",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]dae_valid(0): register interrupt"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e750",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]icm4x6xx_inst_deinit inst_cleanup"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e7a8",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]accel st_code %d %d %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e7f0",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]accel st_otp %d %d %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e838",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]accel st_response  %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e880",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]accel st test fail0"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e8c8",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]accel st test fail1"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e910",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]gyro postpone %x%08x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e958",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]gyro st_code %d %d %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e9a0",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]gyro st_otp %d %d %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17e9e8",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]gyro st_response  %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ea30",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]gyro st test fail0"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ea78",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]gyro st test fail0"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17eac0",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]gyro st test fail1"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17eb08",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]recover odr %d %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17eb50",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]re-en st a discard %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17eb98",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]re-en st g discard %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ebe0",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]icm4x6xx_st_recover_pre_state done"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ec38",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]Unknown sensor %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ec80",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]icm4x6xx_start_factory_test() sensor %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ece0",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]warning, sensor is in streaming now!"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ed38",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]confit step is not idle"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ed88",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]icm4x6xx_run_self_test"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17edd0",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]self test invn sensor present"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ee20",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]self-test test_type = %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ee70",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]no dev exist"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17eeb0",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]do Accel Self-Test HW"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17eef8",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]unsupported test type for this sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17ef50",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]icm4x6xx_run_self_test GYRO SNS_PHYSICAL_SENSOR_TEST_TYPE_FACTORY."
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17efc8",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]no dev exist"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f008",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]do Gyro Self-Test HW"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f050",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]unsupported test type for this sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f0a8",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]unsupported test type for this sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f100",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]unsupported test type for this sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f158",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN](0x%x)icm4x6xx_process_fac_test, num_samples %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f1c0",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]Sample Sums: %d/1M %d/1M %d/1M"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f210",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]Sample square sums: %d/1M %d/1M %d/1M"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f268",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]unkown test sensor"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f2b0",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]FAILED device not stationary var[%u]=%d/1000000 %d/1000000"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f320",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]FAILED axis(%u) bias very large"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f378",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]FAILED axis(%u) zero variance"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f3c8",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN](rigid=%d)(%#X)fac cal pass, new bias*1k(ver:%d): %d, %d, %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x17f438",
+    "text": "sns_icm4x6xx_sensor_instance.c:[INVN]confit step is not idle"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x181858",
+    "text": "sns_mmc56x3x_sensor.c:memsic bus_type: i3c addressss "
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x181f90",
+    "text": "sns_mmc56x3x_sensor.c:I3C mode enabled"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187550",
+    "text": "sns_tmd2755_sensor.c:TMD2755 SUID Decode failed"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187590",
+    "text": "sns_tmd2755_sensor.c:TMD2755 invalid datatype_name"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1875d0",
+    "text": "sns_tmd2755_sensor.c:TMD2755 Error decoding registry event"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187618",
+    "text": "sns_tmd2755_sensor.c:TMD2755 Registry read event for ALS group registry_cfg received is_dri:%d, hardware_id:%d resolution_idx:%d, supports_sync_stream:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1876c0",
+    "text": "sns_tmd2755_sensor.c:TMD2755 Registry read event for Proximity group registry_cfg received is_dri:%d, hardware_id:%d resolution_idx:%d, supports_sync_stream:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187770",
+    "text": "sns_tmd2755_sensor.c:HAS - PRX PTIME: %d, PWTIME: %d,pulseLen: %d, Pulse: %d, Pgain: %d,LDrive: %d, Pers: %d, binSearch: %d, pOffsetStep: %d, pOffsetStepCoef: %d,low_coef %d high_coef %d min_delta %d, Algo: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187850",
+    "text": "sns_tmd2755_sensor.c:PRX PTIME: %d, PWTIME: %d, pulseLen: %d, Pulse: %d, Pgain: %d, LDrive: %d,Pers: %d, binSearch: %d, pOffsetStep: %d, pOffsetStepCoef: %d, low_coef %d, high_coef %d, min_delta %d, Algo: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187930",
+    "text": "sns_tmd2755_sensor.c:HAS VARIABLE - hasWTime: %d, pLowCoef: %d, pHighCoef: %d, hasUseOilAlgo: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1879a0",
+    "text": "sns_tmd2755_sensor.c:VARIABLE - pWTime: %d, pLowCoef: %d, pHighCoef: %d, pUseOilAlgo: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187a08",
+    "text": "sns_tmd2755_sensor.c:HAS ALGO - hasVeryNearTh: %d, hasVeryNearCnt: %d, hasContaminatedTh: %d, hasContaminatedCnt: %d, hasJitterTh: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187aa0",
+    "text": "sns_tmd2755_sensor.c:ALGO - veryNearTh: %d, veryNearCnt: %d, contaminatedTh: %d, contaminatedCnt: %d, jitterTh: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187b20",
+    "text": "sns_tmd2755_sensor.c:TMD2755 Registry read event for group registry_pf_cfg received bus_type:%d bus_instance:%d slave_control:%d min_bus_speed_KHz :%d max_bus_speed_KHz:%d reg_addr_type:%d "
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187bf0",
+    "text": "sns_tmd2755_sensor.c:TMD2755 interrupt_num:%d interrupt_pull_type:%d is_chip_pin:%d interrupt_drive_strength:%d interrupt_trigger_type:%d rigid body type:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187ca0",
+    "text": "sns_tmd2755_sensor.c:TMD2755 Registry read fac_cal proximity near_thresh:%d far_thresh:%d uncover:%d cover:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187d20",
+    "text": "sns_tmd2755_sensor.c:TMD2755 Registry read golden Hth:%d, Lth:%d, lux scale:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187d80",
+    "text": "sns_tmd2755_sensor.c:TMD2755 Registry read event for group registry_coefficient received c[0]:%u c[4]:%u c[10]:%u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187e00",
+    "text": "sns_tmd2755_sensor.c:TMD2755 Registry read event for group ambient_light.coefficient received lux_scale:%u,lux_target:%u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187e88",
+    "text": "sns_tmd2755_sensor.c:TMD2755 Error decoding registry group"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187ed0",
+    "text": "sns_tmd2755_sensor.c:TMD2755 Received unsupported registry event msg id %u"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187f28",
+    "text": "sns_tmd2755_sensor.c:TMD2755 tmd2755_discover_hw who am i 0x%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187f78",
+    "text": "sns_tmd2755_sensor.c:TMD2755Error encoding tag item: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x187fc0",
+    "text": "sns_tmd2755_sensor.c:TMD2755Error encoding item: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188000",
+    "text": "sns_tmd2755_sensor.c:TMD2755 sns_ams_encode_calibration_registry_cb: done"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188058",
+    "text": "sns_tmd2755_sensor.c:tmd2755 Error encoding tag item: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1880a0",
+    "text": "sns_tmd2755_sensor.c:tmd2755 Error encoding item: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1880e8",
+    "text": "sns_tmd2755_sensor.c:tmd2755 sns_ams_encode_coefficient_registry_cb: done"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188140",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 tmd2755_inst_ini sensor_state:%x this:%x get_service():%x"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1881b0",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 low_coef:%d high_coef:%d min_delta:%d use oil algo:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188218",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 - Missing prox config"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188260",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 - Receive prox variable pWTime: %d,  pUseOilAlgo: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1882c8",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 - Missing prox variable"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188318",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 - Receive algo variable veryNearTh: %d, veryNearCnt: %d, contaminatedTh: %d, contaminatedCnt: %d, jitterTh: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1883c0",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 - Missing prox algo"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188408",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 tmd2755_inst_ini CoefA:%d CoefB:%d CoefC:%d DFA:%d DFB:%d DFC:%d diff1:%d diff2:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188490",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 Use ambient light coefficient"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1884e0",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 lux_scale:%d,target_lux:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188530",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 golden Hth:%d,Lth:%d,lux scale:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188588",
+    "text": "sns_tmd2755_sensor_instance.c:TMD2755 - prox variable pLowTh: %d, pHighTh: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1885e8",
+    "text": "sns_tmd2755_sensor_instance.c:tmd2755_run_mot_fac_cal photopic = %d,als_ir = %d,lux = %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188650",
+    "text": "sns_tmd2755_sensor_instance.c:tmd2755_run_mot_fac_cal test_type = %d,target_lux = %d,update:%d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1886c0",
+    "text": "sns_tmd2755_sensor_instance.c:tmd2755_run_mot_fac_cal prox type: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188710",
+    "text": "sns_tmd2755_sensor_instance.c:tmd2755_run_mot_fac_cal set CT: %d, CR: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x188768",
+    "text": "sns_tmd2755_sensor_instance.c:tmd2755_run_mot_fac_cal set CT: %d, CR: %d"
+  },
+  {
+    "file": "adsp.b15",
+    "offset": "0x1887c0",
+    "text": "sns_tmd2755_sensor_instance.c:tmd2755_run_mot_fac_cal, New near: %d, far: %d"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x50c0",
+    "text": "icm4x6xa_0.accel.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x50e8",
+    "text": "icm4x6xa_0.gyro.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5110",
+    "text": "icm4x6xa_0.temp.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5138",
+    "text": "icm4x6xa_0.md.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5160",
+    "text": "icm4x6xa_0_platform.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5188",
+    "text": "icm4x6xa_0_platform.placement"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x51b0",
+    "text": "icm4x6xa_0_platform.orient"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x51d8",
+    "text": "icm4x6xa_0_platform.accel.fac_cal"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5200",
+    "text": "icm4x6xa_0_platform.gyro.fac_cal"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5228",
+    "text": "icm4x6xa_0_platform.temp.fac_cal"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5250",
+    "text": "icm4x6xa_0_platform.md.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5278",
+    "text": "icm4x6xx_0.accel.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x52a0",
+    "text": "icm4x6xx_0.gyro.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x52c8",
+    "text": "icm4x6xx_0.temp.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x52f0",
+    "text": "icm4x6xx_0.md.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5318",
+    "text": "icm4x6xx_0_platform.config"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5340",
+    "text": "icm4x6xx_0_platform.placement"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5368",
+    "text": "icm4x6xx_0_platform.orient"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5390",
+    "text": "icm4x6xx_0_platform.accel.fac_cal"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x53b8",
+    "text": "icm4x6xx_0_platform.gyro.fac_cal"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x53e0",
+    "text": "icm4x6xx_0_platform.temp.fac_cal"
+  },
+  {
+    "file": "adsp.b16",
+    "offset": "0x5408",
+    "text": "icm4x6xx_0_platform.md.config"
+  },
+  {
+    "file": "adsp.b18",
+    "offset": "0x8648",
+    "text": "TMD2755:%s Near %d,PDATA %d,POFF %d,PLT %d,PHT %d,BS %d, pgain1 %d,pgain2 %d, PLS %d, PLEN %dus, Drv %dmA,awT %d,pwT %d,Stu %x,Ccfg %x,oil %d"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x4c05",
+    "text": "TMD2755 first prox offset cal"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x4c31",
+    "text": "tmd2755: SNS_MOT_FACTORY_CAL_MSGID_SNS_PHYSICAL_SENSOR_TEST_CONFIG %d"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x4c77",
+    "text": "tmd2755: sensor type:%d, msg: %d"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x4c98",
+    "text": "tmd2755:test_type:%d,val_count:%d,val: %d"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x4d73",
+    "text": "tmd2755 ALS_OC lux: %.2f, ch0: %d, ch1: %d, atime:%.2f, again: %d, scale: %.2f, pdata %d, poff:%d, CT: %d, NearBy: %d,Lth:%.2f, Hth:%.2f,Stu %x,Ccfg %x"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x504a",
+    "text": "tmd2755_als_factory_calibration, lux_scale:%d, lux_target:%d"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x5087",
+    "text": "TMD2755 Factory Cal,status:0x%x"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x50a7",
+    "text": "TMD2755 threshold delta(%.2f) is too small, force to %.2f"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x50e1",
+    "text": "TMD2755 threshold lowcoef:%.2f, highcoef:%.2f, delta limit:%.2f, prox_binsearch_target %d"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x513b",
+    "text": "TMD2755 update prox thresold %d"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x515b",
+    "text": "tmd2755: Gpio Not Low"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x5171",
+    "text": "tmd2755: Gpio Not High status:0x%x"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x519b",
+    "text": "tmd2755 pcfg0 read failed"
+  },
+  {
+    "file": "adsp.b20",
+    "offset": "0x51bf",
+    "text": "tmd2755 pcfg0 value is not expected: %u, %u, trying to recover"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x514af1",
+    "text": "uTlmm_GpioIn"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5160dc",
+    "text": "uTlmm_ConfigGpio"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x516707",
+    "text": "uTlmm_GpioOut"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x519626",
+    "text": "qdssc_svc_init"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x56a3ef",
+    "text": "T/SHRUQUPIO1N"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c1ebd",
+    "text": "qupv3_sensor_gsi_irq_0"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c1ed4",
+    "text": "qupv3_sensor_gsi_irq_1"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c1eeb",
+    "text": "qupv3_sensor_gsi_irq_2"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c1f02",
+    "text": "qupv3_sensor_gsi_irq_3"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c1f19",
+    "text": "qupv3_sensor_gsi_irq_4"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c1f30",
+    "text": "qupv3_sensor_gsi_irq_5"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c219e",
+    "text": "qupv3_sensor_gsi_irq_6"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c222a",
+    "text": "top_qupv3_lpass_irq_out[2]"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2245",
+    "text": "top_qupv3_lpass_irq_out[3]"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2260",
+    "text": "top_qupv3_lpass_irq_out[4]"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c227b",
+    "text": "top_qupv3_lpass_irq_out[5]"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c230e",
+    "text": "qupv3_sensor_gsi_irq_7"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2325",
+    "text": "qupv3_sensor_gsi_irq_8"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c233c",
+    "text": "qupv3_sensor_gsi_irq_9"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2353",
+    "text": "qupv3_sensor_gsi_irq_10"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c236b",
+    "text": "qupv3_sensor_gsi_irq_11"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c239b",
+    "text": "qupv3_sensor_gsi_irq_12"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c23b3",
+    "text": "qupv3_sensor_se_irq_0"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c23c9",
+    "text": "qupv3_sensor_se_irq_1"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c23df",
+    "text": "qupv3_sensor_se_irq_2"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c250a",
+    "text": "qupv3_sensor_se_irq_3"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2520",
+    "text": "qupv3_sensor_se_irq_4"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2536",
+    "text": "qupv3_sensor_se_irq_5"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2a77",
+    "text": "ssc_irq_out_apcs[4]"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2c0d",
+    "text": "ssc_q6_alarm_cx_irq"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2c21",
+    "text": "ssc_q6_alarm_mx_irq"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2e2f",
+    "text": "qtmr_ssc_virt_irq_0"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c2f0c",
+    "text": "vsense_ssc_q6_alarm_irq"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c3062",
+    "text": "tlmm_name"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c306c",
+    "text": "tlmm_offset"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5c3078",
+    "text": "tlmm_val"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5cbaf5",
+    "text": "port_ssc_etm"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5cbb39",
+    "text": "qdssc_svc_task"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5cdb25",
+    "text": "tlmm_name"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5cdb2f",
+    "text": "tlmm_offset"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5cdb3b",
+    "text": "tlmm_val"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5cdc4d",
+    "text": "/vcs/vdd_ssc_int"
+  },
+  {
+    "file": "adsp.b23",
+    "offset": "0x5eee53",
+    "text": "bi_px_ssc_23"
+  },
+  {
+    "file": "adsp.b26",
+    "offset": "0x5be4",
+    "text": "AFEDevCommon.cpp:GPIO INIT: Failed to attach to TLMM"
+  },
+  {
+    "file": "adsp.b26",
+    "offset": "0x5e08",
+    "text": "AFEDevCommon.cpp:GPIO DEINIT:Failed to detach from TLMM"
+  },
+  {
+    "file": "adsp.b26",
+    "offset": "0x60f0",
+    "text": "AFEDevCommon.cpp:PDC GPIO INIT: Failed to attach to TLMM"
+  },
+  {
+    "file": "adsp.b26",
+    "offset": "0x6200",
+    "text": "AFEDevCommon.cpp:PDC GPIO DEINIT: Failed to detach from TLMM"
+  },
+  {
+    "file": "adsp.b26",
+    "offset": "0x70b4",
+    "text": "afe_lpi_gpio_driver.cpp:LPI GPIO[%lu] Config failed"
+  },
+  {
+    "file": "adsp.b26",
+    "offset": "0x70e8",
+    "text": "afe_lpi_gpio_driver.cpp:LPI GPIO[%lu] Config success"
+  }
+]

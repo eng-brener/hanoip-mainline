@@ -23,6 +23,11 @@ apk --root "$ROOT" --initdb --update-cache add \
     e2fsprogs util-linux usbutils evtest fastfetch \
     mesa-dri-gallium mesa-egl mesa-gles kmscube \
     postmarketos-ui-plasma-mobile qmlkonsole discover discover-backend-apk \
+    alpine-appstream-downloader \
+    dolphin ark kalk kclock kweather koko elisa haruna okular calindori \
+    plasma-phonebook krecorder spectacle \
+    firefox mobile-config-firefox \
+    postmarketos-base-ui-audio-backend-pipewire alsa-utils \
     "$@" > /work/apk-install.log 2>&1 || { tail -30 /work/apk-install.log; exit 1; }
 
 # Board-specific configuration (no device identifiers, no passwords).
@@ -31,13 +36,16 @@ chmod 700 "$ROOT/root" "$ROOT/root/.ssh"
 chmod 600 "$ROOT/root/.ssh/authorized_keys"
 chmod 755 "$ROOT/etc/init.d/hanoip-usbnet" "$ROOT/etc/init.d/hanoip-touch" \
     "$ROOT/etc/init.d/hanoip-firmware" "$ROOT/etc/init.d/hanoip-ro-handoff" \
-    "$ROOT/etc/init.d/hanoip-gpu-tune" \
+    "$ROOT/etc/init.d/hanoip-perf-tune" \
+    "$ROOT/etc/init.d/hanoip-brightness" \
+    "$ROOT/usr/libexec/hanoip-speaker-route" \
     "$ROOT/etc/local.d/"*.start
 ln -sf /etc/init.d/hanoip-touch "$ROOT/etc/runlevels/boot/hanoip-touch"
 ln -sf /etc/init.d/hanoip-firmware "$ROOT/etc/runlevels/boot/hanoip-firmware"
 # udev rule 60-hanoip-blockdev-ro takes over the initramfs RO poll loop.
 ln -sf /etc/init.d/hanoip-ro-handoff "$ROOT/etc/runlevels/sysinit/hanoip-ro-handoff"
-ln -sf /etc/init.d/hanoip-gpu-tune "$ROOT/etc/runlevels/boot/hanoip-gpu-tune"
+ln -sf /etc/init.d/hanoip-perf-tune "$ROOT/etc/runlevels/boot/hanoip-perf-tune"
+ln -sf /etc/init.d/hanoip-brightness "$ROOT/etc/runlevels/boot/hanoip-brightness"
 # NetworkManager (from the Plasma UI) owns wlan0 and D-Bus-activates
 # wpa_supplicant; no ifupdown/wpa_supplicant OpenRC services for it.
 echo hanoip > "$ROOT/etc/hostname"
@@ -58,6 +66,13 @@ for g in audio input netdev plugdev video wheel feedbackd; do
     chroot "$ROOT" addgroup user $g
 done
 chroot "$ROOT" tinydm-set-session -f -s /usr/share/wayland-sessions/plasma-mobile.desktop
+# PipeWire as OpenRC user services, up at login before Plasma: started from
+# the XDG autostart it races plasma-pa, which then never reaches the server
+# (volume keys dead). pipewire-launcher exits when the service is running.
+mkdir -p "$ROOT/home/user/.config/rc/runlevels/default"
+for s in pipewire pipewire-pulse wireplumber; do
+    ln -sf /etc/user/init.d/$s "$ROOT/home/user/.config/rc/runlevels/default/$s"
+done
 # Panel idle-off would cost an IRAM reload; keep it off by default.
 mkdir -p "$ROOT/home/user/.config"
 for p in AC Battery LowBattery; do

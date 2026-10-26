@@ -1,0 +1,83 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-battery-diagnostic.dts"
+
+/*
+ * RAM diagnostic: enable the microSD slot in the U-Boot control DT.
+ * The kernel takes this embedded DT (boot_with_embedded_fdt=1), so the
+ * sdhc_2 node and its pinctrl/supplies must live here, not only in the
+ * kernel DTS.
+ */
+&tlmm {
+	sdc2_on: sdc2-on-state {
+		clk-pins {
+			pins = "sdc2_clk";
+			bias-disable;
+			drive-strength = <16>;
+		};
+
+		cmd-pins {
+			pins = "sdc2_cmd";
+			bias-pull-up;
+			drive-strength = <10>;
+		};
+
+		data-pins {
+			pins = "sdc2_data";
+			bias-pull-up;
+			drive-strength = <10>;
+		};
+
+		sd-cd-pins {
+			pins = "gpio69";
+			function = "gpio";
+			bias-pull-up;
+			drive-strength = <2>;
+		};
+	};
+
+	sdc2_off: sdc2-off-state {
+		clk-pins {
+			pins = "sdc2_clk";
+			bias-disable;
+			drive-strength = <2>;
+		};
+
+		cmd-pins {
+			pins = "sdc2_cmd";
+			bias-disable;
+			drive-strength = <2>;
+		};
+
+		data-pins {
+			pins = "sdc2_data";
+			bias-disable;
+			drive-strength = <2>;
+		};
+
+		sd-cd-pins {
+			pins = "gpio69";
+			function = "gpio";
+			bias-disable;
+			drive-strength = <2>;
+		};
+	};
+};
+
+&sdhc_2 {
+	status = "okay";
+
+	vmmc-supply = <&vreg_l9c_3p1>;
+	vqmmc-supply = <&vreg_l6c_3p0>;
+
+	cd-gpios = <&tlmm 69 GPIO_ACTIVE_LOW>;
+
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&sdc2_on>;
+	pinctrl-1 = <&sdc2_off>;
+};
+
+/* Stock uses 2.95 V on L9C for the card; never 3.3 V. */
+&vreg_l9c_3p1 {
+	regulator-min-microvolt = <2950000>;
+	regulator-max-microvolt = <2950000>;
+};

@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "fastboot",
+      "-s",
+      "ZF523QJBSG",
+      "boot",
+      "work/perif-20261026/v3/u-boot-hanoip-pmos-perif-v3.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (516 KB)                        OKAY [  0.013s]\nBooting                                            OKAY [ 10.361s]\nFinished. Total time: 10.375s\n"
+  },
+  {
+    "command": [
+      "fastboot",
+      "getvar",
+      "product"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "product: motorola-hanoip\nFinished. Total time: 0.000s\n"
+  },
+  {
+    "command": [
+      "fastboot",
+      "boot",
+      "work/perif-20261026/v3/kernel-hanoip-pmos-7.3-audio-f3b.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (16724 KB)                      OKAY [  0.552s]\nBooting                                            OKAY [  0.000s]\nFinished. Total time: 0.556s\n"
+  }
+]

@@ -1,0 +1,34 @@
+
+~ # /bin/busybox cat /sys/bus/spi/devices/spi6.0/stats; /bin/busybox cat /proc/i
+nterrupts | /bin/busybox tail -12; /bin/busybox cat /sys/class/drm/card0-DSI-1/e
+nabled; /bin/busybox dmesg | /bin/busybox tail -12; printf '\nHANOIP_END_fc0418c
+68264\n'
+irqs=0 reports=0 rejected=0
+ 158:         38          0          0          0          0          0  msm_mdss     0 Edge      msm
+ 159:         36          0          0          0          0          0  msm_mdss     4 Edge      dsi_isr
+ 160:          0          0          0          0          0          0  msmgpio      9 Edge      spi6.0
+IPI0:         44         27         73         25         26         32  Rescheduling interrupts
+IPI1:        616        522        361        721        540        320  Function call interrupts
+IPI2:          0          0          0          0          0          0  CPU stop interrupts
+IPI3:          0          0          0          0          0          0  CPU stop NMIs
+IPI4:          0          0          0          0          0          0  Timer broadcast interrupts
+IPI5:         20         13          1          0          7          0  IRQ work interrupts
+IPI6:          0          0          0          0          0          0  CPU backtrace interrupts
+IPI7:          0          0          0          0          0          0  KGDB roundup interrupts
+ Err:          0
+enabled
+[  753.868786] msm_dsi ae94000.dsi: [drm:dsi_cmds2buf_tx [msm]] *ERROR* wait for video done timed out
+[  754.250696] Console: switching to colour frame buffer device 135x153
+[  754.267319] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[  754.267354] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[  754.596597] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+[  772.465841] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  772.626943] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  772.650079] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  772.658996] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  772.712821] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  772.740929] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[  772.753644] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only
+
+HANOIP_END_fc0418c68264
+~ # 

@@ -1,0 +1,95 @@
+
+~ # echo PANEL_BEGIN; /bin/busybox insmod /lib/hanoip-display/panel-ilitek-ili78
+07s.ko; echo PANEL_RETURN_$?; /bin/busybox sleep 5; /bin/busybox ls /sys/class/d
+rm /sys/class/graphics; /bin/busybox dmesg | /bin/busybox tail -70; printf '\nHA
+NOIP_END_83fe7ea9e45b\n'
+PANEL_BEGIN
+[   48.922434] msm_dpu ae01000.display-controller: bound ae94000.dsi (ops dsi_ops [msm])
+[   49.347288] Console: switching to colour dummy device 80x25
+[   49.354390] [drm:dpu_kms_hw_init:1168] dpu hardware revision:0x50020000
+[   49.368665] [drm] Initialized msm 1.13.0 for ae01000.display-controller on minor 0
+[   49.376567] msm_dpu ae01000.display-controller: no GPU device was found
+[   49.604716] Console: switching to colour frame buffer device 135x153
+[   49.621365] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[   49.621401] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[   49.646502] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+PANEL_RETURN_0
+/sys/class/drm:
+card0              card0-Writeback-1  version
+card0-DSI-1        renderD128
+
+/sys/class/graphics:
+fb0    fbcon
+[    0.600584] arm-smmu 15000000.iommu: 	Stage-1: 48-bit VA -> 48-bit IPA
+[    0.601259] arm-smmu 15000000.iommu: 	preserved 0 boot mappings
+[    0.604032] platform 800000.dma-controller: Adding to iommu group 1
+[    0.604691] platform 8c0000.geniqup: Adding to iommu group 2
+[    0.605351] platform a00000.dma-controller: Adding to iommu group 3
+[    0.606003] platform ac0000.geniqup: Adding to iommu group 4
+[    0.606728] platform ae00000.display-subsystem: Adding to iommu group 5
+[    0.607449] platform 18800000.wifi: Adding to iommu group 6
+[    0.609828] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB capture EN 0x80 RDY 0x80
+[    0.610395] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB INT_RT 0x1 VREG_OK 1 SC 0
+[    0.611057] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB voltages LAB 5500 IBB 5500 BST 5650
+[    0.611956] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB adopted enabled state from ABL
+[    0.612572] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: PM6150L LCDB probed full
+[    0.612854] platform a600000.usb: Adding to iommu group 7
+[    0.614038] /soc@0/spmi@c440000/pmic@0/typec@1500/connector: Fixed dependency cycle(s) with /soc@0/usb@a6f8800/usb@a600000
+[    0.614778] /soc@0/usb@a6f8800/usb@a600000: Fixed dependency cycle(s) with /soc@0/spmi@c440000/pmic@0/typec@1500/connector
+[    0.629166] 88c000.serial: ttyHS0 at MMIO 0x88c000 (irq = 149, base_baud = 0) is a MSM
+[    0.630448] serial serial0: tty port ttyHS0 registered
+[    0.635773] a88000.serial: ttyMSM0 at MMIO 0xa88000 (irq = 152, base_baud = 0) is a MSM
+[    0.658421] printk: legacy console [ttyMSM0] enabled
+[    3.184033] input: gpio-keys as /devices/platform/gpio-keys/input/input2
+[    3.192275] clk: Not disabling unused clocks
+[    3.197232] PM: genpd: Disabling unused power domains
+[    3.206946] Freeing unused kernel memory: 6272K
+[    3.212418] Run /init as init process
+[    3.216814]   with arguments:
+[    3.656379]     /init
+[    4.095541]   with environment:
+[    4.533762]     HOME=/
+[    4.967700]     TERM=linux
+[    5.400297]     panic_on_oops=1
+[    5.833879]     idle=poll
+[    6.716918] printk: legacy console [ttyGS0] enabled
+[   17.381436] platform 62b52000.pinctrl: deferred probe pending: (reason unknown)
+[   17.812401] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   18.245263] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   18.681433] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   19.119377] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   19.557718] qnoc-sm7150 1500000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   19.996697] qnoc-sm7150 9680000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   20.433573] qnoc-sm7150 1380000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   20.868994] qnoc-sm7150 1740000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   21.303585] gcc-sm7150 100000.clock-controller: sync_state() pending due to ae00000.display-subsystem
+[   21.740271] dispcc-sm7150 af00000.clock-controller: sync_state() pending due to ae00000.display-subsystem
+[   22.178859] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to ae00000.display-subsystem
+[   22.617605] gcc-sm7150 100000.clock-controller: sync_state() pending due to 18323000.cpufreq
+[   28.378085] HANOIP DRM: register MDP/DPU
+[   28.814108] HANOIP DRM: register DSI
+[   29.246846] HANOIP DRM: register Adreno
+[   29.676906] HANOIP DRM: register MDSS
+[   30.105163] msm-mdss ae00000.display-subsystem: HANOIP MDSS: probe entered
+[   30.536889] msm-mdss ae00000.display-subsystem: HANOIP MDSS: populating children
+[   30.966712] /soc@0/display-subsystem@ae00000/display-controller@ae01000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   31.828951] /soc@0/display-subsystem@ae00000/display-controller@ae01000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   32.638695] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0
+[   33.452125] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/display-controller@ae01000
+[   34.276340] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   35.108200] HANOIP DRM: registration complete
+[   35.110492] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0
+[   36.351230] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   36.519661] random: crng init done
+[   48.922434] msm_dpu ae01000.display-controller: bound ae94000.dsi (ops dsi_ops [msm])
+[   49.347288] Console: switching to colour dummy device 80x25
+[   49.354390] [drm:dpu_kms_hw_init:1168] dpu hardware revision:0x50020000
+[   49.368665] [drm] Initialized msm 1.13.0 for ae01000.display-controller on minor 0
+[   49.376567] msm_dpu ae01000.display-controller: no GPU device was found
+[   49.604716] Console: switching to colour frame buffer device 135x153
+[   49.621365] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[   49.621401] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[   49.646502] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+
+HANOIP_END_83fe7ea9e45b
+~ # 

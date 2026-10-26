@@ -1,0 +1,1 @@
+cat: /sys/kernel/debug/clk/clk_summary: No such file or directory

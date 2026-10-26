@@ -1,0 +1,60 @@
+
+~ # printf "\033[2J\033[H\033[32mHANOIP MAINLINE - TESTE 2\033[0m\nDisplay DRM -
+ memoria do splash preservada\nTeste em RAM - sem gravar particoes\n" > /dev/tty
+1; /bin/busybox cat /sys/class/drm/card0-DSI-1/status /sys/class/drm/card0-DSI-1
+/enabled /sys/class/drm/card0-DSI-1/modes /proc/sys/kernel/tainted; /sbin/load-t
+ouch; /bin/busybox sleep 12; /bin/busybox cat /run/hanoip-touch-loader.log /sys/
+bus/spi/devices/spi6.0/stats; /bin/busybox dmesg | /bin/busybox tail -35; printf
+ '\nHANOIP_END_38808a45f0d5\n'
+connected
+enabled
+1080x2460
+0
+HANOIP: SPI touch probe started (PID 180); firmware targets controller RAM only
+[   44.554134] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[   44.716377] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[   44.739619] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[   44.748511] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[   44.802117] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[   44.830215] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[   44.842968] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only
+HANOIP: touch module loader completed; verify input registration and stats
+irqs=0 reports=0 rejected=0
+[   14.245975] HANOIP DRM: register MDSS
+[   14.672201] msm-mdss ae00000.display-subsystem: HANOIP MDSS: probe entered
+[   15.103234] msm-mdss ae00000.display-subsystem: HANOIP MDSS: populating children
+[   15.535464] /soc@0/display-subsystem@ae00000/display-controller@ae01000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   16.400295] /soc@0/display-subsystem@ae00000/display-controller@ae01000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   17.215488] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0
+[   18.033088] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/display-controller@ae01000
+[   18.852271] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   19.676212] HANOIP DRM: registration complete
+[   19.678436] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0
+[   20.901760] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   21.676087] random: crng init done
+[   21.712674] msm_dpu ae01000.display-controller: bound ae94000.dsi (ops dsi_ops [msm])
+[   22.549838] Console: switching to colour dummy device 80x25
+[   22.556712] [drm:dpu_kms_hw_init:1172] dpu hardware revision:0x50020000
+[   22.563775] msm-mdss ae00000.display-subsystem: HANOIP: mapped firmware framebuffer [mem 0x9c000000-0x9d6fffff flags 0x200] before stream switch
+[   22.586088] [drm] Initialized msm 1.13.0 for ae01000.display-controller on minor 0
+[   22.593958] msm_dpu ae01000.display-controller: no GPU device was found
+[   23.075480] Console: switching to colour frame buffer device 135x153
+[   23.092132] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[   23.092167] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[   23.117263] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+[   31.206686] platform 62b52000.pinctrl: deferred probe pending: (reason unknown)
+[   31.214266] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   31.222531] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   31.231072] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   31.239164] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   31.247263] gcc-sm7150 100000.clock-controller: sync_state() pending due to 18323000.cpufreq
+[   44.554134] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[   44.716377] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[   44.739619] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[   44.748511] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[   44.802117] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[   44.830215] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[   44.842968] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only
+
+HANOIP_END_38808a45f0d5
+~ # 

@@ -1,0 +1,28 @@
+{
+  "chip": "ILI7807",
+  "firmware_version": "16.0.10.0",
+  "core_version": "1.4.6.8",
+  "blocks": [
+    {
+      "kind": 1,
+      "destination": "0x0",
+      "bytes": 81920,
+      "crc32": "0xfea9bcbd"
+    },
+    {
+      "kind": 2,
+      "destination": "0x20870",
+      "bytes": 8192,
+      "crc32": "0xca3e7527"
+    },
+    {
+      "kind": 3,
+      "destination": "0x20670",
+      "bytes": 512,
+      "crc32": "0x94d9c4dd"
+    }
+  ],
+  "mp_firmware_excluded": true,
+  "bytes": 90724,
+  "sha256": "ef3e38c1e9dda6700ec29d09e7ec7f7c957b269ad6a56027c4ffb527051c314f"
+}

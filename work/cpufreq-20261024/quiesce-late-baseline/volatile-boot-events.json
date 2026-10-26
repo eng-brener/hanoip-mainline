@@ -1,0 +1,46 @@
+[
+  {
+    "command": [
+      "adb",
+      "-s",
+      "ZF523QJBSG",
+      "reboot",
+      "bootloader"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "fastboot",
+      "-s",
+      "ZF523QJBSG",
+      "boot",
+      "work/cpufreq-20261024/quiesce-late-baseline/u-boot-hanoip-cpufreq.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (516 KB)                        OKAY [  0.013s]\nBooting                                            OKAY [ 10.396s]\nFinished. Total time: 10.409s\n"
+  },
+  {
+    "command": [
+      "fastboot",
+      "getvar",
+      "product"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "product: motorola-hanoip\nFinished. Total time: 0.000s\n"
+  },
+  {
+    "command": [
+      "fastboot",
+      "boot",
+      "work/cpufreq-20261024/quiesce-late-baseline/kernel-hanoip-cpufreq.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (15856 KB)                      OKAY [  0.527s]\nBooting                                            OKAY [  0.000s]\nFinished. Total time: 0.529s\n"
+  }
+]

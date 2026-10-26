@@ -1,0 +1,10 @@
+t1 big=2304000 little=1804800 max_temp=69000
+t2 big=2304000 little=1804800 max_temp=72800
+t3 big=2304000 little=1804800 max_temp=75100
+t4 big=2304000 little=1804800 max_temp=76700
+t5 big=2304000 little=1804800 max_temp=77400
+repouso big=652800 little=768000
+aoss0-thermal cpu0-thermal cpu7-thermal cpu8-thermal cpu9-thermal gpuss0-thermal gpuss1-thermal aoss1-thermal cwlan-thermal audio-thermal ddr-thermal q6-hvx-thermal cpu1-thermal camera-thermal mdm-core-thermal mdm-dsp-thermal npu-thermal video-thermal cpu2-thermal cpu3-thermal cpu4-thermal cpu5-thermal cpuss0-thermal cpuss1-thermal cpu6-thermal 
+cpufreq-cpu0 0/9
+cpufreq-cpu6 0/13
+ath10k_thermal 0/100
