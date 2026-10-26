@@ -1,0 +1,45 @@
+#!/bin/sh
+# Existing complete pmOS, immutable disk base and RAM-only changes.
+set -eu
+BB=/bin/busybox
+exec >> /run/hanoip-pmos-root.log 2>&1
+PART=/dev/sdb23
+OFFSET=5410652160
+BASE=/mnt/pmos-base
+NEW=/newroot
+[ -e /run/hanoip-ufs-started ] || /sbin/load-ufs
+[ "$(cat /sys/class/block/sdb23/size)" = 21102592 ]
+$BB grep -q '^PARTNAME=super$' /sys/class/block/sdb23/uevent
+for b in /sys/class/block/sd*; do
+ n=${b##*/}; $BB blockdev --setro /dev/$n
+ [ "$(cat "$b/ro")" = 1 ]
+done
+$BB sha256sum "$PART" > /run/pmos-super-before.sha256
+[ "$(cat /sys/class/block/sdb23/ro)" = 1 ]
+$BB losetup -r -o "$OFFSET" /dev/loop7 "$PART"
+[ "$(cat /sys/class/block/loop7/ro)" = 1 ]
+$BB mkdir -p "$BASE" "$NEW" /run/pmos-overlay/upper /run/pmos-overlay/work
+$BB mount -t ext4 -o ro,noload,nodev,nosuid,noexec /dev/loop7 "$BASE"
+$BB insmod /lib/hanoip-overlay.ko
+$BB mount -t overlay -o lowerdir="$BASE",upperdir=/run/pmos-overlay/upper,workdir=/run/pmos-overlay/work overlay "$NEW"
+[ -x "$NEW/sbin/init" ]
+$BB tar -xzf /sensor-bundle.tar.gz -C "$NEW"
+# Sensor integration and guard are volatile upper-layer additions.
+$BB ln -sf /etc/init.d/hanoip-ssc "$NEW/etc/runlevels/default/hanoip-ssc"
+# The old guard exempts writable super; this test must keep ALL disks RO.
+$BB rm -f "$NEW/etc/runlevels/sysinit/hanoip-ro-handoff"
+$BB mkdir -p "$NEW/etc/udev/rules.d"
+echo 'SUBSYSTEM=="block", RUN+="/sbin/blockdev --setro /dev/%k"' > "$NEW/etc/udev/rules.d/99-hanoip-all-block-ro.rules"
+$BB sha256sum "$PART" > /run/pmos-super-after.sha256
+$BB cmp /run/pmos-super-before.sha256 /run/pmos-super-after.sha256
+echo SUPER_HASH_MATCH_RO_RAM_OVERLAY
+# Keep the lower mount reachable after switch_root.
+$BB mkdir -p "$NEW/mnt/pmos-base"
+$BB mount --move "$BASE" "$NEW/mnt/pmos-base"
+$BB grep ' /mnt/ro/' /proc/mounts | while read -r _ target _; do
+ $BB mkdir -p "$NEW$target"; $BB mount --move "$target" "$NEW$target"
+done
+for m in dev proc sys run; do
+ $BB mkdir -p "$NEW/$m"; $BB mount --move "/$m" "$NEW/$m"
+done
+echo PMOS_FULL_RO_RAM_READY

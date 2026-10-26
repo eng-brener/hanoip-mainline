@@ -1,0 +1,11 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-pmos-perif.dts"
+
+/*
+ * Hardware video (Venus), experimental: the vendor firmware is loaded from
+ * the modem_a image links that hanoip-firmware sets up.
+ */
+&venus {
+	firmware-name = "qcom/sm7150/motorola/hanoip/venus.mdt";
+	status = "okay";
+};

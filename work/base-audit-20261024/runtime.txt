@@ -1,0 +1,182 @@
+
+~ # /bin/busybox cat /proc/uptime /proc/cmdline /sys/devices/system/cpu/online /
+sys/devices/system/cpu/present /sys/devices/system/cpu/possible; /bin/busybox ls
+ /sys/devices/system/cpu/cpufreq /sys/class/power_supply /sys/class/thermal; for
+ z in /sys/class/thermal/thermal_zone*; do echo $z; /bin/busybox cat $z/type $z/
+temp; done; /bin/busybox cat /proc/meminfo; /bin/busybox dmesg | /bin/busybox ta
+il -25; printf '\nHANOIP_END_2956692ce0aa\n'
+401.22 2389.11
+earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops console=tty1 loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0 maxcpus=6 cpuidle.off=1 cpufreq.off=1 idle=poll
+0-5
+0-7
+0-7
+ls: /sys/devices/system/cpu/cpufreq: No such file or directory
+/sys/class/power_supply:
+tcpm-source-psy-c440000.spmi:pmic@0:typec@1500
+
+/sys/class/thermal:
+thermal_zone0   thermal_zone15  thermal_zone21  thermal_zone6
+thermal_zone1   thermal_zone16  thermal_zone22  thermal_zone7
+thermal_zone10  thermal_zone17  thermal_zone23  thermal_zone8
+thermal_zone11  thermal_zone18  thermal_zone24  thermal_zone9
+thermal_zone12  thermal_zone19  thermal_zone3
+thermal_zone13  thermal_zone2   thermal_zone4
+thermal_zone14  thermal_zone20  thermal_zone5
+/sys/class/thermal/thermal_zone0
+aoss0-thermal
+38300
+/sys/class/thermal/thermal_zone1
+cpu0-thermal
+38300
+/sys/class/thermal/thermal_zone10
+cpu7-thermal
+37400
+/sys/class/thermal/thermal_zone11
+cpu8-thermal
+37000
+/sys/class/thermal/thermal_zone12
+cpu9-thermal
+37700
+/sys/class/thermal/thermal_zone13
+gpuss0-thermal
+37700
+/sys/class/thermal/thermal_zone14
+gpuss1-thermal
+38000
+/sys/class/thermal/thermal_zone15
+aoss1-thermal
+38200
+/sys/class/thermal/thermal_zone16
+cwlan-thermal
+36500
+/sys/class/thermal/thermal_zone17
+audio-thermal
+36500
+/sys/class/thermal/thermal_zone18
+ddr-thermal
+38500
+/sys/class/thermal/thermal_zone19
+q6-hvx-thermal
+37500
+/sys/class/thermal/thermal_zone2
+cpu1-thermal
+37000
+/sys/class/thermal/thermal_zone20
+camera-thermal
+38200
+/sys/class/thermal/thermal_zone21
+mdm-core-thermal
+36900
+/sys/class/thermal/thermal_zone22
+mdm-dsp-thermal
+37800
+/sys/class/thermal/thermal_zone23
+npu-thermal
+38500
+/sys/class/thermal/thermal_zone24
+video-thermal
+37800
+/sys/class/thermal/thermal_zone3
+cpu2-thermal
+36100
+/sys/class/thermal/thermal_zone4
+cpu3-thermal
+38700
+/sys/class/thermal/thermal_zone5
+cpu4-thermal
+38300
+/sys/class/thermal/thermal_zone6
+cpu5-thermal
+38000
+/sys/class/thermal/thermal_zone7
+cpuss0-thermal
+37700
+/sys/class/thermal/thermal_zone8
+cpuss1-thermal
+38700
+/sys/class/thermal/thermal_zone9
+cpu6-thermal
+37400
+MemTotal:        3638256 kB
+MemFree:         3549816 kB
+MemAvailable:    3477984 kB
+Buffers:               0 kB
+Cached:            23216 kB
+SwapCached:            0 kB
+Active:            13328 kB
+Inactive:              0 kB
+Active(anon):      13328 kB
+Inactive(anon):        0 kB
+Active(file):          0 kB
+Inactive(file):        0 kB
+Unevictable:       10460 kB
+Mlocked:               0 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:                 0 kB
+Writeback:             0 kB
+AnonPages:           696 kB
+Mapped:             1064 kB
+Shmem:             23216 kB
+KReclaimable:       6728 kB
+Slab:              22948 kB
+SReclaimable:       6728 kB
+SUnreclaim:        16220 kB
+KernelStack:        2144 kB
+ShadowCallStack:     592 kB
+PageTables:          488 kB
+SecPageTables:        96 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     1819128 kB
+Committed_AS:      29972 kB
+VmallocTotal:   135288315904 kB
+VmallocUsed:        7788 kB
+VmallocChunk:          0 kB
+Percpu:             1216 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+FileHugePages:         0 kB
+FilePmdMapped:         0 kB
+CmaTotal:          32768 kB
+CmaFree:           31744 kB
+Balloon:               0 kB
+GPUActive:             0 kB
+GPUReclaim:            0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+Hugetlb:               0 kB
+[   20.901760] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   21.676087] random: crng init done
+[   21.712674] msm_dpu ae01000.display-controller: bound ae94000.dsi (ops dsi_ops [msm])
+[   22.549838] Console: switching to colour dummy device 80x25
+[   22.556712] [drm:dpu_kms_hw_init:1172] dpu hardware revision:0x50020000
+[   22.563775] msm-mdss ae00000.display-subsystem: HANOIP: mapped firmware framebuffer [mem 0x9c000000-0x9d6fffff flags 0x200] before stream switch
+[   22.586088] [drm] Initialized msm 1.13.0 for ae01000.display-controller on minor 0
+[   22.593958] msm_dpu ae01000.display-controller: no GPU device was found
+[   23.075480] Console: switching to colour frame buffer device 135x153
+[   23.092132] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[   23.092167] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[   23.117263] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+[   31.206686] platform 62b52000.pinctrl: deferred probe pending: (reason unknown)
+[   31.214266] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   31.222531] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   31.231072] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   31.239164] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   31.247263] gcc-sm7150 100000.clock-controller: sync_state() pending due to 18323000.cpufreq
+[   44.554134] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[   44.716377] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[   44.739619] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[   44.748511] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[   44.802117] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[   44.830215] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[   44.842968] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only
+
+HANOIP_END_2956692ce0aa
+~ # 

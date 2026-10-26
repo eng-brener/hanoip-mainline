@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+PREREQS=""
+case $1 in
+    prereqs) echo "${PREREQS}"; exit 0;;
+esac
+
+. /scripts/functions
+
+if [ -n "${MOBILE_ROOT}" ]; then
+    # ROOT has been overriden previously, make sure it is now the real device node
+    ROOT="$(resolve_device ${ROOT})"
+    echo "ROOT=${ROOT}" >> /conf/param.conf
+fi

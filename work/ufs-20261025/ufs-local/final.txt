@@ -1,0 +1,14 @@
+
+~ # echo F_BEGIN; BB=/bin/busybox; $BB cat /proc/sys/kernel/tainted /proc/uptime
+ /sys/bus/platform/devices/*.dsi/error_snapshot; for d in /dev/sd*; do $BB block
+dev --getro $d; done | $BB sort | $BB uniq -c; $BB awk '{print $3}' /proc/mounts
+ | $BB sort -u | $BB tr '\n' ' '; echo; printf '\n%s\n' HANOIP_END_5298bebd57e2
+F_BEGIN
+4096
+489.20 2813.53
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+     84 1
+configfs devtmpfs proc rootfs sysfs tmpfs 
+
+HANOIP_END_5298bebd57e2
+~ # 

@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "fastboot",
+      "-s",
+      "<serial>",
+      "boot",
+      "work/cameras-20261026/step1-camid/u-boot-hanoip-pmos-camid-v1.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (516 KB)                        OKAY [  0.013s]\nBooting                                            OKAY [ 10.366s]\nFinished. Total time: 10.380s\n"
+  },
+  {
+    "command": [
+      "fastboot",
+      "getvar",
+      "product"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "product: motorola-hanoip\nFinished. Total time: 0.000s\n"
+  },
+  {
+    "command": [
+      "fastboot",
+      "boot",
+      "work/cameras-20261026/step1-camid/kernel-hanoip-pmos-full-sensors-ro-v4-base-fast.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (50308 KB)                      OKAY [  1.648s]\nBooting                                            OKAY [  0.000s]\nFinished. Total time: 1.708s\n"
+  }
+]

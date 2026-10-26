@@ -1,0 +1,12 @@
+sh: write error: I/O error
+rc=1 online=0-5
+[  350.431439] CPU features: CPU6: Detected conflict for capability 80 (Spectre-v2), System: 0, CPU: 1
+[  350.431486] CPU6: will not boot
+[  355.813881] CPU6: failed to come online
+[  355.830756] psci: CPU6 killed (polled 0 ms)
+[  355.835246] CPU6: died during early boot
+boost
+policy0
+488
+cat: can't open '/sys/devices/system/cpu/cpu6/cpu_capacity': No such file or directory
+driver state0 state1 state2 

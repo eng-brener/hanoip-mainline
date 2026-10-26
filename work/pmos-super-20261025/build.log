@@ -1,0 +1,11 @@
+351.1M	/build/rootfs
+e2fsck 1.47.4 (6-Mar-2025)
+Pass 5: Checking group summary information
+hanoip_pmos: 4133/327680 files (0.2% non-contiguous), 125147/1310720 blocks
+-rw-r--r--    1 root     root     5368709120 Oct 25 18:56 /work/pmos-super-rootfs.img
+== sysinit
+devfs udev udev-settle udev-trigger  
+== boot
+bootmisc hostname logbookd modules swclock sysctl tmpfs  
+== default
+hanoip-usbnet local postmarketos-zram-swap sshd udev-postmount  

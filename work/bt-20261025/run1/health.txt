@@ -1,0 +1,7 @@
+wpa_state=COMPLETED
+round-trip min/avg/max = 22.112/23.187/24.032 ms
+modem=running crashes=0
+erros: smmu=0 oops=0 bt_err=0
+ufs blocks=84 not_ro=0
+/mnt/ro/modem_a ro,nosuid,nodev,noexec,relatime,norecovery
+/mnt/ro/bluetooth_a ro,nosuid,nodev,noexec,relatime,norecove

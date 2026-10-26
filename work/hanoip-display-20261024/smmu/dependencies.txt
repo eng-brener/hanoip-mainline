@@ -1,0 +1,90 @@
+
+~ # /bin/busybox mount -t debugfs debugfs /sys/kernel/debug; /bin/busybox cat /s
+ys/kernel/debug/devices_deferred; /bin/busybox ls -l /sys/bus/platform/devices/a
+e00000.display-subsystem/supplier:* /sys/bus/platform/devices/af00000.clock-cont
+roller/driver; /bin/busybox cat /sys/kernel/debug/pm_genpd/pm_genpd_summary; pri
+ntf '\nHANOIP_END_c659eded70d2\n'
+62b52000.pinctrl	
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:100000.clock-controller -> ../../../virtual/devlink/platform:100000.clock-controller--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:1380000.interconnect -> ../../../virtual/devlink/platform:1380000.interconnect--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:1500000.interconnect -> ../../../virtual/devlink/platform:1500000.interconnect--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:15000000.iommu -> ../../../virtual/devlink/platform:15000000.iommu--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:1740000.interconnect -> ../../../virtual/devlink/platform:1740000.interconnect--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:18200000.rsc:clock-controller -> ../../../virtual/devlink/platform:18200000.rsc:clock-controller--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:18200000.rsc:power-controller -> ../../../virtual/devlink/platform:18200000.rsc:power-controller--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:3500000.pinctrl -> ../../../virtual/devlink/platform:3500000.pinctrl--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:9680000.interconnect -> ../../../virtual/devlink/platform:9680000.interconnect--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:af00000.clock-controller -> ../../../virtual/devlink/platform:af00000.clock-controller--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:c440000.spmi:pmic@4:gpio@c000 -> ../../../virtual/devlink/platform:c440000.spmi:pmic@4:gpio@c000--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:c440000.spmi:pmic@5:leds@d800 -> ../../../virtual/devlink/platform:c440000.spmi:pmic@5:leds@d800--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:c440000.spmi:pmic@5:regulator@ec00 -> ../../../virtual/devlink/platform:c440000.spmi:pmic@5:regulator@ec00--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:ff1000.regulator -> ../../../virtual/devlink/platform:ff1000.regulator--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:regulator-vdda-dsi -> ../../../virtual/devlink/platform:regulator-vdda-dsi--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:regulator-vddi -> ../../../virtual/devlink/platform:regulator-vddi--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/ae00000.display-subsystem/supplier:platform:regulator-vdds-dsi-pll -> ../../../virtual/devlink/platform:regulator-vdds-dsi-pll--platform:ae00000.display-subsystem
+lrwxrwxrwx    1 root     root             0 Aug 11 22:03 /sys/bus/platform/devices/af00000.clock-controller/driver -> ../../../../bus/platform/drivers/dispcc-sm7150
+domain                          status          children        performance
+    /device                         runtime status                  managed by
+------------------------------------------------------------------------------
+vcodec1_gdsc                    off-0                           0
+vcodec0_gdsc                    off-0                           0
+venus_gdsc                      off-0                           0
+camcc_titan_top_gdsc            off-0                           0
+                                                camcc_bps_gdsc, camcc_ife_0_gdsc, camcc_ife_1_gdsc, camcc_ipe_0_gdsc, camcc_ipe_1_gdsc
+camcc_ipe_1_gdsc                off-0                           0
+camcc_ipe_0_gdsc                off-0                           0
+camcc_ife_1_gdsc                off-0                           0
+camcc_ife_0_gdsc                off-0                           0
+camcc_bps_gdsc                  off-0                           0
+gx_gdsc                         off-0                           0
+cx_gdsc                         off-0                           0
+    5040000.iommu                   suspended                   0           SW
+hlos1_vote_mmnoc_mmu_tbu_sf_gdsc  on                              0
+hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc  on                              0
+hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc  on                              0
+hlos1_vote_aggre_noc_mmu_tbu2_gdsc  on                              0
+hlos1_vote_aggre_noc_mmu_tbu1_gdsc  on                              0
+hlos1_vote_aggre_noc_mmu_pcie_tbu_gdsc  on                              0
+hlos1_vote_aggre_noc_mmu_audio_tbu_gdsc  on                              0
+usb30_prim_gdsc                 on                              256
+    a6f8800.usb                     active                      256         SW
+ufs_phy_gdsc                    on                              0
+pcie_0_gdsc                     off-0                           0
+mss                             off-0                           0
+mx_ao                           off-0                           0
+                                                cx_ao
+mx                              on                              64
+                                                cx
+lmx                             off-0                           0
+lcx                             off-0                           0
+gfx                             off-0                           0
+cx_ao                           off-0                           0
+cx                              on                              64
+                                                camcc_titan_top_gdsc, venus_gdsc, vcodec0_gdsc, vcodec1_gdsc
+    ad00000.clock-controller        unsupported                 0           SW
+    af00000.clock-controller        unsupported                 0           SW
+    ab00000.clock-controller        unsupported                 0           SW
+    888000.i2c                      suspended                   0           SW
+    88c000.serial                   suspended                   0           SW
+    a80000.spi                      suspended                   0           SW
+    a88000.serial                   active                      64          SW
+power-domain-cluster            off-2                           0
+                                                power-domain-cpu0, power-domain-cpu1, power-domain-cpu2, power-domain-cpu3, power-domain-cpu4, power-domain-cpu5, power-domain-cpu6, power-domain-cpu7
+    18200000.rsc                    suspended                   0           SW
+power-domain-cpu7               off-0                           0
+power-domain-cpu6               off-0                           0
+power-domain-cpu5               off-0                           0
+power-domain-cpu4               off-0                           0
+power-domain-cpu3               off-0                           0
+power-domain-cpu2               off-0                           0
+power-domain-cpu1               off-0                           0
+power-domain-cpu0               off-0                           0
+
+HANOIP_END_c659eded70d2
+~ # 

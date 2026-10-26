@@ -1,0 +1,6 @@
+total 0
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 a600000.dwc3 -> ../../devices/platform/soc/a600000.ssusb/a600000.dwc3/udc/a600000.dwc3
+adb
+adb
+/dev/block/sde18 /vendor/firmware_mnt ext4 ro,context=u:object_r:firmware_file:s0,nosuid,nodev,relatime 0 0
+/dev/block/sde20 /vendor/bt_firmware ext4 ro,context=u:object_r:bt_firmware_file:s0,nosuid,nodev,relatime 0 0

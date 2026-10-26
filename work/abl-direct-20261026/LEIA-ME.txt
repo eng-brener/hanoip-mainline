@@ -1,0 +1,18 @@
+Teste: o ABL da Motorola aceita bootar o mainline DIRETO (sem U-Boot)? 26/10/2026
+
+Contadores A/B lidos antes (só getvar): current-slot a; a: successful=yes,
+unbootable=no, retry-count=6; b: successful=no, unbootable=no, retry=0.
+Com successful=yes os fastboot boot não consomem tentativas.
+
+Imagens (Image.gz #6 + ramdisk da GOLD-20261026-1500 + DT perif-v5 com
+qcom,msm-id <0x16d 0> e qcom,board-id <0x4c 0xb200> do Android, cmdline do
+U-Boot gravada no cabeçalho):
+  test-a-v2-dtbsection.img  cabeçalho v2, DTB em seção própria
+  test-b-v0-appended.img    cabeçalho v0, DTB anexado (layout Mobian/Kali)
+
+Resultado A: "Booting OKAY", logo "M" por ~1 s e volta ao fastboot da
+Motorola (o próprio ABL desistiu; não houve reset completo, nem USB/serial).
+Teste B: não executado (usuário encerrou). O klockmt/hanoip-pmos já mostrou
+que v0 nem chega a executar o kernel neste ABL, e que v3 usa o DT/cmdline do
+vendor_boot gravado (stock) — só funcionaria gravando vendor_boot/dtbo.
+Conclusão: sem gravar partição, o caminho é o U-Boot volátil (o atual).

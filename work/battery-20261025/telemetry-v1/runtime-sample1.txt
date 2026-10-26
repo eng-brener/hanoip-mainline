@@ -1,0 +1,39 @@
+Linux hanoip 7.1.0-sm7150 #10 SMP PREEMPT Sun Oct 25 16:00:16 UTC 2026 aarch64 Android
+battery monitor start 26.22
+hanoip-pm6150-monitor-charger
+qcom_qg
+tcpm-source-psy-c440000.spmi:pmic@0:typec@1500
+battery monitor modules loaded 26.28
+SUPPLY hanoip-pm6150-monitor-charger
+type=USB
+online=1
+status=Not charging
+health=Good
+usb_type=Unknown [SDP] DCP CDP
+voltage_now=5064704
+current_now=283845
+current_max=500000
+SUPPLY qcom_qg
+type=Battery
+status=Not charging
+voltage_now=3914150
+voltage_avg=3914928
+voltage_ocv=3916874
+current_now=0
+current_avg=0
+capacity=57
+temp=311
+charge_full=4939000
+charge_full_design=6174000
+SUPPLY tcpm-source-psy-c440000.spmi:pmic@0:typec@1500
+type=USB
+online=0
+usb_type=[C] PD PD_PPS PD_SPR_AVS PD_PPS_SPR_AVS
+voltage_now=0
+current_now=0
+current_max=0
+-r--r--r--    1 root     root          4096 Aug 12 21:01 /sys/class/power_supply/hanoip-pm6150-monitor-charger/current_max
+-r--r--r--    1 root     root          4096 Aug 12 21:01 /sys/class/power_supply/hanoip-pm6150-monitor-charger/status
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+4096
+All sd blocks are read-only.

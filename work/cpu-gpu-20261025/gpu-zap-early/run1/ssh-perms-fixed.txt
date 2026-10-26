@@ -1,0 +1,13 @@
+
+~ # chown 0:0 /root/.ssh/authorized_keys; ls -ln /root/.ssh/authorized_keys; pri
+ntf '\n%s\n' HANOIP_END_fd261685b3e2
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+-rw-------    1 0        0               82 Jan  1  1970 /root/.ssh/authorized_keys
+
+HANOIP_END_fd261685b3e2
+~ # 

@@ -1,0 +1,28 @@
+Using .config as base
+Merging /tmp/hanoip-display.fragment
+Value of CONFIG_DRM_MSM is redefined by fragment /tmp/hanoip-display.fragment:
+Previous value: CONFIG_DRM_MSM=y
+New value: CONFIG_DRM_MSM=m
+
+Value of CONFIG_DRM_MSM_MDP4 is redefined by fragment /tmp/hanoip-display.fragment:
+Previous value: # CONFIG_DRM_MSM_MDP4 is not set
+New value: CONFIG_DRM_MSM_MDP4=n
+
+Value of CONFIG_DRM_MSM_MDP5 is redefined by fragment /tmp/hanoip-display.fragment:
+Previous value: # CONFIG_DRM_MSM_MDP5 is not set
+New value: CONFIG_DRM_MSM_MDP5=n
+
+Value of CONFIG_DRM_MSM_DP is redefined by fragment /tmp/hanoip-display.fragment:
+Previous value: # CONFIG_DRM_MSM_DP is not set
+New value: CONFIG_DRM_MSM_DP=n
+
+Value of CONFIG_DRM_MSM_HDMI is redefined by fragment /tmp/hanoip-display.fragment:
+Previous value: # CONFIG_DRM_MSM_HDMI is not set
+New value: CONFIG_DRM_MSM_HDMI=n
+
+#
+# merged configuration written to .config (needs make)
+#
+#
+# configuration written to .config
+#

@@ -1,0 +1,35 @@
+VERSÃO GOLD (Plasma + sensores SSC, boot rápido) — Moto G60 hanoip mainline
+Promovida pelo usuário em 26/10/2026 ~15:00 -03.
+Substitui como retorno padrão a GOLD-20261025-1659 (v4), que fica preservada.
+
+Base: o par Plasma da v1 (`work/sensors-20261026/plasma-full/`,
+kernel 7.3.0-sm7150 #6 + DT + U-Boot perif-v5), com UMA diferença no
+ramdisk: removidas as duas leituras integrais (sha256sum) da super no
+`pmos-root` (eram ~235 s de boot). Garantia RO intacta: setro em todos os
+sd*, checagem de flags, losetup -r, mount ro,noload,nodev,nosuid,noexec.
+Auditoria integral vira teste separado, fora do boot.
+
+Boot (SÓ volátil, nunca flash):
+  fastboot boot u-boot-hanoip-pmos-perif-v5.img   (aguardar Fastboot hanoip)
+  fastboot boot kernel-hanoip-pmos-full-sensors-ro-v4-base-fast.img
+SSH em ~40 s. Plasma, DSI 1080x2460 irqs=0, wlan0, sdb23 RO, tainted 4096
+(pré-existente). Rootfs é o mesmo da v1, na cauda do super (sem escrita).
+
+Validado no boot de promoção: serviços hanoip-ssc/iio-sensor-proxy ok,
+wlan0 com IP, KWin rodando, LED white:status confirmado visualmente,
+ssccli accel/luz/prox ok.
+
+Pendente/aberto (não bloqueia o retorno):
+- Orientação automática: proxy recebe ZERO amostras do accel via QMI
+  (enable ok, log prova; libssc recebe normal). `undefined` permanente.
+  Inversão de 180° medida quando fluía. Ponte manual via kscreen-doctor ok.
+- Giroscópio validado via ssccli, não publicado no proxy. Brilho auto com
+  curva zerada. Proximidade só FAR visto no Plasma.
+
+Peças nesta pasta (somente leitura):
+  u-boot-hanoip-pmos-perif-v5.img — U-Boot conhecido (cópia da v5)
+  kernel-hanoip-pmos-full-sensors-ro-v4-base-fast.img — kernel #6 + ramdisk
+    sem hash (Image/DTB idênticos aos da v1)
+  ramdisk-v4.cpio.gz — ramdisk correspondente (p/ auditoria/rebuild)
+Regras: nunca modificar esta pasta; só `fastboot boot`; nenhuma escrita em
+partição; senha Wi-Fi e PIN ficam só no telefone.

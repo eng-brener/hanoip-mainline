@@ -1,0 +1,5 @@
+{
+  "configs/hanoip-uboot-cpuidle-diagnostic.fragment": "b901124600cf1ed2f8081adbe90dbbcffccaeb28ecb9a8d6238f01f778dd10c7",
+  "kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip-cpuidle-diagnostic.dts": "9cee616ebb91ab08714f05fc31d37702023fd45a31fe18bf4609435a7bf01324",
+  "uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip-cpuidle-diagnostic.dts": "9cee616ebb91ab08714f05fc31d37702023fd45a31fe18bf4609435a7bf01324"
+}

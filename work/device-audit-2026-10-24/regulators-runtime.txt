@@ -1,0 +1,513 @@
+=== /sys/class/regulator/regulator.0
+name=regulator-dummy
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.1
+name=pm6150_s2_level
+microvolts=17
+state=disabled
+num_users=0
+min_microvolts=17
+max_microvolts=417
+type=voltage
+=== /sys/class/regulator/regulator.10
+name=pm6150_l2
+microvolts=944000
+state=disabled
+num_users=0
+min_microvolts=944000
+max_microvolts=1056000
+type=voltage
+=== /sys/class/regulator/regulator.11
+name=pm6150_l3
+microvolts=968000
+state=disabled
+num_users=0
+min_microvolts=968000
+max_microvolts=1064000
+type=voltage
+=== /sys/class/regulator/regulator.12
+name=pm6150_l4
+microvolts=880000
+state=enabled
+num_users=4
+min_microvolts=824000
+max_microvolts=920000
+type=voltage
+=== /sys/class/regulator/regulator.13
+name=pm6150_l5
+microvolts=2600000
+state=disabled
+num_users=0
+min_microvolts=2600000
+max_microvolts=2800000
+type=voltage
+=== /sys/class/regulator/regulator.14
+name=pm6150_l6
+microvolts=1050000
+state=disabled
+num_users=0
+min_microvolts=1050000
+max_microvolts=1304000
+type=voltage
+=== /sys/class/regulator/regulator.15
+name=pm6150_l7_level
+microvolts=17
+state=disabled
+num_users=0
+min_microvolts=17
+max_microvolts=385
+type=voltage
+=== /sys/class/regulator/regulator.16
+name=pm6150_l8_level
+microvolts=17
+state=disabled
+num_users=0
+min_microvolts=17
+max_microvolts=385
+type=voltage
+=== /sys/class/regulator/regulator.17
+name=pm6150_l9
+microvolts=640000
+state=enabled
+num_users=1
+min_microvolts=624000
+max_microvolts=760000
+type=voltage
+=== /sys/class/regulator/regulator.18
+name=pm6150_l10
+microvolts=1800000
+state=enabled
+num_users=3
+min_microvolts=1720000
+max_microvolts=1832000
+type=voltage
+=== /sys/class/regulator/regulator.19
+name=pm6150_l11
+microvolts=1800000
+state=enabled
+num_users=4
+min_microvolts=1696000
+max_microvolts=1984000
+type=voltage
+=== /sys/class/regulator/regulator.2
+name=pm6150_s3_level
+microvolts=17
+state=disabled
+num_users=0
+min_microvolts=17
+max_microvolts=385
+type=voltage
+=== /sys/class/regulator/regulator.20
+name=pm6150_l12
+microvolts=1750000
+state=enabled
+num_users=1
+min_microvolts=1696000
+max_microvolts=1952000
+type=voltage
+=== /sys/class/regulator/regulator.21
+name=pm6150_l13
+microvolts=1800000
+state=enabled
+num_users=1
+min_microvolts=1696000
+max_microvolts=1904000
+type=voltage
+=== /sys/class/regulator/regulator.22
+name=pm6150_l14
+microvolts=1720000
+state=disabled
+num_users=0
+min_microvolts=1720000
+max_microvolts=1856000
+type=voltage
+=== /sys/class/regulator/regulator.23
+name=pm6150_l15
+microvolts=1800000
+state=disabled
+num_users=0
+min_microvolts=1696000
+max_microvolts=1904000
+type=voltage
+=== /sys/class/regulator/regulator.24
+name=pm6150_l16
+microvolts=2960000
+state=disabled
+num_users=0
+min_microvolts=2424000
+max_microvolts=2976000
+type=voltage
+=== /sys/class/regulator/regulator.25
+name=pm6150_l17
+microvolts=3075000
+state=enabled
+num_users=2
+min_microvolts=3000000
+max_microvolts=3232000
+type=voltage
+=== /sys/class/regulator/regulator.26
+name=pm6150_l18
+microvolts=3000000
+state=enabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.27
+name=pm6150_l19
+microvolts=2950000
+state=enabled
+num_users=1
+min_microvolts=2944000
+max_microvolts=3304000
+type=voltage
+=== /sys/class/regulator/regulator.28
+name=pm6150l_l1
+microvolts=1800000
+state=enabled
+num_users=2
+min_microvolts=1616000
+max_microvolts=1984000
+type=voltage
+=== /sys/class/regulator/regulator.29
+name=pm6150l_l2
+microvolts=1304000
+state=enabled
+num_users=2
+min_microvolts=1200000
+max_microvolts=1352000
+type=voltage
+=== /sys/class/regulator/regulator.3
+name=pm6150_s3_level_ao
+microvolts=17
+state=disabled
+num_users=0
+min_microvolts=17
+max_microvolts=385
+type=voltage
+=== /sys/class/regulator/regulator.30
+name=pm6150l_l3
+microvolts=1200000
+state=enabled
+num_users=3
+min_microvolts=1144000
+max_microvolts=1256000
+type=voltage
+=== /sys/class/regulator/regulator.31
+name=pm6150l_l4
+microvolts=1648000
+state=disabled
+num_users=0
+min_microvolts=1648000
+max_microvolts=2950000
+type=voltage
+=== /sys/class/regulator/regulator.32
+name=pm6150l_l5
+microvolts=1648000
+state=disabled
+num_users=0
+min_microvolts=1648000
+max_microvolts=2950000
+type=voltage
+=== /sys/class/regulator/regulator.33
+name=pm6150l_l6
+microvolts=1648000
+state=disabled
+num_users=0
+min_microvolts=1648000
+max_microvolts=3100000
+type=voltage
+=== /sys/class/regulator/regulator.34
+name=pm6150l_l7
+microvolts=3000000
+state=disabled
+num_users=0
+min_microvolts=3000000
+max_microvolts=3312000
+type=voltage
+=== /sys/class/regulator/regulator.35
+name=pm6150l_l8
+microvolts=1800000
+state=disabled
+num_users=0
+min_microvolts=1800000
+max_microvolts=1900000
+type=voltage
+=== /sys/class/regulator/regulator.36
+name=pm6150l_l9
+microvolts=2950000
+state=disabled
+num_users=0
+min_microvolts=2950000
+max_microvolts=3312000
+type=voltage
+=== /sys/class/regulator/regulator.37
+name=pm6150l_l10
+microvolts=3312000
+state=enabled
+num_users=2
+min_microvolts=3200000
+max_microvolts=3312000
+type=voltage
+=== /sys/class/regulator/regulator.38
+name=pm6150l_l11
+microvolts=3312000
+state=enabled
+num_users=1
+min_microvolts=2950000
+max_microvolts=3400000
+type=voltage
+=== /sys/class/regulator/regulator.39
+name=pm6150l_bob
+microvolts=3296000
+state=enabled
+num_users=1
+min_microvolts=3296000
+max_microvolts=3960000
+type=voltage
+=== /sys/class/regulator/regulator.4
+name=pm6150l_s1
+microvolts=1000000
+state=disabled
+num_users=0
+min_microvolts=1000000
+max_microvolts=1200000
+type=voltage
+=== /sys/class/regulator/regulator.40
+name=pm6150l_bob_ao
+microvolts=3296000
+state=disabled
+num_users=0
+min_microvolts=3296000
+max_microvolts=3960000
+type=voltage
+=== /sys/class/regulator/regulator.41
+name=refgen
+state=enabled
+num_users=1
+type=voltage
+=== /sys/class/regulator/regulator.42
+name=pcie_0_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.43
+name=ufs_phy_gdsc
+state=enabled
+num_users=1
+type=voltage
+=== /sys/class/regulator/regulator.44
+name=usb30_prim_gdsc
+state=enabled
+num_users=1
+type=voltage
+=== /sys/class/regulator/regulator.45
+name=hlos1_vote_aggre_noc_mmu_audio_tbu_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.46
+name=hlos1_vote_aggre_noc_mmu_pcie_tbu_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.47
+name=hlos1_vote_aggre_noc_mmu_tbu1_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.48
+name=hlos1_vote_aggre_noc_mmu_tbu2_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.49
+name=hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.5
+name=pm6150l_s2_level
+microvolts=193
+state=enabled
+num_users=2
+min_microvolts=17
+max_microvolts=385
+type=voltage
+=== /sys/class/regulator/regulator.50
+name=hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.51
+name=hlos1_vote_mmnoc_mmu_tbu_sf_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.52
+name=gpu_cx_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.53
+name=dbu1
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.54
+name=camera_rear_main_avdd_2p8
+microvolts=2800000
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.55
+name=camera_front_avdd_2p8
+microvolts=2800000
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.56
+name=camera_rear_depth_wide_avdd_2p8
+microvolts=2800000
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.57
+name=camera_rear_wide_dvdd_1p2
+microvolts=1200000
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.58
+name=camera_front_dvdd
+microvolts=1100000
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.59
+name=camera_rear_main_wide_afvdd_2p8
+microvolts=2800000
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.6
+name=pm6150l_s2_level_ao
+microvolts=65
+state=enabled
+num_users=1
+min_microvolts=17
+max_microvolts=385
+type=voltage
+=== /sys/class/regulator/regulator.60
+name=lcdb_ldo
+microvolts=5500000
+state=enabled
+num_users=1
+min_microvolts=4000000
+max_microvolts=6000000
+type=voltage
+=== /sys/class/regulator/regulator.61
+name=lcdb_ncp
+microvolts=5500000
+state=enabled
+num_users=1
+min_microvolts=4000000
+max_microvolts=6000000
+type=voltage
+=== /sys/class/regulator/regulator.62
+name=bps_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.63
+name=ife_0_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.64
+name=ife_1_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.65
+name=ipe_0_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.66
+name=ipe_1_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.67
+name=titan_top_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.68
+name=mdss_core_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.69
+name=gpu_gx_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.7
+name=pm6150l_s7_level
+microvolts=17
+state=disabled
+num_users=0
+min_microvolts=17
+max_microvolts=385
+type=voltage
+=== /sys/class/regulator/regulator.70
+name=mvsc_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.71
+name=mvs0_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.72
+name=mvs1_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.73
+name=npu_core_gdsc
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.74
+name=qusb@88e2000
+state=enabled
+num_users=1
+type=voltage
+=== /sys/class/regulator/regulator.75
+name=smb5-vbus
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.76
+name=smb5-vconn
+state=disabled
+num_users=0
+type=voltage
+=== /sys/class/regulator/regulator.8
+name=pm6150l_s8
+microvolts=1120000
+state=disabled
+num_users=0
+min_microvolts=1120000
+max_microvolts=1408000
+type=voltage
+=== /sys/class/regulator/regulator.9
+name=pm6150_l1
+microvolts=1096000
+state=disabled
+num_users=0
+min_microvolts=1096000
+max_microvolts=1304000
+type=voltage

@@ -1,0 +1,35 @@
+{
+  "file": "work/display-robustness-20261025/lcdb-v1/kernel-hanoip-lcdb-v1.img",
+  "bytes": 25497600,
+  "header_version": 2,
+  "page_size": 4096,
+  "dtb_addr": "0x1f00000",
+  "sha256": "2df58c17ed4d7e3bfbd97a2a83a4d5f3092208d1068e3ee734cc64275636909c",
+  "sections": {
+    "kernel": {
+      "offset": 4096,
+      "size": 12436345,
+      "sha256": "c9a4a52ba522d1f97de349cc78ee22c81367c53ae99f73c0e1544c49861367b6"
+    },
+    "ramdisk": {
+      "offset": 12443648,
+      "size": 12959301,
+      "sha256": "2b9a06b6aaa39e0293debff1e9b2a30a33b235abd092d023119446e6b575adf4"
+    },
+    "second": {
+      "offset": 25403392,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "recovery_dtbo": {
+      "offset": 25403392,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dtb": {
+      "offset": 25403392,
+      "size": 91669,
+      "sha256": "1ffe05c9b7964038c96de8438adb86978956beba23d73df38eab76aa8b86ba49"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "motorola,hanoip";
+
+	fragment@0 {
+		target-path = "/soc@0/geniqup@ac0000/i2c@a94000";
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+};

@@ -1,0 +1,204 @@
+# Digital FPC — investigação somente leitura, 26/10/2026
+
+## Investigação encerrada a pedido do usuário — retomada do protocolo
+
+O usuário pediu parar a investigação da digital e passar às câmeras. Não
+continuar o trabalho FPC sem novo pedido. Nenhum comando de leitor/TEE foi
+executado; o aparelho permaneceu no Android. A análise local mais recente
+está em `work/fingerprint-20261026/hal-protocol/`:
+
+- `.gnu_debugdata` do HAL foi descomprimido em ELF de 44440 bytes, com nomes
+  internos de funções. A libQSEEComAPI ARM64 também tem mini debug info.
+  Mapas de símbolos JSON e disassembly focado foram salvos.
+- `fpc_tac_open` em 0x22a74 resolve `/sys/class/fingerprint` por
+  modalias=fpc1020, abre um atributo e chama QSEECom_start_app para
+  `/vendor/firmware_mnt/image/fpctzapp`, buffer de controle de 128 bytes.
+- `fpc_tac_transfer` em 0x22df0 envia request de 64 bytes e recebe 64 bytes
+  na segunda metade do controle. Usa QSEECom_send_modified_cmd, FD da memória
+  compartilhada e patch de endereço no offset 4. O primeiro word do request
+  contém tamanho da região externa. O retorno é status int32 na resposta.
+- `fpc_tac_alloc_shared` em 0x22c2c arredonda tamanho para páginas de 4096,
+  usa ion_open/ion_alloc_fd com máscara 0x08000000 e mmap compartilhado RW.
+  `fpc_tee_init` em 0x1df5c pede 0x1490 bytes (5264; alocação vira 8192).
+  Portar essa camada exige substituir/adaptar ION e o patch de DMA seguro.
+- `fpc_tee_get_build_info` em 0x1e2e0 monta módulo=12, comando=1 em buffer
+  de 0x418 bytes, com limite 1024 em +0x14. O TA contém módulo 12 e handler
+  correspondente, mas a execução desse comando e os efeitos da inicialização
+  não foram validados. Isso NÃO é um utilitário pronto para rodar no telefone.
+- O HAL também exporta `fpc_tee_get_sensor_info` em 0x1e7f0, módulo=6,
+  comando=2. Porém o roteador do TA analisado tem módulos 10,12,11,9,8,3,4,5
+  e NÃO módulo 6. Pode ser API antiga não usada nesta combinação; não emitir
+  esse comando com base só no nome da função. Campos de retorno não decodificados.
+- O helper HAL `get_sensor_info` em 0x1aff8 usa a consulta OTP do sensor,
+  após colocar o HAL em idle, em vez de usar a rotina módulo 6 acima.
+- A string JSON estática retornada por fpc_get_build_info_json foi extraída
+  do próprio TA (VMA 0x84362). Ela informa build de 24/02/2021, tipo debug,
+  ENGINEERING=true, SENSORTEST=true e NAVIGATION=true. Isso descreve o build,
+  não prova permissão efetiva de captura ou suporte pronto no Linux.
+- Fonte GPL do QSEECOM Android exato foi salvo em hal-protocol/motorola-source/
+  (qseecom.h e qseecom.c). A ABI de FD/offset foi conferida nesse header.
+
+Pendente, se retomar: validar o transporte legado no mainline sem remover
+guardas, entender loader/callbacks e possíveis acessos a armazenamento,
+portar alocação DMA, decodificar consultas de informação suportadas e só
+depois avaliar captura/autenticação/libfprint. Não há build/probe novo, nem
+permissão nova para escrever em partições ou tocar bases biométricas.
+
+## O que ficou confirmado
+
+A pilha FPC está ativa no dump Android deste aparelho, e não apenas declarada
+no DT. `fpc1020_probe: ok` ocorre a 0,58 s; `fpctzapp` é carregado pelo
+QSEECOM a 13,53 s; aparece `uinput-fpc` a 13,82 s. O snapshot de interrupts
+tem 60 interrupções no GPIO90 para `soc:fpc_fpc1020`. Esses fatos confirmam
+driver e app ativos; não são uma validação nova de cadastro/autenticação.
+
+O chip exato ainda não foi identificado. `fpc,fpc1020` é o compatible do
+helper de GPIO e não basta para afirmar que o silício é FPC1020. O app
+seguro contém descritores de muitas famílias, inclusive 1020, 126x, 1511 e
+outras; presença de um nome nesse catálogo não identifica o sensor instalado.
+
+O ADB voltou antes de concluir a investigação. Coleta Android root confirmou
+o driver bound `fpc1020` e os atributos RO em `/sys/class/fingerprint/fpc1020`:
+vendor=fpc, modalias=fpc1020, irq=0, irq_cnt=60. Foram copiados apenas
+programas: serviço FPC (ELF64/AArch64, 176080 bytes) e libQSEEComAPI.so de
+32 e 64 bits. Os imports reais do HAL são QSEECom_start_app, send_cmd,
+send_modified_cmd e shutdown_app, confirmando a ABI legada. Dados em
+`work/fingerprint-20261026/android-live-readonly/`.
+
+O HAL contém a string `fpc1540`, que é uma pista de família, e consulta o
+nome de propriedade `vendor.hw.fingerprint.hwid`. A propriedade estava vazia
+e os logs existentes filtrados por HWID não retornaram linhas. Assim, não
+promover a string fpc1540 a identidade confirmada do chip. Não houve nova
+autenticação ou consulta de comando ao TEE.
+
+## Ligações no DT efetivo Android
+
+| Função | Nó FPC ativo | Observação |
+| --- | --- | --- |
+| IRQ | TLMM GPIO90 | driver solicita borda de subida e wakeup |
+| Reset | TLMM GPIO4 | sequência de reset existe no helper |
+| Enable de alimentação | TLMM GPIO29 | pinctrl `ldo1p8_en_active`, output-high |
+| Alternativa de placa | Chipone, GPIO30 | `ldo3_en_active` do nó alternativo |
+
+Correção do README anterior: GPIO30 não é o enable indicado pelo pinctrl FPC
+ativo; ele pertence à alternativa Chipone. O nome `ldo1p8` descreve a função
+de placa, não uma medição de tensão nesta investigação. Não foi acionado.
+
+Há também definições genéricas antigas `fpc_reset_int` com GPIO91 no DT.
+Elas não são referenciadas pelo pinctrl do nó FPC efetivo, que usa GPIO4.
+Não copiar GPIO91 de uma definição genérica para um teste do hanoip.
+
+## Kernel Android e divisão com o TrustZone
+
+O módulo real `fpc1020_mmi.ko` tem apenas imports de GPIO/IRQ, sysfs, wakeup,
+notifier e criação de dispositivo. Não importa funções SPI, captura de
+imagem ou QSEECOM. O fonte GPL de referência confirma esse desenho:
+
+- `irq` e `irq_cnt` são atributos de leitura (nível e contador).
+- `hw_reset` e `dev_enable` são atributos de escrita e alteram estado.
+- IRQ incrementa contador, notifica sysfs e solicita wakeup por 1 segundo.
+- O nome do dispositivo/class é fpc1020; não há operação de leitura de frame.
+
+O fonte foi obtido da Motorola, branch próxima à usada no aparelho:
+https://github.com/MotorolaMobilityLLC/motorola-kernel-modules/blob/android-12-release-s2ris32.32-20-7-5/drivers/input/misc/fpc_fps_mmi/fpc1020_tee.c
+A branch exata -20-9-9-2-1 não estava publicada nesse repositório. As conclusões
+sobre imports foram verificadas no .ko real do dump, sem depender só do fonte.
+
+O app seguro `fpctzapp` é ELF32/ARM e importa `qsee_spi_open`,
+`qsee_spi_close`, `qsee_spi_write` e `qsee_spi_full_duplex`. O ELF reconstruído
+dos segmentos preserva o layout de programa e os símbolos dinâmicos; não
+foi executado. A função `fpc_spi_init` (VMA 0x37f0, símbolo Thumb 0x37f1)
+coloca 1 em r0 e segue para o veneer de `qsee_spi_open`. O getter de velocidade
+`fpc_pal_spi_get_speed_hz` retorna 4800000 Hz. É um valor do código, sem
+medição da frequência física.
+
+## SPI: candidato forte, ainda sem validação ao vivo
+
+O `devcfg_a.img` salvo do próprio aparelho contém o diretório DAL `/dev/spi`
+com três registros de controlador:
+
+| Registro lógico no config | MMIO derivado | Clock |
+| --- | --- | --- |
+| 0 | 0x00880000 | gcc_qupv3_wrap0_s0_clk |
+| 1 | 0x00884000 | gcc_qupv3_wrap0_s1_clk |
+| 5 | 0x00a80000 | gcc_qupv3_wrap1_s0_clk |
+
+O registro 1, a chamada QSEE com argumento 1 e as permissões diferenciadas
+do engine 1 tornam SPI1/0x884000 o candidato forte para o FPC. No mainline,
+`&spi1` usa a função qup01, GPIO0..3 da TLMM AP. A relação de enumeração entre
+QSEE e o driver seguro ainda precisa ser corroborada no HAL/estado Android;
+não apresentar isso como transação observada nem habilitar SPI AP para testar.
+
+Anchors: DAL header devcfg+0x66d8, struct table +0x6248; `/dev/spi` referencia
+índice de struct 12 em +0x7954 e número de cores 13 em +0x795c. A tabela de
+controllers está em +0x9500, +0x9580 e +0x9600 (stride 0x80). Nos dois conjuntos
+de permissões QUP `/dev/buses/qupac` e `/dev/buses/qupac/15`, o engine 1 tem
+registro bruto [1,1,2,1,0x10100], diferente dos engines AP com campo 3. Isso
+é coerente com TZ VMID 1 e HLOS VMID 3, mas o layout do registro de permissão
+não foi validado contra o fonte exato desse firmware.
+
+O config genérico `fingerprint_qsee_spidev_id=4` NÃO foi usado para esse
+mapeamento: o mesmo conjunto tem `fingerprint_oem_config_enable=0` e o app
+FPC contém a chamada literal 1. Não assumir que o config do app genérico
+`fingerprint` descreva o app FPC `fpctzapp`.
+
+## O que falta no pmOS/mainline
+
+O Android usa QSEECOM legado para carregar e conversar com fpctzapp. O
+`qcomtee` moderno é um transporte de objetos/SMCINVOKE e não equivale à
+interface Android /dev/qseecom por simplesmente carregar um módulo:
+https://docs.kernel.org/next/tee/qtee.html
+
+No checkout Linux 7.3 usado pelo projeto:
+
+- CONFIG_QCOM_QSEECOM=y, CONFIG_QCOM_QSEECOM_UEFISECAPP=y e CONFIG_QCOMTEE=m.
+- `drivers/firmware/qcom/qcom_qseecom.c` só lista qcom.tz.uefisecapp como app
+  cliente e supõe que o app já foi carregado pelo firmware de boot.
+- `qcom_scm_qseecom_init` tem allowlist de máquinas, sem motorola,hanoip;
+  não expõe o caminho FPC do Android. Não remover a allowlist nesta etapa.
+- Existem helpers de lookup/send no SCM, mas não uma pilha pronta de loader,
+  callbacks e HAL FPC para este aparelho. O transporte moderno sozinho não
+  resolve o protocolo legado nem o protocolo específico do app.
+
+Por isso, portar o helper GPIO pode produzir IRQ/reset/wakeup, mas não
+identificação/autenticação de dedo. Suporte completo requer estudar a
+interface HAL↔QSEECOM↔fpctzapp e a integração fprintd/libfprint, ou uma
+implementação equivalente. Não foi encontrado nesta investigação um driver
+libfprint pronto e comprovado para o FPC/TrustZone do G60. Isso é uma lacuna
+identificada, não uma prova de impossibilidade.
+
+## Coleta feita e próximos dados úteis
+
+Os itens de programa e os atributos abaixo já foram coletados após o ADB
+voltar, somente por leitura:
+
+1. `vendor`/`modalias` e `irq_cnt` já expostos pelo helper; driver bound e
+   propriedades de seleção FPC/Chipone. Não escrever hw_reset/dev_enable.
+2. Binário `/vendor/bin/hw/android.hardware.biometrics.fingerprint@2.1-service-fpc`
+   e libQSEEComAPI.so nas duas ABIs; o HAL incorpora a camada FPC e depende
+   de HIDL/Android, libion, libutils, libcutils e outras bibliotecas Android.
+   Metadados ELF em android-live-readonly/hal-elf-metadata.json. Esses
+   programas complementam o tar antigo de configs/módulos.
+3. Logs já existentes que indiquem HWID/modelo e estado do SPI. Sem iniciar
+   sessão de cadastro, apagar dedos ou emitir comandos desconhecidos ao TEE.
+
+Próximo trabalho local: identificar no HAL os comandos de informação e a
+estrutura de mensagens, sem executá-los ainda. As interfaces de debug
+pinctrl/clock/regulator não estavam disponíveis em /sys/kernel/debug no
+Android atual; não se obteve validação ao vivo do candidato SPI1. Nenhum
+mount foi feito para habilitar debugfs.
+
+Não copiar bases de cadastro/biometria em /data ou persist. Esta investigação
+não os acessou. Não houve boot, instalação, alteração de GPIO ou escrita em
+partição. O aparelho continuou no Android com root.
+
+## Artefatos
+
+`work/fingerprint-20261026/` contém DT relevante resolvido por phandle,
+artefatos de programa extraídos dos tarballs, imports ELF do .ko, símbolos
+dinâmicos do TA, disassembly Thumb focado no SPI e referências de fonte.
+`fpc-findings.json` reúne o resultado, evidência e limites; SHA256SUMS cobre
+os arquivos. Capturas originais continuam em `work/android-dump-20261025/`.
+A skill REA já consultada nesta conversa orientou separar observação e
+inferência; não havia REA conectado. Ferramentas usadas: Python para ELF/DAL
+e llvm-objdump local para disassembly, sem execução do código alvo.

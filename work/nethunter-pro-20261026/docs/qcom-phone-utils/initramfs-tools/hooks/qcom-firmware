@@ -1,0 +1,97 @@
+#!/bin/sh
+set -e
+
+PREREQS=""
+case $1 in
+    prereqs) echo "${PREREQS}"; exit 0;;
+esac
+
+. /usr/share/initramfs-tools/hook-functions
+
+# Fetch the device parameters
+for x in $(cat /proc/cmdline); do
+    case $x in
+        mobile.qcomsoc=*) QCOMSOC="${x#mobile.qcomsoc=}" ;;
+        mobile.model=*) MODEL="${x#mobile.model=}" ;;
+        mobile.vendor=*) VENDOR="${x#mobile.vendor=}" ;;
+    esac
+done
+
+if [ "${QCOMSOC}" ] && [ "${MODEL}" ]; then
+    case "${MODEL}" in
+        # "bonito" (Pixel 3a XL) uses the "sargo" (Pixel 3a) firmware folders
+        "bonito") MODEL="sargo" ;;
+        # OnePlus 6 & 6T both use the same firmware folder: sdm845/oneplus6
+        "enchilada"|"fajita") MODEL="oneplus6" ;;
+        # "fpN" (Fairphone N) use the "fairphoneN" firmware folder
+        "fp4") MODEL="fairphone4" ;;
+        "fp5") MODEL="fairphone5" ;;
+        "otter") MODEL="SHIFT/${MODEL}" ;;
+        "spacewar") MODEL="${VENDOR}/${MODEL}" ;;
+    esac
+
+    # The FW folder hierarchy/naming might also be specific to a given SoC
+    case "${QCOMSOC}" in
+        "qcom/sm7150") MODEL="${VENDOR}/${MODEL}" ;;
+    esac
+
+    FW_LIST="${QCOMSOC}/${MODEL}/adsp.mbn \
+             ${QCOMSOC}/${MODEL}/cdsp.mbn \
+             ${QCOMSOC}/${MODEL}/ipa_fws.mbn"
+
+    case "${QCOMSOC}" in
+        "qcom/qcm6490")
+            FW_LIST="${FW_LIST} \
+                     ${QCOMSOC}/${MODEL}/a660_zap.mbn \
+                     qca/msbtfw11.tlv \
+                     qca/msnv11.bin \
+                     " ;;
+        "qcom/sdm670")
+            FW_LIST="${FW_LIST} \
+                     ${QCOMSOC}/${MODEL}/a615_zap.mbn \
+                     ath10k/WCN3990/hw1.0/board-2.bin \
+                     qca/crbtfw21.tlv \
+                     qca/crnv21.bin \
+                     " ;;
+        "qcom/sdm845")
+            FW_LIST="${FW_LIST} \
+                     ${QCOMSOC}/${MODEL}/a630_zap.mbn \
+                     ${QCOMSOC}/${MODEL}/slpi.mbn \
+                     ath10k/WCN3990/hw1.0/board-2.bin \
+                     qca/${MODEL}/crnv21.bin \
+                     qca/crbtfw21.tlv \
+                     qca/crnv21.bin \
+                     " ;;
+        "qcom/sm7150")
+            FW_LIST="${FW_LIST} \
+                     ${QCOMSOC}/${MODEL}/a615_zap.mbn \
+                     " ;;
+        "qcom/sm7225")
+            FW_LIST="${FW_LIST} \
+                     ${QCOMSOC}/${MODEL}/a615_zap.mbn \
+                     ath10k/WCN3990/hw1.0/board-2.bin \
+                     qca/apbtfw11.tlv \
+                     qca/apnv11.bin \
+                     " ;;
+        "qcom/sm7325")
+            FW_LIST="${FW_LIST} \
+                     ${QCOMSOC}/${MODEL}/wpss.mbn \
+                     ${QCOMSOC}/${MODEL}/modem.mbn \
+                     ${QCOMSOC}/${MODEL}/a660_zap.mbn \
+                     ${QCOMSOC}/${MODEL}/vpu20_1v.mbn \
+                     qca/msbtfw11.mbn \
+                     qca/msnv11.bin \
+                     " ;;
+    esac
+
+    for fwfile in ${FW_LIST}; do
+        if [ -f "/lib/firmware/updates/${version?}/${fwfile}" ] ||
+           [ -f "/lib/firmware/updates/${fwfile}" ]             ||
+           [ -f "/lib/firmware/${version}/${fwfile}" ]          ||
+           [ -f "/lib/firmware/${fwfile}" ]; then
+            add_firmware "${fwfile}"
+        else
+            echo "I: Ignoring missing firmware ${fwfile}"
+        fi
+    done
+fi

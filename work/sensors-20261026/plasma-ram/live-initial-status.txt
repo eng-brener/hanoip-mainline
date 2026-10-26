@@ -1,0 +1,49 @@
+({'HasAccelerometer': <true>, 'AccelerometerOrientation': <'undefined'>, 'AccelerometerTilt': <'undefined'>, 'HasAmbientLight': <true>, 'LightLevelUnit': <'lux'>, 'LightLevel': <0.0>, 'HasProximity': <true>, 'ProximityNear': <false>},)
+E: IIO_SENSOR_PROXY_TYPE=ssc-accel ssc-light ssc-proximity
+rootfs / rootfs rw,size=1776740k,nr_inodes=444185 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=10240k,nr_inodes=444185,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+devtmpfs /opt/ssc/dev devtmpfs rw,relatime,size=10240k,nr_inodes=444185,mode=755 0 0
+proc /opt/ssc/proc proc rw,relatime 0 0
+sysfs /opt/ssc/sys sysfs rw,relatime 0 0
+plasma-ram /mnt/plasma tmpfs rw,relatime,size=2560000k,mode=755 0 0
+devpts /dev/pts devpts rw,relatime,mode=620,ptmxmode=666 0 0
+devtmpfs /mnt/plasma/dev devtmpfs rw,nosuid,noexec,relatime,size=10240k,nr_inodes=444185,mode=755 0 0
+proc /mnt/plasma/proc proc rw,relatime 0 0
+sysfs /mnt/plasma/sys sysfs rw,relatime 0 0
+tmpfs /mnt/plasma/run tmpfs rw,relatime,mode=755 0 0
+devpts /mnt/plasma/dev/pts devpts rw,relatime,mode=620,ptmxmode=666 0 0
+securityfs /mnt/plasma/sys/kernel/security securityfs rw,nosuid,nodev,noexec,relatime 0 0
+debugfs /mnt/plasma/sys/kernel/debug debugfs rw,nosuid,nodev,noexec,relatime 0 0
+tracefs /mnt/plasma/sys/kernel/tracing tracefs rw,nosuid,nodev,noexec,relatime 0 0
+configfs /mnt/plasma/sys/kernel/config configfs rw,nosuid,nodev,noexec,relatime 0 0
+none /mnt/plasma/sys/fs/pstore pstore rw,nosuid,nodev,noexec,relatime 0 0
+bpf /mnt/plasma/sys/fs/bpf bpf rw,nosuid,nodev,noexec,relatime 0 0
+mqueue /mnt/plasma/dev/mqueue mqueue rw,nosuid,nodev,noexec,relatime 0 0
+shm /mnt/plasma/dev/shm tmpfs rw,nosuid,nodev,noexec,relatime 0 0
+tmpfs /mnt/plasma/tmp tmpfs rw,nosuid,nodev,relatime 0 0
+cgroup2 /mnt/plasma/sys/fs/cgroup cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate 0 0
+tmpfs /mnt/plasma/run/user/10000 tmpfs rw,nosuid,nodev,relatime,size=363572k,nr_inodes=90893,mode=700,uid=10000,gid=10000 0 0
+0
+goa-daemon-Message: 19:59:40.472: goa-daemon version 3.58.1 starting
+dbus-daemon[1431]: [session uid=10000 pid=1431 pidfd=5] Successfully activated service 'org.gnome.evolution.dataserver.AddressBook10'
+dbus-daemon[1431]: [session uid=10000 pid=1431 pidfd=5] Activating service name='org.gnome.Identity' requested by ':1.39' (uid=10000 pid=1804 comm="/usr/libexec/goa-daemon")
+dbus-daemon[1431]: [session uid=10000 pid=1431 pidfd=5] Successfully activated service 'org.gnome.OnlineAccounts'
+dbus-daemon[1431]: [session uid=10000 pid=1431 pidfd=5] Successfully activated service 'org.gnome.Identity'
+qt.qml.context: file:///usr/share/plasma/shells/org.kde.plasma.mobileshell/contents/lockscreen/FlickContainer.qml:91:5 Parameter "totalDeltaX" is not declared. Injection of parameters into signal handlers is deprecated. Use JavaScript functions with formal parameters instead.
+dbus-daemon[1431]: [session uid=10000 pid=1431 pidfd=5] Activating service name='org.sigxcpu.Feedback' requested by ':1.13' (uid=10000 pid=1497 comm="/usr/lib/libexec/kscreenlocker_greet --immediateLo")
+dbus-daemon[1431]: [session uid=10000 pid=1431 pidfd=5] Successfully activated service 'org.sigxcpu.Feedback'
+feedbackd vibration failed
+feedbackd vibration failed
+feedbackd vibration failed
+feedbackd vibration failed
+feedbackd vibration failed
+feedbackd vibration failed
+feedbackd vibration failed
+qml: attempt password
+feedbackd vibration failed
+feedbackd vibration failed

@@ -1,0 +1,20 @@
+# Câmeras — levantamento interrompido a pedido do usuário, 26/10/2026
+
+O usuário deixou câmeras de lado para testar sensores. Não houve captura,
+teste de hardware ou boot de variante de câmera. FPC também segue parada.
+
+Salvo em work/cameras-20261026/: DT de câmera resolvido, inventário do tar
+Android e listagens somente leitura feitas com ADB. Há módulos de sensor
+e bundles CHI no Android para S5KHM2 (e variantes), S5K4H7, OV02B1B e OV32B,
+além de alternativas OV64B/OV16A1Q. A presença de arquivos alternativos não
+confirma que tais sensores estejam instalados. Nenhum bundle foi decodificado.
+
+DT: sensor0 CCI0/master0/CSIPHY0/resetGPIO23/MCLK0; sensor1 (frontal)
+CCI1/master0/CSIPHY2/resetGPIO25/MCLK2; sensor2 CCI0/master1/CSIPHY3/
+resetGPIO26/MCLK3; sensor3 CCI0/master1/CSIPHY1/resetGPIO24/MCLK1. Todos
+pedem MCLK 24MHz. Reguladores e phandles estão no JSON salvo.
+
+O checkout atual tem suporte qcom,sm7150-camss e qcom,sm7150-cci, com
+CONFIG_VIDEO_QCOM_CAMSS=m e CONFIG_I2C_QCOM_CCI=m. Não foram encontrados
+drivers exatos S5KHM2/S5K4H7/OV02B1B/OV32B em drivers/media/i2c desse checkout.
+Não se concluiu pesquisa de patches externos nem viabilidade de pipeline.

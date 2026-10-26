@@ -1,0 +1,14 @@
+
+~ # echo F2; BB=/bin/busybox; $BB cat /sys/devices/system/cpu/cpu0/cpufreq/scali
+ng_cur_freq; $BB cat /sys/class/thermal/thermal_zone*/temp | $BB sort -n | $BB s
+ed -n '1p;$p'; $BB dmesg | $BB grep -ciE "smmu.*fault|context fault|I/O error|uf
+shcd.*(err|fail|timeout|abort)|Internal error|Call trace"; printf '\n%s\n' HANOI
+P_END_0998338b750a
+F2
+1248000
+35400
+38500
+0
+
+HANOIP_END_0998338b750a
+~ # 

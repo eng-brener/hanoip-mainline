@@ -1,0 +1,11 @@
+
+~ # echo E_BEGIN; BB=/bin/busybox; printf "\033[2J\033[HHANOIP - TUDO LIGADO\nTo
+que na tela agora (15s)\nUFS RO + Touch + Idle\n" > /dev/tty1; $BB timeout -t 15
+ $BB cat /dev/input/event3 > /tmp/ev3.bin; echo BYTES=$($BB wc -c < /tmp/ev3.bin
+); printf '\n%s\n' HANOIP_END_a8db54fb5bc6
+E_BEGIN
+Terminated
+BYTES=170136
+
+HANOIP_END_a8db54fb5bc6
+~ # 

@@ -1,0 +1,10 @@
+
+~ # echo T_BEGIN; BB=/bin/busybox; ok=1; for d in /dev/sd*; do [ "$($BB blockdev
+ --getro $d)" = 1 ] || ok=0; done; $BB awk '$3!~/^(rootfs|proc|sysfs|devtmpfs|tm
+pfs|configfs)$/{print "BADMNT",$0}' /proc/mounts | $BB grep -q BADMNT && ok=0; e
+cho SAFE=$ok; printf '\n%s\n' HANOIP_END_36d7b0793e89
+T_BEGIN
+SAFE=1
+
+HANOIP_END_36d7b0793e89
+~ # 

@@ -1,0 +1,27 @@
+{
+  "phone_capture": {
+    "directory": "work/android-dump-20261025/",
+    "members": [
+      "vendor/lib/modules/fpc1020_mmi.ko",
+      "vendor/lib/modules/fpsensor_spi_tee.ko",
+      "vendor/firmware_mnt/image/fpctzapp.*"
+    ],
+    "partition_images_read_locally": [
+      "devcfg_a.img",
+      "tz_a.img"
+    ]
+  },
+  "motorola_helper_source": "https://github.com/MotorolaMobilityLLC/motorola-kernel-modules/blob/android-12-release-s2ris32.32-20-7-5/drivers/input/misc/fpc_fps_mmi/fpc1020_tee.c",
+  "qcomtee_transport_docs": "https://docs.kernel.org/next/tee/qtee.html",
+  "libfprint_supported_devices_checked": "https://fprint.freedesktop.org/supported-devices.html",
+  "reference_spi_sources": {
+    "repository": "https://github.com/Rivko/android-firmware-qti-sdm670",
+    "path": "boot_images/QcomPkg/Library/SPILib/",
+    "use": "reference only, not evidence of G60 wiring"
+  },
+  "local_kernel_sources": [
+    "kernel-mainline/drivers/firmware/qcom/qcom_qseecom.c",
+    "kernel-mainline/drivers/firmware/qcom/qcom_scm.c",
+    "kernel-mainline/include/dt-bindings/firmware/qcom,scm.h"
+  ]
+}

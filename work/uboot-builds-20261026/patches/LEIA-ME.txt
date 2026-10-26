@@ -1,0 +1,31 @@
+U-Boot do hanoip: origem e atualização (levantado em 26/10/2026)
+
+ORIGEM: uboot-sm7150/ = fork sm7150-mainline/u-boot, branch `tauchgang`
+(commit em BASE.txt; VERSION 2026.01; último push do fork 2025-12-02), mais
+`hanoip-vs-sm7150-mainline-tauchgang.diff` (42 arquivos, +2221/-81; aplica
+limpo no tauchgang). Conteúdo do diff:
+  - mach-snapdragon: abl_identity.c (identidade do aparelho vinda do ABL),
+    board.c, of_fixup.c, Makefile
+  - board/qualcomm: qcom-phone.env, hanoip-diagnostic.env
+  - boot/bootflow.c, boot/image-fdt.c
+  - drivers/fastboot (fb_common.c, fb_mmc.c), drivers/misc/qcom_geni.c,
+    drivers/soc/qcom/rpmh-rsc.c, drivers/ufs/ufs-uclass.c
+  - drivers/usb/dwc3 (core.c/h, dwc3-generic.c, gadget.c/h): fastboot USB
+  - dts/upstream/src/arm64/qcom: sm7150.dtsi, pm6150l.dtsi e os 22 DTs do
+    hanoip (pmos, perif, venus, camid, sensors, audio*, diagnósticos)
+(A cópia em uboot-sm7150/ não tem alguns arquivos de teste/CI do fork —
+mbedtls tests, efi_selftest, patman/binman tests, .pem/.svg — que não
+afetam o build.)
+
+ATUALIZAÇÃO DISPONÍVEL: U-Boot oficial v2026.10 (4130 commits desde
+v2026.01). Commits nas áreas que usamos: ufs 34, usb/dwc3 19, clk/qcom 17,
+board/qualcomm 9, mach-snapdragon 8, phy/qcom 8, pinctrl/qcom 6, soc/qcom 5,
+fastboot 4. O oficial já tem clock-sm7150.c e pinctrl-sm7150.c, mas NÃO tem
+o sm7150.dtsi em dts/upstream (vem do commit "TMP" do fork).
+Teste a seco do diff sobre v2026.10: tudo aplica, exceto dwc3 (core.c 2/3,
+core.h 4/6, gadget.c 8/9 trechos falham) e o sm7150.dtsi (arquivo ausente).
+Trabalho para atualizar: trazer sm7150.dtsi + headers dt-bindings do fork,
+reescrever as correções do dwc3 sobre o código novo, rodar
+`work/uboot-builds-20261026/build.sh` contra a árvore nova e testar o par
+volátil (fastboot do U-Boot, boot do kernel, display, USB) antes de trocar a
+GOLD. O U-Boot atual funciona; a atualização é opcional.

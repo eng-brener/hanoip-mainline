@@ -1,0 +1,660 @@
+[
+  {
+    "name": "$x.0",
+    "value": "0x5000",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x500c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x5010",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "__on_dlclose",
+    "value": "0x5000",
+    "size": 12,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "__on_dlclose_late",
+    "value": "0x5010",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "__emutls_unregister_key",
+    "value": "0x500c",
+    "size": 4,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x5014",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x54b8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x6414",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x650c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x67b0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x68a4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x6938",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.15",
+    "value": "0x6b98",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.16",
+    "value": "0x6e64",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.17",
+    "value": "0x6e6c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.18",
+    "value": "0x6e74",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.19",
+    "value": "0x6fcc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x5624",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.20",
+    "value": "0x70d4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.21",
+    "value": "0x7160",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.22",
+    "value": "0x7340",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.23",
+    "value": "0x760c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.24",
+    "value": "0x7784",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.25",
+    "value": "0x786c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.26",
+    "value": "0x7998",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.27",
+    "value": "0x7ac0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.28",
+    "value": "0x7c64",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.29",
+    "value": "0x7df0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x5d2c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.30",
+    "value": "0x7df8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.31",
+    "value": "0x7e00",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.32",
+    "value": "0x7ebc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.33",
+    "value": "0x7f5c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x5fb0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x609c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x60bc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x60dc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x6230",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x6238",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL8snprintfPcU17pass_object_size1mPKcz",
+    "value": "0x7f5c",
+    "size": 156,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "__QSEECom_ION_memalloc",
+    "value": "0x5d2c",
+    "size": 644,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "__QSEECom_ION_memfree",
+    "value": "0x5fb0",
+    "size": 236,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "__QSEECom_load_image",
+    "value": "0x5624",
+    "size": 1800,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "$x.0",
+    "value": "0x7ff8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.1",
+    "value": "0x8034",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.10",
+    "value": "0x8270",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.11",
+    "value": "0x828c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.12",
+    "value": "0x82c8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.13",
+    "value": "0x82e4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.14",
+    "value": "0x8320",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.15",
+    "value": "0x833c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.16",
+    "value": "0x8378",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.17",
+    "value": "0x8394",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.18",
+    "value": "0x83d0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.19",
+    "value": "0x83ec",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.2",
+    "value": "0x8130",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.20",
+    "value": "0x8428",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.21",
+    "value": "0x8444",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.22",
+    "value": "0x8480",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.23",
+    "value": "0x84bc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.24",
+    "value": "0x84f8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.25",
+    "value": "0x8514",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.26",
+    "value": "0x8550",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.27",
+    "value": "0x856c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.28",
+    "value": "0x85a8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.29",
+    "value": "0x85c4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.3",
+    "value": "0x8150",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.30",
+    "value": "0x8600",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.31",
+    "value": "0x861c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.32",
+    "value": "0x8658",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.33",
+    "value": "0x8674",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.34",
+    "value": "0x86b0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.35",
+    "value": "0x86cc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.36",
+    "value": "0x8708",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.37",
+    "value": "0x8724",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.38",
+    "value": "0x8760",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.39",
+    "value": "0x877c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.4",
+    "value": "0x816c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.40",
+    "value": "0x87b8",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.41",
+    "value": "0x87d4",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.42",
+    "value": "0x8810",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.43",
+    "value": "0x882c",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.44",
+    "value": "0x8868",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.45",
+    "value": "0x8884",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.46",
+    "value": "0x88c0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.5",
+    "value": "0x8184",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.6",
+    "value": "0x81c0",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.7",
+    "value": "0x81dc",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.8",
+    "value": "0x8218",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "$x.9",
+    "value": "0x8234",
+    "size": 0,
+    "info": 0,
+    "section": 14
+  },
+  {
+    "name": "_ZL17report_this_errorPv",
+    "value": "0x8034",
+    "size": 252,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZL18abort_with_messagePKc",
+    "value": "0x816c",
+    "size": 24,
+    "info": 2,
+    "section": 14
+  },
+  {
+    "name": "_ZL7messagePKc",
+    "value": "0x8130",
+    "size": 32,
+    "info": 2,
+    "section": 14
+  }
+]

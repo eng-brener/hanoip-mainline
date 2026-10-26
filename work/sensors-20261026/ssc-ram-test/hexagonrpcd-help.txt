@@ -1,0 +1,12 @@
+/usr/bin/hexagonrpcd: unrecognized option: -
+Usage: /usr/bin/hexagonrpcd [options] -f DEVICE
+
+Server for FastRPC remote procedure calls from Qualcomm DSPs
+
+Options:
+	-c SHELL		Create a new pd running the specified ELF
+	-d DSP		DSP name (default: )
+	-f DEVICE	FastRPC device node to attach to
+	-p PROGRAM	Run client program with shared file descriptor
+	-R DIR		Root directory of served files (default: /usr/share/qcom/)
+	-s		Attach to sensorspd

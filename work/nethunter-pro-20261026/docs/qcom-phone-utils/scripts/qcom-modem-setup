@@ -1,0 +1,94 @@
+#!/bin/sh
+
+## Copyright 2021 Nikita Travkin
+## Copyright 2021 Caleb Connolly
+## Copyright 2021 Minecrell
+## Copyright 2022 Arnaud Ferraris <aferraris@debian.org>
+##
+## SPDX-License-Identifier: GPL-3.0-or-later
+
+# Maximum time to wait for SIM card to appear after starting the modem.
+# Some SIM cards or modem firmwares might take longer to initialize. :(
+# To avoid blocking boot without a SIM card for too long this is fairly short
+# by default (1 second), but you can increase it to e.g. 30 seconds if necessary.
+# Set to 0 to disable waiting entirely.
+sim_wait_time=1
+
+case "$(cat /sys/devices/soc0/machine)" in
+    APQ*)
+        echo "I: Skipping SIM configuration on APQ SoC."
+        exit 0
+esac
+
+# libqmi must be present to use this script.
+if ! command -v qmicli > /dev/null 2>&1; then
+    echo "E: qmicli is not installed."
+    exit 1
+fi
+
+# Prepare a qmicli command with desired modem path.
+# The modem may appear after some delay, wait for it.
+count=0
+while [ -z "$QMICLI_MODEM" ] && [ $count -lt 45 ]
+do
+    # Check if the qmi device from wwan driver exists.
+    if [ -e "/dev/wwan0qmi0" ]; then
+        # Using --device-open-qmi flag as we may have libqmi
+        # version that can't automatically detect the type yet.
+        QMICLI_MODEM="qmicli --silent -d /dev/wwan0qmi0 --device-open-qmi"
+        QMICLI_MODEM_GNSS=${QMICLI_MODEM}
+        echo "I: Using /dev/wwan0qmi0"
+    # Check if QRTR is available for new devices.
+    elif qmicli --silent -pd qrtr://0 --uim-noop > /dev/null 2>&1; then
+        QMICLI_MODEM="qmicli --silent -pd qrtr://0"
+        QMICLI_MODEM_GNSS="qmicli --silent -d qrtr://0"
+        echo "I: Using qrtr://0"
+    fi
+    sleep 1
+    count=$((count+1))
+done
+echo "I: Waited $count seconds for modem device to appear"
+
+if [ -z "$QMICLI_MODEM" ]; then
+    echo "E: No modem available."
+    exit 2
+fi
+
+# Enable GNSS:
+# Set the location engine lock to mt
+$QMICLI_MODEM_GNSS --loc-set-engine-lock=mt
+# Enable all NMEA traces
+$QMICLI_MODEM_GNSS --loc-set-nmea-types=all
+
+QMI_CARDS=$($QMICLI_MODEM --uim-get-card-status)
+
+# Fail if all slots are empty but wait a bit for the sim to appear.
+count=0
+while ! echo "$QMI_CARDS" | grep -Fq "Card state: 'present'"; do
+    if [ $count -ge $sim_wait_time ]; then
+        echo "E: No sim detected after $sim_wait_time seconds."
+        exit 4
+    fi
+
+    sleep 1
+    count=$((count+1))
+    QMI_CARDS=$($QMICLI_MODEM --uim-get-card-status)
+done
+echo "I: Waited $count seconds for modem to come up"
+
+# Clear the selected application in case the modem is in a bugged state
+if ! echo "$QMI_CARDS" | grep -Fq "Primary GW:   session doesn't exist"; then
+    echo "W: Application was already selected."
+    $QMICLI_MODEM --uim-change-provisioning-session='activate=no,session-type=primary-gw-provisioning' > /dev/null
+fi
+
+# Extract first available slot number and AID for usim application
+# on it. This should select proper slot out of two if only one UIM is
+# present or select the first one if both slots have UIM's in them.
+FIRST_PRESENT_SLOT=$(echo "$QMI_CARDS" | grep "Card state: 'present'" -m1 -B1 | head -n1 | cut -c7-7)
+FIRST_PRESENT_AID=$(echo "$QMI_CARDS" | grep "usim (2)" -m1 -A3 | tail -n1 | awk '{print $1}')
+
+echo "I: Selecting $FIRST_PRESENT_AID on slot $FIRST_PRESENT_SLOT"
+
+# Finally send the new configuration to the modem.
+$QMICLI_MODEM --uim-change-provisioning-session="slot=$FIRST_PRESENT_SLOT,activate=yes,session-type=primary-gw-provisioning,aid=$FIRST_PRESENT_AID" > /dev/null

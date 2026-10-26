@@ -1,0 +1,203 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include <dt-bindings/clock/qcom,sm7150-camcc.h>
+#include "sm7150-motorola-hanoip-pmos-perif.dts"
+
+/*
+ * Camera bring-up, step 1: chip-ID probe only. Rails, MCLK and reset per
+ * slot as in the vendor tree; the hanoip,camid nodes are only bound by
+ * the hand-loaded hanoip-camid module, which powers one sensor up, reads
+ * its ID and powers it down. CCI runs at 400 kHz for this test.
+ *
+ *   slot 0 rear main  S5KHM2  CCI0 m0 0x56  MCLK0 GPIO13  reset GPIO23
+ *   slot 1 front      OV32B   CCI1 m0 0x10  MCLK2 GPIO15  reset GPIO25
+ *   slot 2 rear depth OV02B1B CCI0 m1 0x3d  MCLK3 GPIO16  reset GPIO26
+ *   slot 3 rear wide  S5K4H7  CCI0 m1 0x2d  MCLK1 GPIO14  reset GPIO24
+ */
+/ {
+	cam_rear_main_avdd: regulator-cam-rear-main-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_rear_main_avdd_2p8";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		gpio = <&tlmm 72 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_bob>;
+	};
+
+	cam_front_avdd: regulator-cam-front-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_front_avdd_2p8";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		gpio = <&tlmm 65 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_bob>;
+	};
+
+	cam_rear_aux_avdd: regulator-cam-rear-aux-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_rear_depth_wide_avdd_2p8";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		gpio = <&tlmm 46 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_bob>;
+	};
+
+	cam_rear_wide_dvdd: regulator-cam-rear-wide-dvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_rear_wide_dvdd_1p2";
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		gpio = <&tlmm 33 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_s8c_1p2>;
+	};
+
+	cam_front_dvdd: regulator-cam-front-dvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_front_dvdd_1p1";
+		regulator-min-microvolt = <1100000>;
+		regulator-max-microvolt = <1100000>;
+		gpio = <&tlmm 93 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_s8c_1p2>;
+	};
+
+	/* Focus motors (VCM); not used by the ID probe. */
+	cam_rear_afvdd: regulator-cam-rear-afvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_rear_main_wide_afvdd_2p8";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		gpio = <&tlmm 64 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_bob>;
+	};
+};
+
+&cci0 {
+	status = "okay";
+};
+
+&cci1 {
+	status = "okay";
+};
+
+&cci0_i2c0 {
+	clock-frequency = <400000>;
+
+	camid@56 {
+		compatible = "hanoip,camid";
+		reg = <0x56>;
+		label = "S5KHM2 (rear main)";
+		hanoip,id-reg = <0x0000>;
+		hanoip,id-value = <0x1ad2>;
+
+		vio-supply = <&vreg_l13a_1p8>;
+		vana-supply = <&cam_rear_main_avdd>;
+		vdig-supply = <&vreg_l6a_1p2>;
+		hanoip,vdig-microvolt = <1104000>;
+		clocks = <&camcc CAMCC_MCLK0_CLK>;
+		reset-gpios = <&tlmm 23 GPIO_ACTIVE_LOW>;
+
+		pinctrl-0 = <&cam_mclk0_default>;
+		pinctrl-names = "default";
+	};
+};
+
+&cci0_i2c1 {
+	clock-frequency = <400000>;
+
+	camid@3d {
+		compatible = "hanoip,camid";
+		reg = <0x3d>;
+		label = "OV02B1B (rear depth)";
+		hanoip,id-reg = <0x03>;
+		hanoip,id-reg-bytes = <1>;
+		hanoip,id-bytes = <1>;
+		hanoip,id-value = <0x2b>;
+
+		vio-supply = <&vreg_l13a_1p8>;
+		vana-supply = <&cam_rear_aux_avdd>;
+		clocks = <&camcc CAMCC_MCLK3_CLK>;
+		reset-gpios = <&tlmm 26 GPIO_ACTIVE_LOW>;
+
+		pinctrl-0 = <&cam_mclk3_default>;
+		pinctrl-names = "default";
+	};
+
+	camid@2d {
+		compatible = "hanoip,camid";
+		reg = <0x2d>;
+		label = "S5K4H7 (rear wide)";
+		hanoip,id-reg = <0x0000>;
+		hanoip,id-value = <0x487b>;
+
+		vio-supply = <&vreg_l13a_1p8>;
+		vana-supply = <&cam_rear_aux_avdd>;
+		vdig-supply = <&cam_rear_wide_dvdd>;
+		clocks = <&camcc CAMCC_MCLK1_CLK>;
+		reset-gpios = <&tlmm 24 GPIO_ACTIVE_LOW>;
+
+		pinctrl-0 = <&cam_mclk1_default>;
+		pinctrl-names = "default";
+	};
+};
+
+&cci1_i2c0 {
+	clock-frequency = <400000>;
+
+	camid@10 {
+		compatible = "hanoip,camid";
+		reg = <0x10>;
+		label = "OV32B (front)";
+		hanoip,id-reg = <0x300b>;
+		hanoip,id-value = <0x3242>;
+
+		vio-supply = <&vreg_l13a_1p8>;
+		vana-supply = <&cam_front_avdd>;
+		vdig-supply = <&cam_front_dvdd>;
+		clocks = <&camcc CAMCC_MCLK2_CLK>;
+		reset-gpios = <&tlmm 25 GPIO_ACTIVE_LOW>;
+
+		pinctrl-0 = <&cam_mclk2_default>;
+		pinctrl-names = "default";
+	};
+};
+
+&tlmm {
+	cam_mclk0_default: cam-mclk0-default-state {
+		pins = "gpio13";
+		function = "cam_mclk";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	cam_mclk1_default: cam-mclk1-default-state {
+		pins = "gpio14";
+		function = "cam_mclk";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	cam_mclk2_default: cam-mclk2-default-state {
+		pins = "gpio15";
+		function = "cam_mclk";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	cam_mclk3_default: cam-mclk3-default-state {
+		pins = "gpio16";
+		function = "cam_mclk";
+		drive-strength = <2>;
+		bias-disable;
+	};
+};

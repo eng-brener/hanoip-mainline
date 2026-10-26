@@ -1,0 +1,7 @@
+Attempt 1: DRM/MSM built in; panel and WLED modules not loaded.
+Both fastboot boot commands returned success.
+No CDC ACM device appeared in the 35-second boot observation or follow-up.
+User observed rapidly scrolling text, then an unlit display.
+No serial log was available, so the cause is not established.
+The phone later reappeared in Motorola fastboot (<serial>).
+Do not classify this candidate as working or as a confirmed memory failure.

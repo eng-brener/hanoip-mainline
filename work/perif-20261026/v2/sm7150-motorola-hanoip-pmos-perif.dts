@@ -1,0 +1,58 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include <dt-bindings/interrupt-controller/irq.h>
+#include "sm7150-motorola-hanoip-pmos-audio3.dts"
+
+/*
+ * Peripherals on top of the audio DT: vibrator, both flash LED channels
+ * and the NFC controller, as described by the vendor tree.
+ */
+
+/* LDO vibrator; the vendor runs it at 3.0 V without overdrive. */
+&pm6150_vib {
+	qcom,vib-max-microvolt = <3000000>;
+	status = "okay";
+};
+
+/*
+ * The vendor tree drives channels 0 and 1 together (switch mask 0x3):
+ * flash up to 1150 and 600 mA, torch 500 mA each. Keep well below that.
+ */
+&pm6150l_flash {
+	led-1 {
+		led-sources = <1>, <2>;
+		led-max-microamp = <300000>;
+	};
+};
+
+/* NXP PN54x (vendor qcom,nq-nci): IRQ GPIO37, VEN GPIO12, firmware GPIO36. */
+&i2c2 {
+	nfc@28 {
+		compatible = "nxp,nxp-nci-i2c";
+		reg = <0x28>;
+
+		interrupt-parent = <&tlmm>;
+		interrupts = <37 IRQ_TYPE_EDGE_RISING>;
+
+		enable-gpios = <&tlmm 12 GPIO_ACTIVE_HIGH>;
+		firmware-gpios = <&tlmm 36 GPIO_ACTIVE_HIGH>;
+
+		pinctrl-0 = <&nfc_int_active>, <&nfc_enable_active>;
+		pinctrl-names = "default";
+	};
+};
+
+&tlmm {
+	nfc_int_active: nfc-int-active-state {
+		pins = "gpio37";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-pull-down;
+	};
+
+	nfc_enable_active: nfc-enable-active-state {
+		pins = "gpio12", "gpio36";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+};

@@ -1,0 +1,17 @@
+[
+  {
+    "file": "kernel-ufs-diag-usb-v5.img",
+    "bytes": 13303808,
+    "sha256": "f3a76b8e7d36a0f02e39283a2f0908e68d1e3ff0de4963837845369a019ffd7e"
+  },
+  {
+    "file": "u-boot-hanoip-boot.img",
+    "bytes": 561152,
+    "sha256": "6849c10be2ea5a9508bf15cd2905e4d474627cf243b49a41a259d04a0a09e1b2"
+  },
+  {
+    "file": "ramdisk-hanoip-usbserial.cpio.gz",
+    "bytes": 891671,
+    "sha256": "e69c97c51048d576eb699d86a78515bf79de3530f967ab2a9554de61af61611c"
+  }
+]

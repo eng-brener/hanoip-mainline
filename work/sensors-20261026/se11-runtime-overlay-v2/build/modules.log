@@ -1,0 +1,9 @@
+make: Entering directory '/tmp/linux-7.3'
+make[1]: Entering directory '/tmp/hanoip-se11-overlay'
+  CC [M]  hanoip-se11-overlay.o
+  MODPOST Module.symvers
+  CC [M]  hanoip-se11-overlay.mod.o
+  CC [M]  .module-common.o
+  LD [M]  hanoip-se11-overlay.ko
+make[1]: Leaving directory '/tmp/hanoip-se11-overlay'
+make: Leaving directory '/tmp/linux-7.3'

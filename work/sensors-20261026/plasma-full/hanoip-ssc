@@ -1,0 +1,31 @@
+#!/sbin/openrc-run
+# Sensor firmware/registry and executable chroot are RAM-only.
+description="Hanoip ADSP sensors via FastRPC"
+depend() {
+ need udev
+ before iio-sensor-proxy tinydm
+}
+start() {
+ ebegin "Starting ADSP sensors"
+ [ -d /opt/ssc/usr/share/qcom ] || return 1
+ [ -e /sys/module/fastrpc ] || insmod /lib/hanoip-sensors/fastrpc.ko || return 1
+ for d in dev proc sys; do
+  mkdir -p /opt/ssc/$d
+  mountpoint -q /opt/ssc/$d || mount --bind /$d /opt/ssc/$d || return 1
+ done
+ for p in /sys/class/remoteproc/remoteproc*; do
+  case "$(readlink -f "$p")" in *62400000.remoteproc*)
+   echo disabled > "$p/recovery"
+   [ "$(cat "$p/state")" != offline ] || echo start > "$p/state" || return 1
+  ;; esac
+ done
+ i=0
+ while [ ! -e /dev/fastrpc-adsp ] && [ "$i" -lt 30 ]; do sleep 1; i=$((i+1)); done
+ [ -e /dev/fastrpc-adsp ] || return 1
+ chroot /opt/ssc /usr/bin/hexagonrpcd -d adsp -f /dev/fastrpc-adsp -R /usr/share/qcom -s > /run/hanoip-hexagonrpcd.log 2>&1 &
+ echo $! > /run/hanoip-hexagonrpcd.pid
+ sleep 5
+ kill -0 "$(cat /run/hanoip-hexagonrpcd.pid)" || return 1
+ udevadm trigger --action=change --subsystem-match=misc
+ eend 0
+}

@@ -1,0 +1,6 @@
+CHIP ID = 7807
+FW version = 16.0.10.0
+FW MP version = 16.0.1.0
+Core version = 1.4.6.8
+Protocol version = 5.6.0
+Driver version = 3.0.4.0.200731

@@ -1,0 +1,66 @@
+
+~ # echo uptime=$(cat /proc/uptime); echo drm=$(ls /sys/class/drm 2>/dev/null | 
+tr "\n" " "); echo fb=$(cat /sys/class/graphics/fb0/name 2>/dev/null); echo rend
+er=$(ls /dev/dri 2>/dev/null | tr "\n" " "); echo mounts; cat /proc/mounts | gre
+p " /mnt/ro/"; echo zaplog; cat /run/hanoip-gpu-firmware.log 2>/dev/null; echo g
+pudmesg; dmesg | grep -iE "zap|adreno|gmu|a630|gpu hw|render" | tail -80; echo t
+hermal; for z in /sys/class/thermal/thermal_zone*; do echo $(basename $z) $(cat 
+$z/type); done; cat /sys/class/thermal/cooling_device*/type 2>/dev/null; printf 
+'\n%s\n' HANOIP_END_fc4745eee259
+uptime=136.01 938.19
+drm=card0 card0-DSI-1 card0-Writeback-1 renderD128 version
+fb=msmdrmfb
+render=card0 renderD128
+mounts
+/dev/sdd18 /mnt/ro/modem_a ext4 ro,nosuid,nodev,noexec,relatime,norecovery 0 0
+/dev/sdd20 /mnt/ro/bluetooth_a ext4 ro,nosuid,nodev,noexec,relatime,norecovery 0 0
+zaplog
+start uptime=9.75
+HANOIP: UFS probe started in background (PID 167); see dmesg
+UFS module loader returned: 0
+HANOIP: UFS ready, 84 block devices, all read-only
+modem_a=/dev/sdd18 ro=1 pre=6a1fc4b5c25704d476a57e1c0a59983b75c9af27ca8a75412037614c6c6f45dc
+Zap firmware links ready: /lib/firmware/qcom/sm7150/motorola/hanoip/a615_zap.mdt and segments
+modem_a unchanged post=6a1fc4b5c25704d476a57e1c0a59983b75c9af27ca8a75412037614c6c6f45dc
+gpudmesg
+[    1.002522] platform 506a000.gmu: Adding to iommu group 1
+[   40.453005] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   40.992392] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   54.681669] HANOIP DRM: register Adreno
+[   62.545084] adreno 5000000.gpu: supply vdd not found, using dummy regulator
+[   62.922387] adreno 5000000.gpu: supply vddcx not found, using dummy regulator
+[   63.728518] msm_dpu ae01000.display-controller: [drm:adreno_request_fw [msm]] loaded qcom/a630_sqe.fw from new location
+[   63.739740] msm_dpu ae01000.display-controller: [drm:adreno_request_fw [msm]] loaded qcom/a630_gmu.bin from new location
+thermal
+thermal_zone0 aoss0-thermal
+thermal_zone1 cpu0-thermal
+thermal_zone10 cpu7-thermal
+thermal_zone11 cpu8-thermal
+thermal_zone12 cpu9-thermal
+thermal_zone13 gpuss0-thermal
+thermal_zone14 gpuss1-thermal
+thermal_zone15 aoss1-thermal
+thermal_zone16 cwlan-thermal
+thermal_zone17 audio-thermal
+thermal_zone18 ddr-thermal
+thermal_zone19 q6-hvx-thermal
+thermal_zone2 cpu1-thermal
+thermal_zone20 camera-thermal
+thermal_zone21 mdm-core-thermal
+thermal_zone22 mdm-dsp-thermal
+thermal_zone23 npu-thermal
+thermal_zone24 video-thermal
+thermal_zone3 cpu2-thermal
+thermal_zone4 cpu3-thermal
+thermal_zone5 cpu4-thermal
+thermal_zone6 cpu5-thermal
+thermal_zone7 cpuss0-thermal
+thermal_zone8 cpuss1-thermal
+thermal_zone9 cpu6-thermal
+cpufreq-cpu0
+cpufreq-cpu6
+devfreq-5000000.gpu
+ath10k_thermal
+
+HANOIP_END_fc4745eee259
+~ # 

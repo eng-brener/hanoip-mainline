@@ -1,0 +1,20 @@
+{
+  "samples": 665,
+  "ranges": {
+    "X": [
+      -2.670616,
+      2.38406
+    ],
+    "Y": [
+      -1.890843,
+      2.684464
+    ],
+    "Z": [
+      -4.603004,
+      1.587243
+    ]
+  },
+  "kernel_tainted": 0,
+  "units_note": "ssccli prints m/s; angular-unit scaling not independently validated",
+  "mount_matrix": "firmware returned zero matrix; libssc used identity"
+}

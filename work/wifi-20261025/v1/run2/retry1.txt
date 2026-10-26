@@ -1,0 +1,16 @@
+antes: crashed recovery=disabled
+depois 2s: state=crashed wlan0=nao
+[   43.057340] remoteproc remoteproc0: crash detected in modem: type fatal error
+[   43.064751] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[   43.064763] remoteproc remoteproc0: handling crash #1 in modem
+[   97.932256] remoteproc remoteproc0: recovering modem
+[   97.966818] remoteproc remoteproc0: stopped remote processor modem
+[   99.430456] remoteproc remoteproc0: remote processor modem is now up
+[  100.393186] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[  100.476666] ath10k_snoc 18800000.wifi: qmi chip_id 0x140 chip_family 0x4002 board_id 0xff soc_id 0x40090000
+[  100.486819] ath10k_snoc 18800000.wifi: qmi fw_version 0x322903b3 fw_build_timestamp 2023-05-18 11:09 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2-00947-QCAHLSWMTPLZ-1.558119.4.586249.3
+[  100.922376] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[  101.058405] qcom_q6v5_pas 4080000.remoteproc: fatal error received: EX:kernel:0x0:tmr_slave1:0x1d1:PC=0xc06ddec0
+[  101.069025] remoteproc remoteproc0: crash detected in modem: type fatal error
+[  101.076408] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[  101.076418] remoteproc remoteproc0: handling crash #2 in modem

@@ -1,0 +1,4 @@
+The device returned to Android ADB after the USB disconnect.
+Read-only pstore mounted in the next known-working Linux boot was empty.
+No kernel panic/stack trace was recovered; do not claim a confirmed panic cause.
+Next diagnostic isolates dependency loading from MSM and panel activation.

@@ -1,0 +1,30 @@
+{
+  "source": "work/hanoip-touch-20261024/handoff-v2/input-events-45s.txt",
+  "event_count": 1949,
+  "synchronized_frames": 463,
+  "contact_starts": 15,
+  "contact_ends": 15,
+  "max_observed_simultaneous_contacts": 1,
+  "active_contacts_at_end": 0,
+  "coordinate_ranges": {
+    "53": [
+      343,
+      597
+    ],
+    "54": [
+      164,
+      2458
+    ]
+  },
+  "coordinates_within_bounds": true,
+  "event_code_counts": {
+    "3:57": 30,
+    "3:53": 273,
+    "3:54": 440,
+    "1:330": 30,
+    "3:0": 273,
+    "3:1": 440,
+    "0:0": 463
+  },
+  "event_span_seconds": 13.618077
+}

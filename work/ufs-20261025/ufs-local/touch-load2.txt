@@ -1,0 +1,34 @@
+
+~ # echo T2; BB=/bin/busybox; $BB touch /run/hanoip-touch-started; $BB insmod /l
+ib/hanoip-touch/evdev.ko; $BB insmod /lib/hanoip-touch/ilitek-hanoip-spi.ko; ech
+o rc=$?; $BB sleep 8; $BB ls /dev/input; $BB cat /proc/bus/input/devices | $BB g
+rep -E "^N:|^H:"; $BB dmesg | $BB grep -iE "ilitek" | $BB tail -8; printf '\n%s\
+n' HANOIP_END_de4f40895500
+T2
+[  441.452791] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  441.666547] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  441.697794] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  441.708361] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  441.762238] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  441.791788] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[  441.806243] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only
+rc=0
+event0  event1  event2  event3
+N: Name="pm8941_pwrkey"
+H: Handlers=kbd event0 
+N: Name="pm8941_resin"
+H: Handlers=kbd event1 
+N: Name="gpio-keys"
+H: Handlers=kbd event2 
+N: Name="Hanoip Ilitek ILI7807 SPI"
+H: Handlers=event3 
+[  441.452791] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  441.666547] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  441.697794] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  441.708361] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  441.762238] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  441.791788] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[  441.806243] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only
+
+HANOIP_END_de4f40895500
+~ # 

@@ -1,0 +1,14 @@
+Variante de diagnóstico de repetibilidade; sem CPUfreq novo.
+Mesmo Image #8, DT e U-Boot do handoff-v2; só módulo do painel com atributo
+panel_status. Não altera sequência init, reset, DSC ou brilho.
+Usuário confirmou texto estável nesse boot. Não afirmar causa corrigida.
+Leituras LP: power=0x9c, pixel=0x07, diagnostic=0xc0, GPIO reset logical0,
+prepared1 enabled1. Consultas geram erro DSI 0x16; evitar lê-las em loop.
+Repetição em panel-status-repeat será feita sem consultas inicialmente.
+
+Achado estático adicional, ainda NÃO corrigido aqui:
+O stock envia brightness 51 03 32. O helper normal
+mipi_dsi_dcs_set_display_brightness_multi(0x0332) envia 51 32 03 (LE).
+Tianma init atual portanto não reproduz a ordem de bytes do stock. Corrigir
+somente a sequência Tianma para bytes explícitos/big endian em outra variante.
+Isso é discrepância comprovada de protocolo, NÃO causa comprovada da tela preta.

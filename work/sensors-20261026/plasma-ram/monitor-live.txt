@@ -1,0 +1,3 @@
+()
+    Waiting for iio-sensor-proxy to appear
++++ iio-sensor-proxy appeared

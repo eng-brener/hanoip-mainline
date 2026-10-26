@@ -1,0 +1,7 @@
+Build provenance
+================
+Base: work/cpu-gpu-20261025/gpu-zap-early/
+Builder: make-quiet-variant.py
+Changes from base: `console=tty1` replaced with equal-length spaces in both
+U-Boot's external and embedded DTB, and in the Android kernel boot image DTB.
+Ramdisk and kernel payload are copied unchanged. No device operation occurs.

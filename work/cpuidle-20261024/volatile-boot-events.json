@@ -1,0 +1,46 @@
+[
+  {
+    "command": [
+      "adb",
+      "-s",
+      "<serial>",
+      "reboot",
+      "bootloader"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "fastboot",
+      "-s",
+      "<serial>",
+      "boot",
+      "work/cpuidle-20261024/u-boot-hanoip-cpuidle.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (516 KB)                        OKAY [  0.013s]\nBooting                                            OKAY [ 10.364s]\nFinished. Total time: 10.379s\n"
+  },
+  {
+    "command": [
+      "fastboot",
+      "getvar",
+      "product"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "product: motorola-hanoip\nFinished. Total time: 0.000s\n"
+  },
+  {
+    "command": [
+      "fastboot",
+      "boot",
+      "work/cpuidle-20261024/kernel-hanoip-cpuidle.img"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Sending 'boot.img' (15856 KB)                      OKAY [  0.526s]\nBooting                                            OKAY [  0.000s]\nFinished. Total time: 0.546s\n"
+  }
+]

@@ -1,0 +1,18 @@
+crw-------    1 root     root      243,   1 Aug 12 17:39 /dev/qcom_rmtfs_mem1
+0x000000009a001000
+0x0000000000200000
+HANOIP: UFS probe started in background (PID 532); see dmesg
+UFS module loader returned: 0
+HANOIP: UFS ready, 84 block devices, all read-only
+rc=0
+start 48.59
+modem_a /dev/sde18 pre 6a1fc4b5c25704d476a57e1c0a59983b75c9af27ca8a75412037614c6c6f45dc
+firmware links: 229
+efs modemst1 from /dev/sdb14 fb8df9906f3276e1
+efs modemst2 from /dev/sdb15 4a08a50eb1487a0f
+efs fsg from /dev/sde17 843cd5e0ff6c3af0
+efs fsc from /dev/sdb16 fa43239bcee7b97c
+modules loaded 53.02
+mpss /sys/class/remoteproc/remoteproc0 firmware=qcom/sm7150/motorola/hanoip/modem.mdt state=offline
+mpss state=offline wlan0=no after 60s at 115.92
+modem_a unchanged

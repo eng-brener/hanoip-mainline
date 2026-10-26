@@ -1,0 +1,70 @@
+[
+  {
+    "path": "vendor/etc/init/android.hardware.camera.provider@2.4-service_64.rc",
+    "size": 344
+  },
+  {
+    "path": "vendor/etc/init/motorola.hardware.camera.imgtuner@1.0-service.rc",
+    "size": 133
+  },
+  {
+    "path": "vendor/etc/permissions/android.hardware.camera.raw.xml",
+    "size": 912
+  },
+  {
+    "path": "vendor/etc/permissions/android.hardware.camera.full.xml",
+    "size": 1045
+  },
+  {
+    "path": "vendor/etc/permissions/android.hardware.camera.front.xml",
+    "size": 877
+  },
+  {
+    "path": "vendor/etc/permissions/android.hardware.camera.flash-autofocus.xml",
+    "size": 1052
+  },
+  {
+    "path": "vendor/etc/camera/vidhance_calibration_64",
+    "size": 3477
+  },
+  {
+    "path": "vendor/etc/camera/aec_golden_depth_64M.bin",
+    "size": 10
+  },
+  {
+    "path": "vendor/etc/camera/dual_golden_wide.bin",
+    "size": 2048
+  },
+  {
+    "path": "vendor/etc/camera/vidhance_calibration",
+    "size": 4154
+  },
+  {
+    "path": "vendor/etc/camera/aec_golden_wide.bin",
+    "size": 10
+  },
+  {
+    "path": "vendor/etc/camera/aec_golden_wide_64M.bin",
+    "size": 10
+  },
+  {
+    "path": "vendor/etc/camera/dual_golden_depth.bin",
+    "size": 2048
+  },
+  {
+    "path": "vendor/etc/camera/arcsoft_calibration_u_dc.bin",
+    "size": 256
+  },
+  {
+    "path": "vendor/etc/camera/dual_golden_depth_64M.bin",
+    "size": 2048
+  },
+  {
+    "path": "vendor/etc/camera/aec_golden_depth.bin",
+    "size": 10
+  },
+  {
+    "path": "vendor/etc/camera/dual_golden_wide_64M.bin",
+    "size": 2048
+  }
+]

@@ -1,0 +1,469 @@
+major minor  #blocks  name
+
+   1        0       8192 ram0
+   1        1       8192 ram1
+   1        2       8192 ram2
+   1        3       8192 ram3
+   1        4       8192 ram4
+   1        5       8192 ram5
+   1        6       8192 ram6
+   1        7       8192 ram7
+   1        8       8192 ram8
+   1        9       8192 ram9
+   1       10       8192 ram10
+   1       11       8192 ram11
+   1       12       8192 ram12
+   1       13       8192 ram13
+   1       14       8192 ram14
+   1       15       8192 ram15
+   7        0     100988 loop0
+   7        8      39760 loop1
+   7       16     111964 loop2
+   7       24      14892 loop3
+   7       32        836 loop4
+   7       40      92200 loop5
+   7       48        384 loop6
+   7       56       7056 loop7
+   7       64       5024 loop8
+   7       72      41180 loop9
+   7       80        268 loop10
+   7       88       7648 loop11
+   7       96       1924 loop12
+   7      104        268 loop13
+   7      112      14168 loop14
+   7      120      39760 loop15
+ 254        0    2097152 zram0
+   8        0      16384 sda
+   8        1       8192 sda1
+   8        2       1024 sda2
+   8       32       8192 sdc
+   8       33       4096 sdc1
+   8       34        128 sdc2
+   8       16  123871232 sdb
+   8       17          8 sdb1
+   8       18      32768 sdb2
+   8       19       8192 sdb3
+   8       20       1024 sdb4
+   8       21        512 sdb5
+   8       22        512 sdb6
+   8       23        512 sdb7
+   8       24        512 sdb8
+   8       25        128 sdb9
+   8       26      16384 sdb10
+   8       27       8192 sdb11
+   8       28       8192 sdb12
+   8       29      16384 sdb13
+   8       30       2048 sdb14
+   8       31       2048 sdb15
+ 259        0        128 sdb16
+ 259        1         32 sdb17
+ 259        2          4 sdb18
+ 259        3       8192 sdb19
+ 259        4        256 sdb20
+ 259        5       8192 sdb21
+ 259        6        512 sdb22
+ 259        7   10551296 sdb23
+ 259        8  113204716 sdb24
+   8       48       8192 sdd
+   8       49       4096 sdd1
+   8       50        128 sdd2
+   8       64     524288 sde
+   8       65        512 sde1
+   8       66       4096 sde2
+   8       67        512 sde3
+   8       68        128 sde4
+   8       69        128 sde5
+   8       70        512 sde6
+   8       71        512 sde7
+   8       72        512 sde8
+   8       73        256 sde9
+   8       74       1024 sde10
+   8       75         80 sde11
+   8       76       2048 sde12
+   8       77         32 sde13
+   8       78         32 sde14
+   8       79         64 sde15
+ 259        9         64 sde16
+ 259       10      24576 sde17
+ 259       11     143360 sde18
+ 259       12      32768 sde19
+ 259       14       1024 sde20
+ 259       16      32768 sde21
+ 259       18      65536 sde22
+ 259       20      24576 sde23
+ 259       22      65536 sde24
+   8       80     524288 sdf
+   8       81        512 sdf1
+   8       82       4096 sdf2
+   8       83        512 sdf3
+   8       84        128 sdf4
+   8       85        128 sdf5
+   8       86        512 sdf6
+   8       87        512 sdf7
+   8       88        512 sdf8
+   8       89        256 sdf9
+   8       90       1024 sdf10
+   8       91         80 sdf11
+   8       92       2048 sdf12
+   8       93         32 sdf13
+   8       94         32 sdf14
+   8       95         64 sdf15
+ 259       13         64 sdf16
+ 259       15      24576 sdf17
+ 259       17     143360 sdf18
+ 259       19      32768 sdf19
+ 259       21       1024 sdf20
+ 259       23      32768 sdf21
+ 259       24      65536 sdf22
+ 259       25      24576 sdf23
+ 259       26      65536 sdf24
+ 253        0    3390352 dm-0
+ 253        1      39176 dm-1
+ 253        2     765836 dm-2
+   7      128       1132 loop16
+   7      136       4192 loop17
+   7      144     101248 loop18
+   7      152      10696 loop19
+   7      160        836 loop20
+   7      168      14892 loop21
+   7      176      20296 loop22
+   7      184        828 loop23
+   7      192     111964 loop24
+   7      200      29796 loop25
+   7      208       8088 loop26
+   7      216      15580 loop27
+   7      224      28708 loop28
+   7      232       3528 loop29
+   7      240      11128 loop30
+   7      248      40892 loop31
+   7      256      23532 loop32
+   7      264      32900 loop33
+   7      272       5972 loop34
+   7      280       3364 loop35
+   7      288        556 loop36
+   7      296       5516 loop37
+   7      304      25236 loop38
+   7      312      22880 loop39
+   7      320      40792 loop40
+   7      328       7204 loop41
+   7      336      49468 loop42
+   7      344       1372 loop43
+   7      352       9840 loop44
+   7      360      46300 loop45
+   7      368      27480 loop46
+   7      376       4204 loop47
+   7      384     100988 loop48
+ 253        5        372 dm-5
+ 253        6       4972 dm-6
+ 253        8       1896 dm-8
+ 253        9      14044 dm-9
+ 253       10      28472 dm-10
+ 253       15       4144 dm-15
+ 253       16      10600 dm-16
+ 253       19        808 dm-19
+ 253       21       7576 dm-21
+ 253       22        256 dm-22
+ 253       24       8012 dm-24
+ 253       25      20124 dm-25
+ 253       26      29552 dm-26
+ 253       27       3488 dm-27
+ 253       28      11028 dm-28
+ 253       30      23336 dm-30
+ 253       31       9748 dm-31
+ 253       34       7136 dm-34
+ 253       36       5460 dm-36
+ 253       37        536 dm-37
+ 253       38      25028 dm-38
+ 253       39       6988 dm-39
+ 253       40      32632 dm-40
+ 253       42      22688 dm-42
+ 253       44      49072 dm-44
+ 253       46      27252 dm-46
+ 253       47  113204716 dm-47
+total 0
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 abl_a -> /dev/block/sde10
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 abl_b -> /dev/block/sdf10
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 aop_a -> /dev/block/sde1
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 aop_b -> /dev/block/sdf1
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 apdp -> /dev/block/sdb20
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 bluetooth_a -> /dev/block/sde20
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 bluetooth_b -> /dev/block/sdf20
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 boot_a -> /dev/block/sde22
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 boot_b -> /dev/block/sdf22
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 carrier -> /dev/block/sdb13
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 cid -> /dev/block/sdb9
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 cmnlib64_a -> /dev/block/sde8
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 cmnlib64_b -> /dev/block/sdf8
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 cmnlib_a -> /dev/block/sde7
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 cmnlib_b -> /dev/block/sdf7
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 ddr -> /dev/block/sda2
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 devcfg_a -> /dev/block/sde5
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 devcfg_b -> /dev/block/sdf5
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 devinfo -> /dev/block/sdb18
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 dhob -> /dev/block/sdb17
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 dsp_a -> /dev/block/sde19
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 dsp_b -> /dev/block/sdf19
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 dtbo_a -> /dev/block/sde23
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 dtbo_b -> /dev/block/sdf23
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 frp -> /dev/block/sdb6
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 fsc -> /dev/block/sdb16
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 fsg_a -> /dev/block/sde17
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 fsg_b -> /dev/block/sdf17
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 hw -> /dev/block/sda1
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 hyp_a -> /dev/block/sde3
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 hyp_b -> /dev/block/sdf3
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 keymaster_a -> /dev/block/sde6
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 keymaster_b -> /dev/block/sdf6
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 keystore -> /dev/block/sdb5
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 kpan -> /dev/block/sdb11
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 logfs -> /dev/block/sdb19
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 logo_a -> /dev/block/sde21
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 logo_b -> /dev/block/sdf21
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 metadata -> /dev/block/sdb10
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 misc -> /dev/block/sdb4
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 modem_a -> /dev/block/sde18
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 modem_b -> /dev/block/sdf18
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 modemst1 -> /dev/block/sdb14
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 modemst2 -> /dev/block/sdb15
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 multiimgoem_a -> /dev/block/sde13
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 multiimgoem_b -> /dev/block/sdf13
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 multiimgqti_a -> /dev/block/sde14
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 multiimgqti_b -> /dev/block/sdf14
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 persist -> /dev/block/sdb2
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 prodpersist -> /dev/block/sdb3
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 prov_a -> /dev/block/sde9
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 prov_b -> /dev/block/sdf9
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 qupfw_a -> /dev/block/sde11
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 qupfw_b -> /dev/block/sdf11
+lrwxrwxrwx 1 root root 14 1974-07-24 15:52 sda -> /dev/block/sda
+lrwxrwxrwx 1 root root 14 1974-07-24 15:52 sdb -> /dev/block/sdb
+lrwxrwxrwx 1 root root 14 1974-07-24 15:52 sdc -> /dev/block/sdc
+lrwxrwxrwx 1 root root 14 1974-07-24 15:52 sdd -> /dev/block/sdd
+lrwxrwxrwx 1 root root 14 1974-07-24 15:52 sde -> /dev/block/sde
+lrwxrwxrwx 1 root root 14 1974-07-24 15:52 sdf -> /dev/block/sdf
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 sp -> /dev/block/sdb12
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 spunvm -> /dev/block/sdb21
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 ssd -> /dev/block/sdb1
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 storsec_a -> /dev/block/sde4
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 storsec_b -> /dev/block/sdf4
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 super -> /dev/block/sdb23
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 tz_a -> /dev/block/sde2
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 tz_b -> /dev/block/sdf2
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 uefisecapp_a -> /dev/block/sde12
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 uefisecapp_b -> /dev/block/sdf12
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 uefivarstore -> /dev/block/sdb22
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 userdata -> /dev/block/sdb24
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 utags -> /dev/block/sdb7
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 utagsBackup -> /dev/block/sdb8
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 vbmeta_a -> /dev/block/sde15
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 vbmeta_b -> /dev/block/sdf15
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 vbmeta_system_a -> /dev/block/sde16
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 vbmeta_system_b -> /dev/block/sdf16
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 vendor_boot_a -> /dev/block/sde24
+lrwxrwxrwx 1 root root 16 1974-07-24 15:52 vendor_boot_b -> /dev/block/sdf24
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 xbl_a -> /dev/block/sdc1
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 xbl_b -> /dev/block/sdd1
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 xbl_config_a -> /dev/block/sdc2
+lrwxrwxrwx 1 root root 15 1974-07-24 15:52 xbl_config_b -> /dev/block/sdd2
+total 0
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 0:0:0:0 -> ../../devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:0/scsi_device/0:0:0:0
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 0:0:0:1 -> ../../devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:1/scsi_device/0:0:0:1
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 0:0:0:2 -> ../../devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:2/scsi_device/0:0:0:2
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 0:0:0:3 -> ../../devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:3/scsi_device/0:0:0:3
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 0:0:0:4 -> ../../devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:4/scsi_device/0:0:0:4
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 0:0:0:49456 -> ../../devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:49456/scsi_device/0:0:0:49456
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 0:0:0:49476 -> ../../devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:49476/scsi_device/0:0:0:49476
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 0:0:0:49488 -> ../../devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:49488/scsi_device/0:0:0:49488
+lrwxrwxrwx 1 root root 0 2026-10-24 06:07 0:0:0:5 -> ../../devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:5/scsi_device/0:0:0:5
+=== /sys/class/block/sda
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+32768
+4096
+=== /sys/class/block/sda1
+16384
+=== /sys/class/block/sda2
+2048
+=== /sys/class/block/sdb
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+247742464
+4096
+=== /sys/class/block/sdb1
+16
+=== /sys/class/block/sdb10
+32768
+=== /sys/class/block/sdb11
+16384
+=== /sys/class/block/sdb12
+16384
+=== /sys/class/block/sdb13
+32768
+=== /sys/class/block/sdb14
+4096
+=== /sys/class/block/sdb15
+4096
+=== /sys/class/block/sdb16
+256
+=== /sys/class/block/sdb17
+64
+=== /sys/class/block/sdb18
+8
+=== /sys/class/block/sdb19
+16384
+=== /sys/class/block/sdb2
+65536
+=== /sys/class/block/sdb20
+512
+=== /sys/class/block/sdb21
+16384
+=== /sys/class/block/sdb22
+1024
+=== /sys/class/block/sdb23
+21102592
+=== /sys/class/block/sdb24
+226409432
+=== /sys/class/block/sdb3
+16384
+=== /sys/class/block/sdb4
+2048
+=== /sys/class/block/sdb5
+1024
+=== /sys/class/block/sdb6
+1024
+=== /sys/class/block/sdb7
+1024
+=== /sys/class/block/sdb8
+1024
+=== /sys/class/block/sdb9
+256
+=== /sys/class/block/sdc
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+16384
+4096
+=== /sys/class/block/sdc1
+8192
+=== /sys/class/block/sdc2
+256
+=== /sys/class/block/sdd
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+16384
+4096
+=== /sys/class/block/sdd1
+8192
+=== /sys/class/block/sdd2
+256
+=== /sys/class/block/sde
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+1048576
+4096
+=== /sys/class/block/sde1
+1024
+=== /sys/class/block/sde10
+2048
+=== /sys/class/block/sde11
+160
+=== /sys/class/block/sde12
+4096
+=== /sys/class/block/sde13
+64
+=== /sys/class/block/sde14
+64
+=== /sys/class/block/sde15
+128
+=== /sys/class/block/sde16
+128
+=== /sys/class/block/sde17
+49152
+=== /sys/class/block/sde18
+286720
+=== /sys/class/block/sde19
+65536
+=== /sys/class/block/sde2
+8192
+=== /sys/class/block/sde20
+2048
+=== /sys/class/block/sde21
+65536
+=== /sys/class/block/sde22
+131072
+=== /sys/class/block/sde23
+49152
+=== /sys/class/block/sde24
+131072
+=== /sys/class/block/sde3
+1024
+=== /sys/class/block/sde4
+256
+=== /sys/class/block/sde5
+256
+=== /sys/class/block/sde6
+1024
+=== /sys/class/block/sde7
+1024
+=== /sys/class/block/sde8
+1024
+=== /sys/class/block/sde9
+512
+=== /sys/class/block/sdf
+SAMSUNG 
+KM5V8001DM-B622 
+1500
+1048576
+4096
+=== /sys/class/block/sdf1
+1024
+=== /sys/class/block/sdf10
+2048
+=== /sys/class/block/sdf11
+160
+=== /sys/class/block/sdf12
+4096
+=== /sys/class/block/sdf13
+64
+=== /sys/class/block/sdf14
+64
+=== /sys/class/block/sdf15
+128
+=== /sys/class/block/sdf16
+128
+=== /sys/class/block/sdf17
+49152
+=== /sys/class/block/sdf18
+286720
+=== /sys/class/block/sdf19
+65536
+=== /sys/class/block/sdf2
+8192
+=== /sys/class/block/sdf20
+2048
+=== /sys/class/block/sdf21
+65536
+=== /sys/class/block/sdf22
+131072
+=== /sys/class/block/sdf23
+49152
+=== /sys/class/block/sdf24
+131072
+=== /sys/class/block/sdf3
+1024
+=== /sys/class/block/sdf4
+256
+=== /sys/class/block/sdf5
+256
+=== /sys/class/block/sdf6
+1024
+=== /sys/class/block/sdf7
+1024
+=== /sys/class/block/sdf8
+1024
+=== /sys/class/block/sdf9
+512

@@ -1,0 +1,5 @@
+CONFIG_DEFAULT_DEVICE_TREE="qcom/sm7150-motorola-hanoip-pmos-sensors"
+# CONFIG_UFS is not set
+# CONFIG_SCSI is not set
+# CONFIG_CMD_SCSI is not set
+# CONFIG_FASTBOOT_FLASH is not set

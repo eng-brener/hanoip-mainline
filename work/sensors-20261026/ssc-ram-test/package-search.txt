@@ -1,0 +1,10 @@
+hexagonrpcd-0.4.0-r3
+hexagonrpcd-doc-0.4.0-r3
+hexagonrpcd-openrc-0.4.0-r3
+hexagonrpcd-systemd-0.4.0-r3
+hexagonrpcd-udev-0.4.0-r3
+libssc-0.4.3-r0
+libssc-dbg-0.4.3-r0
+libssc-dev-0.4.3-r0
+libssc-pyc-0.4.3-r0
+qmi-utils-1.38.0_git20260414-r0

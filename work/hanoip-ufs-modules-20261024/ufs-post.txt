@@ -1,0 +1,768 @@
+[  434.635242] host_regs: 00000080: 00000001 00000000 00000000 00000000
+[  435.029553] host_regs: 00000090: 00000001 15810000 00000000 00000001
+[  435.424997] ufshcd-qcom 1d84000.ufshc: No record of pa_err
+[  435.820420] ufshcd-qcom 1d84000.ufshc: No record of dl_err
+[  436.216014] ufshcd-qcom 1d84000.ufshc: No record of nl_err
+[  436.610925] ufshcd-qcom 1d84000.ufshc: No record of tl_err
+[  437.003797] ufshcd-qcom 1d84000.ufshc: No record of dme_err
+[  437.396536] ufshcd-qcom 1d84000.ufshc: No record of auto_hibern8_err
+[  437.789876] ufshcd-qcom 1d84000.ufshc: No record of fatal_err
+[  438.180233] ufshcd-qcom 1d84000.ufshc: No record of link_startup_fail
+[  438.571121] ufshcd-qcom 1d84000.ufshc: No record of resume_fail
+[  438.959471] ufshcd-qcom 1d84000.ufshc: No record of suspend_fail
+[  439.347604] ufshcd-qcom 1d84000.ufshc: No record of wlun resume_fail
+[  439.734375] ufshcd-qcom 1d84000.ufshc: No record of wlun suspend_fail
+[  440.120895] ufshcd-qcom 1d84000.ufshc: dev_reset[0] = 0x0 at 421005894 us
+[  440.507136] ufshcd-qcom 1d84000.ufshc: dev_reset: total cnt=1
+[  440.891790] ufshcd-qcom 1d84000.ufshc: No record of host_reset
+[  441.276316] ufshcd-qcom 1d84000.ufshc: task_abort[0] = 0x0 at 431484041 us
+[  441.662151] ufshcd-qcom 1d84000.ufshc: task_abort: total cnt=1
+[  442.046895] ufshcd-qcom 1d84000.ufshc: HW_H8_ENTER_CNT=0
+[  442.430671] ufshcd-qcom 1d84000.ufshc: HW_H8_EXIT_CNT=0
+[  442.813303] ufshcd-qcom 1d84000.ufshc: SW_H8_ENTER_CNT=0
+[  443.195695] ufshcd-qcom 1d84000.ufshc: SW_H8_EXIT_CNT=0
+[  443.577371] ufshcd-qcom 1d84000.ufshc: SW_AFTER_HW_H8_ENTER_CNT=0
+[  443.958400] HCI Vendor Specific Registers 00000000: 000000c8 00000000 00000000 00000000
+[  444.340565] HCI Vendor Specific Registers 00000010: 00000000 00000000 00000001 1c00052c
+[  444.724571] HCI Vendor Specific Registers 00000020: 3f0113ff 30010002 00000000 00000000
+[  445.111188] HCI Vendor Specific Registers 00000030: 00000000 00000000 00000000 0000003c
+[  445.499189] UFS_UFS_DBG_RD_REG_OCSC 00000000: 00000000 00000000 00000000 00000000
+[  445.891555] UFS_UFS_DBG_RD_REG_OCSC 00000010: 00000000 00000000 00000000 00000000
+[  446.282083] UFS_UFS_DBG_RD_REG_OCSC 00000020: 00000000 00000000 00000000 00000000
+[  446.671462] UFS_UFS_DBG_RD_REG_OCSC 00000030: 00000000 00000000 00000000 00000000
+[  447.059289] UFS_UFS_DBG_RD_REG_OCSC 00000040: 00000000 00000000 00000000 00000000
+[  447.446702] UFS_UFS_DBG_RD_REG_OCSC 00000050: 00000000 00000000 00000000 00000000
+[  447.833068] UFS_UFS_DBG_RD_REG_OCSC 00000060: 00000000 00000000 00000000 00000000
+[  448.218622] UFS_UFS_DBG_RD_REG_OCSC 00000070: 00000000 00000000 00000000 00000000
+[  448.601536] UFS_UFS_DBG_RD_REG_OCSC 00000080: 00000000 00000000 00000000 00000000
+[  448.983398] UFS_UFS_DBG_RD_REG_OCSC 00000090: 00000000 00000000 00000000 00000000
+[  449.364468] UFS_UFS_DBG_RD_REG_OCSC 000000a0: 00000000 00000000 00000000 00000000
+[  449.745409] UFS_UFS_DBG_RD_EDTL_RAM 00000000: 00000000 00000000 00000000 00000000
+[  450.126974] UFS_UFS_DBG_RD_EDTL_RAM 00000010: 00000000 00000000 00000000 00000000
+[  450.507910] UFS_UFS_DBG_RD_EDTL_RAM 00000020: 00000000 00000000 00000000 00000000
+[  450.888810] UFS_UFS_DBG_RD_EDTL_RAM 00000030: 00000000 00000000 00000000 00000000
+[  451.269391] UFS_UFS_DBG_RD_EDTL_RAM 00000040: 00000000 00000000 00000000 00000000
+[  451.649389] UFS_UFS_DBG_RD_EDTL_RAM 00000050: 00000000 00000000 00000000 00000000
+[  452.029280] UFS_UFS_DBG_RD_EDTL_RAM 00000060: 00000000 00000000 00000000 00000000
+[  452.409876] UFS_UFS_DBG_RD_EDTL_RAM 00000070: 00000000 00000000 00000000 00000000
+[  452.788320] UFS_UFS_DBG_RD_DESC_RAM 00000000: 00000000 00000000 00000000 00000000
+[  453.166302] UFS_UFS_DBG_RD_DESC_RAM 00000010: 00000000 00000000 00000000 00000000
+[  453.543197] UFS_UFS_DBG_RD_DESC_RAM 00000020: 00000000 00000000 00000000 00000000
+[  453.918530] UFS_UFS_DBG_RD_DESC_RAM 00000030: 00000000 00000000 00000000 00000000
+[  454.293555] UFS_UFS_DBG_RD_DESC_RAM 00000040: 00000000 00000000 00000000 00000000
+[  454.666940] UFS_UFS_DBG_RD_DESC_RAM 00000050: 00000000 00000000 00000000 00000000
+[  455.038784] UFS_UFS_DBG_RD_DESC_RAM 00000060: 00000000 00000000 00000000 00000000
+[  455.409915] UFS_UFS_DBG_RD_DESC_RAM 00000070: 00000000 00000000 00000000 00000000
+[  455.778777] UFS_UFS_DBG_RD_DESC_RAM 00000080: 00000000 00000000 00000000 00000000
+[  456.145276] UFS_UFS_DBG_RD_DESC_RAM 00000090: 00000000 00000000 00000000 00000000
+[  456.510205] UFS_UFS_DBG_RD_DESC_RAM 000000a0: 00000000 00000000 00000000 00000000
+[  456.873046] UFS_UFS_DBG_RD_DESC_RAM 000000b0: 00000000 00000000 00000000 00000000
+[  457.234126] UFS_UFS_DBG_RD_DESC_RAM 000000c0: 00000000 00000000 00000000 00000000
+[  457.590537] UFS_UFS_DBG_RD_DESC_RAM 000000d0: 00000000 00000000 00000000 00000000
+[  457.941444] UFS_UFS_DBG_RD_DESC_RAM 000000e0: 00000000 00000000 00000000 00000000
+[  458.289525] UFS_UFS_DBG_RD_DESC_RAM 000000f0: 00000000 00000000 00000000 00000000
+[  458.635975] UFS_UFS_DBG_RD_DESC_RAM 00000100: 00000000 00000000 00000000 00000000
+[  458.980823] UFS_UFS_DBG_RD_DESC_RAM 00000110: 00000000 00000000 00000000 00000000
+[  459.319890] UFS_UFS_DBG_RD_DESC_RAM 00000120: 00000000 00000000 00000000 00000000
+[  459.654817] UFS_UFS_DBG_RD_DESC_RAM 00000130: 00000000 00000000 00000000 00000000
+[  459.983744] UFS_UFS_DBG_RD_DESC_RAM 00000140: 00000000 00000000 00000000 00000000
+[  460.311384] UFS_UFS_DBG_RD_DESC_RAM 00000150: 00000000 00000000 00000000 00000000
+[  460.639357] UFS_UFS_DBG_RD_DESC_RAM 00000160: 00000000 00000000 00000000 00000000
+[  460.966280] UFS_UFS_DBG_RD_DESC_RAM 00000170: 00000000 00000000 00000000 00000000
+[  461.292917] UFS_UFS_DBG_RD_DESC_RAM 00000180: 00000000 00000000 00000000 00000000
+[  461.618951] UFS_UFS_DBG_RD_DESC_RAM 00000190: 00000000 00000000 00000000 00000000
+[  461.944872] UFS_UFS_DBG_RD_DESC_RAM 000001a0: 00000000 00000000 00000000 00000000
+[  462.270996] UFS_UFS_DBG_RD_DESC_RAM 000001b0: 00000000 00000000 00000000 00000000
+[  462.596493] UFS_UFS_DBG_RD_DESC_RAM 000001c0: 00000000 00000000 00000000 00000000
+[  462.922391] UFS_UFS_DBG_RD_DESC_RAM 000001d0: 00000000 00000000 00000000 00000000
+[  463.247979] UFS_UFS_DBG_RD_DESC_RAM 000001e0: 00000000 00000000 00000000 00000000
+[  463.573406] UFS_UFS_DBG_RD_DESC_RAM 000001f0: 00000000 00000000 00000000 00000000
+[  463.897866] UFS_UFS_DBG_RD_PRDT_RAM 00000000: 00000000 00000000 00000000 00000000
+[  464.220921] UFS_UFS_DBG_RD_PRDT_RAM 00000010: 00000000 00000000 00000000 00000000
+[  464.544384] UFS_UFS_DBG_RD_PRDT_RAM 00000020: 00000000 00000000 00000000 00000000
+[  464.868249] UFS_UFS_DBG_RD_PRDT_RAM 00000030: 00000000 00000000 00000000 00000000
+[  465.189772] UFS_UFS_DBG_RD_PRDT_RAM 00000040: 00000000 00000000 00000000 00000000
+[  465.508676] UFS_UFS_DBG_RD_PRDT_RAM 00000050: 00000000 00000000 00000000 00000000
+[  465.827546] UFS_UFS_DBG_RD_PRDT_RAM 00000060: 00000000 00000000 00000000 00000000
+[  466.145591] UFS_UFS_DBG_RD_PRDT_RAM 00000070: 00000000 00000000 00000000 00000000
+[  466.463033] UFS_UFS_DBG_RD_PRDT_RAM 00000080: 00000000 00000000 00000000 00000000
+[  466.777384] UFS_UFS_DBG_RD_PRDT_RAM 00000090: 00000000 00000000 00000000 00000000
+[  467.089731] UFS_UFS_DBG_RD_PRDT_RAM 000000a0: 00000000 00000000 00000000 00000000
+[  467.398312] UFS_UFS_DBG_RD_PRDT_RAM 000000b0: 00000000 00000000 00000000 00000000
+[  467.703684] UFS_UFS_DBG_RD_PRDT_RAM 000000c0: 00000000 00000000 00000000 00000000
+[  468.008526] UFS_UFS_DBG_RD_PRDT_RAM 000000d0: 00000000 00000000 00000000 00000000
+[  468.313114] UFS_UFS_DBG_RD_PRDT_RAM 000000e0: 00000000 00000000 00000000 00000000
+[  468.617049] UFS_UFS_DBG_RD_PRDT_RAM 000000f0: 00000000 00000000 00000000 00000000
+[  468.919939] UFS_DBG_RD_REG_UAWM 00000000: 00000000 00000000 00000000 00000000
+[  469.225087] UFS_DBG_RD_REG_UARM 00000000: 00000000 00000000 00000000 00000000
+[  469.527639] UFS_DBG_RD_REG_TXUC 00000000: 00000000 00000000 00000000 00000000
+[  469.826131] UFS_DBG_RD_REG_TXUC 00000010: 00000000 00000000 00000000 00000000
+[  470.125242] UFS_DBG_RD_REG_TXUC 00000020: 00000000 00000000 00000000 00000000
+[  470.423276] UFS_DBG_RD_REG_TXUC 00000030: 00000000 00000000 00000000 00000000
+[  470.719242] UFS_DBG_RD_REG_TXUC 00000040
+[missed 5770 bytes]
+
+~ # printf '\nUFS_POST_BEGIN\n'; cat /proc/uptime; cat /proc/modules; cat /proc/
+partitions; cat /proc/mounts; cat /run/hanoip-ufs-loader.log; dmesg; printf '\nU
+FS_POST_END\n'
+
+UFS_POST_BEGIN
+492.56 2794.81
+ufs_qcom 69632 2 - Loading 0xffffc19fa3f7b000 (O+)
+ufshcd_pltfrm 24576 1 ufs_qcom, Live 0xffffc19fa3f6c000 (O)
+ufshcd_core 339968 2 ufs_qcom,ufshcd_pltfrm, Live 0xffffc19fa3ef8000 (O)
+major minor  #blocks  name
+
+   1        0       4096 ram0
+   1        1       4096 ram1
+   1        2       4096 ram2
+   1        3       4096 ram3
+   1        4       4096 ram4
+   1        5       4096 ram5
+   1        6       4096 ram6
+   1        7       4096 ram7
+   1        8       4096 ram8
+   1        9       4096 ram9
+   1       10       4096 ram10
+   1       11       4096 ram11
+   1       12       4096 ram12
+   1       13       4096 ram13
+   1       14       4096 ram14
+   1       15       4096 ram15
+rootfs / rootfs rw,size=1798900k,nr_inodes=449725 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=1798900k,nr_inodes=449725,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x51df805e]
+[    0.000000] Linux version 7.1.0-sm7150 (Const@Coccinelle) (aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #2 SMP PREEMPT Sat Oct 24 17:48:42 UTC 2026
+[    0.000000] KASLR enabled
+[    0.000000] Machine model: Motorola Moto G60
+[    0.000000] printk: debug: ignoring loglevel setting.
+[    0.000000] efi: UEFI not found.
+[    0.000000] OF: reserved mem: 0x0000000085700000..0x0000000085cfffff (6144 KiB) nomap non-reusable hypervisor@85700000
+[    0.000000] OF: reserved mem: 0x0000000085d00000..0x0000000085efffff (2048 KiB) nomap non-reusable xbl@85d00000
+[    0.000000] OF: reserved mem: 0x0000000085f00000..0x0000000085f1ffff (128 KiB) nomap non-reusable aop@85f00000
+[    0.000000] OF: reserved mem: 0x0000000085f20000..0x0000000085f3ffff (128 KiB) nomap non-reusable aop-cmd-db@85f20000
+[    0.000000] OF: reserved mem: 0x0000000085fff000..0x0000000085ffffff (4 KiB) nomap non-reusable sec-apps@85fff000
+[    0.000000] OF: reserved mem: 0x0000000086000000..0x00000000861fffff (2048 KiB) nomap non-reusable smem@86000000
+[    0.000000] OF: reserved mem: 0x0000000086200000..0x0000000088efffff (46080 KiB) nomap non-reusable trust-zone@86200000
+[    0.000000] OF: reserved mem: 0x000000008ab00000..0x000000008affffff (5120 KiB) nomap non-reusable camera@8ab00000
+[    0.000000] OF: reserved mem: 0x000000008b000000..0x00000000933fffff (135168 KiB) nomap non-reusable mpss@8b000000
+[    0.000000] OF: reserved mem: 0x0000000093400000..0x00000000938fffff (5120 KiB) nomap non-reusable venus@93400000
+[    0.000000] OF: reserved mem: 0x0000000093900000..0x00000000956fffff (30720 KiB) nomap non-reusable cdsp@93900000
+[    0.000000] OF: reserved mem: 0x0000000095700000..0x00000000974fffff (30720 KiB) nomap non-reusable adsp@95700000
+[    0.000000] OF: reserved mem: 0x0000000097500000..0x000000009767ffff (1536 KiB) nomap non-reusable wlan-msa@97500000
+[    0.000000] OF: reserved mem: 0x0000000097680000..0x00000000976fffff (512 KiB) nomap non-reusable npu@97680000
+[    0.000000] OF: reserved mem: 0x0000000097700000..0x000000009770ffff (64 KiB) nomap non-reusable ipa-fw@97700000
+[    0.000000] OF: reserved mem: 0x0000000097710000..0x0000000097714fff (20 KiB) nomap non-reusable ipa-gsi@97710000
+[    0.000000] OF: reserved mem: 0x0000000097715000..0x0000000097716fff (8 KiB) nomap non-reusable gpu@97715000
+[    0.000000] OF: reserved mem: 0x000000009e400000..0x000000009f7fffff (20480 KiB) nomap non-reusable qseecom@9e400000
+[    0.000000] OF: reserved mem: 0x000000009f800000..0x00000000a15fffff (30720 KiB) nomap non-reusable sec-cdsp@9f800000
+[    0.000000] OF: reserved mem: 0x000000009c000000..0x000000009d6fffff (23552 KiB) map non-reusable cont-splash@9c000000
+[    0.000000] OF: reserved mem: 0x000000009d700000..0x000000009d7fffff (1024 KiB) map non-reusable dfps-data@9d700000
+[    0.000000] OF: reserved mem: 0x000000009d800000..0x000000009dbfffff (4096 KiB) map non-reusable ramoops@9d800000
+[    0.000000] NUMA: Faking a node at [mem 0x0000000080000000-0x000000017dcfffff]
+[    0.000000] NODE_DATA(0) allocated [mem 0x17d513240-0x17d51597f]
+[    0.000000] cma: Reserved 32 MiB at 0x00000000fe000000
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: MIGRATE_INFO_TYPE not supported.
+[    0.000000] psci: SMC Calling Convention v1.1
+[    0.000000] psci: OSI mode supported.
+[    0.000000] psci: [Firmware Bug]: failed to set PC mode: -3
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000080000000-0x00000000ffffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   [mem 0x0000000100000000-0x000000017dcfffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x00000000856fffff]
+[    0.000000]   node   0: [mem 0x0000000085700000-0x0000000085f3ffff]
+[    0.000000]   node   0: [mem 0x0000000085f40000-0x0000000085ffefff]
+[    0.000000]   node   0: [mem 0x0000000085fff000-0x0000000088efffff]
+[    0.000000]   node   0: [mem 0x0000000088f00000-0x000000008aafffff]
+[    0.000000]   node   0: [mem 0x000000008ab00000-0x0000000097716fff]
+[    0.000000]   node   0: [mem 0x0000000097717000-0x000000009e3fffff]
+[    0.000000]   node   0: [mem 0x000000009e400000-0x00000000a15fffff]
+[    0.000000]   node   0: [mem 0x00000000a1600000-0x000000017dcfffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x000000017dcfffff]
+[    0.000000] On node 0, zone Normal: 8960 pages in unavailable ranges
+[    0.000000] percpu: Embedded 32 pages/cpu s92568 r8192 d30312 u131072
+[    0.000000] pcpu-alloc: s92568 r8192 d30312 u131072 alloc=32*4096
+[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 [0] 4 [0] 5 [0] 6 [0] 7 
+[    0.000000] Detected VIPT I-cache on CPU0
+[    0.000000] CPU features: detected: GICv3 CPU interface
+[    0.000000] CPU features: kernel page table isolation forced ON by KASLR
+[    0.000000] CPU features: detected: Kernel page table isolation (KPTI)
+[    0.000000] CPU features: detected: ARM errata 1165522, 1319367, or 1530923
+[    0.000000] alternatives: applying boot alternatives
+[    0.000000] Kernel command line: earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops console=tty1 loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0 maxcpus=6 cpuidle.off=1 cpufreq.off=1 idle=poll
+[    0.000000] Unknown kernel command line parameters "panic_on_oops=1 idle=poll", will be passed to user space.
+[    0.000000] printk: log buffer data + meta data: 131072 + 458752 = 589824 bytes
+[    0.000000] Dentry cache hash table entries: 524288 (order: 10, 4194304 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 262144 (order: 9, 2097152 bytes, linear)
+[    0.000000] software IO TLB: area num 8.
+[    0.000000] software IO TLB: mapped [mem 0x00000000fa000000-0x00000000fe000000] (64MB)
+[    0.000000] Fallback order for Node 0: 0 
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 1039616
+[    0.000000] Policy zone: Normal
+[    0.000000] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1
+[    0.000000] ftrace: allocating 51938 entries in 204 pages
+[    0.000000] ftrace: allocated 204 pages with 4 groups
+[    0.000000] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU event tracing is enabled.
+[    0.000000] 	Trampoline variant of Tasks RCU enabled.
+[    0.000000] 	Rude variant of Tasks RCU enabled.
+[    0.000000] 	Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 100 jiffies.
+[    0.000000] RCU Tasks: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=8.
+[    0.000000] RCU Tasks Rude: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=8.
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] GICv3: 928 SPIs implemented
+[    0.000000] GICv3: 0 Extended SPIs implemented
+[    0.000000] Root IRQ handler: gic_handle_irq
+[    0.000000] GICv3: GICv3 features: 16 PPIs
+[    0.000000] GICv3: GICD_CTLR.DS=0, SCR_EL3.FIQ=1
+[    0.000000] GICv3: CPU0: found redistributor 0 region 0:0x0000000017a60000
+[    0.000000] ITS: No ITS available, not enabling LPIs
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+[    0.000000] arch_timer: cp15 timer running at 19.20MHz (virt).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x46d987e47, max_idle_ns: 440795202767 ns
+[    0.000001] sched_clock: 56 bits at 19MHz, resolution 52ns, wraps every 4398046511078ns
+[    0.000196] Console: colour dummy device 80x25
+[    0.000207] printk: legacy console [tty1] enabled
+[    0.000954] Calibrating delay loop (skipped), value calculated using timer frequency.. 38.40 BogoMIPS (lpj=19200)
+[    0.000975] pid_max: default: 32768 minimum: 301
+[    0.001181] Yama: becoming mindful.
+[    0.001555] LSM support for eBPF active
+[    0.001673] Mount-cache hash table entries: 8192 (order: 4, 65536 bytes, linear)
+[    0.001698] Mountpoint-cache hash table entries: 8192 (order: 4, 65536 bytes, linear)
+[    0.001984] VFS: Finished mounting rootfs on nullfs
+[    0.004214] rcu: Hierarchical SRCU implementation.
+[    0.004230] rcu: 	Max phase no-delay instances is 400.
+[    0.004444] Timer migration: 1 hierarchy levels; 8 children per group; 1 crossnode level
+[    0.005488] EFI services will not be available.
+[    0.005888] smp: Bringing up secondary CPUs ...
+[    0.007211] Detected VIPT I-cache on CPU1
+[    0.007397] GICv3: CPU1: found redistributor 100 region 0:0x0000000017a80000
+[    0.007453] CPU1: Booted secondary processor 0x0000000100 [0x51df805e]
+[    0.008722] Detected VIPT I-cache on CPU2
+[    0.008888] GICv3: CPU2: found redistributor 200 region 0:0x0000000017aa0000
+[    0.008931] CPU2: Booted secondary processor 0x0000000200 [0x51df805e]
+[    0.010195] Detected VIPT I-cache on CPU3
+[    0.010347] GICv3: CPU3: found redistributor 300 region 0:0x0000000017ac0000
+[    0.010387] CPU3: Booted secondary processor 0x0000000300 [0x51df805e]
+[    0.011739] Detected VIPT I-cache on CPU4
+[    0.011892] GICv3: CPU4: found redistributor 400 region 0:0x0000000017ae0000
+[    0.011932] CPU4: Booted secondary processor 0x0000000400 [0x51df805e]
+[    0.013401] Detected VIPT I-cache on CPU5
+[    0.013557] GICv3: CPU5: found redistributor 500 region 0:0x0000000017b00000
+[    0.013596] CPU5: Booted secondary processor 0x0000000500 [0x51df805e]
+[    0.013676] smp: Brought up 1 node, 6 CPUs
+[    0.013786] SMP: Total of 6 processors activated.
+[    0.013795] CPU: All CPU(s) started at EL1
+[    0.013805] CPU features: detected: 32-bit EL0 Support
+[    0.013815] CPU features: detected: Data cache clean to the PoU not required for I/D coherence
+[    0.013829] CPU features: detected: Common not Private translations
+[    0.013839] CPU features: detected: CRC32 instructions
+[    0.013850] CPU features: detected: RCpc load-acquire (LDAPR)
+[    0.013861] CPU features: detected: LSE atomic instructions
+[    0.013871] CPU features: detected: Privileged Access Never
+[    0.013880] CPU features: detected: PMUv3
+[    0.013889] CPU features: detected: RAS Extension Support
+[    0.013902] CPU features: detected: XNX
+[    0.013958] alternatives: applying system-wide alternatives
+[    0.018748] Memory: 3589948K/4158464K available (17408K kernel code, 2446K rwdata, 6884K rodata, 6272K init, 433K bss, 527892K reserved, 32768K cma-reserved)
+[    0.020100] devtmpfs: initialized
+[    0.034736] posixtimers hash table entries: 4096 (order: 4, 65536 bytes, linear)
+[    0.034867] futex hash table entries: 2048 (131072 bytes on 1 NUMA nodes, total 128 KiB, linear).
+[    0.035184] 2G module region forced by RANDOMIZE_MODULE_REGION_FULL
+[    0.035208] 0 pages in range for non-PLT usage
+[    0.035212] 515856 pages in range for PLT usage
+[    0.036084] DMI: not present or invalid.
+[    0.038041] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.038711] DMA: preallocated 512 KiB GFP_KERNEL pool for atomic allocations
+[    0.038838] DMA: preallocated 512 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+[    0.038881] audit: initializing netlink subsys (disabled)
+[    0.039007] audit: type=2000 audit(0.034:1): state=initialized audit_enabled=0 res=1
+[    0.040262] thermal_sys: Registered thermal governor 'step_wise'
+[    0.040269] thermal_sys: Registered thermal governor 'power_allocator'
+[    0.040427] NET: Registered PF_QIPCRTR protocol family
+[    0.040602] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+[    0.040747] ASID allocator initialised with 32768 entries
+[    0.041049] Serial: AMBA PL011 UART driver
+[    0.041935] pstore: Using crash dump compression: deflate
+[    0.041953] printk: legacy console [ramoops0] enabled
+[    0.042666] pstore: Registered ramoops as persistent store backend
+[    0.042684] ramoops: using 0x400000@0x9d800000, ecc: 0
+[    0.044587] CPUidle PSCI: Initialized CPU PM domain topology using OSI mode
+[    0.050583] /soc@0/ufshc@1d84000: Fixed dependency cycle(s) with /soc@0/phy@1d87000
+[    0.050634] /soc@0/phy@1d87000: Fixed dependency cycle(s) with /soc@0/ufshc@1d84000
+[    0.050815] /soc@0/usb@a6f8800/usb@a600000: Fixed dependency cycle(s) with /soc@0/spmi@c440000/pmic@0/typec@1500/connector
+[    0.050900] /soc@0/spmi@c440000/pmic@0/typec@1500/connector: Fixed dependency cycle(s) with /soc@0/usb@a6f8800/usb@a600000
+[    0.050973] /soc@0/interrupt-controller@17a00000: Fixed dependency cycle(s) with /soc@0/interrupt-controller@17a00000
+[    0.053877] /soc@0/ufshc@1d84000: Fixed dependency cycle(s) with /soc@0/phy@1d87000
+[    0.054222] /soc@0/ufshc@1d84000: Fixed dependency cycle(s) with /soc@0/phy@1d87000
+[    0.054297] /soc@0/phy@1d87000: Fixed dependency cycle(s) with /soc@0/ufshc@1d84000
+[    0.058159] /soc@0/usb@a6f8800/usb@a600000: Fixed dependency cycle(s) with /soc@0/spmi@c440000/pmic@0/typec@1500/connector
+[    0.059617] /soc@0/spmi@c440000/pmic@0/typec@1500/connector: Fixed dependency cycle(s) with /soc@0/usb@a6f8800/usb@a600000
+[    0.066284] /soc@0/rsc@18200000/regulators-0: Fixed dependency cycle(s) with /soc@0/rsc@18200000/regulators-0/smps5
+[    0.066330] /soc@0/rsc@18200000/regulators-0: Fixed dependency cycle(s) with /soc@0/rsc@18200000/regulators-0/smps4
+[    0.066522] /soc@0/rsc@18200000/regulators-1: Fixed dependency cycle(s) with /soc@0/rsc@18200000/regulators-1/bob
+[    0.066555] /soc@0/rsc@18200000/regulators-1: Fixed dependency cycle(s) with /soc@0/rsc@18200000/regulators-1/smps8
+[    0.069473] HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+[    0.069507] HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+[    0.069524] HugeTLB: registered 32.0 MiB page size, pre-allocated 0 pages
+[    0.069538] HugeTLB: 0 KiB vmemmap can be freed for a 32.0 MiB page
+[    0.069551] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+[    0.069565] HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
+[    0.069579] HugeTLB: registered 64.0 KiB page size, pre-allocated 0 pages
+[    0.069592] HugeTLB: 0 KiB vmemmap can be freed for a 64.0 KiB page
+[    0.071040] raid6: using neon recovery algorithm
+[    0.087605] raid6: int64x1  gen()  1444 MB/s
+[    0.104676] raid6: int64x2  gen()  1858 MB/s
+[    0.121753] raid6: int64x4  gen()  1989 MB/s
+[    0.138833] raid6: int64x8  gen()  1687 MB/s
+[    0.155904] raid6: neonx1   gen()  2348 MB/s
+[    0.172979] raid6: neonx2   gen()  2704 MB/s
+[    0.190055] raid6: neonx4   gen()  2774 MB/s
+[    0.207126] raid6: neonx8   gen()  2822 MB/s
+[    0.207141] raid6: using algorithm neonx8 gen() 2822 MB/s
+[    0.224201] raid6: .... xor() 2107 MB/s, rmw enabled
+[    0.227459] iommu: Default domain type: Translated
+[    0.227478] iommu: DMA domain TLB invalidation policy: strict mode
+[    0.228216] SCSI subsystem initialized
+[    0.228396] usbcore: registered new interface driver usbfs
+[    0.228438] usbcore: registered new interface driver hub
+[    0.228487] usbcore: registered new device driver usb
+[    0.228649] pps_core: LinuxPPS API ver. 1 registered
+[    0.228665] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.228691] PTP clock support registered
+[    0.228760] EDAC MC: Ver: 3.0.0
+[    0.229018] scmi_core: SCMI protocol bus registered
+[    0.230556] vgaarb: loaded
+[    0.230864] clocksource: Switched to clocksource arch_sys_counter
+[    0.231228] VFS: Disk quotas dquot_6.6.0
+[    0.231254] VFS: Dquot-cache hash table entries: 512 (4096 bytes)
+[    0.237528] NET: Registered PF_INET protocol family
+[    0.237692] IP idents hash table entries: 65536 (order: 7, 524288 bytes, linear)
+[    0.239916] tcp_listen_portaddr_hash hash table entries: 2048 (order: 3, 32768 bytes, linear)
+[    0.239962] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.239987] TCP established hash table entries: 32768 (order: 6, 262144 bytes, linear)
+[    0.240149] TCP bind hash table entries: 32768 (order: 8, 1048576 bytes, linear)
+[    0.240796] TCP: Hash tables configured (established 32768 bind 32768)
+[    0.240917] UDP hash table entries: 2048 (order: 5, 131072 bytes, linear)
+[    0.241119] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.241164] PCI: CLS 0 bytes, default 64
+[    0.241378] Trying to unpack rootfs image as initramfs...
+[    0.245066] Initialise system trusted keyrings
+[    0.245320] workingset: timestamp_bits=45 (anon: 40) max_order=20 bucket_order=0 (anon: 0)
+[    0.246217] NET: Registered PF_ALG protocol family
+[    0.246243] Key type asymmetric registered
+[    0.246257] Asymmetric key parser 'x509' registered
+[    0.246315] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 244)
+[    0.246488] io scheduler mq-deadline registered
+[    0.246505] io scheduler kyber registered
+[    0.246540] io scheduler bfq registered
+[    0.246598] xor: measuring software checksum speed
+[    0.247698]    neon            :  3027 MB/sec
+[    0.248839]    32regs          :  2915 MB/sec
+[    0.249913]    8regs           :  3095 MB/sec
+[    0.249927] xor: using function: 8regs (3095 MB/sec)
+[    0.256341] ledtrig-cpu: registered to indicate activity on CPUs
+[    0.257616] simple-framebuffer 9c000000.framebuffer: simplefb: cannot reserve video memory at [mem 0x9c000000-0x9ca2287f]
+[    0.257671] simple-framebuffer 9c000000.framebuffer: framebuffer at 0x9c000000, 0xa22880 bytes
+[    0.257692] simple-framebuffer 9c000000.framebuffer: format=a8r8g8b8, mode=1080x2460x32, linelength=4320
+[    0.282527] Freeing initrd memory: 1420K
+[    0.349713] Console: switching to colour frame buffer device 135x153
+[    0.442397] simple-framebuffer 9c000000.framebuffer: fb0: simplefb registered!
+[    0.450888] vreg_s1c_1p13: Setting 1000000-1200000uV
+[    0.451823] vreg_s8c_1p2: Setting 1200000-1730000uV
+[    0.452748] vreg_l1c_1p8: Setting 1616000-1984000uV
+[    0.453652] vreg_l2c_1p3: Setting 1200000-1352000uV
+[    0.453766] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
+[    0.454510] vreg_l3c_1p23: Setting 1144000-1256000uV
+[    0.455827] vreg_l4c_1p8: Setting 1648000-2950000uV
+[    0.456763] vreg_l5c_1p8: Setting 1648000-2950000uV
+[    0.456987] msm_serial: driver initialized
+[    0.457620] vreg_l6c_3p0: Setting 1648000-2950000uV
+[    0.458740] vreg_l7c_3p0: Setting 3000000-3312000uV
+[    0.459563] vreg_l8c_1p8: Setting 1800000-1900000uV
+[    0.460476] vreg_l9c_3p1: Setting 2950000-3312000uV
+[    0.461319] vreg_l10c_3p3: Setting 3200000-3312000uV
+[    0.462156] vreg_l11c_3p3: Setting 2950000-3400000uV
+[    0.462980] vreg_bob: Setting 3296000-3960000uV
+[    0.466400] brd: module loaded
+[    0.471547] loop: module loaded
+[    0.472630] zram: Added device: zram0
+[    0.474093] spmi_pmic_arb c440000.spmi: PMIC arbiter version v5 (0x50000000)
+[    0.476035] /soc@0/spmi@c440000/pmic@0/typec@1500/connector: Fixed dependency cycle(s) with /soc@0/usb@a6f8800/usb@a600000
+[    0.478032] /soc@0/spmi@c440000/pmic@0/typec@1500/connector: Fixed dependency cycle(s) with /soc@0/usb@a6f8800/usb@a600000
+[    0.486003] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB capture EN 0x80 RDY 0x80
+[    0.486690] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB INT_RT 0x1 VREG_OK 1 SC 0
+[    0.486955] thunder_xcv, ver 1.0
+[    0.487377] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB voltages LAB 5500 IBB 5500 BST 5650
+[    0.488019] thunder_bgx, ver 1.0
+[    0.488882] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB adopted enabled state from ABL
+[    0.489316] nicpf, ver 1.0
+[    0.489884] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: PM6150L LCDB probed full
+[    0.490536] e1000: Intel(R) PRO/1000 Network Driver
+[    0.491638] e1000: Copyright (c) 1999-2006 Intel Corporation.
+[    0.492251] e1000e: Intel(R) PRO/1000 Network Driver
+[    0.492802] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
+[    0.493555] sky2: driver version 1.30
+[    0.494584] VFIO - User Level meta-driver version: 0.3
+[    0.498510] rtc-pm8xxx c440000.spmi:pmic@0:rtc@6000: registered as rtc0
+[    0.499123] rtc-pm8xxx c440000.spmi:pmic@0:rtc@6000: setting system clock to 1974-08-11T21:15:07 UTC (145487707)
+[    0.499883] i2c_dev: i2c /dev entries driver
+[    0.502236] input: pm8941_pwrkey as /devices/platform/soc@0/c440000.spmi/spmi-0/0-00/c440000.spmi:pmic@0:pon@800/c440000.spmi:pmic@0:pon@800:pwrkey/input/input0
+[    0.504400] input: pm8941_resin as /devices/platform/soc@0/c440000.spmi/spmi-0/0-00/c440000.spmi:pmic@0:pon@800/c440000.spmi:pmic@0:pon@800:resin/input/input1
+[    0.514999] device-mapper: ioctl: 4.50.0-ioctl (2025-04-28) initialised: dm-devel@lists.linux.dev
+[    0.516050] failed to register cpuidle driver
+[    0.516774] CPUidle PSCI: Failed to create psci-cpuidle device
+[    0.519251] clocksource: arch_mmio_counter: mask: 0xffffffffffffff max_cycles: 0x46d987e47, max_idle_ns: 440795202767 ns
+[    0.519924] arch-timer-mmio 17c20000.timer: mmio timer running at 19.20MHz (virt)
+[    0.520887] hid: raw HID events driver (C) Jiri Kosina
+[    0.522526] hw perfevents: enabled with armv8_cortex_a55 PMU driver, 7 (0,8000003f) counters available
+[    0.523559] hw perfevents: enabled with armv8_cortex_a78 PMU driver, 7 (0,8000003f) counters available
+[    0.527076] NET: Registered PF_INET6 protocol family
+[    0.528305] Segment Routing with IPv6
+[    0.528881] In-situ OAM (IOAM) with IPv6
+[    0.529446] NET: Registered PF_PACKET protocol family
+[    0.530015] Key type dns_resolver registered
+[    0.537850] registered taskstats version 1
+[    0.538651] Loading compiled-in X.509 certificates
+[    0.547648] Demotion targets for Node 0: null
+[    0.548376] Key type .fscrypt registered
+[    0.548912] Key type fscrypt-provisioning registered
+[    0.550534] Btrfs loaded, zoned=no, fsverity=no
+[    0.569116] sm7150-tlmm 3500000.pinctrl: hanoip GPIO4 direction read: tile=0 ctl=0x4000 base=(____ptrval____)
+[    0.571353] qcom-cpufreq-hw 18323000.cpufreq: CPUFreq HW driver failed to register
+[    0.573103] qcom_scm firmware:scm: SHM Bridge not supported
+[    0.573761] qcom_scm: convention: smc arm 64
+[    0.574651] qcom_scm firmware:scm: qseecom: found qseecom with version 0x1400000
+[    0.575226] qcom_scm firmware:scm: qseecom: untested machine, skipping
+[    0.579219] vreg_s4a_1p1: Setting 824000-1120000uV
+[    0.579651] arm-smmu 5040000.iommu: probing hardware configuration...
+[    0.580360] arm-smmu 5040000.iommu: SMMUv2 with:
+[    0.580521] vreg_s5a_2p0: Setting 1744000-2040000uV
+[    0.580948] arm-smmu 5040000.iommu: 	stage 1 translation
+[    0.581975] arm-smmu 5040000.iommu: 	address translation ops
+[    0.582123] vreg_l1a_1p2: Setting 1096000-1304000uV
+[    0.582503] arm-smmu 5040000.iommu: 	non-coherent table walk
+[    0.583746] arm-smmu 5040000.iommu: 	(IDR0.CTTW overridden by FW configuration)
+[    0.583896] vreg_l2a_1p0: Setting 944000-1056000uV
+[    0.584369] arm-smmu 5040000.iommu: 	stream matching with 5 register groups
+[    0.585595] arm-smmu 5040000.iommu: 	5 context banks (0 stage-2 only)
+[    0.585729] vreg_l3a_1p0: Setting 968000-1064000uV
+[    0.586228] arm-smmu 5040000.iommu: 	Supported page sizes: 0x61311000
+[    0.587436] arm-smmu 5040000.iommu: 	Stage-1: 48-bit VA -> 36-bit IPA
+[    0.587583] vreg_l4a_0p88: Setting 824000-920000uV
+[    0.588124] arm-smmu 5040000.iommu: 	preserved 0 boot mappings
+[    0.589390] vreg_l5a_2p7: Setting 2600000-2800000uV
+[    0.590005] platform 5000000.gpu: Adding to iommu group 0
+[    0.590148] platform 506a000.gmu: Adding to iommu group 1
+[    0.591322] vreg_l6a_1p2: Setting 1096000-1304000uV
+[    0.592081] vreg_l9a_0p8: Setting 624000-760000uV
+[    0.592951] vreg_l10a_1p8: Setting 1720000-1832000uV
+[    0.593712] vreg_l11a_1p8: Setting 1696000-1984000uV
+[    0.594468] vreg_l12a_1p8: Setting 1696000-1952000uV
+[    0.595226] vreg_l13a_1p8: Setting 1696000-1904000uV
+[    0.595752] arm-smmu 15000000.iommu: probing hardware configuration...
+[    0.596323] arm-smmu 15000000.iommu: SMMUv2 with:
+[    0.596462] vreg_l14a_1p8: Setting 1720000-1856000uV
+[    0.596868] arm-smmu 15000000.iommu: 	stage 1 translation
+[    0.597918] arm-smmu 15000000.iommu: 	coherent table walk
+[    0.598063] vreg_l15a_1p8: Setting 1696000-1904000uV
+[    0.598445] arm-smmu 15000000.iommu: 	stream matching with 79 register groups
+[    0.599615] arm-smmu 15000000.iommu: 	61 context banks (0 stage-2 only)
+[    0.599744] vreg_l16a_2p8: Setting 2424000-2976000uV
+[    0.600587] arm-smmu 15000000.iommu: 	Supported page sizes: 0x61311000
+[    0.601458] arm-smmu 15000000.iommu: 	Stage-1: 48-bit VA -> 48-bit IPA
+[    0.601595] vreg_l17a_3p1: Setting 3000000-3232000uV
+[    0.602135] arm-smmu 15000000.iommu: 	preserved 0 boot mappings
+[    0.603459] vreg_l19a_2p85: Setting 2944000-3304000uV
+[    0.605463] platform 800000.dma-controller: Adding to iommu group 2
+[    0.606185] platform 8c0000.geniqup: Adding to iommu group 3
+[    0.606928] platform a00000.dma-controller: Adding to iommu group 4
+[    0.607593] platform ac0000.geniqup: Adding to iommu group 5
+[    0.608378] platform 18800000.wifi: Adding to iommu group 6
+[    0.610160] qcom,wled c440000.spmi:pmic@5:leds@d800: Only one of qcom,num-strings or qcom,enabled-strings should be set
+[    0.615098] platform a600000.usb: Adding to iommu group 7
+[    0.615838] /soc@0/spmi@c440000/pmic@0/typec@1500/connector: Fixed dependency cycle(s) with /soc@0/usb@a6f8800/usb@a600000
+[    0.616583] /soc@0/usb@a6f8800/usb@a600000: Fixed dependency cycle(s) with /soc@0/spmi@c440000/pmic@0/typec@1500/connector
+[    0.631965] 88c000.serial: ttyHS0 at MMIO 0x88c000 (irq = 151, base_baud = 0) is a MSM
+[    0.633286] serial serial0: tty port ttyHS0 registered
+[    0.638556] a88000.serial: ttyMSM0 at MMIO 0xa88000 (irq = 154, base_baud = 0) is a MSM
+[    0.661334] printk: legacy console [ttyMSM0] enabled
+[    3.053901] input: gpio-keys as /devices/platform/gpio-keys/input/input2
+[    3.062072] clk: Not disabling unused clocks
+[    3.067018] PM: genpd: Disabling unused power domains
+[    3.076981] Freeing unused kernel memory: 6272K
+[    3.082361] Run /init as init process
+[    3.524835]   with arguments:
+[    3.966380]     /init
+[    4.405087]   with environment:
+[    4.842448]     HOME=/
+[    5.276397]     TERM=linux
+[    5.711140]     panic_on_oops=1
+[    6.145957]     idle=poll
+[    7.026034] printk: legacy console [ttyGS0] enabled
+[   17.894648] platform 62b52000.pinctrl: deferred probe pending: (reason unknown)
+[   18.327631] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   18.762652] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   19.197680] qnoc-sm7150 16e0000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   19.633038] gcc-sm7150 100000.clock-controller: sync_state() pending due to 1d84000.ufshc
+[   20.069239] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 5000000.gpu
+[   20.506629] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   20.944640] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   21.386927] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   21.830744] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   22.274406] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 5000000.gpu
+[   22.716742] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   23.157658] gcc-sm7150 100000.clock-controller: sync_state() pending due to 18323000.cpufreq
+[   52.133883] random: crng init done
+[  409.461131] ufshcd_core: loading out-of-tree module taints kernel.
+[  409.917935] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_vreg: Unable to find vdd-hba-supply regulator, assuming enabled
+[  410.369387] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_vreg: Unable to find vccq-supply regulator, assuming enabled
+[  410.818852] ufshcd-qcom 1d84000.ufshc: UFS DIAG: generic init complete, invoking variant
+[  411.264893] ufshcd-qcom 1d84000.ufshc: UFS DIAG: variant callback start (qcom)
+[  411.711262] ufshcd-qcom 1d84000.ufshc: UFS DIAG: host reset get start
+[  412.156375] ufshcd-qcom 1d84000.ufshc: UFS DIAG: host reset get passed
+[  412.600664] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY get start
+[  413.043934] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY get passed
+[  413.485844] ufshcd-qcom 1d84000.ufshc: UFS DIAG: ICC init start
+[  413.928129] ufshcd-qcom 1d84000.ufshc: UFS DIAG: icc get ufs-ddr start
+[  414.372051] ufshcd-qcom 1d84000.ufshc: UFS DIAG: icc get cpu-ufs start
+[  414.817458] ufshcd-qcom 1d84000.ufshc: UFS DIAG: icc set bandwidth start
+[  415.262600] ufshcd-qcom 1d84000.ufshc: UFS DIAG: icc init passed
+[  415.706212] ufshcd-qcom 1d84000.ufshc: UFS DIAG: ICC init passed
+[  416.148403] ufshcd-qcom 1d84000.ufshc: UFS DIAG: device reset GPIO get start
+[  416.590723] ufshcd-qcom 1d84000.ufshc: UFS DIAG: device reset GPIO get passed
+[  417.032363] ufshcd-qcom 1d84000.ufshc: UFS DIAG: lane clocks get start
+[  417.473638] ufshcd-qcom 1d84000.ufshc: UFS DIAG: lane clocks get passed
+[  417.914138] ufshcd-qcom 1d84000.ufshc: UFS DIAG: ICE init start
+[  418.354221] ufshcd-qcom 1d84000.ufshc: UFS DIAG: ICE init passed
+[  418.793662] ufshcd-qcom 1d84000.ufshc: UFS DIAG: Qualcomm variant init complete (8 lane clocks)
+[  419.236899] ufshcd-qcom 1d84000.ufshc: UFS DIAG: variant callback returned 0
+[  419.677714] ufshcd-qcom 1d84000.ufshc: UFS DIAG: ufshcd_hba_init passed
+[  420.119264] ufshcd-qcom 1d84000.ufshc: UFS DIAG: hba_capabilities passed
+[  420.562498] ufshcd-qcom 1d84000.ufshc: UFS DIAG: attached-device reset start
+[  421.005902] ufshcd-qcom 1d84000.ufshc: UFS DIAG: attached-device reset returned
+[  421.446322] ufshcd-qcom 1d84000.ufshc: UFS DIAG: HCE start
+[  421.881556] ufshcd-qcom 1d84000.ufshc: UFS DIAG: QCOM host reset start
+[  422.316936] ufshcd-qcom 1d84000.ufshc: UFS DIAG: QCOM host reset returned 0
+[  422.749320] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY init start
+[  423.177709] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY init returned 0
+[  423.604699] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY power-on start
+[  424.028474] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY power-on returned 0
+[  424.452817] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY calibration start
+[  424.880084] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY calibration returned 0
+[  425.304583] ufshcd-qcom 1d84000.ufshc: UFS DIAG: HCE returned 0
+[  425.726448] ufshcd-qcom 1d84000.ufshc: UFS DIAG: add SCSI host start
+[  426.147764] scsi host0: ufshcd
+[  426.569199] ufshcd-qcom 1d84000.ufshc: UFS DIAG: add SCSI host returned 0
+[  426.996531] ufshcd-qcom 1d84000.ufshc: UFS DIAG: link startup start
+[  427.418098] ufshcd-qcom 1d84000.ufshc: UFS DIAG: link PRE_CHANGE start, retries=3
+[  427.840771] ufshcd-qcom 1d84000.ufshc: UFS DIAG: link PRE_CHANGE returned
+[  428.262024] ufshcd-qcom 1d84000.ufshc: UFS DIAG: DME_LINK_STARTUP send start
+[  428.696766] ufshcd-qcom 1d84000.ufshc: UFS DIAG: DME_LINK_STARTUP returned 0
+[  429.118665] ufshcd-qcom 1d84000.ufshc: UFS DIAG: link startup returned 0
+[  429.539410] ufshcd-qcom 1d84000.ufshc: UFS DIAG: NOP OUT device verification start
+[  431.088896] ufshcd-qcom 1d84000.ufshc: ufshcd_abort: Device abort task at tag 0
+[  431.484075] host_regs: 00000000: 1587031f 00000000 00000210 00000000
+[  431.879563] host_regs: 00000010: 01000000 00010217 00000000 00000000
+[  432.275777] host_regs: 00000020: 00000000 00071ef5 00000000 00000000
+[  432.671208] host_regs: 00000030: 0000000f 00000001 00000000 00000000
+[  433.063800] host_regs: 00000040: 00000000 00000000 00000000 00000000
+[  433.457797] host_regs: 00000050: 01bc4000 00000001 00000000 00000000
+[  433.849697] host_regs: 00000060: 00000001 00000001 00000000 00000000
+[  434.241810] host_regs: 00000070: 01bc0000 00000001 00000000 00000000
+[  434.635242] host_regs: 00000080: 00000001 00000000 00000000 00000000
+[  435.029553] host_regs: 00000090: 00000001 15810000 00000000 00000001
+[  435.424997] ufshcd-qcom 1d84000.ufshc: No record of pa_err
+[  435.820420] ufshcd-qcom 1d84000.ufshc: No record of dl_err
+[  436.216014] ufshcd-qcom 1d84000.ufshc: No record of nl_err
+[  436.610925] ufshcd-qcom 1d84000.ufshc: No record of tl_err
+[  437.003797] ufshcd-qcom 1d84000.ufshc: No record of dme_err
+[  437.396536] ufshcd-qcom 1d84000.ufshc: No record of auto_hibern8_err
+[  437.789876] ufshcd-qcom 1d84000.ufshc: No record of fatal_err
+[  438.180233] ufshcd-qcom 1d84000.ufshc: No record of link_startup_fail
+[  438.571121] ufshcd-qcom 1d84000.ufshc: No record of resume_fail
+[  438.959471] ufshcd-qcom 1d84000.ufshc: No record of suspend_fail
+[  439.347604] ufshcd-qcom 1d84000.ufshc: No record of wlun resume_fail
+[  439.734375] ufshcd-qcom 1d84000.ufshc: No record of wlun suspend_fail
+[  440.120895] ufshcd-qcom 1d84000.ufshc: dev_reset[0] = 0x0 at 421005894 us
+[  440.507136] ufshcd-qcom 1d84000.ufshc: dev_reset: total cnt=1
+[  440.891790] ufshcd-qcom 1d84000.ufshc: No record of host_reset
+[  441.276316] ufshcd-qcom 1d84000.ufshc: task_abort[0] = 0x0 at 431484041 us
+[  441.662151] ufshcd-qcom 1d84000.ufshc: task_abort: total cnt=1
+[  442.046895] ufshcd-qcom 1d84000.ufshc: HW_H8_ENTER_CNT=0
+[  442.430671] ufshcd-qcom 1d84000.ufshc: HW_H8_EXIT_CNT=0
+[  442.813303] ufshcd-qcom 1d84000.ufshc: SW_H8_ENTER_CNT=0
+[  443.195695] ufshcd-qcom 1d84000.ufshc: SW_H8_EXIT_CNT=0
+[  443.577371] ufshcd-qcom 1d84000.ufshc: SW_AFTER_HW_H8_ENTER_CNT=0
+[  443.958400] HCI Vendor Specific Registers 00000000: 000000c8 00000000 00000000 00000000
+[  444.340565] HCI Vendor Specific Registers 00000010: 00000000 00000000 00000001 1c00052c
+[  444.724571] HCI Vendor Specific Registers 00000020: 3f0113ff 30010002 00000000 00000000
+[  445.111188] HCI Vendor Specific Registers 00000030: 00000000 00000000 00000000 0000003c
+[  445.499189] UFS_UFS_DBG_RD_REG_OCSC 00000000: 00000000 00000000 00000000 00000000
+[  445.891555] UFS_UFS_DBG_RD_REG_OCSC 00000010: 00000000 00000000 00000000 00000000
+[  446.282083] UFS_UFS_DBG_RD_REG_OCSC 00000020: 00000000 00000000 00000000 00000000
+[  446.671462] UFS_UFS_DBG_RD_REG_OCSC 00000030: 00000000 00000000 00000000 00000000
+[  447.059289] UFS_UFS_DBG_RD_REG_OCSC 00000040: 00000000 00000000 00000000 00000000
+[  447.446702] UFS_UFS_DBG_RD_REG_OCSC 00000050: 00000000 00000000 00000000 00000000
+[  447.833068] UFS_UFS_DBG_RD_REG_OCSC 00000060: 00000000 00000000 00000000 00000000
+[  448.218622] UFS_UFS_DBG_RD_REG_OCSC 00000070: 00000000 00000000 00000000 00000000
+[  448.601536] UFS_UFS_DBG_RD_REG_OCSC 00000080: 00000000 00000000 00000000 00000000
+[  448.983398] UFS_UFS_DBG_RD_REG_OCSC 00000090: 00000000 00000000 00000000 00000000
+[  449.364468] UFS_UFS_DBG_RD_REG_OCSC 000000a0: 00000000 00000000 00000000 00000000
+[  449.745409] UFS_UFS_DBG_RD_EDTL_RAM 00000000: 00000000 00000000 00000000 00000000
+[  450.126974] UFS_UFS_DBG_RD_EDTL_RAM 00000010: 00000000 00000000 00000000 00000000
+[  450.507910] UFS_UFS_DBG_RD_EDTL_RAM 00000020: 00000000 00000000 00000000 00000000
+[  450.888810] UFS_UFS_DBG_RD_EDTL_RAM 00000030: 00000000 00000000 00000000 00000000
+[  451.269391] UFS_UFS_DBG_RD_EDTL_RAM 00000040: 00000000 00000000 00000000 00000000
+[  451.649389] UFS_UFS_DBG_RD_EDTL_RAM 00000050: 00000000 00000000 00000000 00000000
+[  452.029280] UFS_UFS_DBG_RD_EDTL_RAM 00000060: 00000000 00000000 00000000 00000000
+[  452.409876] UFS_UFS_DBG_RD_EDTL_RAM 00000070: 00000000 00000000 00000000 00000000
+[  452.788320] UFS_UFS_DBG_RD_DESC_RAM 00000000: 00000000 00000000 00000000 00000000
+[  453.166302] UFS_UFS_DBG_RD_DESC_RAM 00000010: 00000000 00000000 00000000 00000000
+[  453.543197] UFS_UFS_DBG_RD_DESC_RAM 00000020: 00000000 00000000 00000000 00000000
+[  453.918530] UFS_UFS_DBG_RD_DESC_RAM 00000030: 00000000 00000000 00000000 00000000
+[  454.293555] UFS_UFS_DBG_RD_DESC_RAM 00000040: 00000000 00000000 00000000 00000000
+[  454.666940] UFS_UFS_DBG_RD_DESC_RAM 00000050: 00000000 00000000 00000000 00000000
+[  455.038784] UFS_UFS_DBG_RD_DESC_RAM 00000060: 00000000 00000000 00000000 00000000
+[  455.409915] UFS_UFS_DBG_RD_DESC_RAM 00000070: 00000000 00000000 00000000 00000000
+[  455.778777] UFS_UFS_DBG_RD_DESC_RAM 00000080: 00000000 00000000 00000000 00000000
+[  456.145276] UFS_UFS_DBG_RD_DESC_RAM 00000090: 00000000 00000000 00000000 00000000
+[  456.510205] UFS_UFS_DBG_RD_DESC_RAM 000000a0: 00000000 00000000 00000000 00000000
+[  456.873046] UFS_UFS_DBG_RD_DESC_RAM 000000b0: 00000000 00000000 00000000 00000000
+[  457.234126] UFS_UFS_DBG_RD_DESC_RAM 000000c0: 00000000 00000000 00000000 00000000
+[  457.590537] UFS_UFS_DBG_RD_DESC_RAM 000000d0: 00000000 00000000 00000000 00000000
+[  457.941444] UFS_UFS_DBG_RD_DESC_RAM 000000e0: 00000000 00000000 00000000 00000000
+[  458.289525] UFS_UFS_DBG_RD_DESC_RAM 000000f0: 00000000 00000000 00000000 00000000
+[  458.635975] UFS_UFS_DBG_RD_DESC_RAM 00000100: 00000000 00000000 00000000 00000000
+[  458.980823] UFS_UFS_DBG_RD_DESC_RAM 00000110: 00000000 00000000 00000000 00000000
+[  459.319890] UFS_UFS_DBG_RD_DESC_RAM 00000120: 00000000 00000000 00000000 00000000
+[  459.654817] UFS_UFS_DBG_RD_DESC_RAM 00000130: 00000000 00000000 00000000 00000000
+[  459.983744] UFS_UFS_DBG_RD_DESC_RAM 00000140: 00000000 00000000 00000000 00000000
+[  460.311384] UFS_UFS_DBG_RD_DESC_RAM 00000150: 00000000 00000000 00000000 00000000
+[  460.639357] UFS_UFS_DBG_RD_DESC_RAM 00000160: 00000000 00000000 00000000 00000000
+[  460.966280] UFS_UFS_DBG_RD_DESC_RAM 00000170: 00000000 00000000 00000000 00000000
+[  461.292917] UFS_UFS_DBG_RD_DESC_RAM 00000180: 00000000 00000000 00000000 00000000
+[  461.618951] UFS_UFS_DBG_RD_DESC_RAM 00000190: 00000000 00000000 00000000 00000000
+[  461.944872] UFS_UFS_DBG_RD_DESC_RAM 000001a0: 00000000 00000000 00000000 00000000
+[  462.270996] UFS_UFS_DBG_RD_DESC_RAM 000001b0: 00000000 00000000 00000000 00000000
+[  462.596493] UFS_UFS_DBG_RD_DESC_RAM 000001c0: 00000000 00000000 00000000 00000000
+[  462.922391] UFS_UFS_DBG_RD_DESC_RAM 000001d0: 00000000 00000000 00000000 00000000
+[  463.247979] UFS_UFS_DBG_RD_DESC_RAM 000001e0: 00000000 00000000 00000000 00000000
+[  463.573406] UFS_UFS_DBG_RD_DESC_RAM 000001f0: 00000000 00000000 00000000 00000000
+[  463.897866] UFS_UFS_DBG_RD_PRDT_RAM 00000000: 00000000 00000000 00000000 00000000
+[  464.220921] UFS_UFS_DBG_RD_PRDT_RAM 00000010: 00000000 00000000 00000000 00000000
+[  464.544384] UFS_UFS_DBG_RD_PRDT_RAM 00000020: 00000000 00000000 00000000 00000000
+[  464.868249] UFS_UFS_DBG_RD_PRDT_RAM 00000030: 00000000 00000000 00000000 00000000
+[  465.189772] UFS_UFS_DBG_RD_PRDT_RAM 00000040: 00000000 00000000 00000000 00000000
+[  465.508676] UFS_UFS_DBG_RD_PRDT_RAM 00000050: 00000000 00000000 00000000 00000000
+[  465.827546] UFS_UFS_DBG_RD_PRDT_RAM 00000060: 00000000 00000000 00000000 00000000
+[  466.145591] UFS_UFS_DBG_RD_PRDT_RAM 00000070: 00000000 00000000 00000000 00000000
+[  466.463033] UFS_UFS_DBG_RD_PRDT_RAM 00000080: 00000000 00000000 00000000 00000000
+[  466.777384] UFS_UFS_DBG_RD_PRDT_RAM 00000090: 00000000 00000000 00000000 00000000
+[  467.089731] UFS_UFS_DBG_RD_PRDT_RAM 000000a0: 00000000 00000000 00000000 00000000
+[  467.398312] UFS_UFS_DBG_RD_PRDT_RAM 000000b0: 00000000 00000000 00000000 00000000
+[  467.703684] UFS_UFS_DBG_RD_PRDT_RAM 000000c0: 00000000 00000000 00000000 00000000
+[  468.008526] UFS_UFS_DBG_RD_PRDT_RAM 000000d0: 00000000 00000000 00000000 00000000
+[  468.313114] UFS_UFS_DBG_RD_PRDT_RAM 000000e0: 00000000 00000000 00000000 00000000
+[  468.617049] UFS_UFS_DBG_RD_PRDT_RAM 000000f0: 00000000 00000000 00000000 00000000
+[  468.919939] UFS_DBG_RD_REG_UAWM 00000000: 00000000 00000000 00000000 00000000
+[  469.225087] UFS_DBG_RD_REG_UARM 00000000: 00000000 00000000 00000000 00000000
+[  469.527639] UFS_DBG_RD_REG_TXUC 00000000: 00000000 00000000 00000000 00000000
+[  469.826131] UFS_DBG_RD_REG_TXUC 00000010: 00000000 00000000 00000000 00000000
+[  470.125242] UFS_DBG_RD_REG_TXUC 00000020: 00000000 00000000 00000000 00000000
+[  470.423276] UFS_DBG_RD_REG_TXUC 00000030: 00000000 00000000 00000000 00000000
+[  470.719242] UFS_DBG_RD_REG_TXUC 00000040: 00000000 00000000 00000000 00000000
+[  471.015154] UFS_DBG_RD_REG_TXUC 00000050: 00000000 00000000 00000000 00000000
+[  471.311790] UFS_DBG_RD_REG_TXUC 00000060: 00000000 00000000 00000000 00000000
+[  471.607763] UFS_DBG_RD_REG_TXUC 00000070: 00000000 00000000 00000000 00000000
+[  471.903698] UFS_DBG_RD_REG_TXUC 00000080: 00000000 00000000 00000000 00000000
+[  472.199786] UFS_DBG_RD_REG_TXUC 00000090: 00000000 00000000 00000000 00000000
+[  472.495285] UFS_DBG_RD_REG_TXUC 000000a0: 00000000 00000000 00000000 00000000
+[  472.790691] UFS_DBG_RD_REG_TXUC 000000b0: 00000000 00000000 00000000 00000000
+[  473.085644] UFS_DBG_RD_REG_RXUC 00000000: 00000000 00000000 00000000 00000000
+[  473.380754] UFS_DBG_RD_REG_RXUC 00000010: 00000000 00000000 00000000 00000000
+[  473.676189] UFS_DBG_RD_REG_RXUC 00000020: 00000000 00000000 00000000 00000000
+[  473.970107] UFS_DBG_RD_REG_RXUC 00000030: 00000000 00000000 00000000 00000000
+[  474.265194] UFS_DBG_RD_REG_RXUC 00000040: 00000000 00000000 00000000 00000000
+[  474.560148] UFS_DBG_RD_REG_RXUC 00000050: 00000000 00000000 00000000 00000000
+[  474.856045] UFS_DBG_RD_REG_RXUC 00000060: 00000000 00000000 00000000
+[  475.151794] UFS_DBG_RD_REG_DFC 00000000: 00000000 00000000 00000000 00000000
+[  475.450091] UFS_DBG_RD_REG_DFC 00000010: 00000000 00000000 00000000 00000000
+[  475.745881] UFS_DBG_RD_REG_DFC 00000020: 00000000 00000000 00000000 00000000
+[  476.038674] UFS_DBG_RD_REG_DFC 00000030: 00000000 00000000 00000000 00000000
+[  476.331213] UFS_DBG_RD_REG_DFC 00000040: 00000000 00000000 00000000
+[  476.620790] UFS_DBG_RD_REG_TRLUT 00000000: 00000000 00000000 00000000 00000000
+[  476.914257] UFS_DBG_RD_REG_TRLUT 00000010: 00000000 00000000 00000000 00000000
+[  477.207392] UFS_DBG_RD_REG_TRLUT 00000020: 00000000 00000000 00000000 00000000
+[  477.499891] UFS_DBG_RD_REG_TRLUT 00000030: 00000000 00000000 00000000 00000000
+[  477.791358] UFS_DBG_RD_REG_TRLUT 00000040: 00000000 00000000 00000000 00000000
+[  478.082315] UFS_DBG_RD_REG_TRLUT 00000050: 00000000 00000000 00000000 00000000
+[  478.373459] UFS_DBG_RD_REG_TRLUT 00000060: 00000000 00000000 00000000 00000000
+[  478.663423] UFS_DBG_RD_REG_TRLUT 00000070: 00000000 00000000 00000000 00000000
+[  478.953891] UFS_DBG_RD_REG_TRLUT 00000080: 00000000 00000000
+[  479.243422] UFS_DBG_RD_REG_TMRLUT 00000000: 00000000 00000000 00000000 00000000
+[  479.537986] UFS_DBG_RD_REG_TMRLUT 00000010: 00000000 00000000 00000000 00000000
+[  479.832000] UFS_DBG_RD_REG_TMRLUT 00000020: 00000000
+[  480.123109] UFS_TEST_BUS 00000000
+[  480.414433] TSTBUS_UAWM00000000: 00000000 00000000 00000000 00000000
+[  480.705974] TSTBUS_UAWM00000010: 00000000 00000000 00000000 00000000
+[  480.993029] TSTBUS_UAWM00000020: 00000000 00000000 00000000 00000000
+[  481.279760] TSTBUS_UAWM00000030: 00000000 00000000 00000000 00000000
+[  481.565351] TSTBUS_UAWM00000040: 00000000 00000000 00000000 00000000
+[  481.850902] TSTBUS_UAWM00000050: 00000000 00000000 00000000 00000000
+[  482.134945] TSTBUS_UAWM00000060: 00000000 00000000 00000000 00000000
+[  482.419525] TSTBUS_UAWM00000070: 00000000 00000000 00000000 00000000
+[  482.702293] TSTBUS_UARM00000000: 00000000 00000000 00000000 00000000
+[  482.984343] TSTBUS_UARM00000010: 00000000 00000000 00000000 00000000
+[  483.264533] TSTBUS_UARM00000020: 00000000 00000000 00000000 00000000
+[  483.541593] TSTBUS_UARM00000030: 00000000 00000000 00000000 00000000
+[  483.816650] TSTBUS_UARM00000040: 00000000 00000000 00000000 00000000
+[  484.089709] TSTBUS_UARM00000050: 00000000 00000000 00000000 00000000
+[  484.361982] TSTBUS_UARM00000060: 00000000 00000000 00000000 00000000
+[  484.632090] TSTBUS_UARM00000070: 00000000 00000000 00000000 00000000
+[  484.901380] TSTBUS_TXUC00000000: 00000000 00000000 00000000 00000000
+[  485.170154] TSTBUS_TXUC00000010: 00000000 00000000 00000000 00000000
+[  485.437312] TSTBUS_TXUC00000020: 00000000 00000000 00000000 00000000
+[  485.702967] TSTBUS_TXUC00000030: 00000000 00000000 00000000 00000000
+[  485.967121] TSTBUS_TXUC00000040: 00000000 00000000 00000000 00000000
+[  486.228461] TSTBUS_TXUC00000050: 00000000 00000000 00000000 00000000
+[  486.489687] TSTBUS_TXUC00000060: 00000000 00000000 00000000 00000000
+[  486.750380] TSTBUS_TXUC00000070: 00000000 00000000 00000000 00000000
+[  487.011243] TSTBUS_RXUC00000000: 00000000 00000000 00000000 00000000
+[  487.272104] TSTBUS_RXUC00000010: 00000000 00000000 00000000 00000000
+[  487.532791] TSTBUS_RXUC00000020: 00000000 00000000 00000000 00000000
+[  487.793465] TSTBUS_RXUC00000030: 00000000 00000000 00000000 00000000
+[  488.052646] TSTBUS_RXUC00000040: 00000000 00000000 00000000 00000000
+[  488.312494] TSTBUS_RXUC00000050: 00000000 00000000 00000000 00000000
+[  488.572227] TSTBUS_RXUC00000060: 00000000 00000000 00000000 00000000
+[  488.831906] TSTBUS_RXUC00000070: 00000000 00000000 00000000 00000000
+[  489.091271] TSTBUS_DFC00000000: 00000000 00000000 00000000 00000000
+[  489.352509] TSTBUS_DFC00000010: 00000000 00000000 00000000 00000000
+[  489.613075] TSTBUS_DFC00000020: 00000000 00000000 00000000 00000000
+[  489.873626] TSTBUS_DFC00000030: 00000000 00000000 00000000 00000000
+[  490.133672] TSTBUS_DFC00000040: 00000000 00000000 00000000 00000000
+[  490.394398] TSTBUS_DFC00000050: 00000000 00000000 00000000 00000000
+[  490.653946] TSTBUS_DFC00000060: 00000000 00000000 00000000 00000000
+[  490.913481] TSTBUS_DFC00000070: 00000000 00000000 00000000 00000000
+[  491.173353] TSTBUS_TRLUT00000000: 00000000 00000000 00000000 00000000
+[  491.438054] TSTBUS_TRLUT00000010: 00000000 00000000 00000000 00000000
+[  491.702715] TSTBUS_TRLUT00000020: 00000000 00000000 00000000 00000000
+[  491.965871] TSTBUS_TRLUT00000030: 00000000 00000000 00000000 00000000
+[  492.226681] TSTBUS_TRLUT00000040: 00000000 00000000 00000000 00000000
+[  492.483437] TSTBUS_TRLUT00000050: 00000000 00000000 00000000 00000000
+
+UFS_POST_END

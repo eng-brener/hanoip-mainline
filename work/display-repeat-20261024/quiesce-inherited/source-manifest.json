@@ -1,0 +1,5 @@
+{
+  "kernel-mainline/drivers/gpu/drm/msm/dsi/dsi_host.c": "faac700750ceb8987557bf7e33f038315de832ba8ade92c1b36a9c6c72e1d2d3",
+  "kernel-mainline/drivers/gpu/drm/msm/dsi/dsi_manager.c": "421cd74c832fd3bc3a843a59c4979a35139a9d747f97a26e5b433f683129ee93",
+  "kernel-mainline/drivers/gpu/drm/panel/panel-ilitek-ili7807s.c": "d53323f151e044b1e523ad80957539d57ec9c1ea8a03f77a663659c7c08fee58"
+}

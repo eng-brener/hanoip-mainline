@@ -1,0 +1,86 @@
+[
+  {
+    "file": "identity.txt",
+    "command": "id; uname -a; for p in ro.product.model ro.product.device ro.board.platform ro.boot.hardware.sku ro.boot.slot_suffix ro.build.fingerprint ro.build.version.release ro.boot.bootloader; do echo \"$p=$(getprop \"$p\")\"; done; cat /sys/devices/soc0/{soc_id,machine,family,revision} 2>/dev/null",
+    "exit": 0,
+    "bytes": 512
+  },
+  {
+    "file": "memory.txt",
+    "command": "cat /proc/meminfo; cat /proc/iomem; cat /proc/cmdline",
+    "exit": 0,
+    "bytes": 4836
+  },
+  {
+    "file": "partitions.txt",
+    "command": "cat /proc/partitions; ls -l /dev/block/by-name; ls -l /sys/class/scsi_device; for d in /sys/class/block/sd*; do echo \"=== $d\"; cat \"$d/device/vendor\" \"$d/device/model\" \"$d/device/rev\" \"$d/size\" \"$d/queue/logical_block_size\" 2>/dev/null; done",
+    "exit": 0,
+    "bytes": 15706
+  },
+  {
+    "file": "dmesg.txt",
+    "command": "dmesg",
+    "exit": 0,
+    "bytes": 1233607
+  },
+  {
+    "file": "sysfs-inventory.txt",
+    "command": "ls -la /sys/firmware; ls -la /sys/kernel; ls /sys/class; find /sys/devices/platform -maxdepth 5 -iname \"*ufs*\" -o -iname \"*lcdb*\" -o -iname \"*ilitek*\" -o -iname \"*panel*\" -o -iname \"*wled*\"; cat /proc/bus/input/devices",
+    "exit": 0,
+    "bytes": 5937
+  },
+  {
+    "file": "display.txt",
+    "command": "for d in /sys/class/graphics/fb0 /sys/class/backlight/* /sys/class/leds/lcd-backlight; do echo \"=== $d\"; ls -l \"$d\"; for n in name panel_info modes virtual_size bits_per_pixel stride max_brightness brightness actual_brightness bl_power; do if [ -f \"$d/$n\" ]; then echo \"--- $n\"; cat \"$d/$n\"; fi; done; done; ls -l /sys/class/drm; ls /sys/kernel/debug /d 2>/dev/null",
+    "exit": 0,
+    "bytes": 1616
+  },
+  {
+    "file": "power.txt",
+    "command": "for d in /sys/class/power_supply/*; do echo \"=== $d\"; for n in type status health capacity voltage_now current_now temp charge_full_design charge_full charge_counter model_name manufacturer; do if [ -f \"$d/$n\" ]; then echo \"$n=$(cat \"$d/$n\")\"; fi; done; done; for d in /sys/devices/system/cpu/cpufreq/policy*; do echo \"=== $d\"; cat \"$d/related_cpus\" \"$d/cpuinfo_max_freq\" \"$d/scaling_available_frequencies\" 2>/dev/null; done",
+    "exit": 0,
+    "bytes": 747
+  },
+  {
+    "file": "usb.txt",
+    "command": "ls -l /sys/class/udc; getprop sys.usb.config; getprop sys.usb.state; cat /proc/mounts | sed -n \"/firmware/p;/debugfs/p\"",
+    "exit": 0,
+    "bytes": 363
+  },
+  {
+    "file": "stock-live.dtb",
+    "command": "cat /sys/firmware/fdt",
+    "exit": 0,
+    "bytes": 536692
+  },
+  {
+    "file": "android-config.gz",
+    "command": "cat /proc/config.gz",
+    "exit": 0,
+    "bytes": 36408
+  },
+  {
+    "file": "ufs-runtime.txt",
+    "command": "for n in clkgate_enable clkscale_enable rpm_lvl spm_lvl max_bus_bw; do echo \"=== $n\"; cat /sys/devices/platform/soc/1d84000.ufshc/$n; done; for d in /sys/devices/platform/soc/1d84000.ufshc/devfreq/*; do for n in governor available_frequencies cur_freq min_freq max_freq; do echo \"=== $n\"; cat \"$d/$n\" 2>/dev/null; done; done; for d in /sys/class/scsi_device/*; do echo \"=== $d\"; cat \"$d/device/vendor\" \"$d/device/model\" \"$d/device/rev\" \"$d/device/type\" 2>/dev/null; done; cat /sys/class/scsi_host/host0/active_mode; ls -l /sys/bus/platform/devices/1d84000.ufshc/iommu_group; ls -l /dev/block/by-name/boot_a /dev/block/by-name/boot_b /dev/block/by-name/super /dev/block/by-name/userdata",
+    "exit": 0,
+    "bytes": 2292
+  },
+  {
+    "file": "regulators-runtime.txt",
+    "command": "for d in /sys/class/regulator/regulator.*; do echo \"=== $d\"; for n in name microvolts state num_users min_microvolts max_microvolts type; do if [ -f \"$d/$n\" ]; then echo \"$n=$(cat \"$d/$n\" 2>/dev/null)\"; fi; done; done",
+    "exit": 0,
+    "bytes": 10172
+  },
+  {
+    "file": "panel-touch-runtime.txt",
+    "command": "for d in /sys/class/drm/card0-DSI-1; do for n in panelName panelSupplier panelId panelVer modes status enabled; do echo \"=== $n\"; cat \"$d/$n\"; done; done; for n in ic_ver vendor path; do echo \"=== touch $n\"; cat /sys/class/touchscreen/ilitek/$n; done; cat /sys/bus/spi/devices/spi2.0/modalias; ls -l /sys/bus/spi/devices/spi2.0/driver",
+    "exit": 0,
+    "bytes": 584
+  },
+  {
+    "file": "reserved-memory-runtime.txt",
+    "command": "cat /proc/iomem; ls -la /sys/fs/pstore; cat /proc/uptime; cat /sys/devices/system/cpu/online",
+    "exit": 0,
+    "bytes": 2466
+  }
+]

@@ -1,0 +1,7 @@
+  CC [M]  drivers/video/backlight/qcom-wled.o
+  CC [M]  drivers/gpu/drm/panel/panel-ilitek-ili7807s.o
+  MODPOST Module.symvers
+  CC [M]  drivers/gpu/drm/panel/panel-ilitek-ili7807s.mod.o
+  CC [M]  drivers/video/backlight/qcom-wled.mod.o
+  LD [M]  drivers/gpu/drm/panel/panel-ilitek-ili7807s.ko
+  LD [M]  drivers/video/backlight/qcom-wled.ko

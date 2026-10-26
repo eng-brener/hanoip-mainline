@@ -1,0 +1,13 @@
+autostart 8.92
+HANOIP: display probe started (PID 142); see dmesg and /run/hanoip-display-loader.log
+fb0=msmdrmfb after 9s at 19.04
+irqs=6
+autostart done 22.58
+---
+irqs=6
+enabled
+msmdrmfb
+0
+/sbin/enter-pmos
+configfs devpts devtmpfs proc rootfs sysfs tmpfs 
+ram0 ram1 ram2 ram3 ram4 ram5 ram6 ram7 ram8 ram9 ram10 ram11 ram12 ram13 ram14 ram15 

@@ -1,0 +1,216 @@
+
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x51df805e]
+[    0.000000] Linux version 7.3.0-sm7150 (Const@Coccinelle) (aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #6 SMP PREEMPT Mon Oct 26 14:04:44 UTC 2026
+[    0.000000] KASLR enabled
+[    0.000000] Machine model: Motorola Moto G60
+[    0.000000] printk: debug: ignoring loglevel setting.
+[    0.000000] efi: UEFI not found.
+[    0.000000] OF: reserved mem: 0x0000000085700000..0x00000000HANOIP USB SHELL; filesystems in RAM; no partitions mounted
+Linux (none) 7.3.0-sm7150 #6 SMP PREEMPT Mon Oct 26 14:04:44 UTC 2026 aarch64 Android
+~ # 85cfffff (6144 KiB) nomap non-reusable hypervisor@85700000
+[    0.000000] OF: reserved mem: 0x0000000085d00000..0x0000000085efffff (2048 KiB) nomap non-reusable xbl@85d00000
+[    0.000000] OF: reserved mem: 0x0000000085f00000..0x0000000085f1ffff (128 KiB) nomap non-reusable aop@85f00000
+[    0.000000] OF: reserved mem: 0x0000000085f20000..0x0000000085f3ffff (128 KiB) nomap non-reusable aop-cmd-db@85f20000
+[    0.000000] OF: reserved mem: 0x0000000085fff000..0x0000000085ffffff (4 KiB) nomap non-reusable sec-apps@85fff000
+[    0.000000] OF: reserved mem: 0x0000000086000000..0x00000000861fffff (2048 KiB) nomap non-reusable smem@86000000
+[    0.000000] OF: reserved mem: 0x0000000086200000..0x0000000088efffff (46080 KiB) nomap non-reusable trust-zone@86200000
+[    0.000000] OF: reserved mem: 0x000000008ab00000..0x000000008affffff (5120 KiB) nomap non-reusable camera@8ab00000
+[    0.000000] OF: reserved mem: 0x000000008b000000..0x00000000933fffff (135168 KiB) nomap non-reusable mpss@8b000000
+[    0.000000] OF: reserved mem: 0x0000000093400000..0x00000000938fffff (5120 KiB) nomap non-reusable venus@93400000
+[    0.000000] OF: reserved mem: 0x0000000093900000..0x00000000956fffff (30720 KiB) nomap non-reusable cdsp@93900000
+[    0.000000] OF: reserved mem: 0x0000000095700000..0x00000000974fffff (30720 KiB) nomap non-reusable adsp@95700000
+[    0.000000] OF: reserved mem: 0x0000000097500000..0x000000009767ffff (1536 KiB) nomap non-reusable wlan-msa@97500000
+[    0.000000] OF: reserved mem: 0x0000000097680000..0x00000000976fffff (512 KiB) nomap non-reusable npu@97680000
+[    0.000000] OF: reserved mem: 0x0000000097700000..0x000000009770ffff (64 KiB) nomap non-reusable ipa-fw@97700000
+[    0.000000] OF: reserved mem: 0x0000000097710000..0x0000000097714fff (20 KiB) nomap non-reusable ipa-gsi@97710000
+[    0.000000] OF: reserved mem: 0x0000000097715000..0x0000000097716fff (8 KiB) nomap non-reusable gpu@97715000
+[    0.000000] OF: reserved mem: 0x000000009e400000..0x000000009f7fffff (20480 KiB) nomap non-reusable qseecom@9e400000
+[    0.000000] OF: reserved mem: 0x000000009f800000..0x00000000a15fffff (30720 KiB) nomap non-reusable sec-cdsp@9f800000
+[    0.000000] OF: reserved mem: 0x000000009c000000..0x000000009d6fffff (23552 KiB) map non-reusable cont-splash@9c000000
+[    0.000000] OF: reserved mem: 0x000000009d700000..0x000000009d7fffff (1024 KiB) map non-reusable dfps-data@9d700000
+[    0.000000] OF: reserved mem: 0x000000009d800000..0x000000009dbfffff (4096 KiB) map non-reusable ramoops@9d800000
+[    0.000000] OF: reserved mem: 0x000000009a000000..0x000000009a201fff (2056 KiB) nomap non-reusable memory@9a000000
+[    0.000000] NUMA: Faking a node at [mem 0x0000000080000000-0x000000017dcfffff]
+[    0.000000] NODE_DATA(0) allocated [mem 0x17d50e680-0x17d510dff]
+[    0.000000] cma: Reserved 32 MiB at 0x00000000fe000000
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: MIGRATE_INFO_TYPE not supported.
+[    0.000000] psci: SMC Calling Convention v1.1
+[    0.000000] psci: OSI mode supported.
+[    0.000000] psci: [Firmware Bug]: failed to set PC mode: -3
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000080000000-0x00000000ffffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   [mem 0x0000000100000000-0x000000017dcfffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x00000000856fffff]
+[    0.000000]   node   0: [mem 0x0000000085700000-0x0000000085f3ffff]
+[    0.000000]   node   0: [mem 0x0000000085f40000-0x0000000085ffefff]
+[    0.000000]   node   0: [mem 0x0000000085fff000-0x0000000088efffff]
+[    0.000000]   node   0: [mem 0x0000000088f00000-0x000000008aafffff]
+[    0.000000]   node   0: [mem 0x000000008ab00000-0x0000000097716fff]
+[    0.000000]   node   0: [mem 0x0000000097717000-0x0000000099ffffff]
+[    0.000000]   node   0: [mem 0x000000009a000000-0x000000009a201fff]
+[    0.000000]   node   0: [mem 0x000000009a202000-0x000000009e3fffff]
+[    0.000000]   node   0: [mem 0x000000009e400000-0x00000000a15fffff]
+[    0.000000]   node   0: [mem 0x00000000a1600000-0x000000017dcfffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x000000017dcfffff]
+[    0.000000] On node 0, zone Normal: 8960 pages in unavailable ranges
+[    0.000000] percpu: Embedded 32 pages/cpu s93592 r8192 d29288 u131072
+[    0.000000] pcpu-alloc: s93592 r8192 d29288 u131072 alloc=32*4096
+[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 [0] 4 [0] 5 [0] 6 [0] 7 
+[    0.000000] Detected VIPT I-cache on CPU0
+[    0.000000] CPU features: detected: GICv3 CPU interface
+[    0.000000] CPU features: kernel page table isolation forced ON by KASLR
+[    0.000000] CPU features: detected: Kernel page table isolation (KPTI)
+[    0.000000] CPU features: detected: ARM errata 1165522, 1319367, or 1530923
+[    0.000000] alternatives: applying boot alternatives
+[    0.000000] Kernel command line: earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0
+[    0.000000] Unknown kernel command line parameters "panic_on_oops=1", will be passed to user space.
+[    0.000000] printk: log buffer data + meta data: 131072 + 458752 = 589824 bytes
+[    0.000000] Dentry cache hash table entries: 524288 (order: 10, 4194304 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 262144 (order: 9, 2097152 bytes, linear)
+[    0.000000] software IO TLB: area num 8.
+[    0.000000] software IO TLB: mapped [mem 0x00000000fa000000-0x00000000fe000000] (64MB)
+[    0.000000] Fallback order for Node 0: 0 
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 1039616
+[    0.000000] Policy zone: Normal
+[    0.000000] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1
+[    0.000000] ftrace: allocating 52536 entries in 206 pages
+[    0.000000] ftrace: allocated 206 pages with 5 groups
+[    0.000000] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU event tracing is enabled.
+[    0.000000] 	Trampoline variant of Tasks RCU enabled.
+[    0.000000] 	Rude variant of Tasks RCU enabled.
+[    0.000000] 	Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 100 jiffies.
+[    0.000000] RCU Tasks: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=8.
+[    0.000000] RCU Tasks Rude: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=8.
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] GICv3: 928 SPIs implemented
+[    0.000000] GICv3: 0 Extended SPIs implemented
+[    0.000000] Root IRQ handler: gic_handle_irq
+[    0.000000] GICv3: GICv3 features: 16 PPIs
+[    0.000000] GICv3: GICD_CTLR.DS=0, SCR_EL3.FIQ=1
+[    0.000000] GICv3: CPU0: found redistributor 0 region 0:0x0000000017a60000
+[    0.000000] ITS: No ITS available, not enabling LPIs
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+[    0.000000] arch_timer: cp15 timer running at 19.20MHz (virt).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x46d987e47, max_idle_ns: 440795202767 ns
+[    0.000000] sched_clock: 56 bits at 
+[missed 18949 bytes]
+[   11.238440] platform 62b52000.pinctrl: deferred probe pending: platform: wait for supplier /soc@0/remoteproc@62400000/glink-edge/apr/service@4/clock-controller
+[   11.238490] platform 62b48000.pinctrl: deferred probe pending: platform: wait for supplier /soc@0/remoteproc@62400000/glink-edge/apr/service@4/clock-controller
+[   11.238520] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   11.238541] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   11.238560] qnoc-sm7150 16e0000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   11.238580] gcc-sm7150 100000.clock-controller: sync_state() pending due to 1d84000.ufshc
+[   11.238599] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1e40000.ipa
+[   11.238618] qnoc-sm7150 1620000.interconnect: sync_state() pending due to 1e40000.ipa
+[   11.238636] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1e40000.ipa
+[   11.238654] qnoc-sm7150 1700000.interconnect: sync_state() pending due to 1e40000.ipa
+[   11.238674] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 5000000.gpu
+[   11.238693] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   11.238712] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   11.238733] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   11.238754] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   11.238773] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 5000000.gpu
+[   11.238793] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1e40000.ipa
+[   11.238811] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   11.238834] qnoc-sm7150 1500000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   11.238853] qnoc-sm7150 9680000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   11.238873] qnoc-sm7150 1380000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   11.238893] qnoc-sm7150 1740000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   11.238912] gcc-sm7150 100000.clock-controller: sync_state() pending due to ae00000.display-subsystem
+[   11.238933] dispcc-sm7150 af00000.clock-controller: sync_state() pending due to ae00000.display-subsystem
+[   11.238962] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to ae00000.display-subsystem
+[   11.238982] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 4080000.remoteproc
+[   11.239001] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 62400000.remoteproc
+[   31.205608] lcdb_lab: disabling
+[   31.205666] lcdb_ibb: disabling
+[   31.205715] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[   31.399346] random: crng init done
+
+~ # uname -a; cat /proc/mounts; cat /sys/class/thermal/thermal_zone0/temp
+Linux (none) 7.3.0-sm7150 #6 SMP PREEMPT Mon Oct 26 14:04:44 UTC 2026 aarch64 Android
+rootfs / rootfs rw,size=1795944k,nr_inodes=448986 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=1795944k,nr_inodes=448986,mode=755 0 0
+tmpfs /run tmpfs rw,relatime,mode=755 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+configfs /sys/kernel/config configfs rw,relatime 0 0
+39300
+~ # ls -l /lib/modules/hanoip-se11-overlay.ko /lib/firmware/hanoip/se11-i2c.dtbo
+ /sbin/hanoip-sensors-se11-read.sh
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+-rw-r--r--    1 root     root           238 Jan  1  1970 /lib/firmware/hanoip/se11-i2c.dtbo
+-rwxr-xr-x    1 root     root         40088 Jan  1  1970 /lib/modules/hanoip-se11-overlay.ko
+-rwxr-xr-x    1 root     root           697 Jan  1  1970 /sbin/hanoip-sensors-se11-read.sh
+~ # insmod /lib/modules/hanoip-se11-overlay.ko
+sh: insmod: not found
+~ # /bin/busybox insmod /lib/modules/hanoip-se11-overlay.ko
+[   87.986935] hanoip_se11_overlay: loading out-of-tree module taints kernel.
+[   87.996504] OF: overlay: WARNING: memory leak will occur if overlay removed, property: /soc@0/geniqup@ac0000/i2c@a94000/status
+[   87.997766] geni_i2c a94000.i2c: Bus frequency not specified, default to 100kHz.
+/bin/busybox dmesg | tail -30; ls -l /dev/i2c* /sys/bus/i2c/devices/i2c-* 2>&1
+^C[  109.318785] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[  109.325078] rcu: 	4-...0: (1 GPs behind) idle=3294/1/0x4000000000000000 softirq=101/102 fqs=26
+[  109.333924] rcu: 	(detected by 3, t=21320 jiffies, g=-787, q=11 ncpus=8)
+[  109.340818] Sending NMI from CPU 3 to CPUs 4:
+[  119.346307] After 10 seconds, these CPUS still haven't responded to the NMI: 4
+b[  172.564010] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[  172.570290] rcu: 	4-...0: (1 GPs behind) idle=3294/1/0x4000000000000000 softirq=101/102 fqs=106
+[  172.579233] rcu: 	(detected by 0, t=84570 jiffies, g=-787, q=11 ncpus=8)
+[  172.586116] Sending NMI from CPU 0 to CPUs 4:
+[  182.591601] After 10 seconds, these CPUS still haven't responded to the NMI: 4
+[  182.599021] rcu: rcu_preempt kthread starved for 9368 jiffies! g-787 f0x0 RCU_GP_DOING_FQS(6) ->state=R ->cpu=6
+[  182.609386] rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+[  182.618766] rcu: RCU grace-period kthread stack dump:
+[  182.623959] task:rcu_preempt     state:I stack:0     pid:15    tgid:15    ppid:2      task_flags:0x208040 flags:0x00000010
+[  182.635308] Call trace:
+[  182.637836]  __switch_to+0xe0/0x148 (T)
+[  182.641796]  __schedule+0x358/0xf30
+[  182.645389]  schedule+0x3c/0xe8
+[  182.648635]  schedule_timeout+0x8c/0x130
+[  182.652671]  rcu_gp_fqs_loop+0x120/0x780
+[  182.656712]  rcu_gp_kthread+0x1bc/0x2f0
+[  182.660663]  kthread+0x138/0x150
+[  182.663998]  ret_from_fork+0x10/0x20
+[  182.667689] rcu: Stack dump where RCU GP kthread last ran:
+[  182.673335] Sending NMI from CPU 0 to CPUs 6:
+[  182.678476] NMI backtrace for cpu 6
+[  182.678483] CPU: 6 UID: 0 PID: 0 Comm: swapper/6 Tainted: G           O        7.3.0-sm7150 #6 PREEMPT 
+[  182.678487] Tainted: [O]=OOT_MODULE
+[  182.678488] Hardware name: Motorola Moto G60 (DT)
+[  182.678490] pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  182.678492] pc : cpuidle_enter_state+0x354/0x6b8
+[  182.678498] lr : cpuidle_enter_state+0x350/0x6b8
+[  182.678501] sp : ffff800080223da0
+[  182.678502] x29: ffff800080223da0 x28: 0000000000000000 x27: 0000000000000006
+[  182.678505] x26: 0000000000000006 x25: 0000000000000001 x24: 0000002a83c171cb
+[  182.678508] x23: 0000000000000002 x22: ffff00008368e080 x21: 0000002a887c42aa
+[  182.678511] x20: 0000000000000002 x19: ffff0000f93d3cf8 x18: ffff8000800f7028
+[  182.678513] x17: 000000040044ffff x16: 004000b2b5503510 x15: 0000000000000000
+[  182.678516] x14: ffff00008038c000 x13: ffff33d8ee7f9000 x12: ffffcc280a3581ac
+[  182.678518] x11: 0000000000000000 x10: 0000000000000000 x9 : ffffcc2809353b5c
+[  182.678521] x8 : 000001b2b5503510 x7 : 0000000000000004 x6 : 000000001e030d86
+[  182.678523] x5 : 00ffffffffffffff x4 : 00000000009d4952 x3 : ffff800080223cd0
+[  182.678526] x2 : 00000000ef120e95 x1 : ffff00008038c000 x0 : 0000000000000000
+[  182.678529] Call trace:
+[  182.678529]  cpuidle_enter_state+0x354/0x6b8 (P)
+[  182.678533]  cpuidle_enter+0x40/0x60
+[  182.678536]  do_idle+0x150/0x308
+[  182.678541]  cpu_startup_entry+0x3c/0x50
+[  182.678544]  secondary_start_kernel+0x130/0x158
+[  182.678548]  __secondary_switched+0x7c/0x80

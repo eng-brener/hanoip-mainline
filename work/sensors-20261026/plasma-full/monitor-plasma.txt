@@ -1,0 +1,6 @@
+    Waiting for iio-sensor-proxy to appear
++++ iio-sensor-proxy appeared
+=== Has accelerometer (orientation: undefined, tilt: undefined)
+=== Has ambient light sensor (value: 76.099998, unit: lux)
+=== Has proximity sensor (near: 0)
+    Light changed: 74.699997 (lux)

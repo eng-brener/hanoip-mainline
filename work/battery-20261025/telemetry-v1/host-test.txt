@@ -1,0 +1,1 @@
+PASS: gauge units/sign/capacity bounds, SMB charging states, overvoltage value bits, read errors

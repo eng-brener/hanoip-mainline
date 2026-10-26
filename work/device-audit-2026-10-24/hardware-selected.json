@@ -1,0 +1,1703 @@
+{
+  "/soc/sdhci@8804000": {
+    "compatible": [
+      "qcom,sdhci-msm-v5"
+    ],
+    "reg": [
+      142622720,
+      4096
+    ],
+    "reg-names": [
+      "hc_mem"
+    ],
+    "interrupts": [
+      0,
+      204,
+      0,
+      0,
+      222,
+      0
+    ],
+    "interrupt-names": [
+      "hc_irq",
+      "pwr_irq"
+    ],
+    "qcom,bus-width": [
+      4
+    ],
+    "qcom,large-address-bus": true,
+    "qcom,clk-rates": [
+      400000,
+      20000000,
+      25000000,
+      50000000,
+      100000000,
+      202000000
+    ],
+    "qcom,bus-speed-mode": [
+      "SDR12",
+      "SDR25",
+      "SDR50",
+      "DDR50",
+      "SDR104"
+    ],
+    "qcom,devfreq,freq-table": [
+      50000000,
+      202000000
+    ],
+    "qcom,msm-bus,name": [
+      "sdhc2"
+    ],
+    "qcom,msm-bus,num-cases": [
+      8
+    ],
+    "qcom,msm-bus,num-paths": [
+      2
+    ],
+    "qcom,msm-bus,vectors-KBps": [
+      81,
+      512,
+      0,
+      0,
+      1,
+      608,
+      0,
+      0,
+      81,
+      512,
+      1000,
+      2000,
+      1,
+      608,
+      1600,
+      20000,
+      81,
+      512,
+      20000,
+      40000,
+      1,
+      608,
+      20000,
+      40000,
+      81,
+      512,
+      40000,
+      80000,
+      1,
+      608,
+      30000,
+      60000,
+      81,
+      512,
+      60000,
+      120000,
+      1,
+      608,
+      40000,
+      80000,
+      81,
+      512,
+      80000,
+      160000,
+      1,
+      608,
+      50000,
+      100000,
+      81,
+      512,
+      100000,
+      200000,
+      1,
+      608,
+      60000,
+      120000,
+      81,
+      512,
+      1338562,
+      4096000,
+      1,
+      608,
+      1338562,
+      4096000
+    ],
+    "qcom,bus-bw-vectors-bps": [
+      0,
+      400000,
+      20000000,
+      25000000,
+      50000000,
+      100750000,
+      200000000,
+      4294967295
+    ],
+    "qcom,pm-qos-irq-type": [
+      "affine_irq"
+    ],
+    "qcom,pm-qos-irq-latency": [
+      67,
+      67
+    ],
+    "qcom,pm-qos-cpu-groups": [
+      63,
+      192
+    ],
+    "qcom,pm-qos-legacy-latency-us": [
+      67,
+      67,
+      67,
+      67
+    ],
+    "clocks": [
+      39,
+      112,
+      39,
+      113
+    ],
+    "clock-names": [
+      "iface_clk",
+      "core_clk"
+    ],
+    "qcom,dll-hsr-list": [
+      484396,
+      0,
+      0,
+      67584,
+      2147747944
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      595
+    ],
+    "vdd-supply": {
+      "phandle": 884,
+      "node": "/soc/rpmh-regulator-ldoc9/regulator-pm6150l-l9"
+    },
+    "qcom,vdd-voltage-level": [
+      2950000,
+      2950000
+    ],
+    "qcom,vdd-current-level": [
+      0,
+      800000
+    ],
+    "vdd-io-supply": {
+      "phandle": 881,
+      "node": "/soc/rpmh-regulator-ldoc6/regulator-pm6150l-l6"
+    },
+    "qcom,vdd-io-voltage-level": [
+      1800000,
+      2950000
+    ],
+    "qcom,vdd-io-current-level": [
+      0,
+      22000
+    ],
+    "pinctrl-names": [
+      "active",
+      "sleep"
+    ],
+    "pinctrl-0": [
+      851,
+      853,
+      855,
+      857
+    ],
+    "pinctrl-1": [
+      852,
+      854,
+      856,
+      858
+    ],
+    "cd-gpios": [
+      49,
+      69,
+      0
+    ]
+  },
+  "/soc/ufsphy_mem@1d87000": {
+    "reg": [
+      30961664,
+      3548
+    ],
+    "reg-names": [
+      "phy_mem"
+    ],
+    "#phy-cells": [
+      0
+    ],
+    "lanes-per-direction": [
+      1
+    ],
+    "clock-names": [
+      "ref_clk_src",
+      "ref_clk",
+      "ref_aux_clk"
+    ],
+    "clocks": [
+      47,
+      0,
+      39,
+      124,
+      39,
+      132
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      157
+    ],
+    "compatible": [
+      "qcom,ufs-phy-qmp-v3"
+    ],
+    "vdda-phy-supply": {
+      "phandle": 428,
+      "node": "/soc/rpmh-regulator-ldoa4/regulator-pm6150-l4"
+    },
+    "vdda-pll-supply": {
+      "phandle": 427,
+      "node": "/soc/rpmh-regulator-ldoc3/regulator-pm6150l-l3"
+    },
+    "vdda-phy-max-microamp": [
+      62900
+    ],
+    "vdda-pll-max-microamp": [
+      18300
+    ]
+  },
+  "/soc/ufshc@1d84000": {
+    "compatible": [
+      "qcom,ufshc"
+    ],
+    "reg": [
+      30949376,
+      12288,
+      30998528,
+      32768
+    ],
+    "reg-names": [
+      "ufs_mem",
+      "ufs_ice"
+    ],
+    "interrupts": [
+      0,
+      265,
+      0
+    ],
+    "phys": [
+      157
+    ],
+    "phy-names": [
+      "ufsphy"
+    ],
+    "lanes-per-direction": [
+      1
+    ],
+    "dev-ref-clk-freq": [
+      0
+    ],
+    "spm-level": [
+      3
+    ],
+    "clock-names": [
+      "core_clk",
+      "bus_aggr_clk",
+      "iface_clk",
+      "core_clk_unipro",
+      "core_clk_ice",
+      "ref_clk",
+      "tx_lane0_sync_clk",
+      "rx_lane0_sync_clk"
+    ],
+    "clocks": [
+      39,
+      126,
+      39,
+      9,
+      39,
+      125,
+      39,
+      137,
+      39,
+      129,
+      47,
+      0,
+      39,
+      136,
+      39,
+      135
+    ],
+    "freq-table-hz": [
+      50000000,
+      200000000,
+      0,
+      0,
+      0,
+      0,
+      37500000,
+      150000000,
+      75000000,
+      300000000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "qcom,msm-bus,name": [
+      "ufshc_mem"
+    ],
+    "qcom,msm-bus,num-cases": [
+      12
+    ],
+    "qcom,msm-bus,num-paths": [
+      2
+    ],
+    "qcom,msm-bus,vectors-KBps": [
+      123,
+      512,
+      0,
+      0,
+      1,
+      757,
+      0,
+      0,
+      123,
+      512,
+      922,
+      0,
+      1,
+      757,
+      1000,
+      0,
+      123,
+      512,
+      1844,
+      0,
+      1,
+      757,
+      1000,
+      0,
+      123,
+      512,
+      3688,
+      0,
+      1,
+      757,
+      1000,
+      0,
+      123,
+      512,
+      7376,
+      0,
+      1,
+      757,
+      1000,
+      0,
+      123,
+      512,
+      127796,
+      0,
+      1,
+      757,
+      1000,
+      0,
+      123,
+      512,
+      255591,
+      0,
+      1,
+      757,
+      1000,
+      0,
+      123,
+      512,
+      2097152,
+      0,
+      1,
+      757,
+      102400,
+      0,
+      123,
+      512,
+      149422,
+      0,
+      1,
+      757,
+      1000,
+      0,
+      123,
+      512,
+      298189,
+      0,
+      1,
+      757,
+      1000,
+      0,
+      123,
+      512,
+      2097152,
+      0,
+      1,
+      757,
+      102400,
+      0,
+      123,
+      512,
+      7643136,
+      0,
+      1,
+      757,
+      307200,
+      0
+    ],
+    "qcom,bus-vector-names": [
+      "MIN",
+      "PWM_G1_L1",
+      "PWM_G2_L1",
+      "PWM_G3_L1",
+      "PWM_G4_L1",
+      "HS_RA_G1_L1",
+      "HS_RA_G2_L1",
+      "HS_RA_G3_L1",
+      "HS_RB_G1_L1",
+      "HS_RB_G2_L1",
+      "HS_RB_G3_L1",
+      "MAX"
+    ],
+    "qcom,pm-qos-cpu-groups": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128
+    ],
+    "qcom,pm-qos-cpu-group-latency-us": [
+      67,
+      67,
+      67,
+      67,
+      67,
+      67,
+      67,
+      67
+    ],
+    "qcom,pm-qos-default-cpu": [
+      0
+    ],
+    "pinctrl-names": [
+      "dev-reset-assert",
+      "dev-reset-deassert"
+    ],
+    "pinctrl-0": [
+      158
+    ],
+    "pinctrl-1": [
+      159
+    ],
+    "resets": [
+      39,
+      3
+    ],
+    "reset-names": [
+      "core_reset"
+    ],
+    "non-removable": true,
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      600
+    ],
+    "vdd-hba-supply": {
+      "phandle": 156,
+      "node": "/soc/qcom,gdsc@177004"
+    },
+    "vdd-hba-fixed-regulator": true,
+    "vcc-supply": {
+      "phandle": 878,
+      "node": "/soc/rpmh-regulator-ldoa19/regulator-pm6150-l19"
+    },
+    "vcc-voltage-level": [
+      2950000,
+      2960000
+    ],
+    "vccq2-supply": {
+      "phandle": 872,
+      "node": "/soc/rpmh-regulator-ldoa12/regulator-pm6150-l12"
+    },
+    "vccq2-voltage-level": [
+      1750000,
+      1950000
+    ],
+    "vcc-max-microamp": [
+      600000
+    ],
+    "vccq2-max-microamp": [
+      600000
+    ],
+    "qcom,vddp-ref-clk-supply": {
+      "phandle": 427,
+      "node": "/soc/rpmh-regulator-ldoc3/regulator-pm6150l-l3"
+    },
+    "qcom,vddp-ref-clk-max-microamp": [
+      100
+    ]
+  },
+  "/soc/qcom,spmi@c440000/qcom,pm6150l@5/qcom,lcdb@ec00": {
+    "compatible": [
+      "qcom,qpnp-lcdb-regulator"
+    ],
+    "#address-cells": [
+      1
+    ],
+    "#size-cells": [
+      1
+    ],
+    "reg": [
+      60416,
+      256
+    ],
+    "interrupts": [
+      5,
+      236,
+      1,
+      1
+    ],
+    "interrupt-names": [
+      "sc-irq"
+    ],
+    "qcom,pmic-revid": [
+      174
+    ],
+    "qcom,voltage-step-ramp": true,
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      614
+    ]
+  },
+  "/soc/qcom,spmi@c440000/qcom,pm6150l@5/qcom,lcdb@ec00/ldo": {
+    "label": [
+      "ldo"
+    ],
+    "regulator-name": [
+      "lcdb_ldo"
+    ],
+    "regulator-min-microvolt": [
+      4000000
+    ],
+    "regulator-max-microvolt": [
+      6000000
+    ],
+    "phandle": [
+      615
+    ]
+  },
+  "/soc/qcom,spmi@c440000/qcom,pm6150l@5/qcom,lcdb@ec00/ncp": {
+    "label": [
+      "ncp"
+    ],
+    "regulator-name": [
+      "lcdb_ncp"
+    ],
+    "regulator-min-microvolt": [
+      4000000
+    ],
+    "regulator-max-microvolt": [
+      6000000
+    ],
+    "phandle": [
+      616
+    ]
+  },
+  "/soc/qcom,spmi@c440000/qcom,pm6150l@5/qcom,lcdb@ec00/bst": {
+    "label": [
+      "bst"
+    ],
+    "regulator-name": [
+      "lcdb_bst"
+    ],
+    "regulator-min-microvolt": [
+      4700000
+    ],
+    "regulator-max-microvolt": [
+      6275000
+    ],
+    "phandle": [
+      617
+    ]
+  },
+  "/soc/qcom,spmi@c440000/qcom,pm6150l@5/qcom,wled@d800": {
+    "compatible": [
+      "qcom,pm6150l-spmi-wled"
+    ],
+    "reg": [
+      55296,
+      256,
+      55552,
+      256
+    ],
+    "reg-names": [
+      "wled-ctrl-base",
+      "wled-sink-base"
+    ],
+    "label": [
+      "backlight"
+    ],
+    "interrupts": [
+      5,
+      216,
+      1,
+      1,
+      5,
+      216,
+      4,
+      3,
+      5,
+      216,
+      5,
+      3
+    ],
+    "interrupt-names": [
+      "ovp-irq",
+      "pre-flash-irq",
+      "flash-irq"
+    ],
+    "qcom,pmic-revid": [
+      174
+    ],
+    "qcom,auto-calibration": true,
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      628
+    ],
+    "qcom,string-cfg": [
+      7
+    ],
+    "qcom,leds-per-string": [
+      7
+    ],
+    "qcom,ovp": [
+      26500
+    ],
+    "qcom,boost-current-limit": [
+      1400
+    ],
+    "qcom,wled-bl-step-up": true,
+    "qcom,wled-bl-step-sequence": [
+      255,
+      5,
+      2048,
+      6
+    ],
+    "qcom,fs-current-limit": [
+      25000
+    ],
+    "qcom,en-cabc": true,
+    "qcom,cabc-sel": [
+      1
+    ]
+  },
+  "/soc/qcom,spmi@c440000/qcom,pm6150l@5/qcom,wled@d800/qcom,wled-flash": {
+    "label": [
+      "flash"
+    ],
+    "qcom,default-led-trigger": [
+      "wled_flash"
+    ],
+    "phandle": [
+      629
+    ]
+  },
+  "/soc/qcom,spmi@c440000/qcom,pm6150l@5/qcom,wled@d800/qcom,wled-torch": {
+    "label": [
+      "torch"
+    ],
+    "qcom,default-led-trigger": [
+      "wled_torch"
+    ],
+    "qcom,wled-torch-timer": [
+      1200
+    ],
+    "phandle": [
+      630
+    ]
+  },
+  "/soc/qcom,spmi@c440000/qcom,pm6150l@5/qcom,wled@d800/qcom,wled-switch": {
+    "label": [
+      "switch"
+    ],
+    "qcom,default-led-trigger": [
+      "wled_switch"
+    ],
+    "phandle": [
+      631
+    ]
+  },
+  "/soc/spi@0xa80000/ilitek@0": {
+    "compatible": [
+      "tchip,ilitek"
+    ],
+    "reg": [
+      0
+    ],
+    "poll_mode": [
+      0
+    ],
+    "spi-max-frequency": [
+      12000000
+    ],
+    "touch,reset-gpio": [
+      49,
+      8,
+      0
+    ],
+    "touch,irq-gpio": [
+      49,
+      9,
+      8194
+    ],
+    "ilitek,report_gesture_key": true
+  },
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video": {
+    "qcom,mdss-dsi-panel-name": [
+      "mipi_mot_vid_tm_ili7807s_fhd_678"
+    ],
+    "qcom,mdss-dsi-panel-type": [
+      "dsi_video_mode"
+    ],
+    "qcom,mdss-dsi-virtual-channel-id": [
+      0
+    ],
+    "qcom,mdss-dsi-stream": [
+      0
+    ],
+    "qcom,mdss-dsi-h-left-border": [
+      0
+    ],
+    "qcom,mdss-dsi-h-right-border": [
+      0
+    ],
+    "qcom,mdss-dsi-v-top-border": [
+      0
+    ],
+    "qcom,mdss-dsi-v-bottom-border": [
+      0
+    ],
+    "qcom,mdss-dsi-bpp": [
+      24
+    ],
+    "qcom,mdss-dsi-color-order": [
+      "rgb_swap_rgb"
+    ],
+    "qcom,mdss-dsi-underflow-color": [
+      4095
+    ],
+    "qcom,mdss-dsi-border-color": [
+      0
+    ],
+    "qcom,mdss-dsi-h-sync-pulse": [
+      0
+    ],
+    "qcom,mdss-dsi-traffic-mode": [
+      "burst_mode"
+    ],
+    "qcom,mdss-dsi-lane-map": [
+      "lane_map_0123"
+    ],
+    "qcom,mdss-dsi-bllp-eof-power-mode": true,
+    "qcom,mdss-dsi-bllp-power-mode": true,
+    "qcom,mdss-dsi-tx-eot-append": true,
+    "qcom,mdss-dsi-lane-0-state": true,
+    "qcom,mdss-dsi-lane-1-state": true,
+    "qcom,mdss-dsi-lane-2-state": true,
+    "qcom,mdss-dsi-lane-3-state": true,
+    "qcom,mdss-dsi-dma-trigger": [
+      "trigger_sw"
+    ],
+    "qcom,mdss-dsi-mdp-trigger": [
+      "none"
+    ],
+    "qcom,mdss-dsi-lp11-init": true,
+    "qcom,mdss-dsi-reset-sequence": [
+      1,
+      4,
+      0,
+      1,
+      1,
+      12
+    ],
+    "qcom,mdss-pan-physical-width-dimension": [
+      69
+    ],
+    "qcom,mdss-pan-physical-height-dimension": [
+      158
+    ],
+    "qcom,mdss-dsi-t-clk-post": [
+      12
+    ],
+    "qcom,mdss-dsi-t-clk-pre": [
+      48
+    ],
+    "qcom,esd-check-enabled": true,
+    "qcom,mdss-dsi-panel-status-check-mode": [
+      "reg_read"
+    ],
+    "qcom,mdss-dsi-panel-status-command": [
+      100728833,
+      266
+    ],
+    "qcom,mdss-dsi-panel-status-command-state": [
+      "dsi_lp_mode"
+    ],
+    "qcom,mdss-dsi-panel-status-value": [
+      156
+    ],
+    "qcom,mdss-dsi-panel-on-check-value": [
+      156
+    ],
+    "qcom,mdss-dsi-panel-status-read-length": [
+      1
+    ],
+    "qcom,mdss-dsi-no-panel-on-read-support": true,
+    "qcom,mdss-dsi-panel-supplier": [
+      "tm"
+    ],
+    "qcom,tp_state_check_enable": true,
+    "qcom,platform-reset-gpio-always-on": true,
+    "qcom,mdss-dsi-pan-enable-dynamic-fps": true,
+    "qcom,mdss-dsi-pan-fps-update": [
+      "dfps_immediate_porch_mode_vfp"
+    ],
+    "qcom,dsi-supported-dfps-list": [
+      60,
+      120
+    ],
+    "qcom,mdss-dsi-panel-hdr-enabled": true,
+    "qcom,mdss-dsi-panel-hdr-color-primaries": [
+      15115,
+      15895,
+      32830,
+      16770,
+      15010,
+      32385,
+      7770,
+      1830
+    ],
+    "qcom,mdss-dsi-panel-peak-brightness": [
+      4500000
+    ],
+    "qcom,mdss-dsi-panel-blackness-level": [
+      3000
+    ],
+    "qcom,mdss-dsi-bl-pmic-control-type": [
+      "bl_ctrl_wled"
+    ],
+    "qcom,mdss-dsi-bl-min-level": [
+      27
+    ],
+    "qcom,mdss-dsi-bl-max-level": [
+      4095
+    ],
+    "qcom,mdss-dsi-bl-default-level": [
+      2047
+    ],
+    "qcom,mdss-brightness-max-level": [
+      4095
+    ],
+    "qcom,platform-reset-gpio": [
+      611,
+      9,
+      0
+    ],
+    "qcom,platform-te-gpio": [
+      49,
+      10,
+      0
+    ],
+    "qcom,platform-en-gpio": [
+      49,
+      55,
+      0
+    ],
+    "qcom,panel-supply-entries": [
+      1077
+    ],
+    "phandle": [
+      1079
+    ]
+  },
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video/qcom,mdss-dsi-display-timings": {},
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video/qcom,mdss-dsi-display-timings/timing@0": {
+    "qcom,mdss-dsi-panel-width": [
+      1080
+    ],
+    "qcom,mdss-dsi-panel-height": [
+      2460
+    ],
+    "qcom,mdss-dsi-h-front-porch": [
+      28
+    ],
+    "qcom,mdss-dsi-h-back-porch": [
+      24
+    ],
+    "qcom,mdss-dsi-h-pulse-width": [
+      4
+    ],
+    "qcom,mdss-dsi-h-sync-skew": [
+      0
+    ],
+    "qcom,mdss-dsi-v-back-porch": [
+      12
+    ],
+    "qcom,mdss-dsi-v-front-porch": [
+      2565
+    ],
+    "qcom,mdss-dsi-v-pulse-width": [
+      2
+    ],
+    "qcom,mdss-dsi-panel-framerate": [
+      60
+    ],
+    "qcom,mdss-dsi-cabc-mv-command": {
+      "hex": "150100000000025503"
+    },
+    "qcom,mdss-dsi-cabc-mv-command-state": [
+      "dsi_hs_mode"
+    ],
+    "qcom,mdss-dsi-cabc-ui-command": {
+      "hex": "150100000000025501"
+    },
+    "qcom,mdss-dsi-cabc-ui-command-state": [
+      "dsi_hs_mode"
+    ],
+    "qcom,mdss-dsi-cabc-dis-command": {
+      "hex": "150100000000025500"
+    },
+    "qcom,mdss-dsi-cabc-dis-command-state": [
+      "dsi_hs_mode"
+    ],
+    "qcom,mdss-dsi-hbm-on-command": {
+      "hex": "390100000000035103ff"
+    },
+    "qcom,mdss-dsi-hbm-on-command-state": [
+      "dsi_hs_mode"
+    ],
+    "qcom,mdss-dsi-hbm-off-command": {
+      "hex": "39010000000003510332"
+    },
+    "qcom,mdss-dsi-hbm-off-command-state": [
+      "dsi_hs_mode"
+    ],
+    "qcom,mdss-dsi-on-command": {
+      "hex": "39010000000004ff7807000501000078000111050100001400012939010000000004ff780706150100000000023ee315010000000002800039010000000004ff78070839010000000003fd009f15010000000002e1d939010000000003fd000039010000000004ff7807003901000000000351033215010000000002532c150100000000025501"
+    },
+    "qcom,mdss-dsi-off-command": [
+      83951616,
+      838861096,
+      83951616,
+      2516582672
+    ],
+    "qcom,mdss-dsi-on-command-state": [
+      "dsi_lp_mode"
+    ],
+    "qcom,mdss-dsi-off-command-state": [
+      "dsi_hs_mode"
+    ],
+    "qcom,compression-mode": [
+      "dsc"
+    ],
+    "qcom,mdss-dsc-slice-height": [
+      10
+    ],
+    "qcom,mdss-dsc-slice-width": [
+      540
+    ],
+    "qcom,mdss-dsc-slice-per-pkt": [
+      2
+    ],
+    "qcom,mdss-dsc-bit-per-component": [
+      8
+    ],
+    "qcom,mdss-dsc-bit-per-pixel": [
+      8
+    ],
+    "qcom,mdss-dsc-block-prediction-enable": true,
+    "qcom,mdss-dsi-panel-phy-timings": [
+      1771014,
+      572524295,
+      117572608
+    ],
+    "qcom,display-topology": [
+      2,
+      2,
+      1
+    ],
+    "qcom,default-topology-index": [
+      0
+    ]
+  },
+  "/soc/qcom,tz_gpio": {
+    "compatible": [
+      "qcom,tz_gpio"
+    ],
+    "tlmm-tz": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "/memory": {
+    "ddr_device_type": [
+      7
+    ],
+    "device_type": [
+      "memory"
+    ],
+    "reg": [
+      0,
+      2147483648,
+      0,
+      2147483648,
+      1,
+      0,
+      0,
+      2110783488
+    ]
+  },
+  "/reserved-memory/hyp_region@85700000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2238709760,
+      0,
+      6291456
+    ],
+    "phandle": [
+      976
+    ]
+  },
+  "/reserved-memory/xbl_aop_mem@85e00000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2246049792,
+      0,
+      2093056
+    ],
+    "phandle": [
+      977
+    ]
+  },
+  "/reserved-memory/sec_apps_region@85fff000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2248142848,
+      0,
+      4096
+    ],
+    "phandle": [
+      978
+    ]
+  },
+  "/reserved-memory/smem@86000000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2248146944,
+      0,
+      2097152
+    ],
+    "phandle": [
+      145
+    ]
+  },
+  "/reserved-memory/removed_region@86200000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2250244096,
+      0,
+      68157440
+    ],
+    "phandle": [
+      979
+    ]
+  },
+  "/reserved-memory/camera_region@8ab00000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2326790144,
+      0,
+      5242880
+    ],
+    "phandle": [
+      441
+    ]
+  },
+  "/reserved-memory/modem_region@8b000000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2332033024,
+      0,
+      138412032
+    ],
+    "phandle": [
+      180
+    ]
+  },
+  "/reserved-memory/pil_video_region@93400000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2470445056,
+      0,
+      5242880
+    ],
+    "phandle": [
+      184
+    ]
+  },
+  "/reserved-memory/cdsp_regions@93900000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2475687936,
+      0,
+      31457280
+    ],
+    "phandle": [
+      176
+    ]
+  },
+  "/reserved-memory/pil_adsp_region@95700000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2507145216,
+      0,
+      31457280
+    ],
+    "phandle": [
+      162
+    ]
+  },
+  "/reserved-memory/wlan_msa_region@97500000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2538602496,
+      0,
+      1572864
+    ],
+    "phandle": [
+      186
+    ]
+  },
+  "/reserved-memory/npu_region@97680000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2540175360,
+      0,
+      524288
+    ],
+    "phandle": [
+      185
+    ]
+  },
+  "/reserved-memory/ipa_gsi_region@97710000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2540765184,
+      0,
+      20480
+    ],
+    "phandle": [
+      980
+    ]
+  },
+  "/reserved-memory/gpu_region@97715000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2540785664,
+      0,
+      8192
+    ],
+    "phandle": [
+      981
+    ]
+  },
+  "/reserved-memory/qseecom_region@9e400000": {
+    "compatible": [
+      "shared-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2654994432,
+      0,
+      20971520
+    ],
+    "phandle": [
+      155
+    ]
+  },
+  "/reserved-memory/adsp_region": {
+    "compatible": [
+      "shared-dma-pool"
+    ],
+    "alloc-ranges": [
+      0,
+      0,
+      0,
+      4294967295
+    ],
+    "reusable": true,
+    "alignment": [
+      0,
+      4194304
+    ],
+    "size": [
+      0,
+      12582912
+    ],
+    "phandle": [
+      147
+    ]
+  },
+  "/reserved-memory/cdsp_region": {
+    "compatible": [
+      "shared-dma-pool"
+    ],
+    "alloc-ranges": [
+      0,
+      0,
+      0,
+      4294967295
+    ],
+    "reusable": true,
+    "alignment": [
+      0,
+      4194304
+    ],
+    "size": [
+      0,
+      4194304
+    ],
+    "phandle": [
+      423
+    ]
+  },
+  "/reserved-memory/qseecom_ta_region": {
+    "compatible": [
+      "shared-dma-pool"
+    ],
+    "alloc-ranges": [
+      0,
+      0,
+      0,
+      4294967295
+    ],
+    "reusable": true,
+    "alignment": [
+      0,
+      4194304
+    ],
+    "size": [
+      0,
+      16777216
+    ],
+    "phandle": [
+      452
+    ]
+  },
+  "/reserved-memory/sp_region": {
+    "compatible": [
+      "shared-dma-pool"
+    ],
+    "alloc-ranges": [
+      0,
+      0,
+      0,
+      4294967295
+    ],
+    "reusable": true,
+    "alignment": [
+      0,
+      4194304
+    ],
+    "size": [
+      0,
+      8388608
+    ],
+    "phandle": [
+      453
+    ]
+  },
+  "/reserved-memory/secure_display_region": {
+    "compatible": [
+      "shared-dma-pool"
+    ],
+    "alloc-ranges": [
+      0,
+      0,
+      0,
+      4294967295
+    ],
+    "reusable": true,
+    "alignment": [
+      0,
+      4194304
+    ],
+    "size": [
+      0,
+      146800640
+    ],
+    "phandle": [
+      454
+    ]
+  },
+  "/reserved-memory/cont_splash_region@9c000000": {
+    "reg": [
+      0,
+      2617245696,
+      0,
+      24117248
+    ],
+    "label": [
+      "cont_splash_region"
+    ],
+    "phandle": [
+      982
+    ]
+  },
+  "/reserved-memory/dfps_data_region@9d700000": {
+    "reg": [
+      0,
+      2641362944,
+      0,
+      1048576
+    ],
+    "label": [
+      "dfps_data_region"
+    ],
+    "phandle": [
+      424
+    ]
+  },
+  "/reserved-memory/linux,cma": {
+    "compatible": [
+      "shared-dma-pool"
+    ],
+    "alloc-ranges": [
+      0,
+      0,
+      0,
+      4294967295
+    ],
+    "reusable": true,
+    "alignment": [
+      0,
+      4194304
+    ],
+    "size": [
+      0,
+      33554432
+    ],
+    "linux,cma-default": true
+  },
+  "/reserved-memory/ipa_fw_region@97700000": {
+    "compatible": [
+      "removed-dma-pool"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2540699648,
+      0,
+      65536
+    ],
+    "phandle": [
+      205
+    ]
+  },
+  "/reserved-memory/ramoops_mem": {
+    "compatible": [
+      "ramoops"
+    ],
+    "no-map": true,
+    "reg": [
+      0,
+      2936012800,
+      0,
+      784384
+    ],
+    "console-size": [
+      262144
+    ],
+    "pmsg-size": [
+      262144
+    ],
+    "record-size": [
+      260096
+    ],
+    "no-dump-oops": true
+  },
+  "/reserved-memory/wdog_cpuctx_region": {
+    "no-map": true,
+    "reg": [
+      0,
+      2935824384,
+      0,
+      188416
+    ],
+    "phandle": [
+      1015
+    ]
+  },
+  "/reserved-memory/tzlog_dump_mem_region": {
+    "no-map": true,
+    "reg": [
+      0,
+      2935627776,
+      0,
+      196608
+    ],
+    "phandle": [
+      1016
+    ]
+  },
+  "/reserved-memory/mmi_annotate_mem_region": {
+    "no-map": true,
+    "reg": [
+      0,
+      2935625728,
+      0,
+      2048
+    ],
+    "phandle": [
+      1017
+    ]
+  },
+  "/soc/dsi_panel_pwr_supply": {
+    "#address-cells": [
+      1
+    ],
+    "#size-cells": [
+      0
+    ],
+    "phandle": [
+      1077
+    ]
+  },
+  "/soc/dsi_panel_pwr_supply/qcom,panel-supply-entry@0": {
+    "reg": [
+      0
+    ],
+    "qcom,supply-name": [
+      "vddio"
+    ],
+    "qcom,supply-min-voltage": [
+      1800000
+    ],
+    "qcom,supply-max-voltage": [
+      1904000
+    ],
+    "qcom,supply-enable-load": [
+      32000
+    ],
+    "qcom,supply-disable-load": [
+      80
+    ]
+  },
+  "/soc/dsi_panel_pwr_supply/qcom,panel-supply-entry@1": {
+    "reg": [
+      1
+    ],
+    "qcom,supply-name": [
+      "lab"
+    ],
+    "qcom,supply-min-voltage": [
+      5500000
+    ],
+    "qcom,supply-max-voltage": [
+      5500000
+    ],
+    "qcom,supply-enable-load": [
+      100000
+    ],
+    "qcom,supply-disable-load": [
+      100
+    ],
+    "qcom,supply-pre-on-sleep": [
+      3
+    ]
+  },
+  "/soc/dsi_panel_pwr_supply/qcom,panel-supply-entry@2": {
+    "reg": [
+      2
+    ],
+    "qcom,supply-name": [
+      "ibb"
+    ],
+    "qcom,supply-min-voltage": [
+      5500000
+    ],
+    "qcom,supply-max-voltage": [
+      5500000
+    ],
+    "qcom,supply-enable-load": [
+      100000
+    ],
+    "qcom,supply-disable-load": [
+      100
+    ],
+    "qcom,supply-post-on-sleep": [
+      3
+    ],
+    "qcom,supply-pre-off-sleep": [
+      3
+    ]
+  },
+  "/soc/dsi_panel_pwr_supply_no_labibb": {
+    "#address-cells": [
+      1
+    ],
+    "#size-cells": [
+      0
+    ],
+    "phandle": [
+      1135
+    ]
+  },
+  "/soc/dsi_panel_pwr_supply_no_labibb/qcom,panel-supply-entry@0": {
+    "reg": [
+      0
+    ],
+    "qcom,supply-name": [
+      "vddio"
+    ],
+    "qcom,supply-min-voltage": [
+      1800000
+    ],
+    "qcom,supply-max-voltage": [
+      1904000
+    ],
+    "qcom,supply-enable-load": [
+      32000
+    ],
+    "qcom,supply-disable-load": [
+      80
+    ]
+  },
+  "/soc/dsi_panel_pwr_supply_labibb_amoled": {
+    "#address-cells": [
+      1
+    ],
+    "#size-cells": [
+      0
+    ],
+    "phandle": [
+      1136
+    ]
+  },
+  "/soc/dsi_panel_pwr_supply_labibb_amoled/qcom,panel-supply-entry@0": {
+    "reg": [
+      0
+    ],
+    "qcom,supply-name": [
+      "vddio"
+    ],
+    "qcom,supply-min-voltage": [
+      1800000
+    ],
+    "qcom,supply-max-voltage": [
+      1904000
+    ],
+    "qcom,supply-enable-load": [
+      32000
+    ],
+    "qcom,supply-disable-load": [
+      80
+    ]
+  },
+  "/soc/dsi_panel_pwr_supply_labibb_amoled/qcom,panel-supply-entry@1": {
+    "reg": [
+      1
+    ],
+    "qcom,supply-name": [
+      "vdda-3p3"
+    ],
+    "qcom,supply-min-voltage": [
+      3000000
+    ],
+    "qcom,supply-max-voltage": [
+      3000000
+    ],
+    "qcom,supply-enable-load": [
+      13200
+    ],
+    "qcom,supply-disable-load": [
+      80
+    ]
+  }
+}

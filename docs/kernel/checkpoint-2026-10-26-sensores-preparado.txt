@@ -1,0 +1,91 @@
+# Sensores: teste Linux interrompido; dados Android coletados — 2026-10-26
+
+ATUALIZAÇÃO: o mapeamento estático de SSC/engines/pinos/rails foi extraído
+do próprio firmware após esta coleta. Ler primeiro
+`checkpoint-2026-10-26-sensores-ssc.txt`. O caminho proposto agora é
+investigar ADSP/FastRPC/libssc com registry em RAM. A tentativa AP SE11
+continua proibida; as conclusões de runtime deste arquivo são históricas.
+
+## Coleta somente leitura no Android com root (26/10)
+
+O Android está funcionando e o SensorService confirma eventos reais do ICM:
+acelerômetro TDK ICM4x6xx e giroscópio aparecem como sensores disponíveis; o
+TMD2755 aparece para luz e proximidade. O acelerômetro tinha eventos recentes
+compatíveis com o aparelho parado (~0, 0, 9,92 m/s²); proximidade também tinha
+evento recente. Portanto sensores e ADSP/HAL funcionam no Android.
+
+No sysfs existem adaptadores AP I2C0 (`888000`), I2C1 (`a84000`) e I2C2
+(`a8c000`), com dispositivos `/dev/i2c-0..2`. O controlador AP SE em `a94000`
+não aparece como dispositivo I2C ativo. O sysfs lista controladores GENI em
+`8c0000` e `ac0000`, mas isso não estabelece correspondência entre a
+`bus_instance` do registry do SSC e um SE AP. `/dev/qup_ssc` tampouco existe no
+Android em execução. Assim, `/dev/qup_ssc/11` encontrado dentro do firmware é
+uma pista interna do ADSP, não prova de que o SE11 `a94000` da AP seja o
+barramento dos sensores. A hipótese que motivou habilitar SE11 ficou mais
+fraca; não usar esse mapeamento sem evidência adicional.
+
+O registry em `/persist/sensors/registry/registry` confirma ICM em endereço
+0x68, `bus_instance=1`, DRI IRQ 86, rail `sensor_vddio`; TMD2755 em 0x39,
+`bus_instance=5`, IRQ 89, rails `sensor_vdd` e `sensor_vddio`. Configuração do
+vendor e saídas filtradas do SensorService estão preservadas em
+`work/sensors-20261026/android-live-readonly/`. Nenhuma varredura I2C,
+leitura/escrita de registrador ou alteração de estado foi feita no Android.
+
+## Inventário conhecido
+
+O Android indica acelerômetro/giroscópio TDK `icm4x6xx` em 0x68 e sensor de
+luz/proximidade ams TMD2755 em 0x39. Ambos são controlados pelo ADSP no Android;
+não existem como clients no DT da AP. Não há magnetômetro ativo. O registry
+atribui bus_instance 1 (ICM) e 5 (TMD), DRI IRQs 86/89 e rails chamados
+`sensor_vdd`/`sensor_vddio`. O firmware do ADSP contém `/dev/qup_ssc/11`, mas a
+relação desse nome com um SE físico ainda não foi confirmada. Ver o inventário
+offline em `checkpoint-2026-10-25-sensores.txt`.
+
+## Tentativas no aparelho
+
+1. Variante U-Boot sensor-v1 em
+   `work/sensors-20261026/se11-id-read/`: habilitava somente `&i2c11` (SE11,
+   0xa94000, GPIO101/102) no DT do U-Boot. O `fastboot boot` foi aceito, mas o
+   aparelho ficou no “M” e não reenumerou USB. **Não reutilizar esse U-Boot.**
+2. Recuperação com o U-Boot perif-v5 conhecido. O kernel shell RAM-only iniciou
+   normalmente; a tela preta era intencional, pois não há loader de display.
+   O DT efetivo ainda tinha SE11 `disabled`; nenhum ID foi consultado.
+3. Para manter o U-Boot estável, foi tentado overlay OF de runtime em
+   `work/sensors-20261026/se11-runtime-overlay-v2/`. O módulo aplicou o overlay
+   que muda apenas `status` do SE11 e apareceu `geni_i2c a94000.i2c: Bus
+   frequency not specified, default to 100kHz`. `insmod` não voltou ao prompt.
+   A partir de ~109 s o kernel registrou RCU stalls; CPU4 não respondeu a NMI,
+   e o worker RCU também ficou starved. **Nenhuma leitura de sensor foi feita.**
+4. Reset físico levou ao bootloader. Restaurado o par perif-v5 + kernel #6.
+   SSH confirmou Linux 7.3.0-sm7150 #6 em pmOS v26.06, DRM DSI `connected`,
+   modo 1080x2460 e `wlan0=up`.
+
+## Tentativa Linux anterior e estado / decisão
+
+Não repetir o U-Boot sensor-v1 nem aplicar novamente o overlay SE11. Não
+habilitar outros SEs, rails ou IRQs enquanto a causa do stall e a topologia não
+forem entendidas. A tentativa não prova que o SE11 ou os sensores estão
+incorretos; ela mostra que a ativação atual do controlador pode travar esta
+plataforma/kernel em idle. O resultado é inconclusivo para presença/ID dos
+sensores.
+
+O Android já forneceu eventos, registry e topologia AP somente leitura; eles
+não relacionam as instâncias SSC a um QUP físico/GPIO. Próxima etapa segura é
+análise offline das configurações completas do vendor e dos nós/rótulos de
+QUP/SSC fornecidos pelo firmware/DT Android para identificar essa ponte. Não
+repetir a ativação runtime do SE11, não executar I2C scan genérico e não
+escrever registradores.
+
+## Artefatos e limites de segurança
+
+O log do travamento está em
+`work/sensors-20261026/se11-runtime-overlay-v2/screenlog.0`. READMEs e hashes
+das duas variantes estão nas respectivas pastas. Todos os boots foram
+`fastboot boot`; nenhuma partição foi escrita durante o teste. A variante
+diagnóstica usou mounts apenas RAM/pseudo. O par de retorno conhecido segue
+`work/perif-20261026/v5/` + `work/perif-20261026/v6-qrtr/`.
+
+Referências de identidade: o mapa TMD2755 indica ID em 0x93 e REVID em 0x92
+(https://docs.rs-online.com/570f/A700000008290199.pdf); o ICM-42688-P usa
+WHO_AM_I em 0x75
+(https://invensense.tdk.com/wp-content/uploads/2021/06/DS-000347-ICM-42688-P-v1.5.pdf).

@@ -1,0 +1,47 @@
+
+~ # /bin/busybox dmesg | /bin/busybox tail -30; cat /proc/modules; printf '\nHAN
+OIP_END_0a184866631e\n'
+[    1.783812] [drm:dpu_kms_hw_init:1172] dpu hardware revision:0x50020000
+[    1.783986] msm-mdss ae00000.display-subsystem: HANOIP: mapped firmware framebuffer [mem 0x9c000000-0x9d6fffff flags 0x200] before stream switch
+[    1.920040] [drm] Initialized msm 1.13.0 for ae01000.display-controller on minor 0
+[    1.920268] msm_dpu ae01000.display-controller: [drm:adreno_request_fw [msm]] loaded qcom/a630_sqe.fw from new location
+[    1.920564] msm_dpu ae01000.display-controller: [drm:adreno_request_fw [msm]] loaded qcom/a630_gmu.bin from new location
+[    2.196095] Console: switching to colour frame buffer device 135x153
+[    2.220912] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+[    2.228124] qcom_common: Unknown symbol qcom_glink_smem_unregister (err -2)
+[    2.228236] qcom_common: Unknown symbol qcom_glink_smem_register (err -2)
+[    2.385543] qcom_common: Unknown symbol qcom_glink_smem_unregister (err -2)
+[    2.385607] qcom_common: Unknown symbol qcom_glink_smem_register (err -2)
+[    3.727746] random: crng init done
+[   12.261181] platform 62b52000.pinctrl: deferred probe pending: platform: wait for supplier /soc@0/remoteproc@62400000/glink-edge/apr/service@4/clock-controller
+[   12.261232] platform 62b48000.pinctrl: deferred probe pending: platform: wait for supplier /soc@0/remoteproc@62400000/glink-edge/apr/service@4/clock-controller
+[   12.261265] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   12.261288] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   12.261309] qnoc-sm7150 16e0000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   12.261329] gcc-sm7150 100000.clock-controller: sync_state() pending due to 1d84000.ufshc
+[   12.261352] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1e40000.ipa
+[   12.261373] qnoc-sm7150 1620000.interconnect: sync_state() pending due to 1e40000.ipa
+[   12.261393] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1e40000.ipa
+[   12.261414] qnoc-sm7150 1700000.interconnect: sync_state() pending due to 1e40000.ipa
+[   12.261437] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   12.261459] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   12.261481] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   12.261503] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   12.261523] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1e40000.ipa
+[   12.261543] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   12.261579] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 4080000.remoteproc
+[   12.261599] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 62400000.remoteproc
+panel_ilitek_ili7807s 12288 0 - Live 0xffffa6398b3bf000
+msm 1261568 1 - Live 0xffffa6398b23a000
+qcom_wled 32768 0 - Live 0xffffa6398b229000
+ubwc_config 24576 1 msm, Live 0xffffa6398b174000
+mdt_loader 12288 1 msm, Live 0xffffa6398b21a000
+drm_client_lib 12288 1 msm, Live 0xffffa6398b210000
+gpu_sched 69632 1 msm, Live 0xffffa6398b1f2000
+drm_gpuvm 45056 1 msm, Live 0xffffa6398b1dc000
+drm_exec 12288 2 msm,drm_gpuvm, Live 0xffffa6398b1d2000
+drm_display_helper 233472 2 panel_ilitek_ili7807s,msm, Live 0xffffa6398b17c000
+cec 53248 1 drm_display_helper, Live 0xffffa6398b164000
+
+HANOIP_END_0a184866631e
+~ # 

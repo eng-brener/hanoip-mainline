@@ -1,0 +1,23 @@
+
+~ # ls -ln /root /root/.ssh /root/.ssh/authorized_keys; cat /run/dropbear.log 2>
+/dev/null; cat /run/start-usbnet.log 2>/dev/null; ps | grep dropbear; printf '\n
+%s\n' HANOIP_END_ebe73bc384f2
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+-rw-------    1 502      20              82 Jan  1  1970 /root/.ssh/authorized_keys
+
+/root:
+total 0
+
+/root/.ssh:
+total 4
+-rw-------    1 502      20              82 Jan  1  1970 authorized_keys
+15397 root      0:00 /sbin/dropbearmulti dropbear -R -s -p 22 -P /run/dropbear.pid
+28388 root      0:00 grep dropbear
+
+HANOIP_END_ebe73bc384f2
+~ # 

@@ -1,0 +1,14 @@
+pattern 2a1f1dbd083d70bf20b2ee31b8d90e7978f8f953f74ddf9b23d2cce645dee930
+guard 5862 stopped
+writable now: sdf sdf21; other non-RO devices: 0
+33554432 bytes (32.0MB) copied, 0.194026 seconds, 164.9MB/s
+write_ms=200
+readback 2a1f1dbd083d70bf20b2ee31b8d90e7978f8f953f74ddf9b23d2cce645dee930 read_ms=620
+WRITE_VERIFY_OK
+RESTORE start 1056.85
+33554432 bytes (32.0MB) copied, 0.240796 seconds, 132.9MB/s
+RESTORE_OK bf6fdb9ec8f9bc4282eda697041e7edfdce22c9318414746ba895585d3fb044b
+ro after: disk=1 part=1
+guard restarted 11945
+final blocks=84 not_ro=0
+DONE

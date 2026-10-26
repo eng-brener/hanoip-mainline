@@ -1,0 +1,17 @@
+{
+  "readonly_devices": 84,
+  "all_readonly": true,
+  "whole_disks": [
+    "sda",
+    "sdb",
+    "sdc",
+    "sdd",
+    "sde",
+    "sdf"
+  ],
+  "read_test_device": "/dev/sdb",
+  "bytes_per_read": 65536,
+  "repetitions": 3,
+  "sha256": "629a8ca6e6945642b045e47dad5f8c9d8559d3f4f245422d27ac3c1911f10a15",
+  "partition_mounts": false
+}

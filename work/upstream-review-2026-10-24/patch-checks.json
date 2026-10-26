@@ -1,0 +1,20 @@
+[
+  {
+    "patch": "pr66-qup.patch",
+    "directory": "kernel-mainline",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "patch": "pr66-qup-uboot.patch",
+    "directory": "uboot-sm7150",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "patch": "pr69-dsc-core.patch",
+    "directory": "kernel-mainline",
+    "exit": 0,
+    "output": ""
+  }
+]

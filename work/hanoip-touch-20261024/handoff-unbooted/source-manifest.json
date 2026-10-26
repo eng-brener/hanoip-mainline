@@ -1,0 +1,22 @@
+{
+  "AGENTS.md": "86adf362279fc3fa0c3a8955fb1ca4c848cfdfbdf720facbab4830222c77fd6e",
+  "README.md": "a347396f5f90c4488d03a78f1f7c406821379be1c76ac93b0076409b7e4523a0",
+  "docs/kernel/checkpoint-2026-10-24-display.txt": "29ccf85a734b25f0e0501318f931c6b59633e21e0acd2bb3e034d636117ec10e",
+  "scripts/hanoip_ilitek_firmware.py": "ba52ca88ed77cc1dc0adb194a5051729186f23c8cfa9fb8b60711443cc3f828d",
+  "scripts/hanoip-load-touch.sh": "0ad13c9b60beaa07fd35f77f72f6cb5db0dfa9080279a19b762e8fb8216ccbeb",
+  "tests/test_hanoip_ilitek_firmware.py": "6f6ca6712ae4cdc35282fdba4f46b331c057825764f8801c646048b9cd5fe5c8",
+  "configs/hanoip-touch.fragment": "f904ad539f20a131f7d5389f2910d4a036b5f7f660f01e275b9d66899297b7b8",
+  "configs/hanoip-uboot-touch-diagnostic.fragment": "6395dd9c9374e53f7257105c394c22a0f01c2f4d81a1500427bc510a3fe6c59b",
+  "kernel-mainline/drivers/input/touchscreen/ilitek-hanoip-spi.c": "5d9e81eb64eeda6ec73de75bce75eee7997a6f0babe8e7c2c250272406dd3101",
+  "kernel-mainline/drivers/input/touchscreen/Kconfig": "07bd2cea056171bed877c2334e8d7f94ae097a9a68e2afbf3fe936486ddfdbff",
+  "kernel-mainline/drivers/input/touchscreen/Makefile": "b59a296a81a4cb774b55e7ebd01ee1dd79e7d0b452d30e59d9d912ecfe1c6dd3",
+  "kernel-mainline/drivers/gpu/drm/msm/msm_mmu.h": "e4bb0c754b4ff9e34daab2512c3b626571ed39a917913e49dd6e04e5a6f56450",
+  "kernel-mainline/drivers/gpu/drm/msm/msm_iommu.c": "f7709ecd003387fe482d012b5131df24325ab138cc3be32b79915bcfa230e677",
+  "kernel-mainline/drivers/gpu/drm/msm/msm_kms.c": "4fffda3b614848a13bff0f86f16b5e0f42582dcd57649fecb10581760924255a",
+  "kernel-mainline/arch/arm64/boot/dts/qcom/Makefile": "ce4eb941a26b17c295391fc449bca2029ea49578618313d0780bb4ff11263db1",
+  "kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip-display-diagnostic.dts": "447bf9759aadb5062cf698238dc54757a351e52bfaa57a05b98e89402387796c",
+  "kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip-touch-diagnostic.dts": "262a01606572d33c97ffeed5278ff460b0d0a7f41aeb7c5ae3b77c272af077e6",
+  "uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip-display-diagnostic.dts": "b721cf6e3dd34e3cf5aed80a7b380ed4df8f3ca76617f917746c289702a5fb99",
+  "uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip-touch-diagnostic.dts": "262a01606572d33c97ffeed5278ff460b0d0a7f41aeb7c5ae3b77c272af077e6",
+  "onde paramos.md": "bf083a90f8499ccc707d2c440057ab0d67a327d0854283ec31fd6513376b01a6"
+}

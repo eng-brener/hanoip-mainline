@@ -1,0 +1,48 @@
+{
+  "motorola-source/sm6150-qupv3.dtsi": {
+    "url": "https://raw.githubusercontent.com/MotorolaMobilityLLC/kernel-msm/android-12-release-s2ris32.32-20-9-9-2-1/arch/arm64/boot/dts/qcom/sm6150-qupv3.dtsi",
+    "sha256": "49cfad8f6868190fc15e9b28f64e92d58f7503e2767f948b4bf1a516689888c7"
+  },
+  "motorola-source/sm6150-pinctrl.dtsi": {
+    "url": "https://raw.githubusercontent.com/MotorolaMobilityLLC/kernel-msm/android-12-release-s2ris32.32-20-9-9-2-1/arch/arm64/boot/dts/qcom/sm6150-pinctrl.dtsi",
+    "sha256": "22c8cc3dce9e445ffb09562746a35799887b0a6967c859994920f9b860bf91cb"
+  },
+  "motorola-source/scc-sm6150.c": {
+    "url": "https://raw.githubusercontent.com/MotorolaMobilityLLC/kernel-msm/android-12-release-s2ris32.32-20-9-9-2-1/drivers/clk/qcom/scc-sm6150.c",
+    "sha256": "f9dfa588933ebb58422f79fd5dbd9eb5515aac846ffd521ba10791907666adbf"
+  },
+  "motorola-source/sdmmagpie-qupv3.dtsi": {
+    "url": "https://raw.githubusercontent.com/MotorolaMobilityLLC/kernel-msm/android-12-release-s2ris32.32-20-9-9-2-1/arch/arm64/boot/dts/qcom/sdmmagpie-qupv3.dtsi",
+    "sha256": "7c0d236e8b13036595664a7a297ac69198b2e406b8587db35c32c16e4248a2b2"
+  },
+  "motorola-source/sm6150-slpi-pinctrl.dtsi": {
+    "url": "https://raw.githubusercontent.com/MotorolaMobilityLLC/kernel-msm/android-12-release-s2ris32.32-20-9-9-2-1/arch/arm64/boot/dts/qcom/sm6150-slpi-pinctrl.dtsi",
+    "sha256": "f82e978f19310005813d834694bd34fe272bdc576140a194e49dfb147fc68458"
+  },
+  "motorola-source/sm6150.dtsi": {
+    "url": "https://raw.githubusercontent.com/MotorolaMobilityLLC/kernel-msm/android-12-release-s2ris32.32-20-9-9-2-1/arch/arm64/boot/dts/qcom/sm6150.dtsi",
+    "sha256": "e1baa93da1435da313848e912c5bd0796de9c8d1555ff4ada0cf276eb854d173"
+  },
+  "motorola-source/sdmmagpie.dtsi": {
+    "url": "https://raw.githubusercontent.com/MotorolaMobilityLLC/kernel-msm/android-12-release-s2ris32.32-20-9-9-2-1/arch/arm64/boot/dts/qcom/sdmmagpie.dtsi",
+    "sha256": "4d77d14740281c58f9ac309c6582171e10af81cbd3a37cbbd4381bd061eb8c52"
+  },
+  "firmware/": {
+    "source": "work/android-dump-20261025/firmware/firmware.tar (local phone capture)",
+    "member_pattern": "vendor/firmware_mnt/image/adsp.{mdt,b00..b26}",
+    "use": "actual target firmware; hashes in ssc-map.json"
+  },
+  "reference-source/": {
+    "repository": "https://github.com/Rivko/android-firmware-qti-sdm670",
+    "ref": "main at collection",
+    "use": "layout/format reference for older SDM670; never evidence of the G60 board wiring"
+  },
+  "official-i3c-guide": {
+    "url": "https://docs.qualcomm.com/bundle/publicresource/topics/80-70014-8/i3c.html",
+    "use": "SSC instance/SE/GPIO concepts only"
+  },
+  "ssc-linux-integration": {
+    "url": "https://gitlab.com/postmarketOS/pmaports/-/merge_requests/4050",
+    "use": "primary implementation account for libssc and hexagonrpcd; G60 runtime still untested"
+  }
+}

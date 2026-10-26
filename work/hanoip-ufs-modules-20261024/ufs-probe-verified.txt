@@ -1,0 +1,60 @@
+/bin/busybox tail -c 1379 /run/hanoip-load-ufs-v2 > /run/load-ufs-final
+~ # /bin/busybox sha256sum /run/load-ufs-final
+1df1e72cf5e170a8a7d6c2d58a7f604e5f358d1dd5ac98ae955818dcb20d2012  /run/load-ufs-final
+~ # /bin/busybox sh /run/load-ufs-final
+[  409.461131] ufshcd_core: loading out-of-tree module taints kernel.
+HANOIP: UFS probe started in background (PID 231); see dmesg
+~ # [  409.917935] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_vreg: Unable to find vdd-hba-supply regulator, assuming enabled
+[  410.369387] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_vreg: Unable to find vccq-supply regulator, assuming enabled
+[  410.818852] ufshcd-qcom 1d84000.ufshc: UFS DIAG: generic init complete, invoking variant
+[  411.264893] ufshcd-qcom 1d84000.ufshc: UFS DIAG: variant callback start (qcom)
+[  411.711262] ufshcd-qcom 1d84000.ufshc: UFS DIAG: host reset get start
+[  412.156375] ufshcd-qcom 1d84000.ufshc: UFS DIAG: host reset get passed
+[  412.600664] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY get start
+[  413.043934] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY get passed
+[  413.485844] ufshcd-qcom 1d84000.ufshc: UFS DIAG: ICC init start
+[  413.928129] ufshcd-qcom 1d84000.ufshc: UFS DIAG: icc get ufs-ddr start
+[  414.372051] ufshcd-qcom 1d84000.ufshc: UFS DIAG: icc get cpu-ufs start
+[  414.817458] ufshcd-qcom 1d84000.ufshc: UFS DIAG: icc set bandwidth start
+[  415.262600] ufshcd-qcom 1d84000.ufshc: UFS DIAG: icc init passed
+[  415.706212] ufshcd-qcom 1d84000.ufshc: UFS DIAG: ICC init passed
+[  416.148403] ufshcd-qcom 1d84000.ufshc: UFS DIAG: device reset GPIO get start
+[  416.590723] ufshcd-qcom 1d84000.ufshc: UFS DIAG: device reset GPIO get passed
+[  417.032363] ufshcd-qcom 1d84000.ufshc: UFS DIAG: lane clocks get start
+[  417.473638] ufshcd-qcom 1d84000.ufshc: UFS DIAG: lane clocks get passed
+[  417.914138] ufshcd-qcom 1d84000.ufshc: UFS DIAG: ICE init start
+[  418.354221] ufshcd-qcom 1d84000.ufshc: UFS DIAG: ICE init passed
+[  418.793662] ufshcd-qcom 1d84000.ufshc: UFS DIAG: Qualcomm variant init complete (8 lane clocks)
+[  419.236899] ufshcd-qcom 1d84000.ufshc: UFS DIAG: variant callback returned 0
+[  419.677714] ufshcd-qcom 1d84000.ufshc: UFS DIAG: ufshcd_hba_init passed
+[  420.119264] ufshcd-qcom 1d84000.ufshc: UFS DIAG: hba_capabilities passed
+[  420.562498] ufshcd-qcom 1d84000.ufshc: UFS DIAG: attached-device reset start
+[  421.005902] ufshcd-qcom 1d84000.ufshc: UFS DIAG: attached-device reset returned
+[  421.446322] ufshcd-qcom 1d84000.ufshc: UFS DIAG: HCE start
+[  421.881556] ufshcd-qcom 1d84000.ufshc: UFS DIAG: QCOM host reset start
+[  422.316936] ufshcd-qcom 1d84000.ufshc: UFS DIAG: QCOM host reset returned 0
+[  422.749320] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY init start
+[  423.177709] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY init returned 0
+[  423.604699] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY power-on start
+[  424.028474] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY power-on returned 0
+[  424.452817] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY calibration start
+[  424.880084] ufshcd-qcom 1d84000.ufshc: UFS DIAG: PHY calibration returned 0
+[  425.304583] ufshcd-qcom 1d84000.ufshc: UFS DIAG: HCE returned 0
+[  425.726448] ufshcd-qcom 1d84000.ufshc: UFS DIAG: add SCSI host start
+[  426.147764] scsi host0: ufshcd
+[  426.569199] ufshcd-qcom 1d84000.ufshc: UFS DIAG: add SCSI host returned 0
+[  426.996531] ufshcd-qcom 1d84000.ufshc: UFS DIAG: link startup start
+[  427.418098] ufshcd-qcom 1d84000.ufshc: UFS DIAG: link PRE_CHANGE start, retries=3
+[  427.840771] ufshcd-qcom 1d84000.ufshc: UFS DIAG: link PRE_CHANGE returned
+[  428.262024] ufshcd-qcom 1d84000.ufshc: UFS DIAG: DME_LINK_STARTUP send start
+[  428.696766] ufshcd-qcom 1d84000.ufshc: UFS DIAG: DME_LINK_STARTUP returned 0
+[  429.118665] ufshcd-qcom 1d84000.ufshc: UFS DIAG: link startup returned 0
+[  429.539410] ufshcd-qcom 1d84000.ufshc: UFS DIAG: NOP OUT device verification start
+[  431.088896] ufshcd-qcom 1d84000.ufshc: ufshcd_abort: Device abort task at tag 0
+[  431.484075] host_regs: 00000000: 1587031f 00000000 00000210 00000000
+[  431.879563] host_regs: 00000010: 01000000 00010217 00000000 00000000
+[  432.275777] host_regs: 00000020: 00000000 00071ef5 00000000 00000000
+[  432.671208] host_regs: 00000030: 0000000f 00000001 00000000 00000000
+[  433.063800] host_regs: 00000040: 00000000 00000000 00000000 00000000
+[  433.457797] host_regs: 00000050: 01bc4000 00000001 00000000 00000000
+[  433.849697] host_regs: 00000060: 00000001 00000001 00000000 00000000

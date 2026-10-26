@@ -21,3 +21,65 @@ work/kernel-7.3/v2/volatile-boot-events*.json
 work/kernel-7.3/pr-patches/
 work/kernel-7.3/qcom_qg-*.c
 work/kernel-7.3/pr64-qg-net.diff
+
+# pmOS super-tail large/local artifacts (copies or hashes are in GOLD v4).
+work/pmos-super-20261025/pmos-super-rootfs.img
+work/pmos-super-20261025/pmos-super-rootfs-v2.img
+work/pmos-super-20261025/pmos-super-rootfs.img.gz
+work/pmos-super-20261025/snapshot/
+work/pmos-super-20261025/modules-7.1.0-sm7150.tar.gz
+work/pmos-super-20261025/ramdisk.cpio.gz
+work/pmos-super-20261025/kernel-hanoip-pmos-super-v1.img
+work/pmos-super-20261025/volatile-boot-events*.json
+
+# Device logs (may contain identifiers)
+work/*/modem-logs/
+
+# Raw vendor-partition pulls and RE binaries (proprietary, phone-derived).
+work/cameras-20261026/vendor-blobs/
+work/fingerprint-20261026/hal-protocol/*.elf
+work/fingerprint-20261026/hal-protocol/*.so
+work/fingerprint-20261026/fpctzapp-reconstructed.elf
+work/fingerprint-20261026/android-live-readonly/programs/
+work/sensors-20261026/plasma-full/sensor-bundle*.tar.gz
+work/sensors-20261026/orient-fix/sensor-bundle-fixed.tar.gz
+work/sensors-20261026/orient-fix/ramdisk*.cpio.gz
+work/sensors-20261026/plasma-ram/rootfs/
+work/sensors-20261026/plasma-ram/*.tar.gz
+work/cpu-gpu-20261025/*/pmos-mesa-kmscube-rootfs.tar.gz
+work/sensors-20261026/ssc-ram-test/rootfs/
+work/sensors-20261026/ssc-ram-test/userspace/
+work/sensors-20261026/libssc-gyro-source/
+work/sensors-20261026/ssc-mapping/firmware/
+work/cpu-gpu-20261025/*/rootfs/
+
+# 26/10: only code, docs and text logs are published; test images, ramdisks,
+# tarballs, modules and DT blobs stay local (rebuildable). The GOLD images
+# below are the exception.
+work/**/*.img
+work/**/*.img.gz
+work/**/*.cpio.gz
+work/**/*.tar.gz
+work/**/*.tar
+work/**/*.ko
+work/**/*.dtb
+work/**/*.bin
+work/**/Image
+work/**/Image.gz
+work/**/bin/
+# GOLD-20261026-1500: its kernel image and ramdisk embed the vendor sensor
+# bundle and touch firmware, so only the U-Boot image is published.
+!work/GOLD-20261026-1500/u-boot-hanoip-pmos-perif-v5.img
+
+# Vendor/proprietary files and phone-derived dumps (never publish).
+work/fingerprint-*/android-artifacts/
+work/hanoip-touch-20261024/vendor/
+work/hanoip-touch-20261024/firmware-*.json
+work/*/android-registry/
+work/*/android-live-readonly/
+work/sensors-20261026/ssc-mapping/reference-source/
+work/sensors-20261026/ssc-mapping/firmware-strings-filtered.json
+work/**/*.raw
+# Wi-Fi scans list neighbours' networks.
+work/wifi-*/*/run1/scan*.txt
+work/wifi-*/*/run1/internet.txt

@@ -1,0 +1,31 @@
+Combined CPU8 + GPU/Freedreno quiet-screen boot test
+Date: 2026-10-25
+Boot method: volatile fastboot boot (U-Boot image, then kernel image)
+No phone partition writes.
+
+Result: kernel booted, SSH/network gadget became available, display connected,
+GPU renderD128 present, all CPUs 0-7 online. /proc/cmdline has serial,
+USB, and ramoops consoles, with no console=tty1. Kernel printk remains
+available through those diagnostics consoles, not selected for the framebuffer.
+The initramfs status greeting still writes to /dev/tty1.
+
+GPU: a630_sqe.fw and a630_gmu.bin loaded. Zap links were prepared before
+load-display; modem_a was ro=1 and its SHA-256 matched before/after. Mesa
+26.1.6 KMSCube ran 120 frames, exit 0, GLES 3.2, vendor freedreno,
+renderer FD618. renderD128 exists; DSI error snapshot irqs=0.
+
+UFS: 84 block devices enumerated; no block with ro!=1 was found during check.
+Only modem_a and bluetooth_a were mounted under the existing guarded read-only workflow; no partition was written.
+
+Wi-Fi: modem/IPA/ath10k firmware and driver initialized; wlan0 exists. The
+interface was manually set UP for this check, but it remained operstate=down,
+with no carrier/IP because this initramfs does not start wpa_supplicant or
+include network credentials. Association and traffic were not tested.
+
+Bluetooth: hci0 appeared; WCN3990 QCA firmware setup completed, local address
+was present in DT, Bluetooth rfkill state was unblocked (state=1, soft=0,
+hard=0), and bluetooth_a hash was unchanged.
+Discovery/pairing were not tested; this initramfs has no btmgmt/bluetoothctl.
+
+This confirms the combined display/GPU/CPU8 boot. Wireless hardware bring-up
+succeeded, but Wi-Fi association and Bluetooth discovery still need tests.

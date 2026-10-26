@@ -1,0 +1,41 @@
+{
+  "base_commit": "84bec7953abe909a2f8942f189fbb7c82ec56b5e",
+  "source_files": {
+    ".gitignore": "6feaded4e28ea86e001a6751b4e3d960e8b7c31b9616ff9936b79297086e809b",
+    "AGENTS.md": "5fcb59a8470601e2f5deb26f252cc33faed35c9728e6d9f196f7180d3004981b",
+    "README.md": "90a8e468d40d5ba6b33fa0cc1934e566f25af6ad5e8eb3e7093d948e9e731eff",
+    "check_dtb.py": "1a93bf8ff58e3814c0e7397531621df90b671574cd6c22565e4a94f257da1cbf",
+    "configs/hanoip-mainline-base.config": "d1cdb5d002d4bdf084daa85a746f4e81941e73a6b0ec798204b8a74ab82f8840",
+    "configs/hanoip-uboot-diagnostic.fragment": "17fefc0ff8b9b27e84bdaa057d303d327f6464a5c6edaaa298d2f8a9e3d34047",
+    "configs/hanoip-uboot-ufs-diagnostic.fragment": "89aac6108932613452ac532e969ad287c818613c920a80b4e1458007de988a33",
+    "configs/hanoip-ufs-modules.fragment": "01640f51519e29d041b887f0b71c4d3d4f262b93716f77a386bafb36d7f2d5ed",
+    "configs/hanoip-usb-shell.fragment": "ca45b4798b93f6b41896a8e627a73c38f4353f661592fca990723c73719d9dc2",
+    "docs/kernel/checkpoint-2026-10-24-ufs-leitura.txt": "11f70b92cc95e5c7b483c287e6f51fdde7e463187d7260287f4ef1fe0317f0ae",
+    "docs/kernel/checkpoint-2026-10-24-usb-shell.txt": "6797f222f939871f84e2e1992357e0ca64a0b5e4cf1b9cac0beaba3bc2dedfe6",
+    "fix_dtb2.py": "7b18e2881d540a9d9dfd87c047e406979871554583504c31092f90b050cd0264",
+    "fix_initrd.py": "6d9b1ae937858c4c784e4413042438a517187e092a07dc860f69c8030b8bcad3",
+    "kernel-mainline/arch/arm64/boot/dts/qcom/Makefile": "6cda309da2fb3d208dcde2fe1d50cb012b7cc5e4d681078f3d94f4d3ee328f12",
+    "kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip-diagnostic.dts": "1509619dd8b4522372720a37a172367b08756174f8c9670668431743842c536b",
+    "kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip-ufs-diagnostic.dts": "35cd8c223cdfed3341b2d683ccdc05a22bec7b5a1e0e8b6a4b07b10ac53ef480",
+    "kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip.dts": "c2d79e61637621744495f6440b746798c3e415e8d444cedd1f8e6bc9340bf0de",
+    "kernel-mainline/arch/arm64/boot/dts/qcom/sm7150.dtsi": "7e370f755141eb364e4213989bb5c83bb1da46429b9164ecdb45310337c75335",
+    "kernel-mainline/drivers/regulator/qcom-lcdb-regulator.c": "4a7a77d922627a30066904ed86070e2dc60a60620baefda6ac6da20897e8f2a4",
+    "kernel-mainline/drivers/ufs/core/ufshcd.c": "2c13bcfb26663b0f88ef11de52aae80de93a78b6fe72edcc4c862e60e4d5a9c0",
+    "kernel-mainline/drivers/ufs/host/ufs-qcom.c": "19044d29a65d4027a20bde749fbc48f0e8a4328dd955ad1676eb766fde69980d",
+    "scripts/Dockerfile.hanoip": "7a4733c201d7bf32da617c3eac8e23247d5e91391ee6e709d0185eb8cc465757",
+    "scripts/hanoip-load-ufs.sh": "1df1e72cf5e170a8a7d6c2d58a7f604e5f358d1dd5ac98ae955818dcb20d2012",
+    "scripts/hanoip-reboot.sh": "e6b456fe1f347c1614f9584b7a83895351255703e10f546e3f455bb826f2b4b4",
+    "scripts/hanoip-usb-shell.init": "d19fbed8adb9c33e93bfe97db31b1c689027dc0503484f49742a34bde02d7180",
+    "scripts/hanoip_boot.py": "aa1192a6a785df8e2abe6988efc395dc6d6d4f08b2924ca1fdf48e21cbaba37d",
+    "tests/test_hanoip_boot.py": "f331f0df127e90466666bb7c33302192ce8de0158d36bb7705c1f98d8f218523",
+    "uboot-sm7150/board/qualcomm/hanoip-diagnostic.env": "376dc3e673ed1185c91961dcb7aca78f39548b0c1d70a7616bb3b5535b264781",
+    "uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip-diagnostic.dts": "3ede49f9563d70deba3cc01b01ecd99dff26af6022e354e070c51fb6f6c0c2a2",
+    "uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip-ufs-diagnostic.dts": "be542a7b1ebc7a0b5c997501b357e6d70a8177ad331de0c780b56f1dbc4d1767",
+    "uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip.dts": "84881b6c435553c6b74a30398fcc4f6b5e4f0d3883ecdcc21da3a358b6e192f7",
+    "uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150.dtsi": "ae85421f35ed8120b0b3ef341adab1f26882400e65e978feb854076168130820"
+  },
+  "hardware_tested_pair": [
+    "work/hanoip-ufs-modules-20261024/iommu/u-boot-hanoip-ufs-modules.img",
+    "work/hanoip-ufs-modules-20261024/iommu/kernel-hanoip-ufs-modules.img"
+  ]
+}

@@ -1,0 +1,13 @@
+d5fc913aa753e15b98a6b88a05da1a2da6f3b994a1c58d5d4af88f7dede13093  pmos-super-rootfs.img
+f7782978d1b8b5bd5871bdcdab506721a328c2547499463f79e1f2916597e51e  pmos-super-rootfs.img.gz
+847c95730338b6956696aae94c9990373664a53ec604463ecd2637b4cd3c16eb  kernel-hanoip-pmos-super-v1.img
+88ad4c9ae0ab2fdeb929408a4bd12a395e184071d571992793546bfde33a84cd  ramdisk.cpio.gz
+f48d5393c379764a94dec315e9c7ff018978e60809277c3045a7fbe94986f78b  init
+2f29cf5185fac74901fb1ffae914fca7f5338e5b0c9d2a5a3cf2e6efa7c6e190  write-super-tail.sh
+a723a30d8ba9c1724484a9b0f0892169c6cb9262c2bca3f489119d02ce8d0e16  build-rootfs.sh
+662f603049f5495a4d8dc49713ec914f095f47cf6153410ff031dab28b1f4da0  ../../scripts/hanoip-pmos-root.sh
+b8674f8145f0bf62330b7d0742b8f6c1b02ae3d5b492139bef6c6f104fc573dc  ../battery-20261025/telemetry-v1/u-boot-hanoip-battery-telemetry-v1.img
+0c76385a1a7a19296db27ca46da7aef946afacc692ed170366f7c618b5902c30  uboot-pmos/u-boot-hanoip-pmos-v1.img
+be1e6e88c28067fe70b07c3c004ce01401fd7db4225f0a05267df22630bd78eb  uboot-pmos/u-boot.bin
+905f48d51b9d31cae9978312fdd795cced83894532c25dbbf09119768e65cf5d  uboot-pmos/uboot.dtb
+044e87f17910bc84dfee8f36fcb68651c12b5e7fa8f8b6b9d025232b152f0ab5  touch-follower/ilitek-hanoip-spi.ko

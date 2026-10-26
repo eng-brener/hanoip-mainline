@@ -1,0 +1,7 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-pmos-perif.dts"
+
+/* Sensor-bus probe only: expose SE11 I2C (GPIO101/102), no clients. */
+&i2c11 {
+	status = "okay";
+};

@@ -1,0 +1,16 @@
+t3 max=75C big=2304000 cooling_cpu6=0
+t6 max=79C big=2304000 cooling_cpu6=0
+t9 max=80C big=2304000 cooling_cpu6=0
+t12 max=82C big=2304000 cooling_cpu6=0
+t15 max=83C big=2304000 cooling_cpu6=0
+t18 max=83C big=2304000 cooling_cpu6=0
+t21 max=84C big=2304000 cooling_cpu6=0
+t24 max=84C big=2304000 cooling_cpu6=0
+t27 max=84C big=2304000 cooling_cpu6=0
+t30 max=85C big=2304000 cooling_cpu6=0
+t33 max=85C big=2304000 cooling_cpu6=0
+t36 max=86C big=2304000 cooling_cpu6=0
+t39 max=86C big=2304000 cooling_cpu6=0
+t42 max=86C big=2304000 cooling_cpu6=0
+t45 max=86C big=2304000 cooling_cpu6=0
+fim: max=50C big=806400 cooling_cpu6=0 throttle_amostras=0

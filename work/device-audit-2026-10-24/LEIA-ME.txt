@@ -1,0 +1,115 @@
+Coleta ADB com root do Moto G60 hanoip — 2026-10-24
+
+Escopo: somente leituras de propriedades, procfs, sysfs, dmesg e DTB.
+Nao foram gravadas particoes, alteradas tensoes, montado debugfs,
+reiniciado o aparelho ou feitas alteracoes nos fontes do port.
+Os arquivos brutos podem conter identificadores do aparelho.
+
+CONTEXTO DA REFERENCIA
+
+Modelo XT2135-1, SoC ID 365 (0x16d), SDMMAGPIE, revisao 1.0.
+Android anuncia versao 16, com fingerprint Motorola de Android 11.
+Kernel atual: 4.14.206—CosmicFresh-R6-Final, compilado em 2023.
+Portanto esta e uma referencia downstream em uso, nao uma ROM stock intacta.
+Slot ativo _a. O boot atual usa o kernel Android, nao U-Boot/mainline.
+DTB ativo: 536692 bytes, 2552 nos; board-id <0x4c 0xb200>.
+Cmdline informa dtbo_idx=1, dtb_idx=0 e revisao pvt.
+
+MEMORIA E GPIO
+
+DT /memory: [0x80000000, 0x100000000) e [0x100000000, 0x17dd00000).
+Tamanho agregado 0xfdd00000; confirma o limite superior usado pelo port.
+Os intervalos acima sao anteriores a exclusao dos carveouts.
+MemTotal observado: 3739480 kB. Todos os oito CPUs aparecem online.
+Mapa TZ ativo: somente GPIO0, GPIO1, GPIO2, GPIO3.
+Splash: 0x9c000000 + 0x01700000; DFPS: 0x9d700000 + 0x00100000.
+Ramoops Android: 0xaf000000 + 0x000bf800. Este endereco difere do
+ramoops experimental do port, 0x9d800000; a coleta nao testa persistencia.
+Todos os carveouts estao preservados no DTB e hardware-selected.json.
+
+UFS
+
+Samsung KM5V8001DM-B622, firmware 1500; seis LUNs de dados, 0 a 5.
+Tamanho logico de bloco: 4096 bytes.
+boot_a = /dev/block/sde22; boot_b = /dev/block/sdf22.
+super = /dev/block/sdb23; userdata = /dev/block/sdb24.
+Uma lane por direcao, oito nomes de clocks no host.
+Faixas de frequencia do DT correspondem as copiadas para o port:
+core 50-200 MHz; UniPro 37,5-150 MHz; ICE 75-300 MHz.
+Clock gating e scaling habilitados no Android; devfreq simple_ondemand.
+Valores reportados pelo framework regulator durante a coleta:
+  PM6150 L19: 2950000 uV, habilitado (VCC).
+  PM6150 L12: 1750000 uV, habilitado (VCCQ2).
+  PM6150 L4:   880000 uV, habilitado (PHY).
+  PM6150L L3: 1200000 uV, habilitado (PLL e consumidor ref-clk).
+  ufs_phy_gdsc: habilitado.
+Estes sao valores de software; nao sao medidas com instrumento.
+O no ufshc do DT ativo NAO contem a propriedade iommus, e nao havia
+symlink iommu_group no dispositivo do host. Isso corrige a afirmacao
+anterior de que a ROM necessariamente descreve UFS com SMMU. Nao prova
+que a configuracao DMA/IOMMU removida do mainline esteja correta.
+
+PAINEL E BACKLIGHT
+
+Painel ativo tm_ili7807s_fhd_vid, fornecedor tm.
+Panel ID reportado: 0x91070501; versao 0x8000.
+Nome no DT: mipi_mot_vid_tm_ili7807s_fhd_678.
+1080x2460, quatro lanes, video burst, RGB de 24 bits.
+DFPS suportado no DT: 60 e 120 Hz; nao ha 90 Hz nessa lista.
+Timings base de 60 Hz: HFP 28, HBP 24, HPW 4; VFP 2565, VBP 12, VPW 2.
+DSC: slice 540x10, duas slices por pacote, 8 bpc, 8 bpp, block prediction.
+Reset eletrico downstream: alto 4 ms, baixo 1 ms, alto 12 ms.
+Reset em PM6150L GPIO9; TE em TLMM GPIO10; enable em TLMM GPIO55.
+No port, GPIO_ACTIVE_LOW exige traduzir a sequencia para valores logicos.
+Os 14 pacotes on-command e 2 pacotes off-command foram decodificados
+com tipo DSI, payload e atrasos em panel-commands.json. Os payloads e
+atrasos on/off conferem com a sequencia reconstruida no driver local.
+O controle de backlight do DT e bl_ctrl_wled, nao somente DCS 0x51.
+WLED: OVP 26500 mV, string-cfg 0x7, sete LEDs por string,
+fs-current-limit 25000 e boost-current-limit 1400 nas unidades downstream.
+O DTS U-Boot local forca quatro strings; e preciso validar a traducao
+do string-cfg downstream antes de habilitar todas no mainline.
+LCDB LDO/NCP reportam 5500000 uV, habilitados. O DT pede voltage-step-ramp.
+
+TOUCH
+
+ILITEK_TDDI em SPI, controlador a80000, dispositivo spi2.0.
+Compatible tchip,ilitek; SPI maximo 12000000 Hz.
+Reset TLMM GPIO8, IRQ TLMM GPIO9; GPIO59-62 nao sao reservados por TZ.
+ic_ver reporta Product ID DEF, Build ID 160100, Config ID 1040608.
+Esses identificadores nao bastam para determinar o modelo exato do chip.
+Confirma que CONFIG_TOUCHSCREEN_ILITEK, driver I2C do mainline local,
+nao e o driver correspondente a esse dispositivo SPI.
+
+MICROSD
+
+No sdhci@8804000: VDD = PM6150L L9, fixado a 2950000 uV pelo consumidor;
+VDD-IO = PM6150L L6, faixa pedida de 1800000 a 2950000 uV.
+Card detect TLMM GPIO69. Durante a coleta L9C/L6C estavam desabilitados;
+isso nao e teste de funcionamento com cartao inserido.
+As constraints gerais de L6C chegam a 3100000 uV, mas o consumidor SD
+pede no maximo 2950000. Nao aumentar tensoes para 3,3 V por tentativa.
+
+ARQUIVOS
+
+stock-live.dtb: DTB binario entregue ao Android atual.
+stock-live-tree.json: arvore decodificada para consulta.
+stock-live-tree-raw.json: todas as propriedades em hexadecimal sem perdas.
+hardware-selected.json: nos de interesse; referencias de supply resolvidas.
+panel-commands.json: pacotes DSI do painel Tianma com atrasos.
+android-config.gz e android.config: configuracao do kernel Android atual.
+mainline-image.config: IKCONFIG recuperado de kernel-ufs-diag-usb-v5.img,
+  arquivo local do projeto; nao foi obtido do aparelho Android.
+dmesg.txt: log bruto; dmesg-clean.txt: mesma captura sem cores ANSI.
+identity/memory/partitions/display/power/usb/sysfs-inventory.txt: coleta inicial.
+ufs-runtime/regulators-runtime/panel-touch-runtime/reserved-memory-runtime.txt:
+  leituras complementares. Ausencias de arquivos ficam registradas nas saidas.
+collection.json: comandos ADB usados e resultados da coleta do aparelho.
+SHA256SUMS: checksums dos arquivos preservados, exceto o proprio manifesto.
+
+LIMITES
+
+O dmesg disponivel ja comeca muitas horas apos o boot; nao contem a
+inicializacao completa de UFS/PHY/LCDB. Debugfs nao estava disponivel e
+nao foi montado. Nao foram feitos dumps de MMIO/SPMI nem leitura direta
+de particoes. A coleta nao testa o kernel mainline no hardware.

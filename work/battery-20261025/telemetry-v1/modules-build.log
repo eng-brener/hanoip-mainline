@@ -1,0 +1,7 @@
+make: Entering directory '/tmp/kernel-mainline'
+make[1]: Entering directory '/tmp/hanoip-battery-modules'
+  CC [M]  qcom_smbx.o
+  MODPOST Module.symvers
+  LD [M]  qcom_smbx.ko
+make[1]: Leaving directory '/tmp/hanoip-battery-modules'
+make: Leaving directory '/tmp/kernel-mainline'

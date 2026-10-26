@@ -1,0 +1,83 @@
+Warning: Permanently added '172.16.42.1' (ED25519) to the list of known hosts.
+[   10.209698] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_vreg: Unable to find vdd-hba-supply regulator, assuming enabled
+[   10.533887] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_vreg: Unable to find vccq-supply regulator, assuming enabled
+[   10.756315] random: crng init done
+[   11.285428] scsi host0: ufshcd
+[   11.826050] scsi 0:0:0:49488: Well-known LUN    SAMSUNG  KM5V8001DM-B622  1500 PQ: 0 ANSI: 6
+[   12.321912] scsi 0:0:0:49476: Well-known LUN    SAMSUNG  KM5V8001DM-B622  1500 PQ: 0 ANSI: 6
+[   12.639818] scsi 0:0:0:49456: Well-known LUN    SAMSUNG  KM5V8001DM-B622  1500 PQ: 0 ANSI: 6
+[   12.956811] scsi 0:0:0:0: Direct-Access     SAMSUNG  KM5V8001DM-B622  1500 PQ: 0 ANSI: 6
+[   13.281983] scsi 0:0:0:1: Direct-Access     SAMSUNG  KM5V8001DM-B622  1500 PQ: 0 ANSI: 6
+[   13.596618] scsi 0:0:0:2: Direct-Access     SAMSUNG  KM5V8001DM-B622  1500 PQ: 0 ANSI: 6
+[   13.910466] scsi 0:0:0:3: Direct-Access     SAMSUNG  KM5V8001DM-B622  1500 PQ: 0 ANSI: 6
+[   14.223255] scsi 0:0:0:4: Direct-Access     SAMSUNG  KM5V8001DM-B622  1500 PQ: 0 ANSI: 6
+[   14.535066] scsi 0:0:0:5: Direct-Access     SAMSUNG  KM5V8001DM-B622  1500 PQ: 0 ANSI: 6
+[   14.845737] sd 0:0:0:0: [sda] 4096 4096-byte logical blocks: (16.8 MB/16.0 MiB)
+[   14.846008] sd 0:0:0:2: [sdc] 2048 4096-byte logical blocks: (8.39 MB/8.00 MiB)
+[   14.846124] sd 0:0:0:1: [sdb] 30967808 4096-byte logical blocks: (127 GB/118 GiB)
+[   14.846210] sd 0:0:0:1: [sdb] Write Protect is off
+[   14.846212] sd 0:0:0:1: [sdb] Mode Sense: 00 32 00 10
+[   14.846322] sd 0:0:0:1: [sdb] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[   14.846437] sd 0:0:0:1: [sdb] Preferred minimum I/O size 524288 bytes
+[   14.846439] sd 0:0:0:1: [sdb] Optimal transfer size 524288 bytes
+[   14.846457] sd 0:0:0:4: [sdd] 131072 4096-byte logical blocks: (537 MB/512 MiB)
+[   14.848063] sd 0:0:0:4: [sdd] Write Protect is off
+[   14.848075] sd 0:0:0:4: [sdd] Mode Sense: 00 32 00 10
+[   14.848252] sd 0:0:0:4: [sdd] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[   14.848322] sd 0:0:0:5: [sdf] 131072 4096-byte logical blocks: (537 MB/512 MiB)
+[   14.848351] sd 0:0:0:4: [sdd] Preferred minimum I/O size 524288 bytes
+[   14.848364] sd 0:0:0:4: [sdd] Optimal transfer size 524288 bytes
+[   14.848390] sd 0:0:0:5: [sdf] Write Protect is off
+[   14.848392] sd 0:0:0:5: [sdf] Mode Sense: 00 32 00 10
+[   14.848482] sd 0:0:0:3: [sde] 2048 4096-byte logical blocks: (8.39 MB/8.00 MiB)
+[   14.848524] sd 0:0:0:5: [sdf] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[   14.848607] sd 0:0:0:5: [sdf] Preferred minimum I/O size 524288 bytes
+[   14.848608] sd 0:0:0:5: [sdf] Optimal transfer size 524288 bytes
+[   14.848784] sd 0:0:0:3: [sde] Write Protect is off
+[   14.848794] sd 0:0:0:3: [sde] Mode Sense: 00 32 00 10
+[   14.849009] sd 0:0:0:3: [sde] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[   14.849384] sd 0:0:0:3: [sde] Preferred minimum I/O size 524288 bytes
+[   14.849397] sd 0:0:0:3: [sde] Optimal transfer size 524288 bytes
+[   15.482573] sd 0:0:0:0: [sda] Write Protect is off
+[   15.784165] sd 0:0:0:2: [sdc] Write Protect is off
+[   15.785560]  sde: sde1 sde2
+[   15.785945] sd 0:0:0:3: [sde] Attached SCSI disk
+[   16.084348] sd 0:0:0:0: [sda] Mode Sense: 00 32 00 10
+[   16.094792]  sdd: sdd1 sdd2 sdd3 sdd4 sdd5 sdd6 sdd7 sdd8 sdd9 sdd10 sdd11 sdd12 sdd13 sdd14 sdd15 sdd16 sdd17 sdd18 sdd19 sdd20 sdd21 sdd22 sdd23 sdd24
+[   16.094822]  sdf: sdf1 sdf2 sdf3 sdf4 sdf5 sdf6 sdf7 sdf8 sdf9 sdf10 sdf11 sdf12 sdf13 sdf14 sdf15 sdf16 sdf17 sdf18 sdf19 sdf20 sdf21 sdf22 sdf23 sdf24
+[   16.096938] sd 0:0:0:5: [sdf] Attached SCSI disk
+[   16.096938] sd 0:0:0:4: [sdd] Attached SCSI disk
+[   16.386446] sd 0:0:0:2: [sdc] Mode Sense: 00 32 00 10
+[   16.689931] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[   16.690307]  sdb: sdb1 sdb2 sdb3 sdb4 sdb5 sdb6 sdb7 sdb8 sdb9 sdb10 sdb11 sdb12 sdb13 sdb14 sdb15 sdb16 sdb17 sdb18 sdb19 sdb20 sdb21 sdb22 sdb23 sdb24
+[   16.694336] sd 0:0:0:1: [sdb] Attached SCSI disk
+[   16.996002] sd 0:0:0:2: [sdc] Write cache: enabled, read cache: enabled, supports DPO and FUA
+[   17.303973] sd 0:0:0:0: [sda] Preferred minimum I/O size 524288 bytes
+[   17.613671] sd 0:0:0:2: [sdc] Preferred minimum I/O size 524288 bytes
+[   17.920319] sd 0:0:0:0: [sda] Optimal transfer size 524288 bytes
+[   18.234535] sd 0:0:0:2: [sdc] Optimal transfer size 524288 bytes
+[   21.990014] platform 62b52000.pinctrl: deferred probe pending: (reason unknown)
+[   36.029885] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1e40000.ipa
+[   36.544023] qnoc-sm7150 1620000.interconnect: sync_state() pending due to 1e40000.ipa
+[   36.549396]  sdc: sdc1 sdc2
+[   37.056692] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1e40000.ipa
+[   37.413716] sd 0:0:0:2: [sdc] Attached SCSI disk
+[   37.415481]  sda: sda1 sda2
+[   37.415644] sd 0:0:0:0: [sda] Attached SCSI disk
+[   37.931638] qnoc-sm7150 1700000.interconnect: sync_state() pending due to 1e40000.ipa
+[   39.914842] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 5000000.gpu
+[   40.453005] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   40.992392] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   41.529445] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   42.070577] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   42.612428] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 5000000.gpu
+[   43.153067] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1e40000.ipa
+[   43.691519] qnoc-sm7150 1500000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   44.234774] qnoc-sm7150 9680000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   44.779410] qnoc-sm7150 1380000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   45.323766] qnoc-sm7150 1740000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   45.864437] gcc-sm7150 100000.clock-controller: sync_state() pending due to ae00000.display-subsystem
+[   46.407739] dispcc-sm7150 af00000.clock-controller: sync_state() pending due to ae00000.display-subsystem
+[   46.947622] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to ae00000.display-subsystem
+[   47.496685] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 4080000.remoteproc
+[   51.605342] EXT4-fs (sdd18): mounted filesystem 05065aea-3c02-4d07-acf3-e1175076772f ro without journal. Quota mode: none.

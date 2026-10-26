@@ -1,0 +1,121 @@
+{{- $architecture := or .architecture "arm64" -}}
+{{- $username := or .username "kali" -}}
+{{- $password := or .password "1234" -}}
+{{- $hostname := or .hostname "kali" -}}
+{{- $environment := or .environment "phosh" -}}
+{{- $contrib := or .contrib "true" -}}
+{{- $nonfree := or .nonfree "false" -}}
+{{- $ssh := or .ssh "" -}}
+{{- $zram:= or .zram "false" -}}
+{{- $debian_suite := or .debian_suite "kali-rolling" -}}
+{{- $suite := or .suite $debian_suite -}}
+{{- $rootfs := or .rootfs "rootfs.tar.xz" }}
+{{- $mirror := or .mirror "http://kali.download/kali" -}}
+{{- $packages := or .packages "" -}}
+
+architecture: {{ $architecture }}
+
+actions:
+  - action: debootstrap
+    suite: {{ $debian_suite }}
+    components:
+      - main
+{{ if eq $contrib "true" }}
+      - contrib
+{{ end }}
+{{ if eq $nonfree "true" }}
+      - non-free
+      - non-free-firmware
+{{ end }}
+    mirror: {{ $mirror }}
+    variant: minbase
+    keyring-file: kali-archive-keyring.gpg
+    keyring-package: kali-archive-keyring
+    #check-gpg: false
+
+  - action: apt
+    recommends: true
+    description: Install mobian-archive-keyring
+    packages:
+      - ca-certificates
+      - mobian-archive-keyring
+
+  - action: overlay
+    description: Enable resize of root partition
+    source: overlays/repart.d/
+    destination: /etc/repart.d/
+
+  - action: overlay
+    description: Disable Kali motd during boot
+    source: overlays/kali-motd/
+    destination: /etc/kali-motd/
+
+  - action: overlay
+    description: Add improved Squeekboard terminal layout
+    source: overlays/skel/
+    destination: /etc/skel/
+
+  - action: run
+    description: Setup Mobian repository
+    chroot: true
+    script: scripts/setup-apt.sh {{ $debian_suite }} {{ $suite }}
+
+{{ if eq $nonfree "true" }}
+  - action: run
+    description: Enable non-free-firmware repos
+    chroot: true
+    script: scripts/setup-apt-nonfree.sh true
+{{ end }}
+
+  - action: recipe
+    recipe: include/packages-base.yaml
+    variables:
+      ssh: {{ $ssh }}
+
+  - action: recipe
+    recipe: include/packages-{{ $environment }}.yaml
+
+{{ if ne $packages "" }}
+  - action: apt
+    recommends: true
+    description: "Install extra packages: {{ $packages }}"
+    packages: [ {{ $packages }} ]
+{{ end }}
+
+  - action: run
+    description: Set up default user
+    chroot: true
+    script: scripts/setup-user.sh {{ $username }} {{ $password }}
+
+{{ if $ssh }}
+  - action: overlay
+    description: Set up sshd configuration
+    source: overlays/sshd_config.d/
+    destination: /etc/ssh/sshd_config.d/
+
+  - action: overlay
+    description: Set up user's ssh configuration
+    source: overlays/ssh/
+    destination: /home/{{ $username }}/.ssh/
+
+  - action: run
+    description: Set owner of .ssh
+    chroot: true
+    command: chown -R {{ $username }}:{{ $username }} /home/{{ $username }}/.ssh/
+{{ end }}
+
+{{ if eq $zram "true" }}
+  - action: overlay
+    description: setup zram devices
+    source: overlays/zram/
+    destination: /etc/
+{{ end }}
+
+  - action: run
+    description: Set up system
+    chroot: true
+    script: scripts/setup-system.sh {{ $hostname }}
+
+  - action: pack
+    file: {{ $rootfs }}
+    compression: xz

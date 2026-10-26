@@ -1,0 +1,116 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include <dt-bindings/sound/qcom,q6asm.h>
+#include "sm7150-motorola-hanoip-pmos-audio.dts"
+
+/*
+ * Audio bring-up, phase 2: a sound card with MultiMedia1 routed to the
+ * speaker I2S (SECONDARY_MI2S_RX on vendor LPI gpio8-11).
+ * No codec yet: the aw882xx amplifier stays off, so this only proves the
+ * path through the ADSP. Vendor format: 48 kHz, S16_LE, mono, playback on
+ * data line 0 and amplifier feedback on line 1.
+ */
+/ {
+	/*
+	 * Placeholder codec for phase 2: qcom_snd_parse_of() only makes a
+	 * link a DPCM backend when it has both platform and codec. Touches no
+	 * hardware; replaced by the aw882xx amplifier in phase 3.
+	 */
+	speaker_dummy_codec: audio-codec-dummy {
+		compatible = "linux,spdif-dit";
+		#sound-dai-cells = <0>;
+	};
+
+	sound {
+		compatible = "qcom,sm8250-sndcard";
+		model = "Motorola Moto G60";
+		pinctrl-0 = <&hanoip_sec_mi2s_active>;
+		pinctrl-names = "default";
+
+		mm1-dai-link {
+			link-name = "MultiMedia1";
+
+			cpu {
+				sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
+			};
+		};
+
+		speaker-dai-link {
+			link-name = "Speaker Playback";
+
+			cpu {
+				sound-dai = <&q6afedai SECONDARY_MI2S_RX>;
+			};
+
+			platform {
+				sound-dai = <&q6routing>;
+			};
+
+			codec {
+				sound-dai = <&speaker_dummy_codec>;
+			};
+		};
+	};
+};
+
+&q6asmdai {
+	dai@0 {
+		reg = <MSM_FRONTEND_DAI_MULTIMEDIA1>;
+	};
+};
+
+&q6afedai {
+	dai@18 {
+		reg = <SECONDARY_MI2S_RX>;
+		qcom,sd-lines = <0>;
+	};
+};
+
+/*
+ * The speaker I2S pins are vendor LPI gpio8-11, in the SSC part of the LPI
+ * TLMM below &lpass_tlmm (which starts at vendor gpio18). Only their four
+ * register blocks are mapped.
+ */
+&soc {
+	lpass_tlmm_ssc: pinctrl@62b48000 {
+		compatible = "qcom,sm7150-lpass-lpi-ssc-pinctrl";
+		reg = <0 0x62b48000 0 0x4000>;
+
+		clocks = <&q6afecc LPASS_HW_MACRO_VOTE LPASS_CLK_ATTRIBUTE_COUPLE_NO>;
+		clock-names = "core";
+
+		gpio-controller;
+		#gpio-cells = <2>;
+		gpio-ranges = <&lpass_tlmm_ssc 0 0 4>;
+
+		hanoip_sec_mi2s_active: sec-mi2s-active-state {
+			sclk-pins {
+				pins = "ssc_gpio8";
+				function = "sec_mi2s_sclk";
+				drive-strength = <16>;
+				bias-bus-hold;
+			};
+
+			ws-pins {
+				pins = "ssc_gpio9";
+				function = "sec_mi2s_ws";
+				drive-strength = <16>;
+				bias-bus-hold;
+			};
+
+			data0-pins {
+				pins = "ssc_gpio10";
+				function = "sec_mi2s_data0";
+				drive-strength = <16>;
+				bias-bus-hold;
+			};
+
+			data1-pins {
+				pins = "ssc_gpio11";
+				function = "sec_mi2s_data1";
+				drive-strength = <16>;
+				bias-disable;
+				input-enable;
+			};
+		};
+	};
+};

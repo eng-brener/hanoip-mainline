@@ -1,0 +1,965 @@
+62.487761] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@4: Adding to iommu group 12
+[  162.489015] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@5: Adding to iommu group 13
+[  162.490377] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@6: Adding to iommu group 14
+[  162.491820] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@7: Adding to iommu group 15
+[  162.493202] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@8: Adding to iommu group 16
+[  162.499837] PDR: Indication received from msm/adsp/audio_pd, state: 0x1fffffff, trans-id: 1
+[  162.500329] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:3
+[  162.500438] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:4
+[  162.500527] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:7
+[  162.500606] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:8
+
+~ # cat /run/hanoip-sensors.log; cat /run/ssc-hexagonrpcd.log; cat /run/ssc-qrtr
+.log; /bin/busybox tail -20 /run/ssc-accelerometer.log; /bin/busybox dmesg | /bi
+n/busybox tail -20; printf '\nHANOIP_END_61d5defbaf94\n'
+HANOIP SSC: RAM-only test starting
+MOUNTS_RAM_ONLY; BLOCK_GUARD_OK
+ADSP_STATE offline
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+crw-------    1 root     root       10, 262 Aug 13 19:45 /dev/fastrpc-adsp
+HEXAGONRPCD_PID 332
+SSC_ACCELEROMETER_TEST_START
+Starting /usr/bin/hexagonrpcd (INIT_ATTACH_SNS) on /dev/fastrpc-adsp
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_device: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_rev: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/hw_revision: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+Could not open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version: No such file or directory
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../sns_reg_version for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+Tried to open /mnt/vendor/persist/sensors/registry/registry/../temp.json for writing
+  Service Version Instance Node  Port
+       64       1        1    1 16386 Service registry locator service
+       15       1       32    5     1 Test service
+       43       2       20    5     2 Subsystem control service
+       66       1       74    5     3 Service registry notification service
+       51       1        5    5     6 CoreSight remote tracing service
+       24       1        1    5     8 Thermal mitigation device service
+       15       1       33    5     9 Test service
+       15       1       34    5    11 Test service
+       51       1       12    5    13 CoreSight remote tracing service
+      400       1        0    5    14 Snapdragon Sensor Core service
+      769       1        0    5    15 SLIMbus control service
+<<<<<<   service = "ssc"
+<<<<<<   client  = 1
+<<<<<< QMI:
+<<<<<<   flags       = "indication"
+<<<<<<   transaction = 14
+<<<<<<   tlv_length  = 64
+<<<<<<   message     = "Report Large" (0x0022)
+<<<<<< TLV:
+<<<<<<   type       = "Client ID" (0x01)
+<<<<<<   length     = 8
+<<<<<<   value      = 00:00:00:00:00:00:00:00
+<<<<<<   translated = 0
+<<<<<< TLV:
+<<<<<<   type       = "Data" (0x02)
+<<<<<<   length     = 50
+<<<<<<   value      = 30:00:0A:12:09:AB:AB:AB:AB:AB:AB:AB:AB:11:AB:AB:AB:AB:AB:AB:AB:AB:12:1A:0D:00:03:00:00:11:ED:11:95:E7:00:00:00:00:1A:0A:0A:08:72:65:67:69:73:74:72:79
+<<<<<<   translated = { [0] = '10' [1] = '18' [2] = '9' [3] = '171' [4] = '171' [5] = '171' [6] = '171' [7] = '171' [8] = '171' [9] = '171' [10] = '171' [11] = '17' [12] = '171' [13] = '171' [14] = '171' [15] = '171' [16] = '171' [17] = '171' [18] = '171' [19] = '171' [20] = '18' [21] = '26' [22] = '13' [23] = '0' [24] = '3' [25] = '0' [26] = '0' [27] = '17' [28] = '237' [29] = '17' [30] = '149' [31] = '231' [32] = '0' [33] = '0' [34] = '0' [35] = '0' [36] = '26' [37] = '10' [38] = '10' [39] = '8' [40] = '114' [41] = '101' [42] = '103' [43] = '105' [44] = '115' [45] = '116' [46] = '114' [47] = '121'}
+
+** (ssccli:335): DEBUG: 19:46:02.338: Polled 'registry' sensor for service availability
+** (ssccli:335): DEBUG: 19:46:02.338: Message 768 for sensor 12370169555311111083 12370169555311111083
+[   12.261543] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1d84000.ufshc
+[   12.261579] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 4080000.remoteproc
+[   12.261599] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 62400000.remoteproc
+[  162.083749] remoteproc remoteproc0: adsp is available
+[  162.084808] remoteproc remoteproc0: powering up adsp
+[  162.084849] remoteproc remoteproc0: Booting fw image qcom/sm7150/motorola/hanoip/adsp.mdt, size 8860
+[  162.085820] remoteproc remoteproc1: modem is available
+[  162.477450] remoteproc remoteproc0: remote processor adsp is now up
+[  162.486092] qcom,fastrpc 62400000.remoteproc:glink-edge.fastrpcglink-apps-dsp.-1.-1: no reserved DMA memory for FASTRPC
+[  162.486611] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@3: Adding to iommu group 11
+[  162.487761] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@4: Adding to iommu group 12
+[  162.489015] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@5: Adding to iommu group 13
+[  162.490377] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@6: Adding to iommu group 14
+[  162.491820] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@7: Adding to iommu group 15
+[  162.493202] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@8: Adding to iommu group 16
+[  162.499837] PDR: Indication received from msm/adsp/audio_pd, state: 0x1fffffff, trans-id: 1
+[  162.500329] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:3
+[  162.500438] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:4
+[  162.500527] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:7
+[  162.500606] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:8
+
+HANOIP_END_61d5defbaf94
+~ # 

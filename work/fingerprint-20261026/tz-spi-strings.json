@@ -1,0 +1,1882 @@
+[
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105ead",
+    "text": "qupv3_se_hw"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105eb9",
+    "text": "qupv3_se_hw_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105eca",
+    "text": "qupv3_common_hw"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105eda",
+    "text": "qupv3_common_hw_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105eef",
+    "text": "qupv3_0_clocks_arr"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105f02",
+    "text": "qupv3_0_clocks_arr_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105f1a",
+    "text": "qupv3_1_clocks_arr"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105f2d",
+    "text": "qupv3_1_clocks_arr_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105f45",
+    "text": "ssc_qupv3_se_hw"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105f55",
+    "text": "ssc_qupv3_se_hw_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105f6a",
+    "text": "ssc_qupv3_common_hw"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105f7e",
+    "text": "ssc_qupv3_common_hw_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105f97",
+    "text": "ssc_qupv3_clocks_arr"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105fac",
+    "text": "ssc_qupv3_clocks_arr_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105fc6",
+    "text": "is_ssc_qup_ac_config_supported"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105fe5",
+    "text": "qupv3_gpio_use_msm_ver"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x105ffc",
+    "text": "qupv3_tcsr_soc_hw_ver_addr"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106017",
+    "text": "qupv3_double_signed"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106908",
+    "text": "QUP_0I0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106910",
+    "text": "QUP_0I0I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106919",
+    "text": "QUP_0I1"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106921",
+    "text": "QUP_0I1I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10692a",
+    "text": "QUP_0I2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106932",
+    "text": "QUP_0I2I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10693b",
+    "text": "QUP_0I3"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106943",
+    "text": "QUP_0I3I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10694c",
+    "text": "QUP_0I4"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106954",
+    "text": "QUP_0I4I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10695d",
+    "text": "QUP_0I5"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106965",
+    "text": "QUP_0I5I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10696e",
+    "text": "QUP_0I6"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106976",
+    "text": "QUP_0I6I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10697f",
+    "text": "QUP_0I7"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106987",
+    "text": "QUP_0I7I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106990",
+    "text": "QUP_0S0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106998",
+    "text": "QUP_0S0S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069a1",
+    "text": "QUP_0S0G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069ab",
+    "text": "QUP_0S0G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069b5",
+    "text": "QUP_0S1"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069bd",
+    "text": "QUP_0S1S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069c6",
+    "text": "QUP_0S1G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069d0",
+    "text": "QUP_0S1G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069da",
+    "text": "QUP_0S2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069e2",
+    "text": "QUP_0S2S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069eb",
+    "text": "QUP_0S2G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069f5",
+    "text": "QUP_0S3"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1069fd",
+    "text": "QUP_0S3S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a06",
+    "text": "QUP_0S3G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a10",
+    "text": "QUP_0S3G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a1a",
+    "text": "QUP_0S4"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a22",
+    "text": "QUP_0S4S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a2b",
+    "text": "QUP_0S4G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a35",
+    "text": "QUP_0S4G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a3f",
+    "text": "QUP_0C"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a46",
+    "text": "QUP_0CS"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a4e",
+    "text": "QUP_1I0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a56",
+    "text": "QUP_1I0I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a5f",
+    "text": "QUP_1I1"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a67",
+    "text": "QUP_1I1I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a70",
+    "text": "QUP_1I2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a78",
+    "text": "QUP_1I2I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a81",
+    "text": "QUP_1I3"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a89",
+    "text": "QUP_1I3I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a92",
+    "text": "QUP_1I4"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106a9a",
+    "text": "QUP_1I4I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106aa3",
+    "text": "QUP_1I5"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106aab",
+    "text": "QUP_1I5I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ab4",
+    "text": "QUP_1I6"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106abc",
+    "text": "QUP_1I6I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ac5",
+    "text": "QUP_1I7"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106acd",
+    "text": "QUP_1I7I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ad6",
+    "text": "QUP_1S0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ade",
+    "text": "QUP_1S0S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ae7",
+    "text": "QUP_1S0G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106af1",
+    "text": "QUP_1S0G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106afb",
+    "text": "QUP_1S1"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b03",
+    "text": "QUP_1S1S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b0c",
+    "text": "QUP_1S1G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b16",
+    "text": "QUP_1S2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b1e",
+    "text": "QUP_1S2S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b27",
+    "text": "QUP_1S2G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b31",
+    "text": "QUP_1S2G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b3b",
+    "text": "QUP_1S3"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b43",
+    "text": "QUP_1S3S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b4c",
+    "text": "QUP_1S3G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b56",
+    "text": "QUP_1S4"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b5e",
+    "text": "QUP_1S4S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b67",
+    "text": "QUP_1S4G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b71",
+    "text": "QUP_1S4G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b7b",
+    "text": "QUP_1S5"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b83",
+    "text": "QUP_1S5S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b8c",
+    "text": "QUP_1S5G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106b96",
+    "text": "QUP_1S5G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ba0",
+    "text": "QUP_1C"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ba7",
+    "text": "QUP_1CS"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106baf",
+    "text": "QUP_SS0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106bb7",
+    "text": "QUP_SS0S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106bc0",
+    "text": "QUP_SS0G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106bca",
+    "text": "QUP_SS0G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106bd4",
+    "text": "QUP_SS1"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106bdc",
+    "text": "QUP_SS1S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106be5",
+    "text": "QUP_SS1G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106bef",
+    "text": "QUP_SS1G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106bf9",
+    "text": "QUP_SS2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c01",
+    "text": "QUP_SS2S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c0a",
+    "text": "QUP_SS2G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c14",
+    "text": "QUP_SS2G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c1e",
+    "text": "QUP_SS3"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c26",
+    "text": "QUP_SS3S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c2f",
+    "text": "QUP_SS3G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c39",
+    "text": "QUP_SS3G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c43",
+    "text": "QUP_SS4"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c4b",
+    "text": "QUP_SS4S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c54",
+    "text": "QUP_SS4G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c5e",
+    "text": "QUP_SS4G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c68",
+    "text": "QUP_SS5"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c70",
+    "text": "QUP_SS5S"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c79",
+    "text": "QUP_SS5G0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c83",
+    "text": "QUP_SS5G2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c8d",
+    "text": "QUP_SC"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c94",
+    "text": "QUP_SCS"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106c9c",
+    "text": "QUP_SI0"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ca4",
+    "text": "QUP_SI0I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106cad",
+    "text": "QUP_SI1"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106cb5",
+    "text": "QUP_SI1I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106cbe",
+    "text": "QUP_SI2"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106cc6",
+    "text": "QUP_SI2I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ccf",
+    "text": "QUP_SI3"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106cd7",
+    "text": "QUP_SI3I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ce0",
+    "text": "QUP_SI4"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106ce8",
+    "text": "QUP_SI4I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106cf1",
+    "text": "QUP_SI5"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106cf9",
+    "text": "QUP_SI5I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d02",
+    "text": "QUP_SI6"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d0a",
+    "text": "QUP_SI6I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d13",
+    "text": "QUP_SI7"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d1b",
+    "text": "QUP_SI7I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d24",
+    "text": "QUP_SI8"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d2c",
+    "text": "QUP_SI8I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d35",
+    "text": "QUP_SI9"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d3d",
+    "text": "QUP_SI9I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d46",
+    "text": "QUP_SI10"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d4f",
+    "text": "QUP_SI10I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d59",
+    "text": "QUP_SI11"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d62",
+    "text": "QUP_SI11I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d6c",
+    "text": "QUP_SI12"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d75",
+    "text": "QUP_SI12I"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x106d7f",
+    "text": "QUPV3_HW_PROP"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108549",
+    "text": "gcc_qupv3_wrap0_s0_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108560",
+    "text": "gcc_qupv3_wrap0_s1_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108577",
+    "text": "gcc_qupv3_wrap0_s2_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10858e",
+    "text": "gcc_qupv3_wrap0_s3_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1085a5",
+    "text": "gcc_qupv3_wrap0_s4_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1085bc",
+    "text": "gcc_qupv3_wrap1_s0_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1085d3",
+    "text": "gcc_qupv3_wrap1_s1_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1085ea",
+    "text": "gcc_qupv3_wrap1_s2_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108601",
+    "text": "gcc_qupv3_wrap1_s3_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108618",
+    "text": "gcc_qupv3_wrap1_s4_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10862f",
+    "text": "gcc_qupv3_wrap1_s5_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108646",
+    "text": "scc_qupv3_se0_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108658",
+    "text": "scc_qupv3_se1_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10866a",
+    "text": "scc_qupv3_se2_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10867c",
+    "text": "scc_qupv3_se3_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10868e",
+    "text": "scc_qupv3_se4_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1086a0",
+    "text": "scc_qupv3_se5_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1086b2",
+    "text": "gcc_qupv3_wrap0_core_2x_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1086ce",
+    "text": "gcc_qupv3_wrap0_core_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1086e7",
+    "text": "gcc_qupv3_wrap_0_m_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108702",
+    "text": "gcc_qupv3_wrap_0_s_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10871d",
+    "text": "gcc_qupv3_wrap1_core_2x_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108739",
+    "text": "gcc_qupv3_wrap1_core_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108752",
+    "text": "gcc_qupv3_wrap_1_m_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10876d",
+    "text": "gcc_qupv3_wrap_1_s_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108788",
+    "text": "scc_qupv3_2xcore_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10879d",
+    "text": "scc_qupv3_core_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1087b0",
+    "text": "scc_qupv3_m_hclk_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x1087c5",
+    "text": "scc_qupv3_s_hclk_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108f18",
+    "text": "SPI PIMEM Fatal"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x108f28",
+    "text": "SPI PIMEM Non Fatal"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x109158",
+    "text": "SPI XPU Sec"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x109164",
+    "text": "SPI XPU NonSec"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10aace",
+    "text": "ERROR QUP_NOTIF during command phase"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10abda",
+    "text": "qupv3_n_clocks_arr"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10abed",
+    "text": "qupv3_n_clocks_arr_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ac05",
+    "text": "qupv3_common_hw"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ac15",
+    "text": "qupv3_common_hw_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ac2a",
+    "text": "qupv3_double_signed"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ac3e",
+    "text": "ssc_qupv3_common_hw"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ac52",
+    "text": "ssc_qupv3_common_hw_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ac6b",
+    "text": "ssc_qupv3_all_clocks_arr"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ac84",
+    "text": "ssc_qupv3_all_clocks_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ac9e",
+    "text": "is_qupv3_ac_stubbed"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10acb2",
+    "text": "qupv3_perms"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10acbe",
+    "text": "qupv3_perms_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10acea",
+    "text": "qupv3_se_hw"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10acf6",
+    "text": "qupv3_se_hw_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ad07",
+    "text": "qupv3_gpio_use_msm_ver"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ad3f",
+    "text": "ssc_qupv3_boot_config_plat_list"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ad5f",
+    "text": "is_ssc_qup_ac_config_supported"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ad7e",
+    "text": "ssc_qupv3_se_hw"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ad8e",
+    "text": "ssc_qupv3_se_hw_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10ada3",
+    "text": "ssc_qupv3_perms"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10adb3",
+    "text": "ssc_qupv3_perms_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10adeb",
+    "text": "/dev/buses/qupac/xx/yy"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10af5c",
+    "text": "spi_open : invalid execution level, instance %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10af8c",
+    "text": "spi_open : spi handle is invalid, instance %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10afba",
+    "text": "spi_open : get device config fail, instance %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10afe9",
+    "text": "spi_open : get HW config fail, instance %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b014",
+    "text": "spi_open : interrupt registration failed, instance %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b04a",
+    "text": "spi_open : clock enable failed, instance %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b076",
+    "text": "spi_open : GPI init failed, instance %d with status %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b0ad",
+    "text": "spi_open : client mem alloc failed, instance %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b0dd",
+    "text": "spi_open : failed , initiating cleanup sequence, instance %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b11a",
+    "text": "spi_power_on : invalid param"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b137",
+    "text": "spi_power_on : clock enable failed, handle 0x%x"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b167",
+    "text": "spi_power_on : gpio enable failed, handle 0x%x"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b196",
+    "text": "spi_power_off : invalid param"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b1b4",
+    "text": "spi_power_off : clock disable failed, handle 0x%x"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b1e6",
+    "text": "spi_power_off : gpio disable failed, handle 0x%x"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b217",
+    "text": "spi_full_duplex : client already has queued a transfer, handle 0x%x"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b25b",
+    "text": "spi_full_duplex : Sampling control inavlid value 0x%x"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b291",
+    "text": "spi_close : invalid execution level"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b2b5",
+    "text": "spi_close : invalid param"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b2cf",
+    "text": "spi_close : interrupt de-register failure 0x%x"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b2fe",
+    "text": "spi_close : clock enable failed 0x%x"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b323",
+    "text": "spi_close : GPI de-init failed, handle 0x%x with status %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b35e",
+    "text": "spi_gpi_init : gpi_iface_reg failed with ret %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b38e",
+    "text": "spi_gpi_queue_transfer : Insufficient Outbound TRE"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b3c1",
+    "text": "spi_gpi_queue_transfer : Insufficient Inbound TRE"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b3f3",
+    "text": "spi_gpi_queue_transfer : gpi_process_tre for RX failed with val %d, handle 0x%x"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b443",
+    "text": "spi_gpi_queue_transfer : gpi_process_tre for TX failed with val %d, handle 0x%x"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b493",
+    "text": "spi_gpi_callback : c_ctxt is NULL"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b4b5",
+    "text": "spi_gpi_callback : GPI driver sending EVENT_OTHER type"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b4ec",
+    "text": "spi_gpi_callback : GPI driver sending SPI_ERROR_DMA_QUP_NOTIF"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b52a",
+    "text": "spi_gpi_issue_cmd : gpi_iface_reg failed with ret %d"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b55f",
+    "text": "spi_gpi_issue_cmd : GPI channel state is not proper"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b600",
+    "text": "/dev/spi"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b609",
+    "text": "spi_device_config"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10b61b",
+    "text": "num_spi_cores"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10e2d0",
+    "text": "gcc_qupv3_wrap0_s5_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10e2e7",
+    "text": "gcc_qupv3_wrap0_s6_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10e2fe",
+    "text": "gcc_qupv3_wrap0_s7_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10e315",
+    "text": "gcc_qupv3_wrap1_s6_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10e32c",
+    "text": "gcc_qupv3_wrap1_s7_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10e548",
+    "text": "SPI VMIDMT ERR Client Sec"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x10e562",
+    "text": "SPI VMIDMT ERR CFG Sec"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/tz_a.img",
+    "offset": "0x114064",
+    "text": "dalspinlock"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6718",
+    "text": "qupv3_perms"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6724",
+    "text": "qupv3_perms_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6750",
+    "text": "ssc_qupv3_perms"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6760",
+    "text": "ssc_qupv3_perms_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6798",
+    "text": "spi_device_config"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x67aa",
+    "text": "num_spi_cores"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x67fc",
+    "text": "qup0_l0[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6807",
+    "text": "qup0_l1[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6812",
+    "text": "qup0_l2[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x681d",
+    "text": "qup0_l3[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6828",
+    "text": "qup1_l0[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6833",
+    "text": "qup1_l1[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x683e",
+    "text": "qup1_l2[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6849",
+    "text": "qup1_l3[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6854",
+    "text": "qup0_l4[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x685f",
+    "text": "qup0_l0[2]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x686a",
+    "text": "qup0_l1[2]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6875",
+    "text": "qup0_l5[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6880",
+    "text": "qup0_l0[3]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x688b",
+    "text": "qup0_l1[3]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6896",
+    "text": "qup0_l2[3]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x68a1",
+    "text": "qup0_l3[3]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x68ac",
+    "text": "qup1_l0[2]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x68b7",
+    "text": "qup1_l1[2]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x68c2",
+    "text": "qup1_l2[2]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x68cd",
+    "text": "qup1_l3[2]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x68d8",
+    "text": "qup1_l0[3]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x68e3",
+    "text": "qup1_l1[3]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x68ee",
+    "text": "qup0_l0[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x68f9",
+    "text": "qup0_l1[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6904",
+    "text": "qup0_l2[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x690f",
+    "text": "qup0_l3[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x691a",
+    "text": "qup0_l0[4]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6925",
+    "text": "qup0_l1[4]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6930",
+    "text": "qup0_l2[4]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x693b",
+    "text": "qup0_l3[4]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6946",
+    "text": "qup0_l5[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6951",
+    "text": "qup0_l4[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x695c",
+    "text": "qup1_l0[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6967",
+    "text": "qup1_l1[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6972",
+    "text": "qup1_l2[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x697d",
+    "text": "qup1_l3[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6988",
+    "text": "qup1_l4[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6993",
+    "text": "qup1_l5[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x699e",
+    "text": "qup1_l6[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x69a9",
+    "text": "qup1_l3[5]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x69b4",
+    "text": "qup1_l0[5]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x69bf",
+    "text": "qup1_l1[5]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x69ca",
+    "text": "qup1_l2[5]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x69d5",
+    "text": "qup1_l0[4]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x69e0",
+    "text": "qup1_l1[4]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x69eb",
+    "text": "qup1_l2[4]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x69f6",
+    "text": "qup1_l3[4]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6c6a",
+    "text": "tpm_spi_dev_id"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6c79",
+    "text": "tpm_spi_bits_per_word"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x6c8f",
+    "text": "tpm_spi_slave_speed"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x704d",
+    "text": "OEM_ese_spi_device_id"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x7063",
+    "text": "OEM_ese_spi_chip_select_id"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x707e",
+    "text": "OEM_ese_spi_max_frequency"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x7098",
+    "text": "OEM_ese_spi_bits_per_word"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x70b2",
+    "text": "OEM_ese_spi_csclkdelaycycles"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x70cf",
+    "text": "OEM_ese_spi_interworddelaycycles"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x70f0",
+    "text": "OEM_ese_spi_nad_command"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x7108",
+    "text": "OEM_ese_spi_nad_response"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x7121",
+    "text": "OEM_ese_spi_lrc_offset"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x7138",
+    "text": "OEM_ese_spi_ifsd"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x7149",
+    "text": "OEM_ese_spi_ifsc"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x72b1",
+    "text": "fingerprint_oem_config_enable"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x72cf",
+    "text": "fingerprint_qsee_spidev_id"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x72ea",
+    "text": "fingerprint_qsee_spidev_speed"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x7308",
+    "text": "fingerprint_oem_str"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x766e",
+    "text": "fingerprint"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x785c",
+    "text": "tzappfingerprint"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8509",
+    "text": "/dev/buses/qupac"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x851a",
+    "text": "/dev/buses/qupac/15"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x852e",
+    "text": "/dev/spi"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8626",
+    "text": "fingerprint"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x868f",
+    "text": "gcc_qupv3_wrap0_core_2x_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x86ab",
+    "text": "gcc_qupv3_wrap0_core_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x86c4",
+    "text": "gcc_qupv3_wrap_0_s_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x86df",
+    "text": "gcc_qupv3_wrap_0_m_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x86fa",
+    "text": "gcc_qupv3_wrap1_core_2x_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8716",
+    "text": "gcc_qupv3_wrap1_core_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x872f",
+    "text": "gcc_qupv3_wrap_1_s_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x874a",
+    "text": "gcc_qupv3_wrap_1_m_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8765",
+    "text": "gcc_qupv3_wrap0_s0_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x877c",
+    "text": "gcc_qupv3_wrap0_s1_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8793",
+    "text": "gcc_qupv3_wrap0_s2_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x87aa",
+    "text": "gcc_qupv3_wrap0_s3_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x87c1",
+    "text": "gcc_qupv3_wrap0_s4_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x87d8",
+    "text": "gcc_qupv3_wrap1_s0_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x87ef",
+    "text": "gcc_qupv3_wrap1_s1_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8806",
+    "text": "gcc_qupv3_wrap1_s2_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x881d",
+    "text": "gcc_qupv3_wrap1_s3_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8834",
+    "text": "gcc_qupv3_wrap1_s4_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x884b",
+    "text": "gcc_qupv3_wrap1_s5_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8862",
+    "text": "qup1_l1[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x886d",
+    "text": "qup1_l0[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8878",
+    "text": "qup1_l1[5]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8883",
+    "text": "qup1_l0[5]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8df4",
+    "text": "gcc_qupv3_wrap0_core_2x_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8e10",
+    "text": "gcc_qupv3_wrap0_core_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8e29",
+    "text": "gcc_qupv3_wrap_0_s_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8e44",
+    "text": "gcc_qupv3_wrap_0_m_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8e5f",
+    "text": "gcc_qupv3_wrap1_core_2x_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8e7b",
+    "text": "gcc_qupv3_wrap1_core_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8e94",
+    "text": "gcc_qupv3_wrap_1_s_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8eaf",
+    "text": "gcc_qupv3_wrap_1_m_ahb_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8eca",
+    "text": "gcc_qupv3_wrap0_s0_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8ee1",
+    "text": "gcc_qupv3_wrap0_s1_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8ef8",
+    "text": "gcc_qupv3_wrap1_s0_clk"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f0f",
+    "text": "qup0_l0[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f1a",
+    "text": "qup0_l1[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f25",
+    "text": "qup0_l2[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f30",
+    "text": "qup0_l3[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f3b",
+    "text": "qup0_l0[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f46",
+    "text": "qup0_l1[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f51",
+    "text": "qup0_l2[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f5c",
+    "text": "qup0_l3[1]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f67",
+    "text": "qup1_l0[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f72",
+    "text": "qup1_l1[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f7d",
+    "text": "qup1_l2[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0x8f88",
+    "text": "qup1_l3[0]"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0xa130",
+    "text": "qupv3_perms"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0xa13c",
+    "text": "qupv3_perms_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0xa168",
+    "text": "ssc_qupv3_perms"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0xa178",
+    "text": "ssc_qupv3_perms_size"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0xa480",
+    "text": "/dev/buses/qupac"
+  },
+  {
+    "file": "work/android-dump-20261025/partitions-a/devcfg_a.img",
+    "offset": "0xa491",
+    "text": "/dev/buses/qupac/15"
+  }
+]

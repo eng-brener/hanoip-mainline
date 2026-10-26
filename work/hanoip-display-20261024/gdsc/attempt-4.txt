@@ -1,0 +1,5 @@
+USB shell reached with SMMU identity-domain fix plus restored DISPCC GDSC registration.
+RAM-only preflight passed. Manual module loader started.
+USB disconnected immediately afterward and Android ADB returned automatically.
+No successful serial dmesg capture after module loading; crash cause pending RAM pstore recovery.
+Do not mark this image as a working display or replace the known-good images.

@@ -1,0 +1,11 @@
+make[6]: 'drivers/media/cec/core/cec.mod' is up to date.
+make[5]: 'drivers/gpu/drm/drm_shmem_helper.mod' is up to date.
+make[6]: 'drivers/gpu/drm/clients/drm_client_lib.mod' is up to date.
+make[6]: 'drivers/gpu/drm/scheduler/gpu-sched.mod' is up to date.
+make[6]: 'drivers/gpu/drm/display/drm_display_helper.mod' is up to date.
+  CC [M]  drivers/gpu/drm/msm/msm_drv.o
+  CC [M]  drivers/gpu/drm/msm/msm_mdss.o
+make[6]: 'drivers/gpu/drm/msm/msm.mod' is up to date.
+  LD [M]  drivers/gpu/drm/msm/msm.o
+  MODPOST Module.symvers
+  LD [M]  drivers/gpu/drm/msm/msm.ko

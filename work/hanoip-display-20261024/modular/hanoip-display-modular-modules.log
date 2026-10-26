@@ -1,0 +1,31 @@
+make[6]: 'drivers/media/cec/core/cec.mod' is up to date.
+make[6]: 'drivers/gpu/drm/clients/drm_client_lib.mod' is up to date.
+make[5]: 'drivers/gpu/drm/drm_shmem_helper.mod' is up to date.
+make[6]: 'drivers/gpu/drm/scheduler/gpu-sched.mod' is up to date.
+make[6]: 'drivers/gpu/drm/display/drm_display_helper.mod' is up to date.
+make[6]: 'drivers/gpu/drm/msm/msm.mod' is up to date.
+  MODPOST Module.symvers
+  CC [M]  drivers/gpu/drm/panel/panel-ilitek-ili7807s.mod.o
+  CC [M]  drivers/gpu/drm/clients/drm_client_lib.mod.o
+  CC [M]  drivers/gpu/drm/display/drm_display_helper.mod.o
+  CC [M]  drivers/gpu/drm/display/drm_dp_aux_bus.mod.o
+  CC [M]  drivers/gpu/drm/drm_exec.mod.o
+  CC [M]  drivers/gpu/drm/drm_gpuvm.mod.o
+  CC [M]  drivers/gpu/drm/drm_shmem_helper.mod.o
+  CC [M]  drivers/gpu/drm/msm/msm.mod.o
+  CC [M]  drivers/gpu/drm/scheduler/gpu-sched.mod.o
+  CC [M]  drivers/media/cec/core/cec.mod.o
+  CC [M]  drivers/soc/qcom/mdt_loader.mod.o
+  CC [M]  drivers/soc/qcom/ubwc_config.mod.o
+  LD [M]  drivers/gpu/drm/panel/panel-ilitek-ili7807s.ko
+  LD [M]  drivers/gpu/drm/clients/drm_client_lib.ko
+  LD [M]  drivers/gpu/drm/display/drm_dp_aux_bus.ko
+  LD [M]  drivers/gpu/drm/drm_exec.ko
+  LD [M]  drivers/gpu/drm/drm_gpuvm.ko
+  LD [M]  drivers/gpu/drm/drm_shmem_helper.ko
+  LD [M]  drivers/gpu/drm/msm/msm.ko
+  LD [M]  drivers/gpu/drm/display/drm_display_helper.ko
+  LD [M]  drivers/gpu/drm/scheduler/gpu-sched.ko
+  LD [M]  drivers/soc/qcom/mdt_loader.ko
+  LD [M]  drivers/media/cec/core/cec.ko
+  LD [M]  drivers/soc/qcom/ubwc_config.ko

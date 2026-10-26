@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aleks <aleks.spv@gmail.com>
+Date: Fri, 23 Oct 2026 09:52:39 +0600
+Subject: [PATCH 140/166] ASoC: dt-bindings: qcom,sm8250: Add Xiaomi Redmi Note
+ 10 Pro sound card
+
+Add a compatible for the Xiaomi Redmi Note 10 Pro (sweet). Its two
+AW88263S speaker amplifiers on the primary MI2S bus need 32-bit slots,
+which differs from the other boards using qcom,sm8250-sndcard.
+
+Signed-off-by: Aleks <aleks.spv@gmail.com>
+---
+ Documentation/devicetree/bindings/sound/qcom,sm8250.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml b/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml
+index 1536fcd96d68..c15feb5e9ba4 100644
+--- a/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml
++++ b/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml
+@@ -54,6 +54,7 @@ properties:
+           - qcom,sm8250-sndcard
+           - qcom,sm8450-sndcard
+           - qcom,x1e80100-sndcard
++          - xiaomi,sweet-sndcard
+ 
+   audio-routing:
+     $ref: /schemas/types.yaml#/definitions/non-unique-string-array

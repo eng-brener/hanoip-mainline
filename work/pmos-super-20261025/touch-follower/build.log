@@ -1,0 +1,10 @@
+make[1]: Entering directory '/tmp/hanoip-touch-follower'
+warning: the compiler differs from the one used to build the kernel
+  The kernel was built by: aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+  You are using:           gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+  CC [M]  ilitek-hanoip-spi.o
+  MODPOST Module.symvers
+  CC [M]  ilitek-hanoip-spi.mod.o
+  CC [M]  .module-common.o
+  LD [M]  ilitek-hanoip-spi.ko
+make[1]: Leaving directory '/tmp/hanoip-touch-follower'

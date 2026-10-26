@@ -1,0 +1,194 @@
+{
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video/qcom,mdss-dsi-panel-status-command": [
+    {
+      "dtype": "0x6",
+      "last": 1,
+      "vc": 0,
+      "ack": 1,
+      "delay_ms": 0,
+      "payload": "0a"
+    }
+  ],
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video/qcom,mdss-dsi-display-timings/timing@0/qcom,mdss-dsi-cabc-mv-command": [
+    {
+      "dtype": "0x15",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "55 03"
+    }
+  ],
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video/qcom,mdss-dsi-display-timings/timing@0/qcom,mdss-dsi-cabc-ui-command": [
+    {
+      "dtype": "0x15",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "55 01"
+    }
+  ],
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video/qcom,mdss-dsi-display-timings/timing@0/qcom,mdss-dsi-cabc-dis-command": [
+    {
+      "dtype": "0x15",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "55 00"
+    }
+  ],
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video/qcom,mdss-dsi-display-timings/timing@0/qcom,mdss-dsi-hbm-on-command": [
+    {
+      "dtype": "0x39",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "51 03 ff"
+    }
+  ],
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video/qcom,mdss-dsi-display-timings/timing@0/qcom,mdss-dsi-hbm-off-command": [
+    {
+      "dtype": "0x39",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "51 03 32"
+    }
+  ],
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video/qcom,mdss-dsi-display-timings/timing@0/qcom,mdss-dsi-on-command": [
+    {
+      "dtype": "0x39",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "ff 78 07 00"
+    },
+    {
+      "dtype": "0x5",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 120,
+      "payload": "11"
+    },
+    {
+      "dtype": "0x5",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 20,
+      "payload": "29"
+    },
+    {
+      "dtype": "0x39",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "ff 78 07 06"
+    },
+    {
+      "dtype": "0x15",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "3e e3"
+    },
+    {
+      "dtype": "0x15",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "80 00"
+    },
+    {
+      "dtype": "0x39",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "ff 78 07 08"
+    },
+    {
+      "dtype": "0x39",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "fd 00 9f"
+    },
+    {
+      "dtype": "0x15",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "e1 d9"
+    },
+    {
+      "dtype": "0x39",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "fd 00 00"
+    },
+    {
+      "dtype": "0x39",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "ff 78 07 00"
+    },
+    {
+      "dtype": "0x39",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "51 03 32"
+    },
+    {
+      "dtype": "0x15",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "53 2c"
+    },
+    {
+      "dtype": "0x15",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 0,
+      "payload": "55 01"
+    }
+  ],
+  "/soc/qcom,mdss_mdp@ae00000/qcom,mdss_dsi_tm_ili7807s_678_fhd_video/qcom,mdss-dsi-display-timings/timing@0/qcom,mdss-dsi-off-command": [
+    {
+      "dtype": "0x5",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 50,
+      "payload": "28"
+    },
+    {
+      "dtype": "0x5",
+      "last": 1,
+      "vc": 0,
+      "ack": 0,
+      "delay_ms": 150,
+      "payload": "10"
+    }
+  ]
+}

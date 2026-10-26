@@ -1,0 +1,6 @@
+Patches do microSD retirados do working tree em 25/10/2026 (experimento
+descartado por ora). v2 e v3 falharam sem cartão: tela preta, sem USB.
+sd-mmc-and-makefile.patch: fallback de vqmmc (regulator.c), caps 2,7-2,95 V
+(sdhci-msm.c) e a linha do sd-diagnostic no Makefile dos DTs.
+Os .dts aqui já têm cd-gpios ACTIVE_LOW (estado do v3).
+Reaplicar: git apply sd-mmc-and-makefile.patch e copiar os .dts de volta.

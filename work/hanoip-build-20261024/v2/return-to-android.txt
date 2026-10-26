@@ -1,0 +1,6 @@
+
+~ # printf "\nHANOIP_RETURNING_TO_ANDROID\n"; /bin/busybox reboot -f
+
+HANOIP_RETURNING_TO_ANDROID
+sh: setprop: not found
+~ # 

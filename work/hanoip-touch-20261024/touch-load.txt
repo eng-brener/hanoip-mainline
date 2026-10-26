@@ -1,0 +1,135 @@
+[  751.143666] HANOIP DRM: registration complete
+[  751.563283] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0
+[  752.406162] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[  753.255064] msm_dpu ae01000.display-controller: bound ae94000.dsi (ops dsi_ops [msm])
+[  753.680905] Console: switching to colour dummy device 80x25
+[  753.687882] [drm:dpu_kms_hw_init:1168] dpu hardware revision:0x50020000
+[  753.701794] [drm] Initialized msm 1.13.0 for ae01000.display-controller on minor 0
+[  753.709638] msm_dpu ae01000.display-controller: no GPU device was found
+[  753.733872] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c000400, fsynr=0x730021, cbfrsynra=0xc40, cb=6
+[  753.733888] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0xc40
+[  753.733896] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.733918] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c056b00, fsynr=0x730021, cbfrsynra=0x800, cb=6
+[  753.733925] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x800
+[  753.733933] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.733949] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c05a300, fsynr=0x730021, cbfrsynra=0x800, cb=6
+[  753.733955] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x800
+[  753.733962] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.733977] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c064e00, fsynr=0x730021, cbfrsynra=0xc40, cb=6
+[  753.733983] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0xc40
+[  753.733990] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.734004] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c076400, fsynr=0x730021, cbfrsynra=0xc40, cb=6
+[  753.734011] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0xc40
+[  753.734018] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.734033] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c080c00, fsynr=0x730021, cbfrsynra=0xc40, cb=6
+[  753.734040] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0xc40
+[  753.734048] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.734062] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c08bb00, fsynr=0x730021, cbfrsynra=0x800, cb=6
+[  753.734069] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x800
+[  753.734076] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.734090] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c096300, fsynr=0x730021, cbfrsynra=0x800, cb=6
+[  753.734097] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x800
+[  753.734103] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.734118] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c0a0700, fsynr=0x730021, cbfrsynra=0xc40, cb=6
+[  753.734125] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0xc40
+[  753.734131] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.734144] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c0a3700, fsynr=0x730021, cbfrsynra=0xc40, cb=6
+[  753.734150] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0xc40
+[  753.734158] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.750845] dsi_err_worker: status=4
+[  753.758711] dsi_err_worker: status=4
+[  753.775412] dsi_err_worker: status=4
+[  753.792080] dsi_err_worker: status=4
+[  753.808748] dsi_err_worker: status=4
+[  753.825416] dsi_err_worker: status=4
+[  753.842085] dsi_err_worker: status=4
+[  753.868786] msm_dsi ae94000.dsi: [drm:dsi_cmds2buf_tx [msm]] *ERROR* wait for video done timed out
+[  754.250696] Console: switching to colour frame buffer device 135x153
+[  754.267319] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[  754.267354] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[  754.596597] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+
+~ # /sbin/load-touch; /bin/busybox sleep 6; /bin/busybox cat /run/hanoip-touch-l
+oader.log; /bin/busybox cat /proc/bus/input/devices; /bin/busybox dmesg | /bin/b
+usybox tail -28; printf '\nHANOIP_END_b2cd7c43e8e0\n'
+HANOIP: SPI touch probe started (PID 182); firmware targets controller RAM only
+[  772.465841] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  772.626943] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  772.650079] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  772.658996] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  772.712821] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  772.740929] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[  772.753644] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only
+HANOIP: touch module loader completed; verify input registration and stats
+I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+N: Name="pm8941_pwrkey"
+P: Phys=pm8941_pwrkey/input0
+S: Sysfs=/devices/platform/soc@0/c440000.spmi/spmi-0/0-00/c440000.spmi:pmic@0:pon@800/c440000.spmi:pmic@0:pon@800:pwrkey/input/input0
+U: Uniq=
+H: Handlers=kbd event0 
+B: PROP=0
+B: EV=3
+B: KEY=10000000000000 0
+
+I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+N: Name="pm8941_resin"
+P: Phys=pm8941_resin/input0
+S: Sysfs=/devices/platform/soc@0/c440000.spmi/spmi-0/0-00/c440000.spmi:pmic@0:pon@800/c440000.spmi:pmic@0:pon@800:resin/input/input1
+U: Uniq=
+H: Handlers=kbd event1 
+B: PROP=0
+B: EV=3
+B: KEY=4000000000000 0
+
+I: Bus=0019 Vendor=0001 Product=0001 Version=0100
+N: Name="gpio-keys"
+P: Phys=gpio-keys/input0
+S: Sysfs=/devices/platform/gpio-keys/input/input2
+U: Uniq=
+H: Handlers=kbd event2 
+B: PROP=0
+B: EV=3
+B: KEY=8000000000000 0
+
+I: Bus=001c Vendor=0000 Product=0000 Version=0000
+N: Name="Hanoip Ilitek ILI7807 SPI"
+P: Phys=
+S: Sysfs=/devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+U: Uniq=
+H: Handlers=event3 
+B: PROP=2
+B: EV=b
+B: KEY=400 0 0 0 0 0
+B: ABS=260800000000003
+
+[  753.734090] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c096300, fsynr=0x730021, cbfrsynra=0x800, cb=6
+[  753.734097] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x800
+[  753.734103] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.734118] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c0a0700, fsynr=0x730021, cbfrsynra=0xc40, cb=6
+[  753.734125] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0xc40
+[  753.734131] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.734144] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x9c0a3700, fsynr=0x730021, cbfrsynra=0xc40, cb=6
+[  753.734150] arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0xc40
+[  753.734158] arm-smmu 15000000.iommu: FSYNR0 = 00730021 [S1CBNDX=115 PNU PLVL=1]
+[  753.750845] dsi_err_worker: status=4
+[  753.758711] dsi_err_worker: status=4
+[  753.775412] dsi_err_worker: status=4
+[  753.792080] dsi_err_worker: status=4
+[  753.808748] dsi_err_worker: status=4
+[  753.825416] dsi_err_worker: status=4
+[  753.842085] dsi_err_worker: status=4
+[  753.868786] msm_dsi ae94000.dsi: [drm:dsi_cmds2buf_tx [msm]] *ERROR* wait for video done timed out
+[  754.250696] Console: switching to colour frame buffer device 135x153
+[  754.267319] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[  754.267354] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[  754.596597] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+[  772.465841] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  772.626943] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  772.650079] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  772.658996] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  772.712821] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  772.740929] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[  772.753644] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only
+
+HANOIP_END_b2cd7c43e8e0
+~ # 

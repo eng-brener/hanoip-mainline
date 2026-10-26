@@ -1,0 +1,108 @@
+--- rmtfs (início)
+registering services
+[RMTFS] packet; from: 0:9
+[RMTFS] open /boot/modem_fs1 => 0 (0:0)
+[RMTFS] packet; from: 0:10
+[RMTFS] open /boot/modem_fs2 => 1 (0:0)
+[RMTFS] packet; from: 1:-2
+[RMTFS] del_client 0:9
+[RMTFS] packet; from: 0:11
+[RMTFS] open /boot/modem_fsg => 2 (0:0)
+[RMTFS] packet; from: 1:-2
+[RMTFS] del_client 0:10
+[RMTFS] packet; from: 1:-2
+[RMTFS] del_client 0:11
+[RMTFS] packet; from: 0:13
+[RMTFS] alloc 0, 2097152 => 0x9a001000 (0:0)
+[RMTFS] packet; from: 1:-2
+[RMTFS] del_client 0:13
+[RMTFS] packet; from: 0:14
+[RMTFS] iovec 0, not forced => (0:0)
+[RMTFS]       read 1:1 0x9a001200
+[RMTFS] packet; from: 0:15
+[RMTFS] iovec 1, not forced => (0:0)
+[RMTFS]       read 1:1 0x9a001200
+[RMTFS] packet; from: 1:-2
+[RMTFS] del_client 0:14
+--- tqftpserv
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+tqftpserv: failed to create tqftpserv readwrite directory: No such file or directory
+--- pd-mapper
+--- qrtr
+  Service Version Instance Node  Port
+       43       2       18    0     1 Subsystem control service
+       66       1      180    0     3 Service registry notification service
+       15       1        0    0    17 Test service
+       51       1        2    0    18 CoreSight remote tracing service
+       21       1        0    0    19 Modem embedded file system service
+       24       1        0    0    21 Thermal mitigation device service
+       23       1        0    0    23 Thermal sensors service
+       22       1        0    0    25 Time service
+       36       1        0    0    28 Persistent device configuration service
+       49       1        2    0    50 IPA control service
+       17       1        0    0    54 Specific absorption rate service
+       74       1        0    0    55 <unknown>
+     4098       0        0    0    56 <unknown>
+       34       1        0    0    58 Coexistence service
+       55       1        2    0    65 QMI-SLIM service
+      228       1        1    0    67 <unknown>
+       50       1        0    0    68 UIMRMT service
+        9       2        0    0    70 Voice service
+        3       1        0    0    71 Network Access Service
+       12       1        0    0    72 Phonebook Management service
+       10       2        0    0    73 Card Application Toolkit service (v2)
+        1       1        0    0    74 Wireless Data Service
+        4       1        0    0    75 Quality Of Service service
+       26       1        0    0    76 Wireless data administrative service
+        7       1        0    0    77 Authentication service
+        8       1        0    0    78 AT service
+       29       1        0    0    79 Circuit switched videotelephony service
+       47       1        0    0    80 Data Port Mapper service
+      227       1        0    0    81 <unknown>
+--- dmesg completo do modem
+[   38.718100] remoteproc remoteproc0: modem is available
+[   39.775321] remoteproc remoteproc0: powering up modem
+[   39.782492] remoteproc remoteproc0: Booting fw image qcom/sm7150/motorola/hanoip/modem.mdt, size 9100
+[   41.542039] remoteproc remoteproc0: remote processor modem is now up
+[   43.046741] qcom_q6v5_pas 4080000.remoteproc: fatal error received: EX:kernel:0x0:tmr_slave1:0x1d1:PC=0xc06ddec0
+[   43.057340] remoteproc remoteproc0: crash detected in modem: type fatal error
+[   43.064751] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[   43.064763] remoteproc remoteproc0: handling crash #1 in modem

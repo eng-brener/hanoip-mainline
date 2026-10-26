@@ -30,6 +30,79 @@ throughout this project, including later sessions.
   session. Keep diagnostic root filesystems in RAM, without automounting disks.
 - Keep known-good images and hashes before preparing another variant.
 
+# Latest runtime: sensors PASSED via ADSP, 2026-10-26
+
+Read `onde paramos.md` latest state and
+`docs/kernel/checkpoint-2026-10-26-sensores-plasma.txt` FIRST. Phone is in
+the complete Plasma session under kernel 7.3 #6/perif-v5 U-Boot; sensors
+ADSP/FastRPC/libssc/iio-sensor-proxy started. Light D-Bus works; user confirmed
+rotation does not. Root partition is ro,noload,nodev,nosuid,noexec with RAM
+OverlayFS. Never repeat whole-super hashing during boot; it added ~235 s.
+Continue diagnosis in RAM overlay, do not overwrite known baseline. Camera and
+fingerprint remain paused. Earlier test checkpoints are historical.
+
+# Current work: sensor SE11 probe stalled; baseline restored (2026-10-26)
+
+Update: static extraction of this phone's ADSP firmware now maps registry
+bus 1 to SSC SE0 at 0x62680000 (SSC GPIO0/1, I3C) and bus 5 to SSC SE4 at
+0x62690000 (SSC GPIO6/7 func4, I2C). sensor_vdd is L7C with a configured
+3312 mV vote; sensor_vddio is L8C/1800 mV. `/dev/qup_ssc/11` names a DAL
+profile with SIX engine configs, not AP SE11. Read the NEW checkpoint
+`docs/kernel/checkpoint-2026-10-26-sensores-ssc.txt` and reproducible parser
+in `work/sensors-20261026/ssc-mapping/`. These are static values, not AP
+access validation. Prefer investigating ADSP sensors-PD/FastRPC + libssc
+with a RAM-backed registry before direct AP controller bring-up. ADSP and
+FastRPC nodes/modules already exist; the saved pmOS package list includes
+libssc and iio-sensor-proxy but not hexagonrpcd. No phone writes or installs.
+ADB disappeared during offline analysis, then returned before finishing FPC
+research. The phone remains in Android with root. Read-only debugfs inventory
+found no pinctrl/clock/regulator interfaces; no mounts were performed. No boot.
+
+FPC fingerprint was also investigated offline at the user's request. Read
+`docs/kernel/checkpoint-2026-10-26-fingerprint-fpc.txt` and
+`work/fingerprint-20261026/`. Actual FPC enable is GPIO29 (GPIO30 belongs to
+the alternative Chipone node), reset GPIO4, IRQ GPIO90. fpc1020 is a generic
+helper compatible, not an identified silicon model. The trusted app uses
+legacy QSEECOM and imports qsee_spi_*; SPI1/0x884000 is a strong static
+candidate, not verified AP access. Do not enable its AP SPI controller,
+toggle GPIOs, start TEE commands or read enrollment databases. HAL program
+binaries and RO attributes have now been collected under
+work/fingerprint-20261026/android-live-readonly/: vendor=fpc, modalias=fpc1020,
+irq=0, irq_cnt=60. HAL is AArch64 and imports the legacy QSEECom_* calls.
+Its fpc1540 string is only a clue; vendor.hw.fingerprint.hwid was empty.
+Modern qcomtee is not a drop-in replacement for the Android QSEECOM ABI.
+
+The user explicitly STOPPED the FPC investigation and switched to cameras.
+All latest FPC protocol findings are saved at the top of
+docs/kernel/checkpoint-2026-10-26-fingerprint-fpc.txt and in
+work/fingerprint-20261026/hal-protocol/. No TEE command was executed. Do not
+continue FPC analysis until requested. Camera investigation was then also
+deferred by the user; partial notes are in
+docs/kernel/checkpoint-2026-10-26-cameras-parcial.txt. Current task: TEST
+sensors via the ADSP/FastRPC path. work/sensors-20261026/ssc-ram-test/
+contains a RAM-only userspace/initramfs variant, SAME kernel #6/DT and
+known-good perif-v5 U-Boot, with hexagonrpcd and ssccli. Firmware/config/
+registry copies are in RAM, no UFS mounts or AP SE11. Volatile boot requested
+by user and initiated; inspect run1/ and runtime logs before concluding.
+
+Read the first section of `onde paramos.md` and
+`docs/kernel/checkpoint-2026-10-26-sensores-preparado.txt`. The SE11 U-Boot DT
+variant hung at the Motorola M screen. With known-good U-Boot v5, a RAM-only
+shell kernel booted; a runtime OF overlay then enabled SE11, but `geni_i2c`
+probe did not return and the kernel logged RCU stalls with CPU4 unresponsive
+to NMI. No sensor ID read occurred. Do NOT reuse the sensor-v1 U-Boot or apply
+the SE11 overlay again until this stall is understood. Unknown sensor rails
+remain untouched; do not probe other buses. After that incident, perif v5 +
+kernel #6 was restored and SSH, DSI 1080x2460 and wlan0 were confirmed. The
+user has since switched to Android with root for read-only sensor collection.
+SensorService shows active ICM4x6xx and TMD2755 sensors with recent events; AP
+I2C adapters are only 0..2 and `a94000` is absent. The firmware string
+`/dev/qup_ssc/11` does not prove AP SE11 mapping. Read
+`docs/kernel/checkpoint-2026-10-26-sensores-preparado.txt` and
+`work/sensors-20261026/android-live-readonly/`. Do not probe or enable other
+buses/rails until the SSC-to-QUP mapping is understood. Only volatile
+`fastboot boot`; all partition-write prohibitions remain.
+
 # Kernel 7.3 v2 (2026-10-26): v1 + fork PRs #70, #64, #65, #60
 
 work/kernel-7.3/v2/ (README.txt), 160 patches on v7.3. Battery telemetry

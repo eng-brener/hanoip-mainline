@@ -1,0 +1,260 @@
+attributes
+auto_hibern8
+capabilities
+clkgate_delay_ms
+clkgate_enable
+clkscale_enable
+critical_health
+devfreq
+device_descriptor
+device_lvl_exception_count
+device_lvl_exception_id
+dme_qos_notification
+driver
+driver_override
+enable_wb_buf_flush
+flags
+geometry_descriptor
+health_descriptor
+hid
+host0
+interconnect_descriptor
+iommu
+iommu_group
+modalias
+monitor
+of_node
+pm_qos_enable
+power
+power_descriptor
+power_info
+rpm_lvl
+rpm_target_dev_state
+rpm_target_link_state
+rtc_update_ms
+spm_lvl
+spm_target_dev_state
+spm_target_link_state
+string_descriptors
+subsystem
+supplier:phy:phy-1d87000.phy.0
+supplier:platform:100000.clock-controller
+supplier:platform:1380000.interconnect
+supplier:platform:1500000.interconnect
+supplier:platform:15000000.iommu
+supplier:platform:16e0000.interconnect
+supplier:platform:18200000.rsc:clock-controller
+supplier:platform:18200000.rsc:regulators-0
+supplier:platform:3500000.pinctrl
+supplier:platform:9680000.interconnect
+supplier:regulator:regulator.37
+supplier:regulator:regulator.43
+uevent
+ufshci_capabilities
+wb_flush_threshold
+wb_on
+wb_resize_enable
+@@ device_descriptor
+bkops_termination_latency=0x04
+boot_enable=0x01
+descriptor_access_enable=0x00
+device_class=0x00
+device_sub_class=0x00
+device_type=0x00
+device_version=0x0000
+ext_feature_sup=cat: read error: Invalid argument
+ffu_timeout=0x01
+high_priority_lun=0x05
+initial_active_icc_level=0x00
+initial_power_mode=0x01
+manufacturer_id=0x01CE
+manufacturing_date=0x0122
+number_of_luns=0x06
+number_of_secure_wpa=0x20
+number_of_wluns=0x04
+protocol=0x00
+psa_max_data_size=0x00000000
+psa_state_timeout=0x00
+queue_depth=0x20
+rtc_update=0x0000
+rtt_capability=0x02
+secure_removal_type=0x00
+specification_version=0x0210
+support_security_lun=0x01
+ufs_features=0x81
+wb_presv_us_en=cat: read error: Invalid argument
+wb_shared_alloc_units=cat: read error: Invalid argument
+wb_type=cat: read error: Invalid argument
+@@ geometry_descriptor
+allocation_unit_size=0x01
+data_ordering=0x00
+dyn_capacity_resource_policy=0x00
+enh1_memory_capacity_adjustment_factor=0x0300
+enh1_memory_max_alloc_units=0x00007732
+enh2_memory_capacity_adjustment_factor=0x0000
+enh2_memory_max_alloc_units=0x00000000
+enh3_memory_capacity_adjustment_factor=0x0000
+enh3_memory_max_alloc_units=0x00000000
+enh4_memory_capacity_adjustment_factor=0x0000
+enh4_memory_max_alloc_units=0x00000000
+max_in_buffer_size=0x08
+max_number_of_contexts=0x05
+max_number_of_luns=0x00
+max_out_buffer_size=0x08
+memory_types=0x800F
+min_addressable_block_size=0x08
+non_persist_memory_capacity_adjustment_factor=0x0100
+non_persist_memory_max_alloc_units=0x00007732
+optimal_read_block_size=0x08
+optimal_write_block_size=0x08
+raw_device_capacity=0x000000000EE64000
+rpmb_rw_size=0x40
+secure_removal_types=0x09
+segment_size=0x00002000
+sys_code_memory_capacity_adjustment_factor=0x0100
+sys_code_memory_max_alloc_units=0x00007732
+sys_data_tag_resource_size=0x00
+sys_data_tag_unit_size=0x00
+wb_buff_cap_adj=cat: read error: Invalid argument
+wb_max_alloc_units=cat: read error: Invalid argument
+wb_max_wb_luns=cat: read error: Invalid argument
+wb_sup_red_type=cat: read error: Invalid argument
+wb_sup_wb_type=cat: read error: Invalid argument
+@@ health_descriptor
+eol_info=0x01
+life_time_estimation_a=0x03
+life_time_estimation_b=0x03
+@@ power_descriptor
+active_icc_levels_vcc0=0x0000
+active_icc_levels_vcc1=0x0000
+active_icc_levels_vcc10=0x0000
+active_icc_levels_vcc11=0x0000
+active_icc_levels_vcc12=0x0000
+active_icc_levels_vcc13=0x0000
+active_icc_levels_vcc14=0x0000
+active_icc_levels_vcc15=0x0000
+active_icc_levels_vcc2=0x0000
+active_icc_levels_vcc3=0x0000
+active_icc_levels_vcc4=0x0000
+active_icc_levels_vcc5=0x0000
+active_icc_levels_vcc6=0x0000
+active_icc_levels_vcc7=0x0000
+active_icc_levels_vcc8=0x0000
+active_icc_levels_vcc9=0x0000
+active_icc_levels_vccq0=0x0000
+active_icc_levels_vccq1=0x0000
+active_icc_levels_vccq10=0x0000
+active_icc_levels_vccq11=0x0000
+active_icc_levels_vccq12=0x0000
+active_icc_levels_vccq13=0x0000
+active_icc_levels_vccq14=0x0000
+active_icc_levels_vccq15=0x0000
+active_icc_levels_vccq2=0x0000
+active_icc_levels_vccq20=0x0000
+active_icc_levels_vccq21=0x0000
+active_icc_levels_vccq210=0x0000
+active_icc_levels_vccq211=0x0000
+active_icc_levels_vccq212=0x0000
+active_icc_levels_vccq213=0x0000
+active_icc_levels_vccq214=0x0000
+active_icc_levels_vccq215=0x0000
+active_icc_levels_vccq22=0x0000
+active_icc_levels_vccq23=0x0000
+active_icc_levels_vccq24=0x0000
+active_icc_levels_vccq25=0x0000
+active_icc_levels_vccq26=0x0000
+active_icc_levels_vccq27=0x0000
+active_icc_levels_vccq28=0x0000
+active_icc_levels_vccq29=0x0000
+active_icc_levels_vccq3=0x0000
+active_icc_levels_vccq4=0x0000
+active_icc_levels_vccq5=0x0000
+active_icc_levels_vccq6=0x0000
+active_icc_levels_vccq7=0x0000
+active_icc_levels_vccq8=0x0000
+active_icc_levels_vccq9=0x0000
+@@ interconnect_descriptor
+mphy_version=0x0300
+unipro_version=0x0160
+@@ string_descriptors
+manufacturer_name=SAMSUNG
+oem_id=SAMSUNG_OEM_ID
+product_name=KM5V8001DM-B622
+product_revision=1500
+serial_number=61929f70b60d
+@@ attributes
+active_icc_level=0x00000000
+bkops_status=0x00000000
+boot_lun_enabled=0x00000001
+configuration_descriptor_lock=0x00000000
+current_power_mode=0x00000011
+exception_event_control=0x00000004
+exception_event_status=0x00000000
+ffu_status=0x00000000
+max_data_in_size=0x00000008
+max_data_out_size=0x00000008
+max_number_of_rtt=0x00000002
+ooo_data_enabled=0x00000000
+psa_data_size=0x00000000
+psa_state=0x00000000
+purge_status=0x00000000
+reference_clock_frequency=0x00000000
+wb_avail_buf=cat: read error: Invalid argument
+wb_cur_buf=cat: read error: Invalid argument
+wb_flush_status=cat: read error: Invalid argument
+wb_life_time_est=cat: read error: Invalid argument
+wb_resize_hint=cat: read error: Operation not supported on transport endpoint
+wb_resize_status=cat: read error: Operation not supported on transport endpoint
+@@ flags
+bkops_enable=false
+busy_rtc=false
+device_init=false
+disable_fw_update=false
+life_span_mode_enable=false
+permanent_wpe=false
+phy_resource_removal=false
+power_on_wpe=false
+wb_enable=cat: read error: Invalid argument
+wb_flush_during_h8=cat: read error: Invalid argument
+wb_flush_en=cat: read error: Invalid argument
+@@ power_info
+dev_pm=SLEEP
+gear=HS_GEAR1
+lane=1
+link_state=HIBERN8
+mode=FAST_MODE
+rate=HS_RATE_B
+@@ capabilities
+clock_scaling=4
+write_booster=0
+@@ monitor
+monitor_chunk_size=0
+monitor_enable=0
+read_nr_requests=0
+read_req_latency_avg=0
+read_req_latency_max=0
+read_req_latency_min=0
+read_req_latency_sum=0
+read_total_busy=0
+read_total_sectors=0
+write_nr_requests=0
+write_req_latency_avg=0
+write_req_latency_max=0
+write_req_latency_min=0
+write_req_latency_sum=0
+write_total_busy=0
+write_total_sectors=0
+@@ host
+rpm_lvl=3
+rpm_target_dev_state=SLEEP
+rpm_target_link_state=HIBERN8
+spm_lvl=3
+auto_hibern8=150000
+wb_on=0
+enable_wb_buf_flush=0
+wb_flush_threshold=4
+clkscale_enable=1
+clkgate_enable=1
+clkgate_delay_ms=150
+suspended
+auto

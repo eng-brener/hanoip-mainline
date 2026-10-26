@@ -1,0 +1,14 @@
+bluez
+bluez-btmgmt
+Index list with 0 items
+[1;39mconfig                                            [0mShow configuration info
+[1;39mpublic-addr <address>                             [0mSet public address
+[1;39mext-config <on/off>                               [0mExternal configuration
+[1;39mphy [LE1MTX] [LE1MRX] [LE2MTX] [LE2MRX] [LECODEDTX] [LECODEDRX] [BR1M1SLOT] [BR1M3SLOT] [BR1M5SLOT][EDR2M1SLOT] [EDR2M3SLOT] [EDR2M5SLOT][EDR3M1SLOT] [EDR3M3SLOT] [EDR3M5SLOT] [0mGet/Set PHY Configuration
+[1;39mread-sysconfig                                    [0mRead System Configuration
+[1;39mset-sysconfig <-v|-h> [options...]                [0mSet System Configuration
+---
+hci24868:	Unconfigured controller
+	manufacturer 29
+	supported options: public-address 
+	missing options: public-address 

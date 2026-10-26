@@ -1,0 +1,36 @@
+
+~ # echo ERR_BEGIN; /bin/busybox dmesg | /bin/busybox grep -iE -B2 -A2 "ufshcd.*
+(error|fail|timeout|abort)|smmu.*fault|I/O error|Oops"; echo LINK; /bin/busybox 
+dmesg | /bin/busybox grep -iE "gear|HS_|power mode|lanes|ufshcd.*(Manufacturer|W
+B|clk|freq)" | /bin/busybox tail -15; printf '\n%s\n' HANOIP_END_258fea5094e6
+ERR_BEGIN
+[    0.000000] OF: reserved mem: 0x000000009c000000..0x000000009d6fffff (23552 KiB) map non-reusable cont-splash@9c000000
+[    0.000000] OF: reserved mem: 0x000000009d700000..0x000000009d7fffff (1024 KiB) map non-reusable dfps-data@9d700000
+[    0.000000] OF: reserved mem: 0x000000009d800000..0x000000009dbfffff (4096 KiB) map non-reusable ramoops@9d800000
+[    0.000000] NUMA: Faking a node at [mem 0x0000000080000000-0x000000017dcfffff]
+[    0.000000] NODE_DATA(0) allocated [mem 0x17d513100-0x17d51583f]
+--
+[    0.000000] CPU features: detected: ARM errata 1165522, 1319367, or 1530923
+[    0.000000] alternatives: applying boot alternatives
+[    0.000000] Kernel command line: earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops console=tty1 loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0 maxcpus=6 idle=poll
+[    0.000000] Unknown kernel command line parameters "panic_on_oops=1 idle=poll", will be passed to user space.
+[    0.000000] printk: log buffer data + meta data: 131072 + 458752 = 589824 bytes
+[    0.000000] Dentry cache hash table entries: 524288 (order: 10, 4194304 bytes, linear)
+--
+[    0.041201] Serial: AMBA PL011 UART driver
+[    0.042084] pstore: Using crash dump compression: deflate
+[    0.042103] printk: legacy console [ramoops0] enabled
+[    0.042808] pstore: Registered ramoops as persistent store backend
+[    0.042826] ramoops: using 0x400000@0x9d800000, ecc: 0
+[    0.044729] CPUidle PSCI: Initialized CPU PM domain topology using OSI mode
+[    0.051075] /soc@0/ufshc@1d84000: Fixed dependency cycle(s) with /soc@0/phy@1d87000
+--
+[    4.612492]     HOME=/
+[    5.047788]     TERM=linux
+[    5.481743]     panic_on_oops=1
+[    5.916797]     idle=poll
+[    6.802826] printk: legacy console [ttyGS0] enabled
+LINK
+
+HANOIP_END_258fea5094e6
+~ # 

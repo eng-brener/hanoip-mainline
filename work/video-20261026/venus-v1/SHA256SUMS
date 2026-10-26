@@ -1,0 +1,6 @@
+3399ab887aa1c10061eab88f5bc393d7189c82a50aca341756201a15ccdba7ca  kernel-hanoip-pmos-full-sensors-ro-v4-base-fast.img
+057c3ecce1f654ed99c1d1f418eaa6be9aeb99473f6d77f434c93f56360b05f2  sm7150-motorola-hanoip-pmos-venus.dts
+a1f8d3b09a8a55dd0e396184d62c7d0c678c4f5b87da2ef542bd3f3739667628  u-boot-hanoip-pmos-venus-v1.img
+edde873e9dff4e602a252a669ae4a5243d12c4455216c5552c583fb37590c98a  u-boot.bin
+a56f52922008d1fdcd1ab4800992bf7f0fd366c69774d1a10238e91e2a2218aa  uboot.dtb
+0124cb32fdb00ea5a7e7d6bbdbc3161b1ef0c4ef13524a87a93df017e037d903  venus-core.ko

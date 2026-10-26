@@ -1,0 +1,35 @@
+{
+  "file": "/Volumes/SSDExterno/Users/brener/developer/hanoip-mainline/work/pmos-super-20261025/kernel-hanoip-pmos-super-v1.img",
+  "bytes": 25485312,
+  "header_version": 2,
+  "page_size": 4096,
+  "dtb_addr": "0x1f00000",
+  "sha256": "847c95730338b6956696aae94c9990373664a53ec604463ecd2637b4cd3c16eb",
+  "sections": {
+    "kernel": {
+      "offset": 4096,
+      "size": 12436345,
+      "sha256": "c9a4a52ba522d1f97de349cc78ee22c81367c53ae99f73c0e1544c49861367b6"
+    },
+    "ramdisk": {
+      "offset": 12443648,
+      "size": 12947376,
+      "sha256": "88ad4c9ae0ab2fdeb929408a4bd12a395e184071d571992793546bfde33a84cd"
+    },
+    "second": {
+      "offset": 25391104,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "recovery_dtbo": {
+      "offset": 25391104,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dtb": {
+      "offset": 25391104,
+      "size": 92046,
+      "sha256": "be5efff58e380e614d25fd8e18a7fb4d4c96b504c5c5d4075dca7f45d0285916"
+    }
+  }
+}

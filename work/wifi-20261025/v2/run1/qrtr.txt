@@ -1,0 +1,58 @@
+ 3861 root      0:00 /sbin/pd-mapper
+ 3862 root      0:00 /sbin/tqftpserv
+ 3863 root      0:00 /sbin/rmtfs -o /run/efs -r -v
+  Service Version Instance Node  Port
+       43       2       18    0     1 Subsystem control service
+       66       1      180    0     3 Service registry notification service
+       15       1        0    0    17 Test service
+       51       1        2    0    18 CoreSight remote tracing service
+       21       1        0    0    19 Modem embedded file system service
+       24       1        0    0    21 Thermal mitigation device service
+       23       1        0    0    23 Thermal sensors service
+       22       1        0    0    26 Time service
+       36       1        0    0    29 Persistent device configuration service
+       49       1        2    0    59 IPA control service
+       17       1        0    0    64 Specific absorption rate service
+       74       1        0    0    65 <unknown>
+     4098       0        0    0    66 <unknown>
+       34       1        0    0    68 Coexistence service
+       55       1        2    0    76 QMI-SLIM service
+      228       1        1    0    77 <unknown>
+      227       1        0    0    78 <unknown>
+       50       1        0    0    80 UIMRMT service
+        9       2        0    0    82 Voice service
+        3       1        0    0    83 Network Access Service
+       12       1        0    0    84 Phonebook Management service
+       10       2        0    0    85 Card Application Toolkit service (v2)
+       47       1        0    0    86 Data Port Mapper service
+        1       1        0    0    87 Wireless Data Service
+        4       1        0    0    88 Quality Of Service service
+       26       1        0    0    89 Wireless data administrative service
+        7       1        0    0    90 Authentication service
+        8       1        0    0    91 AT service
+       29       1        0    0    92 Circuit switched videotelephony service
+       11       1        0    0    95 User Identity Module service
+       77       1        0    0    96 IMS QMI Priv service
+        5       1        0    0    99 Wireless Messaging Service
+       42       1        0    0   101 Data system determination service
+       75       1        0    0   102 QDMA service
+        2       1        0    0   104 Device Management Service
+       48       1        0    0   105 QMI DFS service
+       68       1        0    0   106 <unknown>
+       16       2        0    0   108 Location service (~ PDS v2)
+       71       1        0    0   130 UIMHTTP service
+       51       1        3    0   143 CoreSight remote tracing service
+       69       1        0    0   144 ATH10k WLAN firmware service
+     4099       0        0    0   151 <unknown>
+       14       1        0    1    14 Remote file system service
+       49       1        1    1 16385 IPA control service
+     4096       1        0    1 16388 TFTP
+       64       1        1    1 16389 Service registry locator service
+--- pd-mapper log
+adspr.jsn
+adsps.jsn
+adspua.jsn
+cdspr.jsn
+modemr.jsn
+modemuw.jsn
+/sys/class/remoteproc/remoteproc0 modem fw=qcom/sm7150/motorola/hanoip/modem.mdt

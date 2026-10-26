@@ -1,0 +1,7 @@
+  CC [M]  drivers/input/evdev.o
+  CC [M]  drivers/input/touchscreen/ilitek-hanoip-spi.o
+  MODPOST Module.symvers
+  CC [M]  drivers/input/evdev.mod.o
+  CC [M]  drivers/input/touchscreen/ilitek-hanoip-spi.mod.o
+  LD [M]  drivers/input/evdev.ko
+  LD [M]  drivers/input/touchscreen/ilitek-hanoip-spi.ko

@@ -1,0 +1,2 @@
+/Volumes/SSDExterno/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-objdump: warning: 'work/fingerprint-20261026/fpctzapp-reconstructed.elf': no section overlaps the range [0x37cc,0x3842) specified by --start-address/--stop-address
+/Volumes/SSDExterno/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-objdump: warning: 'work/fingerprint-20261026/fpctzapp-reconstructed.elf': no section overlaps the range [0x1140dc,0x1140e4) specified by --start-address/--stop-address

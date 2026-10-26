@@ -1,0 +1,14 @@
+sda rc=0 start=297.01 end=297.10 16777216 bytes (16.0MB) copied, 0.092326 seconds, 173.3MB/s
+sdb rc=0 start=297.11 end=529.36 126844141568 bytes (118.1GB) copied, 232.240280 seconds, 520.9MB/s
+sdc rc=0 start=529.37 end=529.44 8388608 bytes (8.0MB) copied, 0.064762 seconds, 123.5MB/s
+sdd rc=0 start=529.45 end=529.47 8388608 bytes (8.0MB) copied, 0.019530 seconds, 409.6MB/s
+sde rc=0 start=529.48 end=530.47 536870912 bytes (512.0MB) copied, 0.989001 seconds, 517.7MB/s
+sdf rc=0 start=530.48 end=531.48 536870912 bytes (512.0MB) copied, 0.991344 seconds, 516.5MB/s
+FULLREAD_DONE
+erros_reais=14
+pos: gear=HS_GEAR1 link=HIBERN8 dev=SLEEP rt=suspended
+blocks=84 not_ro=0
+irqs=6
+44100
+
+[exited with code 0]

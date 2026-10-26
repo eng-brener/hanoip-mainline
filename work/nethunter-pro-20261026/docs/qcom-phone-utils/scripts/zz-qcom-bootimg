@@ -1,0 +1,133 @@
+#!/bin/sh
+
+## Copyright 2022 Arnaud Ferraris <aferraris@debian.org>
+##
+## SPDX-License-Identifier: GPL-3.0-or-later
+
+set -e
+
+usage() {
+ cat <<EOF
+
+ $0 [-f|--force] <VERSION>
+
+Install a kernel into the boot partition.
+
+ -f, --force: Install kernel even if it is an older version
+
+EOF
+}
+
+FORCE_VERSION=0
+
+while test $# != 0
+do
+  case "$1" in
+  -f|--force)
+    FORCE_VERSION=1
+    ;;
+  -h|--help)
+    usage
+    exit 0
+    ;;
+  -*)
+    usage
+    exit 1
+    ;;
+  *)
+    break
+    ;;
+  esac
+  shift
+done
+
+VERSION="$1"
+if [ -z "${VERSION}" ]; then
+    usage
+    exit 1
+fi
+
+BOOTPART="/dev/disk/by-partlabel/boot"
+LATESTKERNEL="$(linux-version list | tail -1)"
+
+# Only update the bootimg for the most recent kernel
+if linux-version compare "${VERSION}" lt "${LATESTKERNEL}" && [ ${FORCE_VERSION} -lt 1 ]; then
+    echo "I: Not updating bootimg for ${VERSION} < ${LATESTKERNEL}, quitting..."
+    exit 0
+fi
+
+# Fetch the device parameters
+
+# shellcheck disable=SC2013
+# Using a "for" loop for reading the kernel cmdline (single line containing
+# multiple words) is more readable than a complex "while read" construct
+for x in $(cat /proc/cmdline); do
+    case $x in
+        mobile.qcomsoc=*) QCOMSOC=${x#mobile.qcomsoc=} ;;
+        mobile.vendor=*) VENDOR=${x#mobile.vendor=} ;;
+        mobile.model=*) MODEL=${x#mobile.model=} ;;
+        mobile.variant=*) VARIANT=${x#mobile.variant=} ;;
+    esac
+done
+
+if [ -z "${MODEL}" ]; then
+    echo "Probably running in a VM, not updating bootimg..."
+    exit 0
+fi
+
+# Create the DTB file name from device parameters
+if [ "${VARIANT}" ]; then
+    DTBNAME="${QCOMSOC}-${VENDOR}-${MODEL}-${VARIANT}"
+else
+    DTBNAME="${QCOMSOC}-${VENDOR}-${MODEL}"
+fi
+
+echo "I: identified device ${DTBNAME}"
+
+TMPDIR=$(mktemp -d /tmp/bootimg.XXXXXX)
+
+if [ -e "${BOOTPART}_b" ]; then
+    # Check slot currently in use
+    BOOTPART="${BOOTPART}$(qbootctl -x)"
+fi
+
+echo "I: using ${BOOTPART} boot partition"
+
+# Extract individual components (kernel, initrd, cmdline...) from the bootimg
+# flashed to the current boot partition; using the `mkbootimg` format outputs
+# to stdout all the command-line arguments we need to re-create this image.
+dd if="${BOOTPART}" of="${TMPDIR}/boot.img" bs=1M
+BOOTIMG_PARAMS="$(unpack_bootimg --format mkbootimg --out "${TMPDIR}" --boot_img "${TMPDIR}/boot.img")"
+
+# The `cmdline` part of the arguments are quoted, but those will be discarded
+# by the shell when reusing the params, so the kernel cmdline parameters will
+# be interpreted as command-line arguments for `mkbootimg`, ultimately leading
+# to an "unrecognized arguments" error.
+# In order to avoid this, save the kernel cmdline in a separate variable and
+# strip the `--cmdline` and `--board` (the latter being unused in our case)
+# arguments from the params
+CMDLINE="$(echo "${BOOTIMG_PARAMS}" | sed "s/.*--cmdline '\(.*\)'/\1/")"
+CLEAN_PARAMS="$(echo "${BOOTIMG_PARAMS}" | sed -e "s/ --cmdline '.*'//" -e "s/ --board '.*'//")"
+
+# Append the DTB to the kernel and copy the new initrd
+cat "/boot/vmlinuz-${VERSION}" "/usr/lib/linux-image-${VERSION}/${DTBNAME}.dtb" > "${TMPDIR}/kernel"
+cp "/boot/initrd.img-${VERSION}" "${TMPDIR}/ramdisk"
+
+if echo "${CLEAN_PARAMS}" | grep -q -- "--header_version 2"; then
+    # Copy the DTB if needed
+    cp "/usr/lib/linux-image-${VERSION}/${DTBNAME}.dtb" "${TMPDIR}/dtb"
+fi
+
+# Create the new boot image
+
+# shellcheck disable=SC2086
+# $CLEAN_PARAMS mustn't be quoted as it is a params list, which must be
+# interpreted as multiple different arguments rather than a single big one
+mkbootimg -o "${TMPDIR}/boot.img" ${CLEAN_PARAMS} --cmdline "${CMDLINE}"
+
+# Write the new boot image to disk
+echo "I: writing boot image to ${BOOTPART}"
+dd if="${TMPDIR}/boot.img" of="${BOOTPART}" bs=1M
+
+# Cleanup and exit
+rm -rf "${TMPDIR}"

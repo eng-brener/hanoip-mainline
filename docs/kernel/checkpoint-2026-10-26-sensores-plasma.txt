@@ -1,0 +1,25 @@
+Checkpoint: integração dos sensores ao Plasma completo — 26/10/2026
+
+O telefone iniciou o rootfs Plasma já instalado usando kernel 7.3 #6 e U-Boot
+perif-v5. A partição super/rootfs está montada RO com ro,noload,nodev,nosuid,
+noexec; OverlayFS usa upper/work em /run. O initramfs comparou SHA256 integral
+de sdb23 antes/depois, com igualdade. Não houve escrita. O hash em boot atrasou
+muito (~235 s); separar essa auditoria de boots futuros, sem remover RO.
+
+ADSP, FastRPC, hexagonrpcd, libssc e iio-sensor-proxy inicializaram. Estado
+D-Bus: acelerômetro, luz e proximidade presentes; luz observada 76,1 e 74,7
+lux; proximidade FAR. Acelerômetro baixo nível: Z perto de 9,9–10,1 m/s².
+O usuário verificou fisicamente: tela não gira. SensorProxy
+AccelerometerOrientation e AccelerometerTilt seguem undefined. Auto-brilho
+não validado; config base mostra automaticBrightness=false e curva nula.
+Giroscópio foi testado antes pelo ssccli (665 amostras/30 s), mas não está
+publicado no SensorProxy atual.
+
+Próximo: coletar posições conhecidas + XYZ e evento do monitor-sensor, resolver
+a matriz/calibração/orientação no libssc/proxy e política autoRotation KWin
+(InTabletMode talvez inadequado a telefone); editar apenas overlay RAM. Depois
+validar eventos de proximidade e automação de brilho em separado.
+
+Artefatos e comandos: `work/sensors-20261026/plasma-full/`; estado capturado
+em `handoff/runtime.txt`. A variante transitória em `plasma-ram/` é obsoleta.
+Telefone foi deixado no boot atual do Plasma completo.

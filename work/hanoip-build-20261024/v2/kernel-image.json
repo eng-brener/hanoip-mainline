@@ -1,0 +1,35 @@
+{
+  "file": "work/hanoip-build-20261024/v2/kernel-hanoip-qup-usb-shell-no-ufs.img",
+  "bytes": 13426688,
+  "header_version": 2,
+  "page_size": 4096,
+  "dtb_addr": "0x1f00000",
+  "sha256": "d74f3efd83ef7d2e08eba7fe0791ebf2de1445793caccbd8342e4b64e2bb811b",
+  "sections": {
+    "kernel": {
+      "offset": 4096,
+      "size": 12433363,
+      "sha256": "d3a17173c418be5b7ba522b5d83870f48d98b55a3eecc83eb36cd8475a354e62"
+    },
+    "ramdisk": {
+      "offset": 12439552,
+      "size": 891562,
+      "sha256": "1f12648496b303fd986dc2dc3d0535c7e6312a7385380291523464f803ffef2d"
+    },
+    "second": {
+      "offset": 13332480,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "recovery_dtbo": {
+      "offset": 13332480,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dtb": {
+      "offset": 13332480,
+      "size": 91022,
+      "sha256": "06b1f9a8b93a36ef8ed08d94d16bfdd173de758ae4c150c9dc8a1cb29af75e89"
+    }
+  }
+}

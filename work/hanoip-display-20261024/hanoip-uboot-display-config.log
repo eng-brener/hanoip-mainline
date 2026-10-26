@@ -1,0 +1,22 @@
+Using .config as base
+Merging /tmp/hanoip-uboot-display-diagnostic.fragment
+Value of CONFIG_DEFAULT_DEVICE_TREE is redefined by fragment /tmp/hanoip-uboot-display-diagnostic.fragment:
+Previous value: CONFIG_DEFAULT_DEVICE_TREE="qcom/sm7150-motorola-hanoip-ufs-diagnostic"
+New value: CONFIG_DEFAULT_DEVICE_TREE="qcom/sm7150-motorola-hanoip-display-diagnostic"
+
+Value of CONFIG_SCSI is redefined by fragment /tmp/hanoip-uboot-display-diagnostic.fragment:
+Previous value: # CONFIG_SCSI is not set
+New value: CONFIG_SCSI=n
+
+#
+# merged configuration written to .config (needs make)
+#
+make: Entering directory '/tmp/uboot-sm7150'
+make[1]: Entering directory '/tmp/uboot-sm7150/.output'
+  GEN     Makefile
+scripts/kconfig/conf  --olddefconfig Kconfig
+#
+# configuration written to .config
+#
+make[1]: Leaving directory '/tmp/uboot-sm7150/.output'
+make: Leaving directory '/tmp/uboot-sm7150'

@@ -1,0 +1,6 @@
+dmesg-android.txt: [    0.580891] fpc1020 soc:fpc_fpc1020: fpc1020_probe: ok
+dmesg-android.txt: [   13.464046] QSEECOM: qseecom_load_app: App (fpctzapp) does'nt exist, loading apps for first time
+dmesg-android.txt: [   13.533608] QSEECOM: qseecom_load_app: App with id 5 (fpctzapp) now loaded
+dmesg-android.txt: [   13.825100] input: uinput-fpc as /devices/virtual/input/input6
+interrupts-iomem.txt: 344:         60          0          0          0          0          0          0          0  msmgpio-dc  90 Edge      soc:fpc_fpc1020
+buses.txt: soc:fpc_fpc1020 fpc1020

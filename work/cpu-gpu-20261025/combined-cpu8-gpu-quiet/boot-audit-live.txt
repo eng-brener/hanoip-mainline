@@ -1,0 +1,91 @@
+Warning: Permanently added '172.16.42.1' (ED25519) to the list of known hosts.
+UPTIME=737.65 5340.33
+CMDLINE
+earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops console=tty1 loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0
+AUTOSTART
+autostart gpu-zap-early 9.74
+HANOIP: display probe started (PID 9744); see dmesg and /run/hanoip-display-loader.log
+fb0=msmdrmfb after 11s at 64.37
+irqs=0
+autostart done 80.61
+UFS_GUARD
+UFS_LOADER
+UFS module loader returned: 0
+BOOT_EVENTS
+[    0.088100] /soc@0/ufshc@1d84000: Fixed dependency cycle(s) with /soc@0/phy@1d87000
+[    0.088203] /soc@0/phy@1d87000: Fixed dependency cycle(s) with /soc@0/ufshc@1d84000
+[    0.095232] /soc@0/ufshc@1d84000: Fixed dependency cycle(s) with /soc@0/phy@1d87000
+[    0.095932] /soc@0/ufshc@1d84000: Fixed dependency cycle(s) with /soc@0/phy@1d87000
+[    0.096065] /soc@0/phy@1d87000: Fixed dependency cycle(s) with /soc@0/ufshc@1d84000
+[    1.021702] platform 1d84000.ufshc: Adding to iommu group 6
+[    9.767125] ufshcd_core: loading out-of-tree module taints kernel.
+[   10.209698] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_vreg: Unable to find vdd-hba-supply regulator, assuming enabled
+[   10.533887] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_vreg: Unable to find vccq-supply regulator, assuming enabled
+[   11.285428] scsi host0: ufshcd
+[   15.785945] sd 0:0:0:3: [sde] Attached SCSI disk
+[   16.096938] sd 0:0:0:5: [sdf] Attached SCSI disk
+[   16.096938] sd 0:0:0:4: [sdd] Attached SCSI disk
+[   16.694336] sd 0:0:0:1: [sdb] Attached SCSI disk
+[   36.029885] qnoc-sm7150 1500000.interconnect: sync_state() pending due to 1e40000.ipa
+[   36.544023] qnoc-sm7150 1620000.interconnect: sync_state() pending due to 1e40000.ipa
+[   37.056692] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1e40000.ipa
+[   37.413716] sd 0:0:0:2: [sdc] Attached SCSI disk
+[   37.415644] sd 0:0:0:0: [sda] Attached SCSI disk
+[   37.931638] qnoc-sm7150 1700000.interconnect: sync_state() pending due to 1e40000.ipa
+[   39.914842] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 5000000.gpu
+[   40.453005] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   40.992392] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   41.529445] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 90cd000.pmu
+[   42.070577] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 90b6300.pmu
+[   42.612428] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 5000000.gpu
+[   43.153067] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1e40000.ipa
+[   43.691519] qnoc-sm7150 1500000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   44.234774] qnoc-sm7150 9680000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   44.779410] qnoc-sm7150 1380000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   45.323766] qnoc-sm7150 1740000.interconnect: sync_state() pending due to ae00000.display-subsystem
+[   45.864437] gcc-sm7150 100000.clock-controller: sync_state() pending due to ae00000.display-subsystem
+[   46.407739] dispcc-sm7150 af00000.clock-controller: sync_state() pending due to ae00000.display-subsystem
+[   46.947622] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to ae00000.display-subsystem
+[   47.496685] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 4080000.remoteproc
+[   53.330839] HANOIP DRM: register MDP/DPU
+[   54.289578] HANOIP DRM: register DSI
+[   54.681669] HANOIP DRM: register Adreno
+[   55.076975] HANOIP DRM: register MDSS
+[   59.990959] HANOIP DRM: registration complete
+[   64.050233] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+[   70.605174] remoteproc remoteproc0: modem is available
+[   70.764491] mmi_unit_info (SMEM 134) for modem: version = 0x03, device = 'hanoip', radio_str = 'LATAM', system_rev = 0xc000, carrier = 'retbr'
+[   71.844378] remoteproc remoteproc0: powering up modem
+[   71.851552] remoteproc remoteproc0: Booting fw image qcom/sm7150/motorola/hanoip/modem.mdt, size 9100
+[   71.861342] ipa 1e40000.ipa: received modem starting event
+[   72.839115] ipa 1e40000.ipa: received modem running event
+[   72.844728] remoteproc remoteproc0: remote processor modem is now up
+[   73.921090] ath10k_snoc 18800000.wifi: qmi chip_id 0x140 chip_family 0x4002 board_id 0xff soc_id 0x40090000
+[   73.931363] ath10k_snoc 18800000.wifi: qmi fw_version 0x322903b3 fw_build_timestamp 2023-05-18 11:09 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2-00947-QCAHLSWMTPLZ-1.558119.4.586249.3
+[   76.445550] ath10k_snoc 18800000.wifi: wcn3990 hw1.0 target 0x00000008 chip_id 0x00000000 sub 0000:0000
+[   76.455402] ath10k_snoc 18800000.wifi: kconfig debug 1 debugfs 1 tracing 0 dfs 0 testmode 0
+[   76.464107] ath10k_snoc 18800000.wifi: firmware ver  api 5 features wowlan,mgmt-tx-by-reference,non-bmi crc32 b3d4b790
+[   76.502530] ath10k_snoc 18800000.wifi: htt-ver 3.89 wmi-op 4 htt-op 3 cal file max-sta 32 raw 0 hwcrypto 1
+[   78.364398] Bluetooth: Core ver 2.22
+[   78.373761] Bluetooth: HCI device and connection manager initialized
+[   78.380330] Bluetooth: HCI socket layer initialized
+[   78.385363] Bluetooth: L2CAP socket layer initialized
+[   78.390572] Bluetooth: SCO socket layer initialized
+[   78.418367] Bluetooth: HCI UART driver ver 2.3
+[   78.423102] Bluetooth: HCI UART protocol H4 registered
+[   78.428495] Bluetooth: HCI UART protocol LL registered
+[   78.434063] Bluetooth: HCI UART protocol Broadcom registered
+[   78.440007] Bluetooth: HCI UART protocol QCA registered
+[   78.446256] Bluetooth: HCI UART protocol Marvell registered
+[   78.450099] Bluetooth: hci0: setting up wcn399x
+[   78.467363] Bluetooth: RFCOMM TTY layer initialized
+[   78.472485] Bluetooth: RFCOMM socket layer initialized
+[   78.477830] Bluetooth: RFCOMM ver 1.11
+[   78.587088] Bluetooth: hci0: QCA Product ID   :0x0000000a
+[   78.592957] Bluetooth: hci0: QCA SOC Version  :0x40020140
+[   78.598616] Bluetooth: hci0: QCA ROM Version  :0x00000201
+[   78.604250] Bluetooth: hci0: QCA Patch Version:0x00000001
+[   78.624107] Bluetooth: hci0: QCA controller version 0x01400201
+[   78.630235] Bluetooth: hci0: QCA Downloading qca/crbtfw21.tlv
+[   79.654583] Bluetooth: hci0: QCA Downloading qca/crnv21.bin
+[   79.810735] Bluetooth: hci0: QCA setup on UART is completed

@@ -1,0 +1,21 @@
+antes: Mon Aug 12 18:10:14 GMT 1974
+ntpd: setting time to 2026-10-25 14:49:22.693057 (offset +1647376747.237842s)
+depois: Sun Oct 25 14:49:22 UTC 2026
+1.53 s
+--- 50MB via https ok
+	signal: -40 dBm
+	rx bitrate: 433.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 1
+4096
+irqs=0
+running
+43200
+wget: server returned error: HTTP/1.1 403 Forbidden
+0 bytes em 0 s
+wget: server returned error: HTTP/1.1 403 Forbidden
+0 bytes em 0 s
+100000000 bytes em 0.00 s = 2272727272.7 MB/s (18181818182 Mbit/s)
+100000000 bytes em 0.00 s = 50000000000.0 MB/s (400000000000 Mbit/s)
+	signal: -41 dBm
+	rx bitrate: 433.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 1
+100000000 bytes em 2.68 s = 37.3 MB/s (298 Mbit/s)
+100000000 bytes em 2.73 s = 36.6 MB/s (293 Mbit/s)

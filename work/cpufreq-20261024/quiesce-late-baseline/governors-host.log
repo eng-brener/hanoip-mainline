@@ -1,0 +1,196 @@
+
+~ # ( set -e; cpup=/sys/devices/system/cpu/cpufreq/policy0; original=$(/bin/busy
+box cat $cpup/scaling_governor); trap 'echo "$original" > "$cpup/scaling_governo
+r"' EXIT; for g in powersave performance schedutil; do for z in /sys/class/therm
+al/thermal_zone*; do t=$(/bin/busybox cat $z/temp); [ "$t" -lt 65000 ] || exit 1
+; done; echo "GOVERNOR:$g"; echo "$g" > "$cpup/scaling_governor"; /bin/busybox s
+leep 2; /bin/busybox cat $cpup/scaling_governor $cpup/scaling_cur_freq $cpup/cpu
+info_cur_freq /sys/bus/platform/devices/*.dsi/error_snapshot; for z in /sys/clas
+s/thermal/thermal_zone*; do /bin/busybox cat $z/type $z/temp; done; done ); echo
+ GOVERNOR_TEST_EXIT:$?; /bin/busybox cat /proc/sys/kernel/tainted; /bin/busybox 
+dmesg | /bin/busybox tail -15; printf '\nHANOIP_END_03787a0fb762\n'
+GOVERNOR:powersave
+powersave
+300000
+300000
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+aoss0-thermal
+41200
+cpu0-thermal
+41200
+cpu7-thermal
+40300
+cpu8-thermal
+40300
+cpu9-thermal
+40900
+gpuss0-thermal
+41200
+gpuss1-thermal
+41200
+aoss1-thermal
+41400
+cwlan-thermal
+39800
+audio-thermal
+39800
+ddr-thermal
+41700
+q6-hvx-thermal
+41100
+cpu1-thermal
+40600
+camera-thermal
+41700
+mdm-core-thermal
+40400
+mdm-dsp-thermal
+41100
+npu-thermal
+41700
+video-thermal
+41100
+cpu2-thermal
+39000
+cpu3-thermal
+41200
+cpu4-thermal
+41600
+cpu5-thermal
+40900
+cpuss0-thermal
+40900
+cpuss1-thermal
+41900
+cpu6-thermal
+40300
+GOVERNOR:performance
+performance
+1804800
+1804800
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+aoss0-thermal
+41600
+cpu0-thermal
+41200
+cpu7-thermal
+40300
+cpu8-thermal
+40300
+cpu9-thermal
+40900
+gpuss0-thermal
+40600
+gpuss1-thermal
+41200
+aoss1-thermal
+41400
+cwlan-thermal
+39800
+audio-thermal
+39800
+ddr-thermal
+41700
+q6-hvx-thermal
+41100
+cpu1-thermal
+40600
+camera-thermal
+41400
+mdm-core-thermal
+39800
+mdm-dsp-thermal
+41100
+npu-thermal
+41400
+video-thermal
+40700
+cpu2-thermal
+39600
+cpu3-thermal
+41900
+cpu4-thermal
+42200
+cpu5-thermal
+41600
+cpuss0-thermal
+40900
+cpuss1-thermal
+42500
+cpu6-thermal
+40300
+GOVERNOR:schedutil
+schedutil
+1248000
+1248000
+irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+aoss0-thermal
+41200
+cpu0-thermal
+41200
+cpu7-thermal
+40300
+cpu8-thermal
+40300
+cpu9-thermal
+40900
+gpuss0-thermal
+40900
+gpuss1-thermal
+41200
+aoss1-thermal
+41400
+cwlan-thermal
+39800
+audio-thermal
+39800
+ddr-thermal
+41700
+q6-hvx-thermal
+41100
+cpu1-thermal
+40600
+camera-thermal
+41400
+mdm-core-thermal
+40100
+mdm-dsp-thermal
+41100
+npu-thermal
+41700
+video-thermal
+40700
+cpu2-thermal
+39300
+cpu3-thermal
+41600
+cpu4-thermal
+42200
+cpu5-thermal
+41200
+cpuss0-thermal
+40900
+cpuss1-thermal
+42200
+cpu6-thermal
+40300
+GOVERNOR_TEST_EXIT:0
+0
+[   39.498551] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/display-controller@ae01000
+[   40.315401] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   41.588212] HANOIP DRM: registration complete
+[   41.590221] /soc@0/display-subsystem@ae00000/dsi@ae94000: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0
+[   42.814079] /soc@0/display-subsystem@ae00000/dsi@ae94000/panel@0: Fixed dependency cycle(s) with /soc@0/display-subsystem@ae00000/dsi@ae94000
+[   43.642178] msm_dpu ae01000.display-controller: bound ae94000.dsi (ops dsi_ops [msm])
+[   44.059451] Console: switching to colour dummy device 80x25
+[   44.066362] [drm:dpu_kms_hw_init:1172] dpu hardware revision:0x50020000
+[   44.073395] msm-mdss ae00000.display-subsystem: HANOIP: mapped firmware framebuffer [mem 0x9c000000-0x9d6fffff flags 0x200] before stream switch
+[   44.094677] [drm] Initialized msm 1.13.0 for ae01000.display-controller on minor 0
+[   44.102555] msm_dpu ae01000.display-controller: no GPU device was found
+[   44.338335] Console: switching to colour frame buffer device 135x153
+[   44.354890] fb0: sys_fillrect: framebuffer is not in virtual address space.
+[   44.354920] fb0: sys_imageblit: framebuffer is not in virtual address space.
+[   44.383556] msm_dpu ae01000.display-controller: [drm] fb0: msmdrmfb frame buffer device
+
+HANOIP_END_03787a0fb762
+~ # 

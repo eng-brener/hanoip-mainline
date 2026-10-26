@@ -1,0 +1,332 @@
+{
+  "/soc/pinctrl@3400000/fpc_reset_int": {},
+  "/soc/pinctrl@3400000/fpc_reset_int/reset_low": {
+    "phandle": [
+      800
+    ]
+  },
+  "/soc/pinctrl@3400000/fpc_reset_int/reset_low/mux": {
+    "pins": [
+      "gpio91"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fpc_reset_int/reset_low/config": {
+    "pins": [
+      "gpio91"
+    ],
+    "drive-strength": [
+      2
+    ],
+    "bias-disable": true,
+    "output-low": true
+  },
+  "/soc/pinctrl@3400000/fpc_reset_int/reset_high": {
+    "phandle": [
+      801
+    ]
+  },
+  "/soc/pinctrl@3400000/fpc_reset_int/reset_high/mux": {
+    "pins": [
+      "gpio91"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fpc_reset_int/reset_high/config": {
+    "pins": [
+      "gpio91"
+    ],
+    "drive-strength": [
+      2
+    ],
+    "bias-disable": true,
+    "output-high": true
+  },
+  "/soc/pinctrl@3400000/fpc_reset_int/int_low": {
+    "phandle": [
+      802
+    ]
+  },
+  "/soc/pinctrl@3400000/fpc_reset_int/int_low/mux": {
+    "pins": [
+      "gpio90"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fpc_reset_int/int_low/config": {
+    "pins": [
+      "gpio90"
+    ],
+    "drive-strength": [
+      2
+    ],
+    "bias-pull-down": true,
+    "input-enable": true
+  },
+  "/soc/fpc_fpc1020": {
+    "compatible": [
+      "fpc,fpc1020"
+    ],
+    "status": [
+      "ok"
+    ],
+    "irq": [
+      49,
+      90,
+      0
+    ],
+    "rst": [
+      49,
+      4,
+      0
+    ],
+    "pinctrl-names": [
+      "default",
+      "suspend"
+    ],
+    "pinctrl-0": [
+      1069,
+      1070,
+      1071
+    ],
+    "pinctrl-1": [
+      1072,
+      1073,
+      1074
+    ],
+    "phandle": [
+      1167
+    ]
+  },
+  "/soc/fpsensor_fp": {
+    "status": [
+      "ok"
+    ],
+    "compatible": [
+      "qcom,fingerprint-gpio"
+    ],
+    "interrupt-parent": [
+      49
+    ],
+    "interrupts": [
+      90,
+      0
+    ],
+    "fp-gpio-power": [
+      49,
+      30,
+      0
+    ],
+    "fp-gpio-int": [
+      49,
+      90,
+      0
+    ],
+    "fp-gpio-reset": [
+      49,
+      4,
+      0
+    ],
+    "pinctrl-names": [
+      "default",
+      "suspend"
+    ],
+    "pinctrl-0": [
+      1069,
+      1070,
+      1075
+    ],
+    "pinctrl-1": [
+      1072,
+      1073,
+      1076
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/fps_rst_active": {
+    "phandle": [
+      1069
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/fps_rst_active/mux": {
+    "pins": [
+      "gpio4"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/fps_rst_active/config": {
+    "pins": [
+      "gpio4"
+    ],
+    "drive-strength": [
+      2
+    ],
+    "output-high": true
+  },
+  "/soc/pinctrl@3400000/fps/fps_int_active": {
+    "phandle": [
+      1070
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/fps_int_active/mux": {
+    "pins": [
+      "gpio90"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/fps_int_active/config": {
+    "pins": [
+      "gpio90"
+    ],
+    "drive-strength": [
+      2
+    ],
+    "bias-disable": true,
+    "input-enable": true
+  },
+  "/soc/pinctrl@3400000/fps/ldo1p8_en_active": {
+    "phandle": [
+      1071
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/ldo1p8_en_active/mux": {
+    "pins": [
+      "gpio29"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/ldo1p8_en_active/config": {
+    "pins": [
+      "gpio29"
+    ],
+    "drive-strength": [
+      2
+    ],
+    "bias-pull-up": true,
+    "output-high": true
+  },
+  "/soc/pinctrl@3400000/fps/fps_rst_suspend": {
+    "phandle": [
+      1072
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/fps_rst_suspend/mux": {
+    "pins": [
+      "gpio4"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/fps_rst_suspend/config": {
+    "pins": [
+      "gpio4"
+    ],
+    "drive-strength": [
+      2
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/fps_int_suspend": {
+    "phandle": [
+      1073
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/fps_int_suspend/mux": {
+    "pins": [
+      "gpio90"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/fps_int_suspend/config": {
+    "pins": [
+      "gpio90"
+    ],
+    "drive-strength": [
+      2
+    ],
+    "bias-disable": true,
+    "input-enable": true
+  },
+  "/soc/pinctrl@3400000/fps/ldo1p8_en_suspend": {
+    "phandle": [
+      1074
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/ldo1p8_en_suspend/mux": {
+    "pins": [
+      "gpio29"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/ldo1p8_en_suspend/config": {
+    "pins": [
+      "gpio29"
+    ],
+    "drive-strength": [
+      2
+    ],
+    "bias-pull-up": true,
+    "output-high": true
+  },
+  "/soc/pinctrl@3400000/fps/ldo3_en_active": {
+    "phandle": [
+      1075
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/ldo3_en_active/mux": {
+    "pins": [
+      "gpio30"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/ldo3_en_active/config": {
+    "pins": [
+      "gpio30"
+    ],
+    "drive-strength": [
+      2
+    ],
+    "bias-pull-up": true,
+    "output-high": true
+  },
+  "/soc/pinctrl@3400000/fps/ldo3_en_suspend": {
+    "phandle": [
+      1076
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/ldo3_en_suspend/mux": {
+    "pins": [
+      "gpio30"
+    ],
+    "function": [
+      "gpio"
+    ]
+  },
+  "/soc/pinctrl@3400000/fps/ldo3_en_suspend/config": {
+    "pins": [
+      "gpio30"
+    ],
+    "drive-strength": [
+      2
+    ],
+    "bias-pull-up": true,
+    "output-high": true
+  }
+}

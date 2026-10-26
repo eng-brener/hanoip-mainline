@@ -1,0 +1,28 @@
+{
+  "governors": [
+    {
+      "name": "powersave",
+      "requested_khz": 300000,
+      "reported_hw_khz": 300000
+    },
+    {
+      "name": "performance",
+      "requested_khz": 1804800,
+      "reported_hw_khz": 1804800
+    },
+    {
+      "name": "schedutil",
+      "requested_khz": 1248000,
+      "reported_hw_khz": 1248000
+    }
+  ],
+  "temperature_min_mC": 39000,
+  "temperature_max_mC": 42500,
+  "test_exit": 0,
+  "dsi_error_irq_counts": [
+    0,
+    0,
+    0
+  ],
+  "user_confirmed_stable_display": true
+}

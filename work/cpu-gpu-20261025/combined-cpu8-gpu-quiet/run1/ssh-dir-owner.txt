@@ -1,0 +1,22 @@
+
+~ # ls -ldn /root /root/.ssh; chown 0:0 /root /root/.ssh; ls -ldn /root /root/.s
+sh; printf '\n%s\n' HANOIP_END_9127f792a741
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+drwx------    3 502      20              60 Oct 25  2026 /root
+drwx------    2 502      20              60 Oct 25  2026 /root/.ssh
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+__bionic_open_tzdata_path: ANDROID_DATA not set!
+__bionic_open_tzdata_path: ANDROID_ROOT not set!
+drwx------    3 0        0               60 Oct 25  2026 /root
+drwx------    2 0        0               60 Oct 25  2026 /root/.ssh
+
+HANOIP_END_9127f792a741
+~ # 

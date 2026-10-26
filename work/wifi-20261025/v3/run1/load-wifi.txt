@@ -1,0 +1,47 @@
+HANOIP: UFS probe started in background (PID 531); see dmesg
+UFS module loader returned: 0
+HANOIP: UFS ready, 84 block devices, all read-only
+rc=0
+start 78.83
+modem_a /dev/sde18 pre 6a1fc4b5c25704d476a57e1c0a59983b75c9af27ca8a75412037614c6c6f45dc
+firmware links: 229
+efs modem_fs1 from modemst1 /dev/sdb14 69b59478fdea71fc
+efs modem_fs2 from modemst2 /dev/sdb15 786dc9b324bd47c9
+efs modem_fsg from fsg /dev/sde17 843cd5e0ff6c3af0
+efs modem_fsc from fsc /dev/sdb16 fa43239bcee7b97c
+modules loaded 83.32
+[   27.681834] qnoc-sm7150 1380000.interconnect: sync_state() pending due to 1e40000.ipa
+[   27.689991] qnoc-sm7150 1700000.interconnect: sync_state() pending due to 1e40000.ipa
+[   27.731161] qnoc-sm7150 9680000.interconnect: sync_state() pending due to 1e40000.ipa
+[   83.255888] ipa 1e40000.ipa: IPA driver initialized
+[   83.287623] ipa 1e40000.ipa: IPA driver setup completed successfully
+mpss /sys/class/remoteproc/remoteproc0 firmware=qcom/sm7150/motorola/hanoip/modem.mdt state=offline recovery=disabled
+mpss state=running wlan0=yes after 4s at 90.21
+modem_a unchanged
+--- dmesg
+[   27.747497] qcom-rpmhpd 18200000.rsc:power-controller: sync_state() pending due to 4080000.remoteproc
+[   83.232618] remoteproc remoteproc0: modem is available
+[   83.255888] ipa 1e40000.ipa: IPA driver initialized
+[   83.287623] ipa 1e40000.ipa: IPA driver setup completed successfully
+[   83.334157] mmi_unit_info (SMEM 134) for modem: version = 0x03, device = 'hanoip', radio_str = 'LATAM', system_rev = 0xc000, carrier = 'retbr'
+[   84.396836] remoteproc remoteproc0: powering up modem
+[   84.404119] remoteproc remoteproc0: Booting fw image qcom/sm7150/motorola/hanoip/modem.mdt, size 9100
+[   84.413859] ipa 1e40000.ipa: received modem starting event
+[   86.182294] ipa 1e40000.ipa: received modem running event
+[   86.187981] remoteproc remoteproc0: remote processor modem is now up
+[   86.679780] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[   87.254396] qcom_q6v5_pas 4080000.remoteproc: Handover signaled, but it already happened
+[   87.335807] ath10k_snoc 18800000.wifi: qmi chip_id 0x140 chip_family 0x4002 board_id 0xff soc_id 0x40090000
+[   87.346023] ath10k_snoc 18800000.wifi: qmi fw_version 0x322903b3 fw_build_timestamp 2023-05-18 11:09 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2-00947-QCAHLSWMTPLZ-1.558119.4.586249.3
+[   89.850977] ath10k_snoc 18800000.wifi: wcn3990 hw1.0 target 0x00000008 chip_id 0x00000000 sub 0000:0000
+[   89.860861] ath10k_snoc 18800000.wifi: kconfig debug 1 debugfs 1 tracing 0 dfs 0 testmode 0
+[   89.869555] ath10k_snoc 18800000.wifi: firmware ver  api 5 features wowlan,mgmt-tx-by-reference,non-bmi crc32 b3d4b790
+[   89.904140] ath10k_snoc 18800000.wifi: htt-ver 3.89 wmi-op 4 htt-op 3 cal file max-sta 32 raw 0 hwcrypto 1
+[   89.997353] ath10k_snoc 18800000.wifi: invalid MAC address; choosing random
+--- irq
+WLAN_CE_0 3 WLAN_CE_1 1 WLAN_CE_2 8 WLAN_CE_3 3 WLAN_CE_4 0 WLAN_CE_5 0 WLAN_CE_6 0 WLAN_CE_7 0 WLAN_CE_8 0 WLAN_CE_9 0 WLAN_CE_10 0 WLAN_CE_11 0 
+lo
+rmnet_ipa0
+usb0
+wlan0
+running

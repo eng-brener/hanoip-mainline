@@ -1,0 +1,25 @@
+{{- $architecture := or .architecture "arm64" -}}
+
+architecture: {{ $architecture }}
+
+actions:
+  - action: apt
+    recommends: false
+    description: Install Phosh packages
+    packages:
+      - mobian-phosh
+      # Additional software we don't want metapackages to depend on
+      - firefox-esr
+      - gnome-sound-recorder
+      - loupe
+      - powersupply-gtk
+      - webext-ublock-origin-firefox
+      - squeekboard
+      - nethunter
+      - hijacker
+      - kalitorify
+
+  - action: run
+    description: Disable getty in the Phosh environment
+    chroot: true
+    command: systemctl disable getty@.service

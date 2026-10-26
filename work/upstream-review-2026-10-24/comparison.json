@@ -1,0 +1,71 @@
+[
+  {
+    "path": "Makefile",
+    "same_ignoring_trailing_newlines": true,
+    "diff_lines": 0
+  },
+  {
+    "path": "arch/arm64/boot/dts/qcom/pm6150.dtsi",
+    "same_ignoring_trailing_newlines": true,
+    "diff_lines": 0
+  },
+  {
+    "path": "arch/arm64/boot/dts/qcom/sm7150.dtsi",
+    "same_ignoring_trailing_newlines": false,
+    "diff_lines": 45
+  },
+  {
+    "path": "drivers/clk/qcom/gcc-sm7150.c",
+    "same_ignoring_trailing_newlines": false,
+    "diff_lines": 10
+  },
+  {
+    "path": "drivers/gpu/drm/msm/dsi/dsi_host.c",
+    "same_ignoring_trailing_newlines": true,
+    "diff_lines": 0
+  },
+  {
+    "path": "drivers/interconnect/qcom/sm7150.c",
+    "same_ignoring_trailing_newlines": true,
+    "diff_lines": 0
+  },
+  {
+    "path": "drivers/phy/qualcomm/phy-qcom-qmp-ufs.c",
+    "same_ignoring_trailing_newlines": true,
+    "diff_lines": 0
+  },
+  {
+    "path": "drivers/pinctrl/qcom/pinctrl-sm7150.c",
+    "same_ignoring_trailing_newlines": false,
+    "diff_lines": 50
+  },
+  {
+    "path": "drivers/power/supply/qcom_qg.c",
+    "same_ignoring_trailing_newlines": true,
+    "diff_lines": 0
+  },
+  {
+    "path": "drivers/power/supply/qcom_smbx.c",
+    "same_ignoring_trailing_newlines": true,
+    "diff_lines": 0
+  },
+  {
+    "path": "drivers/ufs/core/ufshcd.c",
+    "same_ignoring_trailing_newlines": false,
+    "diff_lines": 97
+  },
+  {
+    "path": "drivers/ufs/host/ufs-qcom.c",
+    "same_ignoring_trailing_newlines": false,
+    "diff_lines": 196
+  },
+  {
+    "path": "include/drm/drm_mipi_dsi.h",
+    "same_ignoring_trailing_newlines": true,
+    "diff_lines": 0
+  },
+  {
+    "path": "tools/bpf/resolve_btfids/main.c",
+    "same_ignoring_trailing_newlines": true
+  }
+]

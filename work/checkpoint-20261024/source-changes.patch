@@ -1,0 +1,715 @@
+diff --git a/README.md b/README.md
+index fc2b2b79d..502286cd8 100644
+--- a/README.md
++++ b/README.md
+@@ -1,5 +1,12 @@
+ # U-Boot + Kernel Mainline para Motorola Moto G60 (hanoip / SM7150)
+ 
++> **Regra atual: nenhum flash nem gravação em partições do celular.** Os exemplos
++> antigos de flash abaixo são históricos e não devem ser executados.
++> **Checkpoint 2026-10-24:** boot temporário em RAM com shell USB, correção QUP
++> e **UFS funcionando em leitura**, com discos e partições em somente leitura.
++> Veja [o checkpoint UFS](docs/kernel/checkpoint-2026-10-24-ufs-leitura.txt).
++> As seções com datas de agosto abaixo são histórico do port.
++
+ Port do U-Boot mainline (fork sm7150-mainline/u-boot) e kernel Linux mainline
+ (fork sm7150-mainline/linux) para o Moto G60 (codename `hanoip`,
+ SoC Qualcomm Snapdragon 730G / `sm7150` / `sdmmagpie`).
+@@ -140,4 +147,4 @@ fastboot boot work/u-boot-hanoip-boot.img
+ - Validar o fix do watchdog (kernel deve ficar estável sem reset de 30s)
+ - Ler dmesg (ramoops agora configurado) → confirmar o probe do LCDB
+ - Port completo do driver LCDB PM6150L (voltage + enable + VREG_OK)
+-- Driver de painel (avdd/avee reais), DSC, WLED, 60/90/120Hz
+\ No newline at end of file
++- Driver de painel (avdd/avee reais), DSC, WLED, 60/90/120Hz
+diff --git a/check_dtb.py b/check_dtb.py
+index f6ebcda98..e1bb08d8e 100755
+--- a/check_dtb.py
++++ b/check_dtb.py
+@@ -1,42 +1,8 @@
+-import struct
+-d = open('work/kernel-mainline-hanoip-osm.img','rb').read()
+-page_size = struct.unpack('<I', d[32:36])[0]
+-header_version = struct.unpack('<I', d[40:44])[0]
+-kernel_size = struct.unpack('<I', d[8:12])[0]
+-ramdisk_size = struct.unpack('<I', d[16:20])[0]
+-second_size = struct.unpack('<I', d[24:28])[0]
+-recovery_dtbo_size = struct.unpack('<I', d[1624:1628])[0]
+-dtb_addr = struct.unpack('<I', d[1632:1636])[0]
+-dtb_size = struct.unpack('<I', d[1636:1640])[0]
+-print('page_size:', page_size)
+-print('header_version:', header_version)
+-print('kernel_size:', kernel_size)
+-print('ramdisk_size:', ramdisk_size)
+-print('second_size:', second_size)
+-print('recovery_dtbo_size:', recovery_dtbo_size)
+-print('dtb_addr:', hex(dtb_addr), 'dtb_size:', dtb_size)
++#!/usr/bin/env python3
++import json
++import sys
++from scripts.hanoip_boot import inspect
+ 
+-def align(x, a):
+-    return (x + a - 1) & ~(a - 1)
+-
+-end = page_size
+-kernel_ptr = end
+-end += kernel_size
+-end = align(end, page_size)
+-ramdisk_ptr = end
+-end += ramdisk_size
+-end = align(end, page_size)
+-second_ptr = end
+-end += second_size
+-end = align(end, page_size)
+-if header_version >= 1:
+-    rec_dtbo_ptr = end
+-    end += recovery_dtbo_size
+-    end = align(end, page_size)
+-if header_version >= 2:
+-    dtb_ptr = end
+-    print('dtb_ptr calculado: 0x%x' % dtb_ptr)
+-    print('magic no dtb_ptr:', d[dtb_ptr:dtb_ptr+4].hex())
+-
+-idx = d.find(b'\xd0\x0d\xfe\xed')
+-print('DTB real magic em: 0x%x' % idx)
++if __name__ == "__main__":
++    path = sys.argv[1] if len(sys.argv) > 1 else "work/kernel-mainline-hanoip-osm.img"
++    print(json.dumps(inspect(path), indent=2))
+diff --git a/fix_dtb2.py b/fix_dtb2.py
+index 108d1176e..0bfaab7a7 100755
+--- a/fix_dtb2.py
++++ b/fix_dtb2.py
+@@ -1,26 +1,7 @@
+-import struct
++#!/usr/bin/env python3
++from scripts.hanoip_boot import inspect, repair_v2
+ 
+-# corrige o boot.img do kernel mainline
+-# - page_size para 4096 (o mkbootimg gravou 256 por bug)
+-# - dtb_size para o tamanho real do DTB
+-src = open('work/kernel-mainline-hanoip-osm.img','rb').read()
+-
+-# encontra o DTB real e o tamanho
+-idx = src.find(b'\xd0\x0d\xfe\xed')
+-totalsize = struct.unpack('>I', src[idx+4:idx+8])[0]
+-print('DTB real em 0x%x, totalsize %d' % (idx, totalsize))
+-
+-out = bytearray(src)
+-# page_size em offset 32
+-struct.pack_into('<I', out, 32, 4096)
+-# v2: dtb_addr em 1632, dtb_size em 1636
+-struct.pack_into('<I', out, 1632, 0x1f00000)
+-struct.pack_into('<I', out, 1636, totalsize)
+-open('work/kernel-mainline-hanoip-fixed2.img','wb').write(out)
+-
+-# verifica
+-d = open('work/kernel-mainline-hanoip-fixed2.img','rb').read()
+-print('page_size:', struct.unpack('<I', d[32:36])[0])
+-print('dtb_size:', struct.unpack('<I', d[1636:1640])[0])
+-print('dtb_addr: 0x%x' % struct.unpack('<I', d[1632:1636])[0])
+-print('total file:', len(d))
++if __name__ == "__main__":
++    output = 'work/kernel-mainline-hanoip-fixed2.img'
++    repair_v2('work/kernel-mainline-hanoip-osm.img', output)
++    print(inspect(output))
+diff --git a/fix_initrd.py b/fix_initrd.py
+index 066f969f2..cd153f5a3 100755
+--- a/fix_initrd.py
++++ b/fix_initrd.py
+@@ -1,16 +1,7 @@
+-import struct
+-# corrige o boot.img do initrd: page_size + dtb_size
+-src = open('work/kernel-mainline-hanoip-initrd.img','rb').read()
+-idx = src.find(b'\xd0\x0d\xfe\xed')
+-totalsize = struct.unpack('>I', src[idx+4:idx+8])[0]
+-out = bytearray(src)
+-struct.pack_into('<I', out, 32, 4096)          # page_size
+-struct.pack_into('<I', out, 1632, 0x1f00000)   # dtb_addr
+-struct.pack_into('<I', out, 1636, totalsize)   # dtb_size
+-open('work/kernel-mainline-hanoip-initrd-fixed.img','wb').write(out)
+-d = open('work/kernel-mainline-hanoip-initrd-fixed.img','rb').read()
+-print('page_size:', struct.unpack('<I', d[32:36])[0])
+-print('ramdisk_size:', struct.unpack('<I', d[16:20])[0])
+-print('dtb_size:', struct.unpack('<I', d[1636:1640])[0])
+-print('kernel_size:', struct.unpack('<I', d[8:12])[0])
+-print('total:', len(d))
++#!/usr/bin/env python3
++from scripts.hanoip_boot import inspect, repair_v2
++
++if __name__ == "__main__":
++    output = 'work/kernel-mainline-hanoip-initrd-fixed.img'
++    repair_v2('work/kernel-mainline-hanoip-initrd.img', output)
++    print(inspect(output))
+diff --git a/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile b/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile
+index ccf095bec..ae6c395be 100644
+--- a/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile
++++ b/kernel-mainline/arch/arm64/boot/dts/qcom/Makefile
+@@ -348,6 +348,8 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-xiaomi-curtana.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-xiaomi-joyeuse.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-google-sunfish.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-diagnostic.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-motorola-hanoip-ufs-diagnostic.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-davinci-samsung.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-davinci-visionox.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7150-xiaomi-surya-huaxing.dtb
+diff --git a/kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip.dts b/kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip.dts
+index c1a129860..e037f443f 100755
+--- a/kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip.dts
++++ b/kernel-mainline/arch/arm64/boot/dts/qcom/sm7150-motorola-hanoip.dts
+@@ -93,6 +93,9 @@ key-volume-up {
+ 	};
+ 
+ 	reserved-memory {
++		/* The SoC entry reserves the same DFPS range under a stale name. */
++		/delete-node/ dfps-data@9e300000;
++
+ 		/* cont_splash e dfps: framebuffer do ABL - SEM no-map (o sm7150.dtsi ja tem os demais) */
+ 		cont_splash_mem: cont-splash@9c000000 {
+ 			reg = <0x0 0x9c000000 0x0 0x01700000>;
+diff --git a/kernel-mainline/arch/arm64/boot/dts/qcom/sm7150.dtsi b/kernel-mainline/arch/arm64/boot/dts/qcom/sm7150.dtsi
+index 87459881c..a5ce5dcdf 100644
+--- a/kernel-mainline/arch/arm64/boot/dts/qcom/sm7150.dtsi
++++ b/kernel-mainline/arch/arm64/boot/dts/qcom/sm7150.dtsi
+@@ -1424,11 +1424,11 @@ i2c6: i2c@a80000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1460,11 +1460,11 @@ spi6: spi@a80000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1497,11 +1497,11 @@ i2c7: i2c@a84000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1533,11 +1533,11 @@ spi7: spi@a84000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1570,11 +1570,11 @@ i2c8: i2c@a88000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1606,11 +1606,11 @@ spi8: spi@a88000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1643,7 +1643,7 @@ uart8: serial@a88000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&system_noc A1NOC_SNOC_MAS QCOM_ICC_TAG_ALWAYS
+ 						 &gem_noc SLAVE_LLCC QCOM_ICC_TAG_ALWAYS>;
+@@ -1668,11 +1668,11 @@ i2c9: i2c@a8c000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1704,11 +1704,11 @@ i2c10: i2c@a90000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1740,11 +1740,11 @@ spi10: spi@a90000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1777,7 +1777,7 @@ uart10: serial@a90000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&system_noc A1NOC_SNOC_MAS QCOM_ICC_TAG_ALWAYS
+ 						 &gem_noc SLAVE_LLCC QCOM_ICC_TAG_ALWAYS>;
+@@ -1802,11 +1802,11 @@ i2c11: i2c@a94000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1838,11 +1838,11 @@ spi11: spi@a94000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1875,7 +1875,7 @@ uart11: serial@a94000 {
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&system_noc A1NOC_SNOC_MAS QCOM_ICC_TAG_ALWAYS
+ 						 &gem_noc SLAVE_LLCC QCOM_ICC_TAG_ALWAYS>;
+diff --git a/kernel-mainline/drivers/regulator/qcom-lcdb-regulator.c b/kernel-mainline/drivers/regulator/qcom-lcdb-regulator.c
+index d9fe673bc..d8c833be1 100644
+--- a/kernel-mainline/drivers/regulator/qcom-lcdb-regulator.c
++++ b/kernel-mainline/drivers/regulator/qcom-lcdb-regulator.c
+@@ -95,7 +95,7 @@ static int qcom_lcdb_set_bst(struct qcom_lcdb *lcdb, int mv)
+ static int qcom_lcdb_enable(struct qcom_lcdb *lcdb)
+ {
+ 	int ret, timeout;
+-	u8 val;
++	unsigned int val;
+ 	int bst = bst_mv(lcdb->lab_mv, lcdb->ibb_mv);
+ 	if (lcdb->enabled)
+ 		return 0;
+@@ -111,14 +111,16 @@ static int qcom_lcdb_enable(struct qcom_lcdb *lcdb)
+ 	if (ret) return ret;
+ 	ret = qcom_lcdb_sec_write(lcdb, LCDB_ENABLE_CTL1_REG, MODULE_EN_BIT);
+ 	if (ret) return ret;
+-	timeout = 20;
+-	while (timeout--) {
+-		ret = regmap_read(lcdb->regmap, lcdb->base + INT_RT_STATUS_REG, (unsigned int*)&val);
+-		if (ret) break;
+-		if (val & VREG_OK_RT_STS_BIT) break;
++	for (timeout = 20; timeout > 0; timeout--) {
++		ret = regmap_read(lcdb->regmap,
++				  lcdb->base + INT_RT_STATUS_REG, &val);
++		if (ret)
++			return ret;
++		if (val & VREG_OK_RT_STS_BIT)
++			break;
+ 		usleep_range(1000, 1500);
+ 	}
+-	if (timeout <= 0) {
++	if (!timeout) {
+ 		dev_err(lcdb->dev, "VREG_OK timeout val=0x%x\n", val);
+ 		return -ETIMEDOUT;
+ 	}
+diff --git a/kernel-mainline/drivers/ufs/core/ufshcd.c b/kernel-mainline/drivers/ufs/core/ufshcd.c
+index 670f5ec5c..abb8657a6 100644
+--- a/kernel-mainline/drivers/ufs/core/ufshcd.c
++++ b/kernel-mainline/drivers/ufs/core/ufshcd.c
+@@ -4138,7 +4138,9 @@ static int ufshcd_dme_link_startup(struct ufs_hba *hba)
+ 	};
+ 	int ret;
+ 
++	dev_info(hba->dev, "UFS DIAG: DME_LINK_STARTUP send start\n");
+ 	ret = ufshcd_send_uic_cmd(hba, &uic_cmd);
++	dev_info(hba->dev, "UFS DIAG: DME_LINK_STARTUP returned %d\n", ret);
+ 	if (ret)
+ 		dev_dbg(hba->dev,
+ 			"dme-link-startup: error code %d\n", ret);
+@@ -5257,7 +5259,10 @@ static int ufshcd_link_startup(struct ufs_hba *hba)
+ 
+ link_startup:
+ 	do {
++		dev_info(hba->dev, "UFS DIAG: link PRE_CHANGE start, retries=%d\n",
++			 retries);
+ 		ufshcd_vops_link_startup_notify(hba, PRE_CHANGE);
++		dev_info(hba->dev, "UFS DIAG: link PRE_CHANGE returned\n");
+ 
+ 		ret = ufshcd_dme_link_startup(hba);
+ 
+@@ -11276,12 +11281,16 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
+ 	}
+ 
+ 	/* Reset the attached device */
++	dev_info(dev, "UFS DIAG: attached-device reset start\n");
+ 	ufshcd_device_reset(hba);
++	dev_info(dev, "UFS DIAG: attached-device reset returned\n");
+ 
+ 	ufshcd_init_crypto(hba);
+ 
+ 	/* Host controller enable */
++	dev_info(dev, "UFS DIAG: HCE start\n");
+ 	err = ufshcd_hba_enable(hba);
++	dev_info(dev, "UFS DIAG: HCE returned %d\n", err);
+ 	if (err) {
+ 		dev_err(hba->dev, "Host controller enable failed\n");
+ 		ufshcd_print_evt_hist(hba);
+@@ -11298,7 +11307,9 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
+ 			    FIELD_PREP(UFSHCI_AHIBERN8_SCALE_MASK, 3);
+ 	}
+ 
++	dev_info(dev, "UFS DIAG: add SCSI host start\n");
+ 	err = ufshcd_add_scsi_host(hba);
++	dev_info(dev, "UFS DIAG: add SCSI host returned %d\n", err);
+ 	if (err)
+ 		goto out_disable;
+ 
+@@ -11318,7 +11329,9 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
+ 
+ 	hba->ufshcd_state = UFSHCD_STATE_RESET;
+ 
++	dev_info(dev, "UFS DIAG: link startup start\n");
+ 	err = ufshcd_link_startup(hba);
++	dev_info(dev, "UFS DIAG: link startup returned %d\n", err);
+ 	if (err)
+ 		goto out_disable;
+ 
+@@ -11335,7 +11348,9 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
+ 	ufshcd_set_link_active(hba);
+ 
+ 	/* Verify device initialization by sending NOP OUT UPIU */
++	dev_info(dev, "UFS DIAG: NOP OUT device verification start\n");
+ 	err = ufshcd_verify_dev_init(hba);
++	dev_info(dev, "UFS DIAG: NOP OUT device verification returned %d\n", err);
+ 	if (err)
+ 		goto out_disable;
+ 
+diff --git a/kernel-mainline/drivers/ufs/host/ufs-qcom.c b/kernel-mainline/drivers/ufs/host/ufs-qcom.c
+index 297149e17..171521b6b 100644
+--- a/kernel-mainline/drivers/ufs/host/ufs-qcom.c
++++ b/kernel-mainline/drivers/ufs/host/ufs-qcom.c
+@@ -504,7 +504,9 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
+ 	mode = host_params->hs_rate == PA_HS_MODE_B ? PHY_MODE_UFS_HS_B : PHY_MODE_UFS_HS_A;
+ 
+ 	/* Reset UFS Host Controller and PHY */
++	dev_info(hba->dev, "UFS DIAG: QCOM host reset start\n");
+ 	ret = ufs_qcom_host_reset(hba);
++	dev_info(hba->dev, "UFS DIAG: QCOM host reset returned %d\n", ret);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -513,7 +515,9 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
+ 
+ 
+ 	/* phy initialization - calibrate the phy */
++	dev_info(hba->dev, "UFS DIAG: PHY init start\n");
+ 	ret = phy_init(phy);
++	dev_info(hba->dev, "UFS DIAG: PHY init returned %d\n", ret);
+ 	if (ret) {
+ 		dev_err(hba->dev, "%s: phy init failed, ret = %d\n",
+ 			__func__, ret);
+@@ -525,14 +529,18 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
+ 		goto out_disable_phy;
+ 
+ 	/* power on phy - start serdes and phy's power and clocks */
++	dev_info(hba->dev, "UFS DIAG: PHY power-on start\n");
+ 	ret = phy_power_on(phy);
++	dev_info(hba->dev, "UFS DIAG: PHY power-on returned %d\n", ret);
+ 	if (ret) {
+ 		dev_err(hba->dev, "%s: phy power on failed, ret = %d\n",
+ 			__func__, ret);
+ 		goto out_disable_phy;
+ 	}
+ 
++	dev_info(hba->dev, "UFS DIAG: PHY calibration start\n");
+ 	ret = phy_calibrate(phy);
++	dev_info(hba->dev, "UFS DIAG: PHY calibration returned %d\n", ret);
+ 	if (ret) {
+ 		dev_err(hba->dev, "Failed to calibrate PHY: %d\n", ret);
+ 		goto out_disable_phy;
+diff --git a/uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip.dts b/uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip.dts
+index b5a320474..3161c8bdb 100755
+--- a/uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip.dts
++++ b/uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip.dts
+@@ -85,6 +85,9 @@
+ 	};
+ 
+ 	reserved-memory {
++		/* Keep one DFPS reservation at the address used by the stock DT. */
++		/delete-node/ dfps-data@9e300000;
++
+ 		/* cont_splash e dfps: framebuffer do ABL - SEM no-map (o sm7150.dtsi ja tem os demais) */
+ 		cont_splash_mem: cont-splash@9c000000 {
+ 			reg = <0x0 0x9c000000 0x0 0x01700000>;
+@@ -818,9 +821,6 @@
+ 	vccq2-supply = <&vreg_l12a_1p8>;
+ 	vccq2-max-microamp = <600000>;
+ 
+-	/* TESTE: remove a SMMU para validar a hipotese da causa raiz */
+-	/delete-property/ iommus;
+-
+ 	status = "okay";
+ };
+ 
+diff --git a/uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150.dtsi b/uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150.dtsi
+index 5d1d12546..bb447a4f9 100644
+--- a/uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150.dtsi
++++ b/uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150.dtsi
+@@ -1424,11 +1424,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1460,11 +1460,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1497,11 +1497,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1533,11 +1533,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1570,11 +1570,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1606,11 +1606,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1643,7 +1643,7 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&system_noc A1NOC_SNOC_MAS QCOM_ICC_TAG_ALWAYS
+ 						 &gem_noc SLAVE_LLCC QCOM_ICC_TAG_ALWAYS>;
+@@ -1668,11 +1668,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1704,11 +1704,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1740,11 +1740,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1777,7 +1777,7 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&system_noc A1NOC_SNOC_MAS QCOM_ICC_TAG_ALWAYS
+ 						 &gem_noc SLAVE_LLCC QCOM_ICC_TAG_ALWAYS>;
+@@ -1802,11 +1802,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				required-opps = <&rpmhpd_opp_low_svs>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1838,11 +1838,11 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+-						<&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++						<&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &mc_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config",
+@@ -1875,7 +1875,7 @@
+ 				power-domains = <&rpmhpd RPMHPD_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 
+-				interconnects = <&aggre1_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
++				interconnects = <&aggre2_noc MASTER_QUP_1 QCOM_ICC_TAG_ALWAYS
+ 						 &config_noc SLAVE_QUP_1 QCOM_ICC_TAG_ALWAYS>,
+ 						<&system_noc A1NOC_SNOC_MAS QCOM_ICC_TAG_ALWAYS
+ 						 &gem_noc SLAVE_LLCC QCOM_ICC_TAG_ALWAYS>;

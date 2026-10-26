@@ -1,0 +1,8 @@
+autostart 8.92
+HANOIP: display probe started (PID 153); see dmesg and /run/hanoip-display-loader.log
+fb0=msmdrmfb after 9s at 19.12
+irqs=3
+autostart done 22.67
+14
+[    0.000000] OF: reserved mem: 0x000000009a000000..0x000000009a201fff (2056 KiB) nomap non-reusable memory@9a000000
+irqs=3

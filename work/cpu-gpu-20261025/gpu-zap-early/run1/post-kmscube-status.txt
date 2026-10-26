@@ -1,0 +1,11 @@
+Warning: Permanently added '172.16.42.1' (ED25519) to the list of known hosts.
+uptime=593.77 4279.40
+tainted=4096
+fb=msmdrmfb
+render=card0 renderD128
+gpu_freq=180000000
+gpu_cdev=devfreq-5000000.gpu:0/6
+dsi=irqs=0 order=ack,fifo,timeout,phy,status0,clk first=0x0,0x0,0x0,0x0,0x0,0x0 last=0x0,0x0,0x0,0x0,0x0,0x0 or=0x0,0x0,0x0,0x0,0x0,0x0 pre_ctrl=0x1f7 pre_status=0x8 post_ctrl=0x1f1 post_status=0x0
+mounts=2
+zaperr=0
+gpuiniterr=0

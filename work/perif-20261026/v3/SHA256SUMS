@@ -1,0 +1,5 @@
+acd686253e8fa0502df16717a0dc788d0c863d11a71559d74ae00a987708610a  kernel-hanoip-pmos-7.3-audio-f3b.img
+56e845c3cf83624824dc42fb9787297c5656bc37a488a05f4bb223f5d1d02a16  u-boot-hanoip-pmos-perif-v3.img
+9b4db12dcab5fcd6a41a9e85f062e1db1ee9271a200d64006cc1a59c57108caa  u-boot.bin
+f366511b02ccd3886efdafb1ce338cd85eeacc650b4ee58b7f4bbc54839ca76f  uboot.dtb
+e2033c84af9310a5693f13a6bbf5805f77776aeda1f9aea331316481dbfef015  pm8xxx-vibrator.ko

@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-battery-diagnostic.dts"
+
+/*
+ * RAM diagnostic: enable the microSD slot (sdhc_2) on top of the battery
+ * telemetry variant. Rails and card detect follow the sm7150 reference
+ * design: L9C = vmmc (2.95 V), L6C = vqmmc (1.8/2.95 V), CD on GPIO69.
+ *
+ * This only makes the controller/card visible to Linux; nothing mounts or
+ * writes the card. The Android stack keeps ownership of the UFS partitions.
+ */
+&sdhc_2 {
+	status = "okay";
+
+	vmmc-supply = <&vreg_l9c_3p1>;
+	vqmmc-supply = <&vreg_l6c_3p0>;
+
+	cd-gpios = <&tlmm 69 GPIO_ACTIVE_LOW>;
+
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&sdc2_on>;
+	pinctrl-1 = <&sdc2_off>;
+};
+
+/* Stock uses 2.95 V on L9C for the card; never 3.3 V. */
+&vreg_l9c_3p1 {
+	regulator-min-microvolt = <2950000>;
+	regulator-max-microvolt = <2950000>;
+};

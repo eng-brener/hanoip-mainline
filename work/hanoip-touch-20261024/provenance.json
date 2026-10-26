@@ -1,0 +1,18 @@
+{
+  "repository": "https://github.com/Dark-Matter7232/CosmicFresh-Hanoip",
+  "ref": "9eecac9f6efd66fd2915fd80dd822d690ecbc207",
+  "files": {
+    "vendor/ilitek_v3_touch.c": "2893ebff48d06c7684f947d8fd99ae3d0f983bbc57ab8896768691804d152d6b",
+    "vendor/ilitek_v3.c": "d3f93e3f450b856812e3f2214d8e79da0187386317799a4bd006c847f3c4cef0",
+    "vendor/Makefile": "4a78147b4c1224b0b01471648458b2bf2e99293675ea6a9428247896272e6443",
+    "vendor/Kconfig": "9a99c8f70662b8f23affc85f27d3f29a330dcafca8dfb58c6ce2ed765cbc2255",
+    "vendor/ilitek_v3_spi.c": "7e3673729d9c140011d84c22c49e2a301a88167caabe7a2d9c95d8d459eff5c5",
+    "vendor/ilitek_v3_qcom.c": "95401b8d154e08d00826aa2c3429a66afcb6c305d45e6f34f12c9791fcbae995",
+    "vendor/ilitek_v3_ic.c": "0b66c9f2088d85040d00d3a6107d4437c5b244214f6496e0323bf629cd54e79c",
+    "vendor/ilitek_v3.h": "76097641545baf316ce97c803068cbd54a4f2319a2f035e960e4cd48954ad145",
+    "vendor/ilitek_v3_hostdl.c": "02493c3caef0903c35f2d7215b0ce179cfb45e5a5e026b83899975670aa5e9fd",
+    "vendor/firmware/ilitek_v3_fw.h": "834aa60f82fe69a2eef2b8fce290db613542093b3dd4fff556cc8bf909f92bb1"
+  },
+  "runtime_firmware_source": "read-only Android /vendor/firmware/FW_ILITEK_TDDI_TM.bin",
+  "license_source": "GPL-2.0-or-later vendor sources; firmware retained locally"
+}

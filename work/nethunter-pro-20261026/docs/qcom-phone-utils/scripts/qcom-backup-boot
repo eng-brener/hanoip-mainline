@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+DIR=.
+
+usage() {
+  cat <<EOF
+$0 [-d|--dir]
+
+Backup the current boot partition
+
+ -d, --dir: Directory to put the backup into, default is $DIR
+ -h, --help: Show help
+
+EOF
+}
+
+while test $# != 0
+do
+  case "$1" in
+  -d|--dir)
+    shift
+    DIR="$1"
+    ;;
+  -h|--help)
+    usage
+    exit 0
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+  shift
+done
+
+
+dd if="/dev/disk/by-partlabel/boot$(qbootctl -x 2>/dev/null)" of="${DIR}/boot$(qbootctl -x 2>/dev/null)-$(uname -r)-$(date --iso)"

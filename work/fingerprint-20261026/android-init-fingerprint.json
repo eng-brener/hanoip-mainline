@@ -1,0 +1,143 @@
+[
+  {
+    "file": "vendor/etc/init/hw/init.target.rc",
+    "line": 127,
+    "context": [
+      "    setprop sys.usb.configfs 1",
+      "",
+      "# access permissions for FPC service",
+      "    chown system system /sys/bus/platform/devices/soc/soc:fpc1020/irq",
+      "    chown system system /sys/bus/platform/devices/soc/soc:fpc1020/wakeup_enable"
+    ]
+  },
+  {
+    "file": "vendor/etc/init/hw/init.target.rc",
+    "line": 128,
+    "context": [
+      "",
+      "# access permissions for FPC service",
+      "    chown system system /sys/bus/platform/devices/soc/soc:fpc1020/irq",
+      "    chown system system /sys/bus/platform/devices/soc/soc:fpc1020/wakeup_enable",
+      ""
+    ]
+  },
+  {
+    "file": "vendor/etc/init/hw/init.target.rc",
+    "line": 129,
+    "context": [
+      "# access permissions for FPC service",
+      "    chown system system /sys/bus/platform/devices/soc/soc:fpc1020/irq",
+      "    chown system system /sys/bus/platform/devices/soc/soc:fpc1020/wakeup_enable",
+      "",
+      "#start camera server as daemon"
+    ]
+  },
+  {
+    "file": "vendor/etc/init/hw/init.mmi.chipset.rc",
+    "line": 5,
+    "context": [
+      "",
+      "# Chipset-specific init settings",
+      "service fingerprintd /system/bin/fingerprintd",
+      "    class late_start",
+      "    user system"
+    ]
+  },
+  {
+    "file": "vendor/etc/init/hw/init.mmi.chipset.rc",
+    "line": 16,
+    "context": [
+      "",
+      "on post-fs",
+      "    # Change permission for fingerprint sensor",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/nav",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/dev_enable"
+    ]
+  },
+  {
+    "file": "vendor/etc/init/hw/init.mmi.chipset.rc",
+    "line": 17,
+    "context": [
+      "on post-fs",
+      "    # Change permission for fingerprint sensor",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/nav",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/dev_enable",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/irq"
+    ]
+  },
+  {
+    "file": "vendor/etc/init/hw/init.mmi.chipset.rc",
+    "line": 18,
+    "context": [
+      "    # Change permission for fingerprint sensor",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/nav",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/dev_enable",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/irq",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/irq_cnt"
+    ]
+  },
+  {
+    "file": "vendor/etc/init/hw/init.mmi.chipset.rc",
+    "line": 19,
+    "context": [
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/nav",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/dev_enable",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/irq",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/irq_cnt",
+      "    chmod 0440 /sys/devices/platform/soc/soc:fpc_fpc1020/irq_cnt"
+    ]
+  },
+  {
+    "file": "vendor/etc/init/hw/init.mmi.chipset.rc",
+    "line": 20,
+    "context": [
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/dev_enable",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/irq",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/irq_cnt",
+      "    chmod 0440 /sys/devices/platform/soc/soc:fpc_fpc1020/irq_cnt",
+      "    # MOT_LED_CALIBRATION"
+    ]
+  },
+  {
+    "file": "vendor/etc/init/hw/init.mmi.chipset.rc",
+    "line": 21,
+    "context": [
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/irq",
+      "    chown system vendor_tcmd /sys/devices/platform/soc/soc:fpc_fpc1020/irq_cnt",
+      "    chmod 0440 /sys/devices/platform/soc/soc:fpc_fpc1020/irq_cnt",
+      "    # MOT_LED_CALIBRATION",
+      "    chown cameraserver /mnt/vendor/persist/camera/mot_ledcal"
+    ]
+  },
+  {
+    "file": "vendor/etc/init/android.hardware.biometrics.fingerprint@2.1-service-fpc2.rc",
+    "line": 1,
+    "context": [
+      "service fps_hal /vendor/bin/hw/android.hardware.biometrics.fingerprint@2.1-service-fpc",
+      "    # \"class hal\" causes a race condition on some devices due to files created",
+      "    # in /data. As a workaround, postpone startup until later in boot once"
+    ]
+  },
+  {
+    "file": "vendor/lib/modules/modules.load",
+    "line": 46,
+    "context": [
+      "watchdog_cpu_ctx.ko",
+      "fpsensor_spi_tee.ko",
+      "fpc1020_mmi.ko",
+      "ilitek_v3_mmi.ko",
+      "sx933x_sar.ko"
+    ]
+  },
+  {
+    "file": "vendor/lib/modules/modules.dep",
+    "line": 38,
+    "context": [
+      "/vendor/lib/modules/audio_hdmi.ko:",
+      "/vendor/lib/modules/audio_q6.ko: /vendor/lib/modules/audio_apr.ko /vendor/lib/modules/audio_q6_notifier.ko /vendor/lib/modules/audio_q6_pdr.ko /vendor/lib/modules/audio_snd_event.ko",
+      "/vendor/lib/modules/fpc1020_mmi.ko:",
+      "/vendor/lib/modules/sx933x_sar.ko: /vendor/lib/modules/sensors_class.ko",
+      "/vendor/lib/modules/tzlog_dump.ko: /vendor/lib/modules/mmi_info.ko /vendor/lib/modules/mmi_annotate.ko"
+    ]
+  }
+]

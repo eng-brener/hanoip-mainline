@@ -1,0 +1,576 @@
+[
+  {
+    "name": "QUPV3_0_SE0",
+    "base_adsp": "0x00080000",
+    "size": "0x4000",
+    "table_file": "adsp.b05",
+    "table_offset": "0x88d0"
+  },
+  {
+    "name": "QUPV3_1_SE0",
+    "base_adsp": "0x00080000",
+    "size": "0x4000",
+    "table_file": "adsp.b05",
+    "table_offset": "0x8b20"
+  },
+  {
+    "name": "SSC_QDSP6V65SS",
+    "base_adsp": "0x00400000",
+    "size": "0x100000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xa9d0"
+  },
+  {
+    "name": "SSC_QDSP6V65SS_PUB",
+    "base_adsp": "0x00400000",
+    "size": "0x4040",
+    "table_file": "adsp.b05",
+    "table_offset": "0xa9dc"
+  },
+  {
+    "name": "SSC_QDSP6V65SS_PRIVATE",
+    "base_adsp": "0x00480000",
+    "size": "0x80000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xa9e8"
+  },
+  {
+    "name": "SSC_QDSP6V65SS_CSR",
+    "base_adsp": "0x00480000",
+    "size": "0xc23d",
+    "table_file": "adsp.b05",
+    "table_offset": "0xa9f4"
+  },
+  {
+    "name": "SSC_QDSP6V65SS_L2VIC",
+    "base_adsp": "0x00490000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa00"
+  },
+  {
+    "name": "SSC_QDSP6SS_QDSP6SS_QTMR_AC",
+    "base_adsp": "0x004a0000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa0c"
+  },
+  {
+    "name": "SSC_QDSP6SS_QTMR_F0_0",
+    "base_adsp": "0x004a1000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa18"
+  },
+  {
+    "name": "SSC_QDSP6SS_QTMR_F1_1",
+    "base_adsp": "0x004a2000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa24"
+  },
+  {
+    "name": "SSC_QDSP6SS_QTMR_F2_2",
+    "base_adsp": "0x004a3000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa30"
+  },
+  {
+    "name": "SSC_QDSP6SS_QDSP6V65SS_RSCC",
+    "base_adsp": "0x004b0000",
+    "size": "0x10000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa3c"
+  },
+  {
+    "name": "SSC_QDSP6SS_RSCC_RSCC_RSC",
+    "base_adsp": "0x004b0000",
+    "size": "0x10000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa48"
+  },
+  {
+    "name": "SSC_QUPV3_QUPV3_ID_2",
+    "base_adsp": "0x00600000",
+    "size": "0x100000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa54"
+  },
+  {
+    "name": "SSC_QUPV3_GSI_TOP",
+    "base_adsp": "0x00600000",
+    "size": "0x60000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa60"
+  },
+  {
+    "name": "SSC_QUPV3_GSI",
+    "base_adsp": "0x00604000",
+    "size": "0x50000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa6c"
+  },
+  {
+    "name": "SSC_QUPV3_XPU3",
+    "base_adsp": "0x00600000",
+    "size": "0x3000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa78"
+  },
+  {
+    "name": "SSC_QUPV3_QUPV3_SE_WRAPPER",
+    "base_adsp": "0x00680000",
+    "size": "0x20000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa84"
+  },
+  {
+    "name": "SSC_QUPV3_SE0",
+    "base_adsp": "0x00680000",
+    "size": "0x4000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa90"
+  },
+  {
+    "name": "SSC_QUPV3_SE0_GENI4_CFG",
+    "base_adsp": "0x00680000",
+    "size": "0x100",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaa9c"
+  },
+  {
+    "name": "SSC_QUPV3_SE0_GENI4_IMAGE_REGS",
+    "base_adsp": "0x00680100",
+    "size": "0x500",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaaa8"
+  },
+  {
+    "name": "SSC_QUPV3_SE0_GENI4_DATA",
+    "base_adsp": "0x00680600",
+    "size": "0x600",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaab4"
+  },
+  {
+    "name": "SSC_QUPV3_SE0_QUPV3_SE_DMA",
+    "base_adsp": "0x00680c00",
+    "size": "0x400",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaac0"
+  },
+  {
+    "name": "SSC_QUPV3_SE0_GENI4_IMAGE",
+    "base_adsp": "0x00681000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaacc"
+  },
+  {
+    "name": "SSC_QUPV3_SE0_QUPV3_SEC",
+    "base_adsp": "0x00682000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaad8"
+  },
+  {
+    "name": "SSC_QUPV3_SE1",
+    "base_adsp": "0x00684000",
+    "size": "0x4000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaae4"
+  },
+  {
+    "name": "SSC_QUPV3_SE1_GENI4_CFG",
+    "base_adsp": "0x00684000",
+    "size": "0x100",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaaf0"
+  },
+  {
+    "name": "SSC_QUPV3_SE1_GENI4_IMAGE_REGS",
+    "base_adsp": "0x00684100",
+    "size": "0x500",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaafc"
+  },
+  {
+    "name": "SSC_QUPV3_SE1_GENI4_DATA",
+    "base_adsp": "0x00684600",
+    "size": "0x600",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab08"
+  },
+  {
+    "name": "SSC_QUPV3_SE1_QUPV3_SE_DMA",
+    "base_adsp": "0x00684c00",
+    "size": "0x400",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab14"
+  },
+  {
+    "name": "SSC_QUPV3_SE1_GENI4_IMAGE",
+    "base_adsp": "0x00685000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab20"
+  },
+  {
+    "name": "SSC_QUPV3_SE1_QUPV3_SEC",
+    "base_adsp": "0x00686000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab2c"
+  },
+  {
+    "name": "SSC_QUPV3_SE2",
+    "base_adsp": "0x00688000",
+    "size": "0x4000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab38"
+  },
+  {
+    "name": "SSC_QUPV3_SE2_GENI4_CFG",
+    "base_adsp": "0x00688000",
+    "size": "0x100",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab44"
+  },
+  {
+    "name": "SSC_QUPV3_SE2_GENI4_IMAGE_REGS",
+    "base_adsp": "0x00688100",
+    "size": "0x500",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab50"
+  },
+  {
+    "name": "SSC_QUPV3_SE2_GENI4_DATA",
+    "base_adsp": "0x00688600",
+    "size": "0x600",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab5c"
+  },
+  {
+    "name": "SSC_QUPV3_SE2_QUPV3_SE_DMA",
+    "base_adsp": "0x00688c00",
+    "size": "0x400",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab68"
+  },
+  {
+    "name": "SSC_QUPV3_SE2_GENI4_IMAGE",
+    "base_adsp": "0x00689000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab74"
+  },
+  {
+    "name": "SSC_QUPV3_SE2_QUPV3_SEC",
+    "base_adsp": "0x0068a000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab80"
+  },
+  {
+    "name": "SSC_QUPV3_SE3",
+    "base_adsp": "0x0068c000",
+    "size": "0x4000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab8c"
+  },
+  {
+    "name": "SSC_QUPV3_SE3_GENI4_CFG",
+    "base_adsp": "0x0068c000",
+    "size": "0x100",
+    "table_file": "adsp.b05",
+    "table_offset": "0xab98"
+  },
+  {
+    "name": "SSC_QUPV3_SE3_GENI4_IMAGE_REGS",
+    "base_adsp": "0x0068c100",
+    "size": "0x500",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaba4"
+  },
+  {
+    "name": "SSC_QUPV3_SE3_GENI4_DATA",
+    "base_adsp": "0x0068c600",
+    "size": "0x600",
+    "table_file": "adsp.b05",
+    "table_offset": "0xabb0"
+  },
+  {
+    "name": "SSC_QUPV3_SE3_QUPV3_SE_DMA",
+    "base_adsp": "0x0068cc00",
+    "size": "0x400",
+    "table_file": "adsp.b05",
+    "table_offset": "0xabbc"
+  },
+  {
+    "name": "SSC_QUPV3_SE3_GENI4_IMAGE",
+    "base_adsp": "0x0068d000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xabc8"
+  },
+  {
+    "name": "SSC_QUPV3_SE3_QUPV3_SEC",
+    "base_adsp": "0x0068e000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xabd4"
+  },
+  {
+    "name": "SSC_QUPV3_SE4",
+    "base_adsp": "0x00690000",
+    "size": "0x4000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xabe0"
+  },
+  {
+    "name": "SSC_QUPV3_SE4_GENI4_CFG",
+    "base_adsp": "0x00690000",
+    "size": "0x100",
+    "table_file": "adsp.b05",
+    "table_offset": "0xabec"
+  },
+  {
+    "name": "SSC_QUPV3_SE4_GENI4_IMAGE_REGS",
+    "base_adsp": "0x00690100",
+    "size": "0x500",
+    "table_file": "adsp.b05",
+    "table_offset": "0xabf8"
+  },
+  {
+    "name": "SSC_QUPV3_SE4_GENI4_DATA",
+    "base_adsp": "0x00690600",
+    "size": "0x600",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac04"
+  },
+  {
+    "name": "SSC_QUPV3_SE4_QUPV3_SE_DMA",
+    "base_adsp": "0x00690c00",
+    "size": "0x400",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac10"
+  },
+  {
+    "name": "SSC_QUPV3_SE4_GENI4_IMAGE",
+    "base_adsp": "0x00691000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac1c"
+  },
+  {
+    "name": "SSC_QUPV3_SE4_QUPV3_SEC",
+    "base_adsp": "0x00692000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac28"
+  },
+  {
+    "name": "SSC_QUPV3_SE5",
+    "base_adsp": "0x00694000",
+    "size": "0x4000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac34"
+  },
+  {
+    "name": "SSC_QUPV3_SE5_GENI4_CFG",
+    "base_adsp": "0x00694000",
+    "size": "0x100",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac40"
+  },
+  {
+    "name": "SSC_QUPV3_SE5_GENI4_IMAGE_REGS",
+    "base_adsp": "0x00694100",
+    "size": "0x500",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac4c"
+  },
+  {
+    "name": "SSC_QUPV3_SE5_GENI4_DATA",
+    "base_adsp": "0x00694600",
+    "size": "0x600",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac58"
+  },
+  {
+    "name": "SSC_QUPV3_SE5_QUPV3_SE_DMA",
+    "base_adsp": "0x00694c00",
+    "size": "0x400",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac64"
+  },
+  {
+    "name": "SSC_QUPV3_SE5_GENI4_IMAGE",
+    "base_adsp": "0x00695000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac70"
+  },
+  {
+    "name": "SSC_QUPV3_SE5_QUPV3_SEC",
+    "base_adsp": "0x00696000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac7c"
+  },
+  {
+    "name": "SSC_QUPV3_QUPV3_COMMON",
+    "base_adsp": "0x006c0000",
+    "size": "0x2000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac88"
+  },
+  {
+    "name": "SSC_QUPV3_VMIDMT_SMR_48_SSD6_SID6_MA48_SP48_36",
+    "base_adsp": "0x006c6000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xac94"
+  },
+  {
+    "name": "SSC_SDC",
+    "base_adsp": "0x00800000",
+    "size": "0x100000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xaca0"
+  },
+  {
+    "name": "SSC_SDC_DEC",
+    "base_adsp": "0x00880000",
+    "size": "0x2000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xacac"
+  },
+  {
+    "name": "SSC_SDC_VMIDMT",
+    "base_adsp": "0x008c0000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xacb8"
+  },
+  {
+    "name": "SCC_MCC_SSC_REG",
+    "base_adsp": "0x00b00000",
+    "size": "0x10000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xacdc"
+  },
+  {
+    "name": "SSC_MCC_SCC",
+    "base_adsp": "0x00b10000",
+    "size": "0x30000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xace8"
+  },
+  {
+    "name": "SSC_SCC_SCC_REG",
+    "base_adsp": "0x00b10000",
+    "size": "0x30000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xacf4"
+  },
+  {
+    "name": "SSC_LPASS_TLMM_CSR",
+    "base_adsp": "0x00b40000",
+    "size": "0x20000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xad00"
+  },
+  {
+    "name": "SSC_SSC_LPA_RSCC",
+    "base_adsp": "0x00b90000",
+    "size": "0x10000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xad54"
+  },
+  {
+    "name": "SSC_RSCC_RSCC_RSC",
+    "base_adsp": "0x00b90000",
+    "size": "0x10000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xad60"
+  },
+  {
+    "name": "SSC_LPASS_LPM",
+    "base_adsp": "0x00ba0000",
+    "size": "0x6800",
+    "table_file": "adsp.b05",
+    "table_offset": "0xad6c"
+  },
+  {
+    "name": "SSC_QTMR_AC",
+    "base_adsp": "0x00ba8000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xad78"
+  },
+  {
+    "name": "SSC_QTMR_F0_0",
+    "base_adsp": "0x00ba9000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xad84"
+  },
+  {
+    "name": "SSC_QTMR_F1_1",
+    "base_adsp": "0x00baa000",
+    "size": "0x1000",
+    "table_file": "adsp.b05",
+    "table_offset": "0xad90"
+  },
+  {
+    "name": "SSC_Q6_MPU_MPU32Q2N7S1V0_12_CL36M35L11_AHB",
+    "base_adsp": "0x00bac000",
+    "size": "0x1600",
+    "table_file": "adsp.b05",
+    "table_offset": "0xad9c"
+  },
+  {
+    "name": "SSC_SDC_MPU_MPU32Q2N7S1V0_12_CL36M35L11_AHB",
+    "base_adsp": "0x00bae000",
+    "size": "0x1600",
+    "table_file": "adsp.b05",
+    "table_offset": "0xada8"
+  },
+  {
+    "name": "SSC_CX_VOLTAGE_SENSOR",
+    "base_adsp": "0x00bb0000",
+    "size": "0x100",
+    "table_file": "adsp.b05",
+    "table_offset": "0xadb4"
+  },
+  {
+    "name": "SSC_MX_VOLTAGE_SENSOR",
+    "base_adsp": "0x00bb1000",
+    "size": "0x100",
+    "table_file": "adsp.b05",
+    "table_offset": "0xadc0"
+  },
+  {
+    "name": "SSC_NOC",
+    "base_adsp": "0x00be0000",
+    "size": "0x12080",
+    "table_file": "adsp.b05",
+    "table_offset": "0xadcc"
+  },
+  {
+    "name": "SSC_NOC",
+    "base_adsp": "0xf030b8b4",
+    "size": "0xeebe0000",
+    "table_file": "adsp.b05",
+    "table_offset": "0x10800"
+  },
+  {
+    "name": "SSC_NOC",
+    "base_adsp": "0x00010100",
+    "size": "0xf030b880",
+    "table_file": "adsp.b05",
+    "table_offset": "0x10890"
+  }
+]

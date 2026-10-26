@@ -1,0 +1,54 @@
+
+work/fingerprint-20261026/fpctzapp-reconstructed.elf:	file format elf32-littlearm
+
+Disassembly of section PT_LOAD#2:
+
+00000000 <PT_LOAD#2>:
+    37cc: b580         	push	{r7, lr}
+    37ce: 466f         	mov	r7, sp
+    37d0: b084         	sub	sp, #0x10
+    37d2: 4b06         	ldr	r3, [pc, #0x18]         @ 0x37ec <PT_LOAD#2+0x37ec>
+    37d4: 2000         	movs	r0, #0x0
+    37d6: e9cd 1201    	strd	r1, r2, [sp, #4]
+    37da: aa01         	add	r2, sp, #0x4
+    37dc: 447b         	add	r3, pc
+    37de: 9003         	str	r0, [sp, #0xc]
+    37e0: 2001         	movs	r0, #0x1
+    37e2: 4619         	mov	r1, r3
+    37e4: f7fc ec0c    	blx	0x0 <PT_LOAD#2>         @ imm = #-0x37e8
+    37e8: b004         	add	sp, #0x10
+    37ea: bd80         	pop	{r7, pc}
+    37ec: 2880         	cmp	r0, #0x80
+    37ee: 0011         	movs	r1, r2
+    37f0: 2001         	movs	r0, #0x1
+    37f2: f110 bc71    	b.w	0x1140d8 <PT_LOAD#2+0x1140d8> @ imm = #0x1108e2
+    37f6: 2001         	movs	r0, #0x1
+    37f8: f110 bc76    	b.w	0x1140e8 <PT_LOAD#2+0x1140e8> @ imm = #0x1108ec
+    37fc: b580         	push	{r7, lr}
+    37fe: 466f         	mov	r7, sp
+    3800: b086         	sub	sp, #0x18
+    3802: 4291         	cmp	r1, r2
+    3804: f04f 0000    	mov.w	r0, #0x0
+    3808: e9cd 2303    	strd	r2, r3, [sp, #12]
+    380c: 9005         	str	r0, [sp, #0x14]
+    380e: e9cd 2300    	strd	r2, r3, [sp]
+    3812: 9002         	str	r0, [sp, #0x8]
+    3814: d003         	beq	0x381e <PT_LOAD#2+0x381e> @ imm = #0x6
+    3816: 4610         	mov	r0, r2
+    3818: 461a         	mov	r2, r3
+    381a: f001 fee5    	bl	0x55e8 <PT_LOAD#2+0x55e8> @ imm = #0x1dca
+    381e: 4904         	ldr	r1, [pc, #0x10]         @ 0x3830 <PT_LOAD#2+0x3830>
+    3820: aa03         	add	r2, sp, #0xc
+    3822: 466b         	mov	r3, sp
+    3824: 2001         	movs	r0, #0x1
+    3826: 4479         	add	r1, pc
+    3828: f7fc ebfc    	blx	0x24 <PT_LOAD#2+0x24>   @ imm = #-0x3808
+    382c: b006         	add	sp, #0x18
+    382e: bd80         	pop	{r7, pc}
+    3830: 2836         	cmp	r0, #0x36
+    3832: 0011         	movs	r1, r2
+    3834: f643 6000    	movw	r0, #0x3e00
+    3838: f2c0 0049    	movt	r0, #0x49
+    383c: 6008         	str	r0, [r1]
+    383e: 2000         	movs	r0, #0x0
+    3840: 4770         	bx	lr

@@ -1,0 +1,50 @@
+--- upstream/drivers/pinctrl/qcom/pinctrl-sm7150.c
++++ local/drivers/pinctrl/qcom/pinctrl-sm7150.c
+@@ -1219,7 +1219,27 @@
+ 	{98, 77}, {101, 78}, {104, 99}, {109, 104}, {110, 79}, {113, 85},
+ };
+ 
++static const int hanoip_reserved_gpios[] = {
++	0, 1, 2, 3,
++	-1,
++};
++
+ static const struct msm_pinctrl_soc_data sm7150_tlmm = {
++	.pins = sm7150_pins,
++	.npins = ARRAY_SIZE(sm7150_pins),
++	.functions = sm7150_functions,
++	.nfunctions = ARRAY_SIZE(sm7150_functions),
++	.groups = sm7150_groups,
++	.ngroups = ARRAY_SIZE(sm7150_groups),
++	.ngpios = 119,
++	.tiles = sm7150_tiles,
++	.ntiles = ARRAY_SIZE(sm7150_tiles),
++	.wakeirq_map = sm7150_pdc_map,
++	.nwakeirq_map = ARRAY_SIZE(sm7150_pdc_map),
++	.wakeirq_dual_edge_errata = true,
++};
++
++static const struct msm_pinctrl_soc_data hanoip_tlmm = {
+ 	.pins = sm7150_pins,
+ 	.npins = ARRAY_SIZE(sm7150_pins),
+ 	.functions = sm7150_functions,
+@@ -1232,15 +1252,17 @@
+ 	.wakeirq_map = sm7150_pdc_map,
+ 	.nwakeirq_map = ARRAY_SIZE(sm7150_pdc_map),
+ 	.wakeirq_dual_edge_errata = true,
++	.reserved_gpios = hanoip_reserved_gpios,
+ };
+ 
+ static int sm7150_tlmm_probe(struct platform_device *pdev)
+ {
+-	return msm_pinctrl_probe(pdev, &sm7150_tlmm);
++	return msm_pinctrl_probe(pdev, device_get_match_data(&pdev->dev));
+ }
+ 
+ static const struct of_device_id sm7150_tlmm_of_match[] = {
+-	{ .compatible = "qcom,sm7150-tlmm", },
++	{ .compatible = "motorola,hanoip-tlmm", .data = &hanoip_tlmm },
++	{ .compatible = "qcom,sm7150-tlmm", .data = &sm7150_tlmm },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, sm7150_tlmm_of_match);

@@ -1,0 +1,6 @@
+# Hanoip: hide the UFS (Android partitions and the super tail that holds the
+# pmOS root) and the root loop device from udisks2, so file managers neither
+# list nor offer to mount them. Mounting Android partitions is forbidden
+# without explicit approval (AGENTS.md); the kernel RO flags stay as they are.
+SUBSYSTEM=="block", KERNEL=="sd*", ENV{UDISKS_IGNORE}="1", ENV{UDISKS_AUTO}="0"
+SUBSYSTEM=="block", KERNEL=="loop*", ENV{UDISKS_IGNORE}="1", ENV{UDISKS_AUTO}="0"

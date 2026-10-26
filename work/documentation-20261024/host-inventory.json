@@ -1,0 +1,7 @@
+{
+  "timestamp_utc": "2026-10-25T02:55:44.515390+00:00",
+  "adb": "List of devices attached\n\n",
+  "fastboot": "",
+  "usb_serial_ports": [],
+  "note": "Último boot confirmado foi CPUidle local; ausência USB não tem causa determinada. Nenhum reboot feito para atualizar documentação."
+}

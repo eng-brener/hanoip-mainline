@@ -1,0 +1,16 @@
+DSC packetisation backport (not PR69's new structure field):
+https://github.com/torvalds/linux/commit/ffa88de8ddb64067df49e4d9f253d09a9c247059
+https://github.com/torvalds/linux/commit/ce73a5db44e3d5f9c0c061f0868ae209b59605f1
+The two upstream changes add MIPI_DSI_MODE_DSC_ALL_SLICES_IN_PKT and
+use slice_count to derive the packet word count and packets per line.
+All changes were applied to the existing 7.1.0-sm7150 source.
+
+WLED string mapping checked against downstream qcom-spmi-wled.c:
+https://github.com/Motorola-SM6150/android_kernel_motorola_sm6150/blob/503bfd1297f7c57662a4dc07f643e2a967d54ed1/drivers/video/backlight/qcom-spmi-wled.c
+string_cfg is a bitmask; the code iterates enabled BIT(i).
+Stock 7 therefore selects strings 0,1,2. Initial brightness 512/4095
+is below the stock default 2047/4095. Current and OVP limits match DT.
+
+PPS follows the downstream panel sequence: send the vendor on-command
+sequence, then the packed PPS. No extra DCS compression-mode command
+was invented for this panel; the stock on-command list does not contain it.

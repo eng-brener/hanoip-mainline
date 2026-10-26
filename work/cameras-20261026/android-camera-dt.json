@@ -1,0 +1,2112 @@
+{
+  "/soc/qcom,csiphy@ace0000": {
+    "cell-index": [
+      0
+    ],
+    "compatible": [
+      "qcom,csiphy-v1.2",
+      "qcom,csiphy"
+    ],
+    "reg": [
+      181272576,
+      8192
+    ],
+    "reg-names": [
+      "csiphy"
+    ],
+    "reg-cam-base": [
+      917504
+    ],
+    "interrupts": [
+      0,
+      477,
+      0
+    ],
+    "interrupt-names": [
+      "csiphy"
+    ],
+    "regulator-names": [
+      "gdscr",
+      "refgen"
+    ],
+    "gdscr-supply": [
+      433
+    ],
+    "refgen-supply": [
+      434
+    ],
+    "csi-vdd-voltage": [
+      1200000
+    ],
+    "mipi-csi-vdd-supply": [
+      427
+    ],
+    "clocks": [
+      41,
+      27,
+      41,
+      36,
+      41,
+      29,
+      41,
+      28
+    ],
+    "clock-names": [
+      "cphy_rx_clk_src",
+      "csiphy0_clk",
+      "csi0phytimer_clk_src",
+      "csi0phytimer_clk"
+    ],
+    "src-clock-name": [
+      "csi0phytimer_clk_src"
+    ],
+    "clock-cntl-level": [
+      "svs",
+      "svs_l1",
+      "turbo"
+    ],
+    "clock-rates": [
+      384000000,
+      0,
+      300000000,
+      0,
+      400000000,
+      0,
+      300000000,
+      0,
+      400000000,
+      0,
+      300000000,
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      743
+    ]
+  },
+  "/soc/qcom,csiphy@ace2000": {
+    "cell-index": [
+      1
+    ],
+    "compatible": [
+      "qcom,csiphy-v1.2",
+      "qcom,csiphy"
+    ],
+    "reg": [
+      181280768,
+      8192
+    ],
+    "reg-names": [
+      "csiphy"
+    ],
+    "reg-cam-base": [
+      925696
+    ],
+    "interrupts": [
+      0,
+      478,
+      0
+    ],
+    "interrupt-names": [
+      "csiphy"
+    ],
+    "regulator-names": [
+      "gdscr",
+      "refgen"
+    ],
+    "gdscr-supply": [
+      433
+    ],
+    "refgen-supply": [
+      434
+    ],
+    "csi-vdd-voltage": [
+      1200000
+    ],
+    "mipi-csi-vdd-supply": [
+      427
+    ],
+    "clocks": [
+      41,
+      27,
+      41,
+      36,
+      41,
+      37,
+      41,
+      31,
+      41,
+      30
+    ],
+    "clock-names": [
+      "cphy_rx_clk_src",
+      "csiphy0_clk",
+      "csiphy1_clk",
+      "csi1phytimer_clk_src",
+      "csi1phytimer_clk"
+    ],
+    "src-clock-name": [
+      "csi1phytimer_clk_src"
+    ],
+    "clock-cntl-level": [
+      "svs",
+      "svs_l1",
+      "turbo"
+    ],
+    "clock-rates": [
+      384000000,
+      0,
+      0,
+      300000000,
+      0,
+      400000000,
+      0,
+      0,
+      300000000,
+      0,
+      400000000,
+      0,
+      0,
+      300000000,
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      744
+    ]
+  },
+  "/soc/qcom,csiphy@ace4000": {
+    "cell-index": [
+      2
+    ],
+    "compatible": [
+      "qcom,csiphy-v1.2",
+      "qcom,csiphy"
+    ],
+    "reg": [
+      181288960,
+      8192
+    ],
+    "reg-names": [
+      "csiphy"
+    ],
+    "reg-cam-base": [
+      933888
+    ],
+    "interrupts": [
+      0,
+      479,
+      0
+    ],
+    "interrupt-names": [
+      "csiphy"
+    ],
+    "regulator-names": [
+      "gdscr",
+      "refgen"
+    ],
+    "gdscr-supply": [
+      433
+    ],
+    "refgen-supply": [
+      434
+    ],
+    "csi-vdd-voltage": [
+      1200000
+    ],
+    "mipi-csi-vdd-supply": [
+      427
+    ],
+    "clocks": [
+      41,
+      27,
+      41,
+      36,
+      41,
+      38,
+      41,
+      33,
+      41,
+      32
+    ],
+    "clock-names": [
+      "cphy_rx_clk_src",
+      "csiphy0_clk",
+      "csiphy2_clk",
+      "csi2phytimer_clk_src",
+      "csi2phytimer_clk"
+    ],
+    "src-clock-name": [
+      "csi2phytimer_clk_src"
+    ],
+    "clock-cntl-level": [
+      "svs",
+      "svs_l1",
+      "turbo"
+    ],
+    "clock-rates": [
+      384000000,
+      0,
+      0,
+      300000000,
+      0,
+      400000000,
+      0,
+      0,
+      300000000,
+      0,
+      400000000,
+      0,
+      0,
+      300000000,
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      745
+    ]
+  },
+  "/soc/qcom,csiphy@ace6000": {
+    "cell-index": [
+      3
+    ],
+    "compatible": [
+      "qcom,csiphy-v1.2",
+      "qcom,csiphy"
+    ],
+    "reg": [
+      181297152,
+      8192
+    ],
+    "reg-names": [
+      "csiphy"
+    ],
+    "reg-cam-base": [
+      942080
+    ],
+    "interrupts": [
+      0,
+      607,
+      0
+    ],
+    "interrupt-names": [
+      "csiphy"
+    ],
+    "regulator-names": [
+      "gdscr",
+      "refgen"
+    ],
+    "gdscr-supply": [
+      433
+    ],
+    "refgen-supply": [
+      434
+    ],
+    "csi-vdd-voltage": [
+      1200000
+    ],
+    "mipi-csi-vdd-supply": [
+      427
+    ],
+    "clocks": [
+      41,
+      27,
+      41,
+      36,
+      41,
+      39,
+      41,
+      35,
+      41,
+      34
+    ],
+    "clock-names": [
+      "cphy_rx_clk_src",
+      "csiphy0_clk",
+      "csiphy3_clk",
+      "csi3phytimer_clk_src",
+      "csi3phytimer_clk"
+    ],
+    "src-clock-name": [
+      "csi3phytimer_clk_src"
+    ],
+    "clock-cntl-level": [
+      "svs",
+      "svs_l1",
+      "turbo"
+    ],
+    "clock-rates": [
+      384000000,
+      0,
+      0,
+      300000000,
+      0,
+      400000000,
+      0,
+      0,
+      300000000,
+      0,
+      400000000,
+      0,
+      0,
+      300000000,
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      746
+    ]
+  },
+  "/soc/qcom,cci@ac4a000": {
+    "cell-index": [
+      0
+    ],
+    "compatible": [
+      "qcom,cci"
+    ],
+    "#address-cells": [
+      1
+    ],
+    "#size-cells": [
+      0
+    ],
+    "reg": [
+      180658176,
+      4096
+    ],
+    "reg-names": [
+      "cci"
+    ],
+    "reg-cam-base": [
+      303104
+    ],
+    "interrupt-names": [
+      "cci"
+    ],
+    "interrupts": [
+      0,
+      460,
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "gdscr-supply": [
+      433
+    ],
+    "regulator-names": [
+      "gdscr"
+    ],
+    "clocks": [
+      41,
+      21,
+      41,
+      22
+    ],
+    "clock-names": [
+      "cci_0_clk",
+      "cci_0_clk_src"
+    ],
+    "src-clock-name": [
+      "cci_0_clk_src"
+    ],
+    "clock-cntl-level": [
+      "lowsvs"
+    ],
+    "clock-rates": [
+      0,
+      37500000
+    ],
+    "pinctrl-names": [
+      "cam_default",
+      "cam_suspend"
+    ],
+    "pinctrl-0": [
+      435,
+      436
+    ],
+    "pinctrl-1": [
+      437,
+      438
+    ],
+    "gpios": [
+      49,
+      17,
+      0,
+      49,
+      18,
+      0,
+      49,
+      19,
+      0,
+      49,
+      20,
+      0
+    ],
+    "gpio-req-tbl-num": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "gpio-req-tbl-flags": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "gpio-req-tbl-label": [
+      "CCI_I2C_DATA0",
+      "CCI_I2C_CLK0",
+      "CCI_I2C_DATA1",
+      "CCI_I2C_CLK1"
+    ],
+    "phandle": [
+      747
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,i2c_standard_mode": {
+    "hw-thigh": [
+      201
+    ],
+    "hw-tlow": [
+      174
+    ],
+    "hw-tsu-sto": [
+      204
+    ],
+    "hw-tsu-sta": [
+      231
+    ],
+    "hw-thd-dat": [
+      22
+    ],
+    "hw-thd-sta": [
+      162
+    ],
+    "hw-tbuf": [
+      227
+    ],
+    "hw-scl-stretch-en": [
+      0
+    ],
+    "hw-trdhld": [
+      6
+    ],
+    "hw-tsp": [
+      3
+    ],
+    "cci-clk-src": [
+      37500000
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      748
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,i2c_fast_mode": {
+    "hw-thigh": [
+      38
+    ],
+    "hw-tlow": [
+      56
+    ],
+    "hw-tsu-sto": [
+      40
+    ],
+    "hw-tsu-sta": [
+      40
+    ],
+    "hw-thd-dat": [
+      22
+    ],
+    "hw-thd-sta": [
+      35
+    ],
+    "hw-tbuf": [
+      62
+    ],
+    "hw-scl-stretch-en": [
+      0
+    ],
+    "hw-trdhld": [
+      6
+    ],
+    "hw-tsp": [
+      3
+    ],
+    "cci-clk-src": [
+      37500000
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      749
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,i2c_custom_mode": {
+    "hw-thigh": [
+      38
+    ],
+    "hw-tlow": [
+      56
+    ],
+    "hw-tsu-sto": [
+      40
+    ],
+    "hw-tsu-sta": [
+      40
+    ],
+    "hw-thd-dat": [
+      22
+    ],
+    "hw-thd-sta": [
+      35
+    ],
+    "hw-tbuf": [
+      62
+    ],
+    "hw-scl-stretch-en": [
+      1
+    ],
+    "hw-trdhld": [
+      6
+    ],
+    "hw-tsp": [
+      3
+    ],
+    "cci-clk-src": [
+      37500000
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      750
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,i2c_fast_plus_mode": {
+    "hw-thigh": [
+      16
+    ],
+    "hw-tlow": [
+      22
+    ],
+    "hw-tsu-sto": [
+      17
+    ],
+    "hw-tsu-sta": [
+      18
+    ],
+    "hw-thd-dat": [
+      16
+    ],
+    "hw-thd-sta": [
+      15
+    ],
+    "hw-tbuf": [
+      24
+    ],
+    "hw-scl-stretch-en": [
+      0
+    ],
+    "hw-trdhld": [
+      3
+    ],
+    "hw-tsp": [
+      3
+    ],
+    "cci-clk-src": [
+      37500000
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      751
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,cam-res-mgr": {
+    "compatible": [
+      "qcom,cam-res-mgr"
+    ],
+    "status": [
+      "ok"
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,actuator@0": {
+    "cell-index": [
+      0
+    ],
+    "reg": [
+      0
+    ],
+    "compatible": [
+      "qcom,actuator"
+    ],
+    "cam_vaf-supply": [
+      1104
+    ],
+    "regulator-names": [
+      "cam_vaf"
+    ],
+    "rgltr-cntrl-support": true,
+    "rgltr-min-voltage": [
+      2800000
+    ],
+    "rgltr-max-voltage": [
+      2800000
+    ],
+    "rgltr-load-current": [
+      0
+    ],
+    "cci-device": [
+      0
+    ],
+    "cci-master": [
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      1116
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,actuator@1": {
+    "cell-index": [
+      1
+    ],
+    "reg": [
+      1
+    ],
+    "compatible": [
+      "qcom,actuator"
+    ],
+    "cam_vaf-supply": [
+      1104
+    ],
+    "regulator-names": [
+      "cam_vaf"
+    ],
+    "rgltr-cntrl-support": true,
+    "rgltr-min-voltage": [
+      2800000
+    ],
+    "rgltr-max-voltage": [
+      2800000
+    ],
+    "rgltr-load-current": [
+      0
+    ],
+    "cci-device": [
+      0
+    ],
+    "cci-master": [
+      1
+    ],
+    "status": [
+      "ok"
+    ],
+    "multi-user-support": true,
+    "phandle": [
+      1125
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,eeprom@0": {
+    "cell-index": [
+      0
+    ],
+    "reg": [
+      0
+    ],
+    "compatible": [
+      "qcom,eeprom"
+    ],
+    "cam_vio-supply": [
+      873
+    ],
+    "regulator-names": [
+      "cam_vio"
+    ],
+    "rgltr-cntrl-support": true,
+    "rgltr-min-voltage": [
+      1800000
+    ],
+    "rgltr-max-voltage": [
+      1800000
+    ],
+    "rgltr-load-current": [
+      0
+    ],
+    "cci-device": [
+      0
+    ],
+    "cci-master": [
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      1115
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,eeprom@2": {
+    "cell-index": [
+      2
+    ],
+    "reg": [
+      2
+    ],
+    "compatible": [
+      "qcom,eeprom"
+    ],
+    "cam_vio-supply": [
+      873
+    ],
+    "cam_vana-supply": [
+      1105
+    ],
+    "cam_clk-supply": [
+      433
+    ],
+    "regulator-names": [
+      "cam_vio",
+      "cam_vana",
+      "cam_clk"
+    ],
+    "rgltr-cntrl-support": true,
+    "rgltr-min-voltage": [
+      1800000,
+      2800000,
+      0
+    ],
+    "rgltr-max-voltage": [
+      1800000,
+      2800000,
+      0
+    ],
+    "rgltr-load-current": [
+      0,
+      80000,
+      0
+    ],
+    "gpio-no-mux": [
+      0
+    ],
+    "pinctrl-names": [
+      "cam_default",
+      "cam_suspend"
+    ],
+    "pinctrl-0": [
+      1106,
+      1107
+    ],
+    "pinctrl-1": [
+      1108,
+      1109
+    ],
+    "gpios": [
+      49,
+      16,
+      0,
+      49,
+      26,
+      0
+    ],
+    "gpio-reset": [
+      1
+    ],
+    "gpio-req-tbl-num": [
+      0,
+      1
+    ],
+    "gpio-req-tbl-flags": [
+      1,
+      0
+    ],
+    "gpio-req-tbl-label": [
+      "CAMIF_MCLK3",
+      "CAM_RESET3"
+    ],
+    "cci-device": [
+      0
+    ],
+    "cci-master": [
+      1
+    ],
+    "status": [
+      "ok"
+    ],
+    "clocks": [
+      41,
+      86
+    ],
+    "clock-names": [
+      "cam_clk"
+    ],
+    "clock-cntl-level": [
+      "turbo"
+    ],
+    "clock-rates": [
+      24000000
+    ],
+    "phandle": [
+      1123
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,eeprom@3": {
+    "cell-index": [
+      3
+    ],
+    "reg": [
+      3
+    ],
+    "compatible": [
+      "qcom,eeprom"
+    ],
+    "cam_vio-supply": [
+      873
+    ],
+    "cam_vana-supply": [
+      1105
+    ],
+    "cam_vdig-supply": [
+      1110
+    ],
+    "cam_clk-supply": [
+      433
+    ],
+    "regulator-names": [
+      "cam_vio",
+      "cam_vana",
+      "cam_vdig",
+      "cam_clk"
+    ],
+    "rgltr-cntrl-support": true,
+    "rgltr-min-voltage": [
+      1800000,
+      2800000,
+      1200000,
+      0
+    ],
+    "rgltr-max-voltage": [
+      1800000,
+      2800000,
+      1200000,
+      0
+    ],
+    "rgltr-load-current": [
+      0,
+      80000,
+      105000,
+      0
+    ],
+    "gpio-no-mux": [
+      0
+    ],
+    "pinctrl-names": [
+      "cam_default",
+      "cam_suspend"
+    ],
+    "pinctrl-0": [
+      1111,
+      1112
+    ],
+    "pinctrl-1": [
+      1113,
+      1114
+    ],
+    "gpios": [
+      49,
+      14,
+      0,
+      49,
+      24,
+      0
+    ],
+    "gpio-reset": [
+      1
+    ],
+    "gpio-req-tbl-num": [
+      0,
+      1
+    ],
+    "gpio-req-tbl-flags": [
+      1,
+      0
+    ],
+    "gpio-req-tbl-label": [
+      "CAMIF_MCLK1",
+      "CAM_RESET1"
+    ],
+    "cci-device": [
+      0
+    ],
+    "cci-master": [
+      1
+    ],
+    "status": [
+      "ok"
+    ],
+    "clocks": [
+      41,
+      82
+    ],
+    "clock-names": [
+      "cam_clk"
+    ],
+    "clock-cntl-level": [
+      "turbo"
+    ],
+    "clock-rates": [
+      24000000
+    ],
+    "phandle": [
+      1124
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,cam-sensor@0": {
+    "cell-index": [
+      0
+    ],
+    "compatible": [
+      "qcom,cam-sensor"
+    ],
+    "reg": [
+      0
+    ],
+    "csiphy-sd-index": [
+      0
+    ],
+    "sensor-position-roll": [
+      90
+    ],
+    "sensor-position-pitch": [
+      0
+    ],
+    "sensor-position-yaw": [
+      180
+    ],
+    "eeprom-src": [
+      1115
+    ],
+    "actuator-src": [
+      1116
+    ],
+    "led-flash-src": [
+      1117
+    ],
+    "cam_vio-supply": [
+      873
+    ],
+    "cam_vana-supply": [
+      1118
+    ],
+    "cam_vdig-supply": [
+      871
+    ],
+    "cam_clk-supply": [
+      433
+    ],
+    "regulator-names": [
+      "cam_vio",
+      "cam_vana",
+      "cam_vdig",
+      "cam_clk"
+    ],
+    "rgltr-cntrl-support": true,
+    "rgltr-min-voltage": [
+      1800000,
+      2800000,
+      1050000,
+      0
+    ],
+    "rgltr-max-voltage": [
+      1800000,
+      2800000,
+      1100000,
+      0
+    ],
+    "rgltr-load-current": [
+      0,
+      80000,
+      105000,
+      0
+    ],
+    "gpio-no-mux": [
+      0
+    ],
+    "pinctrl-names": [
+      "cam_default",
+      "cam_suspend"
+    ],
+    "pinctrl-0": [
+      1119,
+      1120
+    ],
+    "pinctrl-1": [
+      1121,
+      1122
+    ],
+    "gpios": [
+      49,
+      13,
+      0,
+      49,
+      23,
+      0
+    ],
+    "gpio-reset": [
+      1
+    ],
+    "gpio-req-tbl-num": [
+      0,
+      1
+    ],
+    "gpio-req-tbl-flags": [
+      1,
+      0
+    ],
+    "gpio-req-tbl-label": [
+      "CAMIF_MCLK0",
+      "CAM_RESET0"
+    ],
+    "cci-device": [
+      0
+    ],
+    "cci-master": [
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "clocks": [
+      41,
+      80
+    ],
+    "clock-names": [
+      "cam_clk"
+    ],
+    "clock-cntl-level": [
+      "turbo"
+    ],
+    "clock-rates": [
+      24000000
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,cam-sensor@2": {
+    "cell-index": [
+      2
+    ],
+    "compatible": [
+      "qcom,cam-sensor"
+    ],
+    "reg": [
+      2
+    ],
+    "csiphy-sd-index": [
+      3
+    ],
+    "sensor-position-roll": [
+      90
+    ],
+    "sensor-position-pitch": [
+      0
+    ],
+    "sensor-position-yaw": [
+      180
+    ],
+    "eeprom-src": [
+      1123
+    ],
+    "cam_vio-supply": [
+      873
+    ],
+    "cam_vana-supply": [
+      1105
+    ],
+    "cam_clk-supply": [
+      433
+    ],
+    "cam_vaf-supply": [
+      1104
+    ],
+    "regulator-names": [
+      "cam_vio",
+      "cam_vana",
+      "cam_clk",
+      "cam_vaf"
+    ],
+    "rgltr-cntrl-support": true,
+    "rgltr-min-voltage": [
+      1800000,
+      2800000,
+      0,
+      2800000
+    ],
+    "rgltr-max-voltage": [
+      1800000,
+      2800000,
+      0,
+      2800000
+    ],
+    "rgltr-load-current": [
+      0,
+      80000,
+      0,
+      0
+    ],
+    "gpio-no-mux": [
+      0
+    ],
+    "pinctrl-names": [
+      "cam_default",
+      "cam_suspend"
+    ],
+    "pinctrl-0": [
+      1106,
+      1107
+    ],
+    "pinctrl-1": [
+      1108,
+      1109
+    ],
+    "gpios": [
+      49,
+      16,
+      0,
+      49,
+      26,
+      0
+    ],
+    "gpio-reset": [
+      1
+    ],
+    "gpio-req-tbl-num": [
+      0,
+      1
+    ],
+    "gpio-req-tbl-flags": [
+      1,
+      0
+    ],
+    "gpio-req-tbl-label": [
+      "CAMIF_MCLK3",
+      "CAM_RESET3"
+    ],
+    "cci-device": [
+      0
+    ],
+    "cci-master": [
+      1
+    ],
+    "status": [
+      "ok"
+    ],
+    "clocks": [
+      41,
+      86
+    ],
+    "clock-names": [
+      "cam_clk"
+    ],
+    "clock-cntl-level": [
+      "turbo"
+    ],
+    "clock-rates": [
+      24000000
+    ]
+  },
+  "/soc/qcom,cci@ac4a000/qcom,cam-sensor@3": {
+    "cell-index": [
+      3
+    ],
+    "compatible": [
+      "qcom,cam-sensor"
+    ],
+    "reg": [
+      3
+    ],
+    "csiphy-sd-index": [
+      1
+    ],
+    "sensor-position-roll": [
+      90
+    ],
+    "sensor-position-pitch": [
+      0
+    ],
+    "sensor-position-yaw": [
+      180
+    ],
+    "eeprom-src": [
+      1124
+    ],
+    "actuator-src": [
+      1125
+    ],
+    "led-flash-src": [
+      1126
+    ],
+    "cam_vio-supply": [
+      873
+    ],
+    "cam_vana-supply": [
+      1105
+    ],
+    "cam_vdig-supply": [
+      1110
+    ],
+    "cam_clk-supply": [
+      433
+    ],
+    "cam_vaf-supply": [
+      1104
+    ],
+    "regulator-names": [
+      "cam_vio",
+      "cam_vana",
+      "cam_vdig",
+      "cam_clk",
+      "cam_vaf"
+    ],
+    "rgltr-cntrl-support": true,
+    "rgltr-min-voltage": [
+      1800000,
+      2800000,
+      1200000,
+      0,
+      2800000
+    ],
+    "rgltr-max-voltage": [
+      1800000,
+      2800000,
+      1200000,
+      0,
+      2800000
+    ],
+    "rgltr-load-current": [
+      0,
+      80000,
+      105000,
+      0,
+      0
+    ],
+    "gpio-no-mux": [
+      0
+    ],
+    "pinctrl-names": [
+      "cam_default",
+      "cam_suspend"
+    ],
+    "pinctrl-0": [
+      1111,
+      1112
+    ],
+    "pinctrl-1": [
+      1113,
+      1114
+    ],
+    "gpios": [
+      49,
+      14,
+      0,
+      49,
+      24,
+      0
+    ],
+    "gpio-reset": [
+      1
+    ],
+    "gpio-req-tbl-num": [
+      0,
+      1
+    ],
+    "gpio-req-tbl-flags": [
+      1,
+      0
+    ],
+    "gpio-req-tbl-label": [
+      "CAMIF_MCLK1",
+      "CAM_RESET1"
+    ],
+    "cci-device": [
+      0
+    ],
+    "cci-master": [
+      1
+    ],
+    "status": [
+      "ok"
+    ],
+    "clocks": [
+      41,
+      82
+    ],
+    "clock-names": [
+      "cam_clk"
+    ],
+    "clock-cntl-level": [
+      "turbo"
+    ],
+    "clock-rates": [
+      24000000
+    ]
+  },
+  "/soc/qcom,cci@ac4b000": {
+    "cell-index": [
+      1
+    ],
+    "compatible": [
+      "qcom,cci"
+    ],
+    "#address-cells": [
+      1
+    ],
+    "#size-cells": [
+      0
+    ],
+    "reg": [
+      180662272,
+      4096
+    ],
+    "reg-names": [
+      "cci"
+    ],
+    "reg-cam-base": [
+      307200
+    ],
+    "interrupt-names": [
+      "cci"
+    ],
+    "interrupts": [
+      0,
+      461,
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "gdscr-supply": [
+      433
+    ],
+    "regulator-names": [
+      "gdscr"
+    ],
+    "clocks": [
+      41,
+      23,
+      41,
+      24
+    ],
+    "clock-names": [
+      "cci_clk",
+      "cci_1_clk_src"
+    ],
+    "src-clock-name": [
+      "cci_1_clk_src"
+    ],
+    "clock-cntl-level": [
+      "lowsvs"
+    ],
+    "clock-rates": [
+      0,
+      37500000
+    ],
+    "pinctrl-names": [
+      "cam_default",
+      "cam_suspend"
+    ],
+    "pinctrl-0": [
+      439
+    ],
+    "pinctrl-1": [
+      440
+    ],
+    "gpios": [
+      49,
+      27,
+      0,
+      49,
+      28,
+      0
+    ],
+    "gpio-req-tbl-num": [
+      0,
+      1
+    ],
+    "gpio-req-tbl-flags": [
+      1,
+      1
+    ],
+    "gpio-req-tbl-label": [
+      "CCI_I2C_DATA2",
+      "CCI_I2C_CLK2"
+    ],
+    "phandle": [
+      752
+    ]
+  },
+  "/soc/qcom,cci@ac4b000/qcom,i2c_standard_mode": {
+    "hw-thigh": [
+      201
+    ],
+    "hw-tlow": [
+      174
+    ],
+    "hw-tsu-sto": [
+      204
+    ],
+    "hw-tsu-sta": [
+      231
+    ],
+    "hw-thd-dat": [
+      22
+    ],
+    "hw-thd-sta": [
+      162
+    ],
+    "hw-tbuf": [
+      227
+    ],
+    "hw-scl-stretch-en": [
+      0
+    ],
+    "hw-trdhld": [
+      6
+    ],
+    "hw-tsp": [
+      3
+    ],
+    "cci-clk-src": [
+      37500000
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      753
+    ]
+  },
+  "/soc/qcom,cci@ac4b000/qcom,i2c_fast_mode": {
+    "hw-thigh": [
+      38
+    ],
+    "hw-tlow": [
+      56
+    ],
+    "hw-tsu-sto": [
+      40
+    ],
+    "hw-tsu-sta": [
+      40
+    ],
+    "hw-thd-dat": [
+      22
+    ],
+    "hw-thd-sta": [
+      35
+    ],
+    "hw-tbuf": [
+      62
+    ],
+    "hw-scl-stretch-en": [
+      0
+    ],
+    "hw-trdhld": [
+      6
+    ],
+    "hw-tsp": [
+      3
+    ],
+    "cci-clk-src": [
+      37500000
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      754
+    ]
+  },
+  "/soc/qcom,cci@ac4b000/qcom,i2c_custom_mode": {
+    "hw-thigh": [
+      38
+    ],
+    "hw-tlow": [
+      56
+    ],
+    "hw-tsu-sto": [
+      40
+    ],
+    "hw-tsu-sta": [
+      40
+    ],
+    "hw-thd-dat": [
+      22
+    ],
+    "hw-thd-sta": [
+      35
+    ],
+    "hw-tbuf": [
+      62
+    ],
+    "hw-scl-stretch-en": [
+      1
+    ],
+    "hw-trdhld": [
+      6
+    ],
+    "hw-tsp": [
+      3
+    ],
+    "cci-clk-src": [
+      37500000
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      755
+    ]
+  },
+  "/soc/qcom,cci@ac4b000/qcom,i2c_fast_plus_mode": {
+    "hw-thigh": [
+      16
+    ],
+    "hw-tlow": [
+      22
+    ],
+    "hw-tsu-sto": [
+      17
+    ],
+    "hw-tsu-sta": [
+      18
+    ],
+    "hw-thd-dat": [
+      16
+    ],
+    "hw-thd-sta": [
+      15
+    ],
+    "hw-tbuf": [
+      24
+    ],
+    "hw-scl-stretch-en": [
+      0
+    ],
+    "hw-trdhld": [
+      3
+    ],
+    "hw-tsp": [
+      3
+    ],
+    "cci-clk-src": [
+      37500000
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      756
+    ]
+  },
+  "/soc/qcom,cci@ac4b000/qcom,eeprom@1": {
+    "cell-index": [
+      1
+    ],
+    "reg": [
+      1
+    ],
+    "compatible": [
+      "qcom,eeprom"
+    ],
+    "cam_vio-supply": [
+      873
+    ],
+    "regulator-names": [
+      "cam_vio"
+    ],
+    "rgltr-cntrl-support": true,
+    "rgltr-min-voltage": [
+      1800000
+    ],
+    "rgltr-max-voltage": [
+      1800000
+    ],
+    "rgltr-load-current": [
+      0
+    ],
+    "cci-device": [
+      1
+    ],
+    "cci-master": [
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      1128
+    ]
+  },
+  "/soc/qcom,cci@ac4b000/qcom,cam-sensor@1": {
+    "cell-index": [
+      1
+    ],
+    "compatible": [
+      "qcom,cam-sensor"
+    ],
+    "reg": [
+      1
+    ],
+    "csiphy-sd-index": [
+      2
+    ],
+    "sensor-position-roll": [
+      270
+    ],
+    "sensor-position-pitch": [
+      0
+    ],
+    "sensor-position-yaw": [
+      0
+    ],
+    "led-flash-src": [
+      1127
+    ],
+    "eeprom-src": [
+      1128
+    ],
+    "cam_vio-supply": [
+      873
+    ],
+    "cam_vana-supply": [
+      1129
+    ],
+    "cam_vdig-supply": [
+      1130
+    ],
+    "cam_clk-supply": [
+      433
+    ],
+    "regulator-names": [
+      "cam_vio",
+      "cam_vana",
+      "cam_vdig",
+      "cam_clk"
+    ],
+    "rgltr-cntrl-support": true,
+    "rgltr-min-voltage": [
+      1800000,
+      2800000,
+      1100000,
+      0
+    ],
+    "rgltr-max-voltage": [
+      1800000,
+      2800000,
+      1100000,
+      0
+    ],
+    "rgltr-load-current": [
+      0,
+      80000,
+      105000,
+      105000,
+      0
+    ],
+    "gpio-no-mux": [
+      0
+    ],
+    "pinctrl-names": [
+      "cam_default",
+      "cam_suspend"
+    ],
+    "pinctrl-0": [
+      1131,
+      1132
+    ],
+    "pinctrl-1": [
+      1133,
+      1134
+    ],
+    "gpios": [
+      49,
+      15,
+      0,
+      49,
+      25,
+      0
+    ],
+    "gpio-reset": [
+      1
+    ],
+    "gpio-req-tbl-num": [
+      0,
+      1
+    ],
+    "gpio-req-tbl-flags": [
+      1,
+      0
+    ],
+    "gpio-req-tbl-label": [
+      "CAMIF_MCLK2",
+      "CAM_RESET2"
+    ],
+    "sensor-mode": [
+      1
+    ],
+    "cci-device": [
+      1
+    ],
+    "cci-master": [
+      0
+    ],
+    "status": [
+      "ok"
+    ],
+    "clocks": [
+      41,
+      84
+    ],
+    "clock-names": [
+      "cam_clk"
+    ],
+    "clock-cntl-level": [
+      "turbo"
+    ],
+    "clock-rates": [
+      24000000
+    ]
+  },
+  "/soc/qcom,csid0@acb3000": {
+    "cell-index": [
+      0
+    ],
+    "compatible": [
+      "qcom,csid175_200"
+    ],
+    "reg-names": [
+      "csid"
+    ],
+    "reg": [
+      181088256,
+      4096
+    ],
+    "reg-cam-base": [
+      733184
+    ],
+    "interrupt-names": [
+      "csid"
+    ],
+    "interrupts": [
+      0,
+      464,
+      0
+    ],
+    "regulator-names": [
+      "camss",
+      "ife0"
+    ],
+    "camss-supply": [
+      433
+    ],
+    "ife0-supply": [
+      442
+    ],
+    "clock-names": [
+      "ife_csid_clk_src",
+      "ife_csid_clk",
+      "cphy_rx_clk_src",
+      "ife_cphy_rx_clk",
+      "ife_clk_src",
+      "ife_clk",
+      "ife_axi_clk"
+    ],
+    "clocks": [
+      41,
+      53,
+      41,
+      52,
+      41,
+      27,
+      41,
+      51,
+      41,
+      50,
+      41,
+      49,
+      41,
+      48
+    ],
+    "clock-rates": [
+      300000000,
+      0,
+      0,
+      0,
+      380000000,
+      0,
+      0,
+      384000000,
+      0,
+      0,
+      0,
+      510000000,
+      0,
+      0,
+      400000000,
+      0,
+      0,
+      0,
+      637000000,
+      0,
+      0,
+      400000000,
+      0,
+      0,
+      0,
+      760000000,
+      0,
+      0
+    ],
+    "clock-cntl-level": [
+      "lowsvs",
+      "svs",
+      "svs_l1",
+      "turbo"
+    ],
+    "src-clock-name": [
+      "ife_csid_clk_src"
+    ],
+    "clock-control-debugfs": [
+      "true"
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      763
+    ]
+  },
+  "/soc/qcom,csid1@acba000": {
+    "cell-index": [
+      1
+    ],
+    "compatible": [
+      "qcom,csid175_200"
+    ],
+    "reg-names": [
+      "csid"
+    ],
+    "reg": [
+      181116928,
+      4096
+    ],
+    "reg-cam-base": [
+      761856
+    ],
+    "interrupt-names": [
+      "csid"
+    ],
+    "interrupts": [
+      0,
+      466,
+      0
+    ],
+    "regulator-names": [
+      "camss",
+      "ife1"
+    ],
+    "camss-supply": [
+      433
+    ],
+    "ife1-supply": [
+      443
+    ],
+    "clock-names": [
+      "ife_csid_clk_src",
+      "ife_csid_clk",
+      "cphy_rx_clk_src",
+      "ife_cphy_rx_clk",
+      "ife_clk_src",
+      "ife_clk",
+      "ife_axi_clk"
+    ],
+    "clocks": [
+      41,
+      60,
+      41,
+      59,
+      41,
+      27,
+      41,
+      58,
+      41,
+      57,
+      41,
+      56,
+      41,
+      55
+    ],
+    "clock-rates": [
+      300000000,
+      0,
+      0,
+      0,
+      380000000,
+      0,
+      0,
+      384000000,
+      0,
+      0,
+      0,
+      510000000,
+      0,
+      0,
+      400000000,
+      0,
+      0,
+      0,
+      637000000,
+      0,
+      0,
+      400000000,
+      0,
+      0,
+      0,
+      760000000,
+      0,
+      0
+    ],
+    "clock-cntl-level": [
+      "lowsvs",
+      "svs",
+      "svs_l1",
+      "turbo"
+    ],
+    "src-clock-name": [
+      "ife_csid_clk_src"
+    ],
+    "clock-control-debugfs": [
+      "true"
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      765
+    ]
+  },
+  "/soc/qcom,csid-lite0@acc8000": {
+    "cell-index": [
+      2
+    ],
+    "compatible": [
+      "qcom,csid-lite175"
+    ],
+    "reg-names": [
+      "csid-lite"
+    ],
+    "reg": [
+      181174272,
+      4096
+    ],
+    "reg-cam-base": [
+      819200
+    ],
+    "interrupt-names": [
+      "csid-lite"
+    ],
+    "interrupts": [
+      0,
+      438,
+      0
+    ],
+    "regulator-names": [
+      "camss"
+    ],
+    "camss-supply": [
+      433
+    ],
+    "clock-names": [
+      "ife_csid_clk_src",
+      "ife_csid_clk",
+      "cphy_rx_clk_src",
+      "ife_cphy_rx_clk",
+      "ife_clk_src",
+      "ife_clk"
+    ],
+    "clocks": [
+      41,
+      66,
+      41,
+      65,
+      41,
+      27,
+      41,
+      64,
+      41,
+      63,
+      41,
+      62
+    ],
+    "clock-rates": [
+      300000000,
+      0,
+      0,
+      0,
+      320000000,
+      0,
+      384000000,
+      0,
+      0,
+      0,
+      400000000,
+      0,
+      400000000,
+      0,
+      0,
+      0,
+      480000000,
+      0,
+      400000000,
+      0,
+      0,
+      0,
+      600000000,
+      0
+    ],
+    "clock-cntl-level": [
+      "lowsvs",
+      "svs",
+      "svs_l1",
+      "turbo"
+    ],
+    "src-clock-name": [
+      "ife_csid_clk_src"
+    ],
+    "clock-control-debugfs": [
+      "true"
+    ],
+    "status": [
+      "ok"
+    ],
+    "phandle": [
+      767
+    ]
+  }
+}

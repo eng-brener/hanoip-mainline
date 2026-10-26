@@ -1,5 +1,11 @@
 # Checkpoint: levantamento de sensores (offline) — 2026-10-25
 
+HISTÓRICO: a proposta de tentar SE11 AP abaixo foi superada após travamento.
+NÃO executar esse plano de scan. O firmware do próprio aparelho agora mapeia
+SSC SE0/SE4 e pinos/rails; ver `checkpoint-2026-10-26-sensores-ssc.txt`.
+O protocolo do ICM foi confirmado como I3C. O caminho ADSP/libssc pode
+reutilizar o driver TMD2755 do DSP, sem exigir um driver IIO AP novo.
+
 ## Estado
 
 Trabalho somente de análise; nenhum boot, flash ou escrita no telefone. O

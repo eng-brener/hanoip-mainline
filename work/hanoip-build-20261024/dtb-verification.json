@@ -1,0 +1,28 @@
+[
+  {
+    "dtb": "kernel-diagnostic.dtb",
+    "disabled": [
+      "/soc@0/ufshc@1d84000",
+      "/soc@0/phy@1d87000",
+      "/soc@0/crypto@1d90000",
+      "/soc@0/display-subsystem@ae00000"
+    ],
+    "qup_sources": {
+      "/soc@0/geniqup@ac0000/spi@a80000": "/soc@0/interconnect@1700000",
+      "/soc@0/geniqup@ac0000/serial@a88000": "/soc@0/interconnect@1700000"
+    }
+  },
+  {
+    "dtb": "uboot-diagnostic.dtb",
+    "disabled": [
+      "/soc@0/ufshc@1d84000",
+      "/soc@0/phy@1d87000",
+      "/soc@0/crypto@1d90000",
+      "/soc@0/display-subsystem@ae00000"
+    ],
+    "qup_sources": {
+      "/soc@0/geniqup@ac0000/spi@a80000": "/soc@0/interconnect@1700000",
+      "/soc@0/geniqup@ac0000/serial@a88000": "/soc@0/interconnect@1700000"
+    }
+  }
+]

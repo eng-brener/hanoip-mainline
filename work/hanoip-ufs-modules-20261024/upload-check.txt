@@ -1,0 +1,9 @@
+^C
+~ # 
+~ # printf "\nCHECK_RAM_SCRIPT\n"; /bin/busybox wc -c /run/hanoip-load-ufs-v2; /
+bin/busybox sha256sum /run/hanoip-load-ufs-v2
+
+CHECK_RAM_SCRIPT
+2321 /run/hanoip-load-ufs-v2
+625a36bc70c511d9ebf2302990155c00e066faa3100b8eaf5b6a1c8e1c1741e3  /run/hanoip-load-ufs-v2
+~ # 

@@ -1,0 +1,40 @@
+{{- $architecture := or .architecture "arm64" -}}
+{{- $ssh := or .ssh "" -}}
+
+architecture: {{ $architecture }}
+
+actions:
+  - action: run
+    description: Fix packages if broken
+    chroot: true
+    command: apt-get install --fix-broken -y
+
+  - action: apt
+    recommends: true
+    description: Install base packages
+    packages:
+      - mobian-base
+      - kali-linux-core
+      - kali-themes-mobile
+{{ if $ssh }}
+      - openssh-server
+{{ end }}
+      - systemd-repart
+      # Reason for this: it's @a-wai's preferred editor
+      - vim
+
+  ## https://repo.fossfrog.in/setup.sh -> https://raw.githubusercontent.com/Shubhamvis98/deb/repo/setup.sh -> https://github.com/Shubhamvis98/deb/blob/repo/setup.sh
+  ##   2026-08-26: https://github.com/Shubhamvis98/deb/commit/26537e88a5b003bd56b095a74c8b98ddc5e6b8cc
+  ##   Pinned setup.sh via git SHA1 commit
+  ##   Drop the Pin-Priority so not to outranks Kali's own archive (500)
+  - action: run
+    description: add fossfrog repo
+    chroot: true
+    command: |
+      set -e
+      ff=https://raw.githubusercontent.com/Shubhamvis98/deb/26537e88a5b003bd56b095a74c8b98ddc5e6b8cc
+      curl -fsSL -o /etc/apt/trusted.gpg.d/fossfrog.gpg  "${ff}/fossfrog.gpg"
+      curl -fsSL -o /etc/apt/sources.list.d/fossfrog.list "${ff}/fossfrog.list"
+      printf '%s\n' 'Package: *' 'Pin: release o=fossfrog' 'Pin-Priority: 100' \
+        > /etc/apt/preferences.d/10-fossfrog-priority
+      apt-get update

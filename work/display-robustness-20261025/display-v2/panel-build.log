@@ -1,0 +1,6 @@
+make[1]: Entering directory '/tmp/kernel-mainline/drivers/gpu/drm/panel'
+  MODPOST Module.symvers
+  CC [M]  panel-ilitek-ili7807s.mod.o
+  CC [M]  .module-common.o
+  LD [M]  panel-ilitek-ili7807s.ko
+make[1]: Leaving directory '/tmp/kernel-mainline/drivers/gpu/drm/panel'
