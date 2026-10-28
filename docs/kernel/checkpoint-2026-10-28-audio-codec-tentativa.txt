@@ -1,0 +1,87 @@
+CHECKPOINT — TENTATIVA DE CODEC DE ÁUDIO (WCD937x) — 28/10/2026
+================================================================
+Resultado: NÃO concluído. Aparelho restaurado no PRE-GOLD
+(work/PRE-GOLD-20261028-1133/), verificado após o retorno: kernel
+7.3.0-sm7150, 109 módulos, GPU FD618, SSH ok. Nada foi gravado em partição.
+
+O que esta frente deixou de concreto e reutilizável está abaixo — inclusive os
+três erros meus, para não se repetirem.
+
+1. DESCOBERTAS QUE VALEM (medidas)
+----------------------------------
+a) O codec WCD937x ENUMERA sem reset. Com só os masters SoundWire ligados
+   (txmacro/rxmacro/swr_tx/swr_rx) e os dois escravos declarados:
+     /sys/bus/soundwire/devices/  ->  sdw:2:0:0217:010a:00:4 (RX)
+                                      sdw:3:0:0217:010a:00:3 (TX)
+   Ou seja: o bootloader/ADSP deixa o codec fora de reset. O pinctrl LPI não
+   é necessário para a enumeração — só para o ATTACH.
+b) O ATTACH não acontece sem reset real: status UNATTACHED nos dois escravos e
+   IRQs do master (GIC 328/329) com 0 disparos. O driver então falha com
+   "Initialization not complete" e -ETIMEDOUT (-110) no component probe.
+c) O DT do U-Boot (cópia antiga do sm7150.dtsi) NÃO tem txmacro/rxmacro/
+   vamacro/swr_tx/swr_rx; foram portados verbatim do kernel 7.3 na variante
+   sm7150-motorola-hanoip-audio-etapa0/1/2.dts.
+d) q6afe suporta as portas RX_CODEC_DMA_RX_0 (0xB030) e TX_CODEC_DMA_TX_3
+   (0xB037); o template de playback é o sm8250-mtp.dts e o de captura é o
+   sm7150-xiaomi-sweet.dts (mesmo SoC).
+e) Valores do hanoip (stock DT, phandles resolvidos): L10A (rxtx e vddpx),
+   L15A (buck), BOB (mic-bias), micbias 1/2/3 = 2,8 V, reset em LPI GPIO24,
+   slaves SWR rx 0x1170224 / tx 0x1170223. O mainline tem os reguladores com
+   os mesmos nomes (vreg_l10a_1p8, vreg_l15a_1p8, vreg_bob).
+f) O driver tem as saídas EAR (earpiece), HPHL/HPHR (fone) e AUX — as três
+   saídas do item estão cobertas pelo mesmo codec.
+
+2. OS TRÊS ERROS MEUS (e como detectar antes)
+---------------------------------------------
+E1. VERMAGIC COM "+" (o que causou o "muito erro"):
+    reconstruí o kernel com a árvore suja; scripts/setlocalversion acrescentou
+    "+" e o kernel virou 7.3.0-sm7150+. Ele procura /lib/modules/7.3.0-sm7150+/
+    e não carrega NENHUM módulo (sem display, sem rede, sem sensores).
+    DETECÇÃO: cat include/config/kernel.release e strings Image | grep 7.3.0.
+    CORREÇÃO: comitar na árvore e/ou buildar com KERNELRELEASE=7.3.0-sm7150.
+E2. IMAGE CRU no boot.img: o kernel do PRE-GOLD é Image.gz (~12 MB); empacotei
+    Image cru (34 MB) e o U-Boot parou em "Starting kernel".
+    DETECÇÃO: comparar o tamanho da seção kernel do template antes de empacotar.
+E3. PINCTRL INCOMPLETO: adicionei os pinos 14..31 em sm7150_groups mas não os
+    nomes em sm7150_lpi_pins (PINCTRL_PIN) nem em gpio_groups[]; o core
+    recusou ("does not have pin group gpio24"). Depois de nomear, o probe
+    passou a dar OOPS em lpi_gpio_read (leitura de endereço inválido), porque
+    falta o offset/dado de registrador correto para os pinos novos.
+    Ou seja: a extensão do pinctrl não é só "mais 18 linhas" — precisa do
+    descritor completo (pin/pin_offset) e, provavelmente, do
+    LPI_PINGROUP_OFFSET para os pinos que não seguem a fórmula linear.
+
+3. ESTADO DO CÓDIGO DEIXADO NO REPO
+-----------------------------------
+  uboot-sm7150/.../sm7150-motorola-hanoip-audio-etapa0.dts  (SoundWire ligado)
+  uboot-sm7150/.../sm7150-motorola-hanoip-audio-etapa1.dts  (codec + links)
+  uboot-sm7150/.../sm7150-motorola-hanoip-audio-etapa2.dts  (reset LPI24)
+  work/audio-20261028/kernel-hanoip-kali-phosh-audio-pinctrl32.img
+      (boot.img com o kernel reconstruído; contém o Oops do pinctrl — NÃO USAR
+       para teste de áudio enquanto o pinctrl não estiver correto)
+  Árvore do kernel (volume hanoip-kernel73-v3-src): dois commits locais
+      f3ba1db27 "expose pins 14-31" e o seguinte com os nomes.
+      O Image em /src/obj é o último build (7.3.0-sm7150, com Oops).
+      Para voltar a árvore ao estado do PRE-GOLD: git revert/reset desses dois
+      commits e rebuild.
+
+4. PRÓXIMOS PASSOS CONCRETOS (quando retomar)
+---------------------------------------------
+1. Corrigir o pinctrl de verdade: para cada pino 14..31 preencher o descritor
+   (PINCTRL_PIN com nome, entrada em sm7150_groups e gpio_groups) E o offset
+   correto. Conferir no stock (qcom,lpi-offset-tbl = 0x0,0x1000,...,0x1f000) e
+   usar LPI_PINGROUP_OFFSET quando a fórmula do driver não bater.
+   Critério: nenhum Oops no boot e 'gpioinfo' listando 32 linhas.
+2. Só então aplicar o reset (etapa 2) e conferir ATTACHED nos dois escravos.
+3. Com o codec atacado, adicionar os links "WCD Playback" (RX_CODEC_DMA_RX_0)
+   e "WCD Capture" (TX_CODEC_DMA_TX_3) — a etapa 1 já os tem prontos.
+   Atenção: com o codec falhando, o card inteiro não registra (o alto-falante
+   também para). Validar o card antes e depois.
+4. Testar: arecord (mic), aplay (EAR/HPH) e plugar fone (MBHC).
+5. UCM do ALSA para expor as rotas aos apps do Phish.
+
+5. O QUE NÃO FOI TOCADO
+-----------------------
+  Display, CPU, GPU, venus, UFS, reguladores de bateria, sensores: nada foi
+  alterado nas variantes (o diff do DT contra o PRE-GOLD só tem os nós de áudio,
+  o estado do pino 24, gpio-ranges e o codec).

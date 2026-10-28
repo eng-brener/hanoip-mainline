@@ -161,6 +161,16 @@ I2C adapters are only 0..2 and `a94000` is absent. The firmware string
 buses/rails until the SSC-to-QUP mapping is understood. Only volatile
 `fastboot boot`; all partition-write prohibitions remain.
 
+# ARMADILHA MEDIDA (2026-10-28): rebuild de kernel em árvore suja troca o
+# vermagic. Com qualquer arquivo modificado e não comitado, scripts/
+# setlocalversion acrescenta "+" e o kernel vira 7.3.0-sm7150+; aí ele procura
+# /lib/modules/7.3.0-sm7150+/ e NÃO carrega nenhum módulo (sem display, sem
+# rede, sem sensores) — o boot "funciona" e o sistema fica inútil. Antes de
+# bootar um kernel reconstruído: (1) comitar na árvore, (2) conferir
+# cat include/config/kernel.release e strings Image | grep -m1 7.3.0 e garantir
+# que NÃO tem "+". O kernel empacotado precisa ser Image.gz (o do PRE-GOLD tem
+# ~12 MB); empacotar Image cru (~34 MB) faz o U-Boot parar em "Starting kernel".
+
 # Kernel 7.3 v2 (2026-10-26): v1 + fork PRs #70, #64, #65, #60
 
 work/kernel-7.3/v2/ (README.txt), 160 patches on v7.3. Battery telemetry

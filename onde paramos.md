@@ -1,5 +1,24 @@
 # Handoff — Moto G60 hanoip mainline
 
+## TENTATIVA DE ÁUDIO (codec WCD937x) — 28/10, NÃO CONCLUÍDA
+### (docs/kernel/checkpoint-2026-10-28-audio-codec-tentativa.txt)
+    Aparelho RESTAURADO no PRE-GOLD (verificado: 7.3.0-sm7150, 109 módulos,
+    GPU FD618). Nada gravado em partição.
+    DESCOBERTAS: (1) o codec ENUMERA sem reset (sdw:2:...:4 e sdw:3:...:3),
+    mas fica UNATTACHED — o attach exige reset real em LPI GPIO24 (IRQs do
+    master com 0 disparos); (2) o DT do U-Boot não tem txmacro/rxmacro/
+    vamacro/swr (portados do kernel nas variantes etapa0/1/2); (3) q6afe tem
+    RX_CODEC_DMA_RX_0 e TX_CODEC_DMA_TX_3, com templates em sm8250-mtp e
+    xiaomi-sweet; (4) valores do stock já resolvidos (L10A/L15A/BOB, micbias
+    2,8 V, slaves 0x1170223/0x1170224); (5) driver tem EAR/HPHL/HPHR.
+    TRÊS ERROS MEUS registrados: vermagic "+" (árvore suja → kernel sem
+    módulos), Image CRU no boot.img (U-Boot para em "Starting kernel") e
+    pinctrl estendido pela metade (nomes faltando → depois Oops em
+    lpi_gpio_read por offset/dado de registrador incompleto).
+    PRÓXIMO PASSO: corrigir o pinctrl com o descritor COMPLETO (PINCTRL_PIN +
+    sm7150_groups + gpio_groups + pin_offset / LPI_PINGROUP_OFFSET), validar
+    gpioinfo com 32 linhas sem Oops, e só então religar o reset e os links.
+
 ## PLANO FINAL DOS PENDENTES — docs/PLANO-FINAL-PENDENTES.md
 
 ### P. Sequência acordada (FM fora, adiado)

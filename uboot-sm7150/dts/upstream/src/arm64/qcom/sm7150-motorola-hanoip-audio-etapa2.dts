@@ -1,0 +1,41 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 2: reset REAL do codec (LPI GPIO24) + pinctrl estendido.
+ *
+ * Contexto medido:
+ *   - etapa 0: o codec enumera (sdw:2/3) sem reset, mas fica UNATTACHED
+ *   - etapa 1: com MFD e reset fictício, o probe estoura -110 na
+ *     "Initialization not complete" — o attach do SoundWire só acontece depois
+ *     de um reset de verdade (as IRQs do master marcavam 0 disparos)
+ *   - para usar o LPI GPIO24 foi preciso estender o pinctrl sm7150-lpass-lpi
+ *     de 14 para 32 pinos (o stock declara qcom,num-gpios = <0x20>).
+ *
+ * Esta variante depende de um KERNEL NOVO (pinctrl com 32 pinos). A U-Boot
+ * sozinha não basta.
+ *
+ * Reset: LPI GPIO24, ativo em nível baixo (stock: func2 / output-high quando
+ * ativo, output-low no sleep). Estado de pino "gpio" (índice 0 no driver) —
+ * se o attach não acontecer, o próximo teste é mux explícito.
+ */
+#include <dt-bindings/gpio/gpio.h>
+#include "sm7150-motorola-hanoip-audio-etapa1.dts"
+
+&lpass_tlmm {
+	/* o hardware tem 32 pinos; o dtsi antigo declarava 14 */
+	gpio-ranges = <&lpass_tlmm 0 0 32>;
+
+	wcd_reset_active: wcd-reset-active-state {
+		pins = "gpio24";
+		function = "gpio";
+		drive-strength = <16>;
+	};
+};
+
+&wcd9370 {
+	reset-gpios = <&lpass_tlmm 24 GPIO_ACTIVE_LOW>;
+	pinctrl-0 = <&wcd_reset_active>;
+	pinctrl-names = "default";
+
+	qcom,mbhc-buttons-vthreshold-microvolt = <75000 150000 237000 500000
+						  500000 500000 500000 500000>;
+};

@@ -38,7 +38,12 @@ decisão sua · [—] só código/config ao vivo.
     slaves SWR 0x1170223/0x1170224.
     OBSTÁCULO: o pinctrl mainline do LPASS LPI expõe só pinos 0..13; o reset do
     codec é o 24. Exige estender a tabela (14->32) + DTS.
-    Precisa: [REBUILD U-Boot (DT) + kernel/módulo pinctrl].
+    Precisa: [REBUILD U-Boot (DT) + kernel]. TENTADO EM 28/10 e NÃO concluído
+    (docs/kernel/checkpoint-2026-10-28-audio-codec-tentativa.txt): o codec
+    ENUMERA sem reset mas fica UNATTACHED; o attach exige o reset em LPI GPIO24
+    e a extensão do pinctrl (14->32) ainda está incompleta (Oops em
+    lpi_gpio_read por descritor de pino faltando). Aparelho restaurado no
+    PRE-GOLD.
     RÁDIO FM: front separada, ADIADA em 28/10. O FM fica no WCN3990 via
     Slimbus (stock: btfmslim_slave, elemental-addr [00012002 1702]); o Android
     inicializa com radio_iris_transport + /vendor/bin/fm_qsoc_patches.
