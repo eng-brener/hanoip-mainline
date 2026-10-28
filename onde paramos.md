@@ -239,8 +239,13 @@
       interação medida: 586 vblanks em 10 s = 58,6 Hz com dpms=On;
       tela parada = 0 vblanks (correto, sem dano = sem commit);
       erros: phoc "Atomic commit failed: Device or resource busy" 44 no boot,
-      TODOS em transições de tela (login, apagar/acender, resume), ~0 em uso
-      contínuo; assertion de layer-shell do phoc; gsd-power reclamando de
+      só em login do greeter / entrada na sessão / PRIMEIRO resume; ~0 em uso.
+      Origem no kernel confirmada: drm_atomic_helper_setup_commit(), commit
+      anterior sem flip_done — NÃO é fbdev (16 printk com compositor ativo
+      deu delta 0) nem apagar/acender tela (0 erros, com DRM_UT_ATOMIC on).
+      FRENTE DE GPU: DADA COMO SUCESSO em 28/10; este item fica adiado e só
+      volta se aparecer piscada de tela.
+      Outros: assertion de layer-shell do phoc; gsd-power reclamando de
       backlight de teclado que não existe; 0 faults de GPU/IOMMU.
     Menores: o spam "disallowed SPMI write to 0x6046" (RTC, não GPU — remover
     allow-set-time do DT).

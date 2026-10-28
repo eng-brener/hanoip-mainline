@@ -338,15 +338,26 @@ nuance de arquitetura que é do Phosh e não do nosso port.
 
 12.4 Erros encontrados nos logs (nenhum de renderização)
     a) phoc: "[backend/drm/atomic.c:82] connector DSI-1: Atomic commit
-       failed: Device or resource busy"  — 44 no boot, TODOS concentrados em
-       transições de estado de tela: 10:05 (3, login do greeter), 10:12 (8,
-       entrada na sessão), 10:15 (2), 10:38 (17) e 10:39 (13) (suspend/resume
-       e os testes de apagar/acender a tela). Durante uso contínuo: ~0.
-       Impacto: o commit é rejeitado e o phoc repete; a imagem volta normal.
-       Suspeita: disputa com o fbdev (DRM_FBDEV_EMULATION=y + framebuffer de
-       firmware mapeado pelo nosso patch de handoff) ou commit durante reset
-       de resume. É cosmético hoje, mas é o único item que eu investigaria
-       se aparecer tela piscando.
+       failed: Device or resource busy" — 44 no boot, TODOS fora do uso
+       contínuo (10:05 login do greeter, 10:12 entrada na sessão, 10:15,
+       10:38/10:39 no primeiro suspend/resume). Durante uso: ~0.
+       ORIGEM NO KERNEL (verificada, não suposta): vem de
+       drm_atomic_helper_setup_commit(), na checagem "Userspace is not allowed
+       to get ahead of the previous commit with nonblocking ones" — ou seja,
+       o commit ANTERIOR naquele connector/plane não sinalizou flip_done.
+       O QUE FOI DESCARTADO POR TESTE (28/10):
+         - fbdev/fbcon: gerar 16 printk com o compositor renderizando NÃO
+           produziu nenhum -EBUSY (delta 0). /dev/fb0 existe e vtcon1 está
+           bound, mas não é o gatilho.
+         - apagar/acender a tela: 2 eventos de tela e 0 erros, com
+           DRM_UT_ATOMIC ligado (nenhuma linha "busy with a previous commit").
+         - segundo suspend/resume: 0 erros (total do boot ficou em 44).
+       Portanto o padrão é: primeiro commit não-bloqueante depois de uma
+       troca de DRM master (login) ou do PRIMEIRO resume pós-boot, quando
+       existe um commit herdado que nunca completou.
+       Impacto: algumas frames rejeitadas e repetidas; a imagem volta normal e
+       não houve piscada reportada. FICA ADIADO (decisão do usuário em 28/10):
+       a frente de GPU foi dada como SUCESSO; reabrir só se aparecer piscada.
     b) phoc: "phoc_layout_transaction_notify_layer_configured: assertion
        'self->pending_layer_configures > 0' failed" (10:27, duas vezes) —
        bug interno de contabilidade de layer-shell do phoc.
