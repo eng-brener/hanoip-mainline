@@ -1,5 +1,29 @@
 # Handoff — Moto G60 hanoip mainline
 
+## ÁUDIO: VOTO DO DCODEC MEDIDO — o ADSP RECUSA O BLOCO 4 (28/10, ÚLTIMO ESTADO)
+### Seção 18 de docs/kernel/checkpoint-2026-10-28-audio-codec-tentativa.txt
+    ONDE O APARELHO ESTÁ: U-Boot etapa10 + kernel PRE-GOLD (7.3.0-sm7150,
+    v3-teo), codec Attached/Attached, card 0 G60; módulos ORIGINAIS
+    restaurados em /lib/modules; nada gravado em partição.
+    MEDIÇÃO (não mais hipótese):
+      - o driver vota com Q6AFE_LPASS_CORE_HW_*_BLOCK (0x3 macro, 0x4 dcodec),
+        NÃO com 102/103 (esses são ids de clock no DT);
+      - bloco 3 (MACRO) => ADSP ACEITA (clk LPASS_HW_MACRO enable_count=2);
+      - bloco 4 (DCODEC) => ADSP responde 0x3 = EUNSUPPORTED
+        ("cmd = 0x100f4 returned error = 0x3 / Unknown cmd 0x100f4");
+      - trocar client_name (hipótese NPA) não muda nada.
+    VENDOR: os macros do stock só têm rx/tx_core_clk + npl. Quem vota o LPASS
+    core é o lpi_pinctrl@62b40000 via nó "lpass_core_hw_vote"
+    (compatible qcom,audio-ref-clk, codec-ext-clk-src = 9). Esse provedor
+    (lpass-cdc-clk-rsc do techpack) não existe no mainline.
+    NÃO REPETIR: sweep de hw_block_id (1..24). Na tentativa o ADSP aceitou
+    votos de blocos desconhecidos e o aparelho TRAVOU (tela preta, sem
+    serial/SSH/fastboot); recuperado segurando Power ~10-15 s. Se for testar
+    id novo, UMA tentativa por boot.
+    DEIXADO EM ABERTO (caro): provedor audio-ref-clk no mainline com teste
+    controlado de 1 id por boot; RE do handler de voto no ADSP (Hexagon sem
+    símbolos); fonte do techpack em outro kernel Motorola.
+
 ## ÁUDIO: CODEC WCD937x ATACADO (28/10, fim da sessão)
 ### O PINO ERA O 6, NÃO O 24
     O stock numera 32 gpios cobrindo DOIS blocos (18 do SSC + 14 do AP);

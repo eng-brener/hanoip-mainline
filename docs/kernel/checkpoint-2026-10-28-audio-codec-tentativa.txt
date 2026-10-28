@@ -522,3 +522,64 @@ barato que mude esse quadro.
 
 ESTADO FINAL: aparelho na etapa 10 (codec atacha, card registra), módulos
 originais, nada gravado em partição.
+
+18. VOTO DO DCODEC — MEDIÇÃO DEFINITIVA E TRAVA (28/10, fim da sessão)
+----------------------------------------------------------------------
+Objetivo da rodada: descobrir, por MEDIÇÃO, o que o ADSP aceita no voto
+(AFE_CMD_REMOTE_LPASS_CORE_HW_VOTE_REQUEST, opcode 0x100f4).
+
+O QUE APRENDEMOS (evidência de dmesg, boot com etapa11 + módulos patchados):
+  1) o id de bloco NÃO é 102/103 (esses são os ids de clock no DT). O driver
+     envia Q6AFE_LPASS_CORE_HW_MACRO_BLOCK=0x3 e Q6AFE_LPASS_CORE_HW_DCODEC_BLOCK=0x4
+     (sound/soc/qcom/qdsp6/q6afe.h:145-146 via Q6DSP_VOTE_CLK).
+  2) o voto do MACRO (bloco 3) PASSA: sem mensagem de erro e
+     /sys/kernel/debug/clk/LPASS_HW_MACRO com enable_count=2.
+  3) o voto do DCODEC (bloco 4) é respondido pelo ADSP com
+     "cmd = 0x100f4 returned error = 0x3" / "Unknown cmd 0x100f4"
+     (0x3 = EUNSUPPORTED). Não é falta de resposta: o ADSP responde na hora.
+  4) trocar client_name do voto (hipótese NPA) NÃO muda nada — o ADSP não
+     valida nome de cliente neste comando. Patch removido do fluxo ativo.
+     [o fonte ainda tem o if (hw_block_id == 103) inócuo; não dispara]
+
+O QUE O VENDOR FAZ (stock DT, extraído do dump de 25/10):
+    rx_macro/tx_macro do vendor têm SOMENTE "rx_core_clk"/"rx_npl_clk" e
+    "tx_core_clk"/"tx_npl_clk" (provedores qcom,audio-ref-clk). NÃO existem
+    clocks "macro"/"dcodec" nos macros do vendor.
+    O voto do LPASS core/DCODEC é feito por outro nó:
+        lpass_core_hw_vote { compatible = "qcom,audio-ref-clk";
+                             qcom,codec-ext-clk-src = <9>; }
+    e o CONSUMIDOR desse clock é lpi_pinctrl@62b40000 (clocks = <0x3c3 0>),
+    ou seja: o pinctrl LPI vota o bloco quando mexe nos pads do LPASS.
+    Provedores irmãos: rx_core_clk (ext-clk-src=5, lpass-clk-id=0x30e),
+    rx_npl_clk (6, 0x30f), tx_* (0x3fa/0x3fb) — os mesmos ids 782/783 que
+    validamos no clk_summary. O driver é o "audio-ref-clk"/lpass-cdc-clk-rsc
+    do techpack (não existe no mainline: zero ocorrências de
+    "audio-ref-clk" e "codec-ext-clk-src" no fonte).
+
+TENTATIVA DE MEDIR O CONJUNTO DE BLOCOS ACEITOS (SWEEP) — FALHOU E TRAVOU:
+  Patch temporário em q6afe_vote_lpass_core_hw: ao falhar, votar ids 1..24 e
+  logar "HANOIP SWEEP id=N ret=...". Boot com etapa11 + esse módulo:
+  o aparelho FICOU COM TELA PRETA/TRAVADO — sem serial, sem SSH (TCP conectava
+  mas o banner não vinha) e sem fastboot. Recuperado com Power segurado
+  (~10-15 s) → bootloader. CONCLUSÃO: votar blocos desconhecidos no ADSP mexe
+  em energia de blocos do LPASS e derruba o sistema. NÃO REPETIR O SWEEP.
+  Serial não foi capturado (rede capturou 0 bytes), então não sabemos quais
+  ids retornaram 0 — o experimento não deixou dado aproveitável.
+
+ESTADO ATUAL (verificado após a recuperação):
+  - U-Boot etapa10 + kernel PRE-GOLD (7.3.0-sm7150 + v3-teo);
+  - codec: Attached Attached; card=1 (0 G60);
+  - módulos ORIGINAIS restaurados em /lib/modules (q6afe=9565, rx=21860,
+    tx=16519 bytes comprimidos); a árvore do kernel teve o sweep revertido.
+  - nada gravado em partição; U-Boot/kernel sempre voláteis.
+
+SITUAÇÃO DA FRENTE: o voto do DCODEC está medido, não suposto: o ADSP aceita
+o bloco 3 e recusa o 4 com EUNSUPPORTED. O que falta é o contrato do
+"audio-ref-clk" do vendor (quem vota é o lpi_pinctrl com codec-ext-clk-src=9),
+que não é publicado. Próximos caminhos possíveis, todos caros:
+  (a) implementar no mainline um provedor audio-ref-clk e descobrir, por
+      tentativa CONTROLADA (1 id por boot, nunca sweep), qual bloco/param o
+      ADSP aceita para o DCODEC;
+  (b) RE do handler de voto no ADSP (Hexagon, imagem sem símbolos);
+  (c) procurar o fonte do techpack (lpass-cdc-clk-rsc) de outro Motorola.
+Nenhum deles é barato; a frente está delimitada e o aparelho está funcional.
