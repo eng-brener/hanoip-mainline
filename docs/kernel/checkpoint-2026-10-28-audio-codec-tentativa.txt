@@ -176,3 +176,29 @@ O QUE AINDA FALTA (próximo passo, não bloqueia o achado):
 ESTADO DA SESSÃO: aparelho rodando etapa5 + kernel PRE-GOLD, com o codec
 atacado e o card registrado. Nada gravado em partição. O par de retorno
 conhecido continua work/PRE-GOLD-20261028-1133/.
+
+9. PESQUISA: EXISTE OUTRO PORT / REFERÊNCIA? (28/10)
+----------------------------------------------------
+a) pmaports (postmarketOS): NÃO existe device-motorola-hanoip (verificado em
+   testing/community/main via API do espelho GitHub). O port é só nosso.
+b) sm7150-mainline/linux (fork do SoC, branch v7.2): também não tem hanoip.
+c) Referências no mainline:
+     sm7150-xiaomi-sweet : WCD9370 + q6afe, mas SÓ CAPTURA definida
+     qcm6490-idp         : WCD9370 no modelo APM (q6apm/q6apmbedai)
+     sm8250-mtp          : WCD938x + q6afe com RX_CODEC_DMA_RX_0 — playback
+                           validado upstream
+   O patchset do driver wcd937x (LWN/alsa-devel) diz explicitamente que foi
+   testado no QCM6490 IDP — ou seja, NUNCA no modelo q6afe.
+d) Fonte de áudio do vendor: NÃO é publicado. No repositório
+   MotorolaMobilityLLC/kernel-msm (branch android-12-release-s2ris32.32-20-9-9-2-1)
+   o diretório techpack contém apenas stub/. O techpack/audio real não está lá.
+e) Conclusão: a combinação WCD937x + q6afe é território não testado no
+   upstream. Como todas as camadas do kernel retornam sucesso (q6afe port
+   prepare/start, q6adm matrix_map, sdw add/enable/disable) e o app recebe EIO
+   ~0,5 s depois, o defeito está no que o driver wcd937x faz (ou deixa de fazer)
+   nesse modelo — não no DT nem na configuração de porta/canal.
+f) Caminho sugerido para retomar: comparar sound/soc/codecs/wcd937x.c e
+   wcd937x-sdw.c com wcd938x.c / wcd938x-sdw.c (este último funciona em q6afe)
+   focando em: configuração de portas/CFG do SoundWire no hw_params, cadeia
+   DAPM de playback (HPH/EAR), e tratamento do clock/bank. É patch de driver,
+   não de device tree.
