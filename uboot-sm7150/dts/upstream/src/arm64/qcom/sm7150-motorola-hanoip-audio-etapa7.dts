@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 7: card SEM o link do alto-falante.
+ *
+ * Diagnóstico (log ASoC com dynamic debug):
+ *   "ASoC: found 2 new BE paths" -> open BE Speaker Playback + open BE WCD Playback
+ *   "close FE MultiMedia1"       -> o frontend fecha e o write volta EIO
+ * O card conecta SEMPRE os dois backends (codec e alto-falante). O backend do
+ * alto-falante (amp smart AW882xx) falha e derruba o stream inteiro — por isso
+ * o teste com o mixer do alto-falante ligado funcionava e o do codec não.
+ *
+ * Aqui o link do alto-falante é REMOVIDO do card, deixando apenas o codec.
+ * Isso isola mic/earpiece/fone. O alto-falante continua funcionando no PRE-GOLD
+ * (onde o card não tem os links do codec).
+ */
+#include "sm7150-motorola-hanoip-audio-etapa5.dts"
+
+&{/sound} {
+	/delete-node/ speaker-dai-link;
+};

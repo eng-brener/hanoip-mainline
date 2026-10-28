@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 9: audio-routing no card (o que faltava para o DAPM fechar).
+ *
+ * Diagnóstico que levou aqui (medido):
+ *   - durante um aplay, os 413 registradores do codec NÃO mudam (diff = 0),
+ *     ou seja o codec nunca é energizado;
+ *   - o dump do regmap é ao vivo (toggling EAR_RDAC muda 62 registradores),
+ *     então o problema não é cache;
+ *   - as rotas internas do wcd937x vão de "RX1/RX2/RX3" até as saídas
+ *     (HPHL/HPHR/EAR), mas NADA liga o widget do AIF ("WCD AIF Playback") a
+ *     RX1/RX2/RX3, nem o "WCD AIF Capture" aos ADC*_OUTPUT;
+ *   - no sm8250-mtp (que funciona) o card declara `audio-routing` justamente
+ *     para fechar esse caminho. O nosso card (audio2.dts) nunca teve.
+ *
+ * Aqui adicionamos o roteamento mínimo: playback (AIF -> RX1/2/3), captura
+ * (ADC*_OUTPUT -> AIF Capture) e as alimentações de MIC BIAS.
+ * Base: etapa7 (card só com o codec, sem o alto-falante).
+ */
+#include "sm7150-motorola-hanoip-audio-etapa7.dts"
+
+&{/sound} {
+	audio-routing =
+		"RX1", "WCD AIF Playback",
+		"RX2", "WCD AIF Playback",
+		"RX3", "WCD AIF Playback",
+		"WCD AIF Capture", "ADC1_OUTPUT",
+		"WCD AIF Capture", "ADC2_OUTPUT",
+		"WCD AIF Capture", "ADC3_OUTPUT",
+		"AMIC1", "MIC BIAS1",
+		"AMIC2", "MIC BIAS2",
+		"AMIC3", "MIC BIAS3";
+};

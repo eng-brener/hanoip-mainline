@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 8: canais do SoundWire do HANOIP (não do sweet).
+ *
+ * Origem dos valores: stock DT do hanoip, propriedade qcom,rx_swr_ch_map:
+ *   9 10 13 11 12 14 15 16  (na ordem dos canais do escravo: hph_l, hph_r,
+ *   clsh, comp_l, comp_r, lo, dsd_r, dsd_l — mesma ordem que o exemplo do
+ *   binding qcom,wcd937x-sdw.yaml descreve).
+ * O mainline espera esses canais em qcom,rx-channel-mapping (8 bytes). Até aqui
+ * estávamos usando os valores do xiaomi-sweet (1 2 1 1 2 1 1 2), que são os
+ * canais do master *daquela* placa — não os do hanoip. Com o mapa errado o
+ * codec recebe dados em canais que não existem nele, o stream morre logo
+ * depois de começar (EIO) e o DSP não reporta nada (bate com o medido).
+ */
+#include "sm7150-motorola-hanoip-audio-etapa7.dts"
+
+&swr_rx {
+	wcd937x_rx: codec@0,4 {
+		qcom,rx-port-mapping = <1 2 3 4 5>;
+		qcom,rx-channel-mapping = /bits/ 8 <9 10 13 11 12 14 15 16>;
+	};
+};

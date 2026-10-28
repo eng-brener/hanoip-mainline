@@ -234,3 +234,59 @@ O QUE SOBRA COMO CAUSA PROVÁVEL (para a próxima sessão):
      publicado) e o DSP aceita todos os comandos do mainline sem reportar erro;
   c) no card, o BE do codec usa RX_CODEC_DMA_RX_0; o sm8250-mtp usa o mesmo e
      funciona com wcd938x — então a infraestrutura está ok.
+
+11. INVESTIGAÇÃO ATÉ O FIM: O QUE FOI MEDIDO E ONDE PARA (28/10)
+----------------------------------------------------------------
+Sequência completa de etapas testadas (cada uma com boot próprio):
+
+  etapa 0  SoundWire ligado + escravos (sem reset)      -> enumera (sdw:2/3)
+  etapa 1  codec MFD + links, reset fictício (GPIO100)  -> UNATTACHED, -110
+  etapa 2  reset em LPI 24 (pinctrl estendido)          -> Oops (pino fora da janela)
+  etapa 3  janela 0x20000                               -> sem Oops, mas UNATTACHED
+  etapa 4  mux 2 (como o vendor)                        -> RCU stall (descartado)
+  etapa 5  reset em LPI 6 (o pino certo)                -> ATTACHED + card registra
+  etapa 6  portas 6/1                                   -> irrelevante (driver indexa 1..N)
+  etapa 7  card sem o link do alto-falante              -> 1 backend só, ainda EIO
+  etapa 8  canais do stock (9..16)                      -> ainda EIO
+  etapa 9  audio-routing no card                        -> DAPM aceito, ainda EIO
+
+Medições-chave (todas com evidência em log):
+  - TODAS as camadas do kernel retornam sucesso no caminho do codec:
+      q6afe_cdc_dma_port_prepare -> ponteiro válido
+      q6afe_port_start           -> 0
+      q6adm_matrix_map           -> sucesso (APR)
+      sdw_stream_add_slave       -> 0
+      sdw_enable_stream          -> 0
+  - hw_params de todos os DAIs -> 0
+  - o stream roda ~0,4-0,6 s e então o app recebe EIO (play e capture)
+  - NENHUM registro do codec muda durante o play (diff de 413 registros = 0),
+    enquanto alternar um controle (EAR_RDAC) muda 62 -> o dump é ao vivo, logo
+    o codec realmente não é energizado pelo stream
+  - ligar a rota analógica à mão (EAR_RDAC/HPHL/HPHR/RDAC3_MUX) NÃO resolve:
+    o stream morre igual -> o DSP não depende disso para abortar
+
+Hipóteses restantes, em ordem de probabilidade:
+  1. O firmware do ADSP (imagem do Android) exige uma configuração de porta
+     CODEC_DMA/ADM que só o techpack do vendor envia (não publicado). O
+     mainline aceita todos os comandos e o DSP aborta sem reportar erro.
+  2. Diferença de clock do macro RX: o DAI do q6afe prepara o clock e o
+     rx_macro sobe, mas não há confirmação de que o SWR RX rode com o MCLK
+     correto nesta placa (o vendor usa rx_core_clk/rx_npl_clk próprios).
+  3. Ordem/necessidade de um "wake" no master SWR (o stock declara
+     qcom,swr-wakeup-required e uma segunda IRQ no master TX; o mainline não
+     implementa essas propriedades).
+
+Como reproduzir cada medição (resumo):
+  kprobe:
+    echo "r:kp q6afe_port_start \$retval" >> /sys/kernel/tracing/kprobe_events
+    echo 1 > /sys/kernel/tracing/events/kprobes/enable; aplay ...
+  regmap:
+    R=/sys/kernel/debug/regmap/sdw:3:0:0217:010a:00:3-wcd937x_csr/registers
+  DPCM:
+    echo "module snd_soc_core +p" > /sys/kernel/debug/dynamic_debug/control
+
+ESTADO FINAL: aparelho no PRE-GOLD (cluster-idle + venus, kernel v3-teo).
+Áudio segue como antes: alto-falante funciona; mic/earpiece/fone dependem do
+caminho do codec, que para no DSP. Nenhuma partição foi escrita em nenhuma
+etapa (só `fastboot boot`), exceto o --set-active=a autorizado pelo usuário
+para recuperar os slots após muitos ciclos de boot.

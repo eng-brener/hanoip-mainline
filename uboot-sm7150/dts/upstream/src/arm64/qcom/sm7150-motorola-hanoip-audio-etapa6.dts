@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 6: arrays de portas do SoundWire com 6 entradas (tamanho real).
+ *
+ * Evidência (dmesg do etapa5):
+ *   qcom-soundwire 62ed0000: din-ports (5) mismatch with controller (6)
+ *   qcom-soundwire 62ef0000: dout-ports (5) mismatch with controller (6)
+ * O dtsi upstream declara 5 portas; o hardware do hanoip reporta 6. O codec usa
+ * as portas 1..5 (qcom,rx-port-mapping = <1 2 3 4 5> / tx <2 3 4 5>), e com
+ * arrays de 5 entradas a porta 5 fica sem configuração — o que explica o
+ * stream morrer (EIO) mesmo com hw_params retornando 0 em todos os DAIs.
+ *
+ * Aqui só estendemos os arrays para 6 entradas e casamos din/dout com o
+ * hardware. Nada mais muda em relação à etapa5 (reset no LPI pino 6).
+ */
+#include "sm7150-motorola-hanoip-audio-etapa5.dts"
+
+&swr_tx {
+	qcom,din-ports = <6>;
+	qcom,dout-ports = <1>;
+	qcom,ports-sinterval-low =	/bits/ 8 <0x01 0x03 0x03 0x03 0x03 0x03>;
+	qcom,ports-offset1 =		/bits/ 8 <0x00 0x00 0x00 0x00 0x00 0x00>;
+	qcom,ports-offset2 =		/bits/ 8 <0x00 0x00 0x00 0x00 0x00 0x00>;
+	qcom,ports-hstart =		/bits/ 8 <0xff 0xff 0xff 0xff 0xff 0xff>;
+	qcom,ports-hstop =		/bits/ 8 <0xff 0xff 0xff 0xff 0xff 0xff>;
+	qcom,ports-word-length =	/bits/ 8 <0xff 0xff 0xff 0xff 0xff 0xff>;
+	qcom,ports-block-pack-mode =	/bits/ 8 <0xff 0xff 0xff 0xff 0xff 0xff>;
+	qcom,ports-block-group-count =	/bits/ 8 <0xff 0xff 0xff 0xff 0xff 0xff>;
+	qcom,ports-lane-control =	/bits/ 8 <0x01 0x01 0x01 0x01 0x01 0x01>;
+};
+
+&swr_rx {
+	qcom,din-ports = <1>;
+	qcom,dout-ports = <6>;
+	qcom,ports-sinterval-low =	/bits/ 8 <0x03 0x3f 0x1f 0x03 0x03 0x03>;
+	qcom,ports-offset1 =		/bits/ 8 <0x00 0x00 0x0b 0x01 0x01 0x01>;
+	qcom,ports-offset2 =		/bits/ 8 <0x00 0x00 0x0b 0x00 0x00 0x00>;
+	qcom,ports-hstart =		/bits/ 8 <0xff 0x03 0xff 0xff 0xff 0xff>;
+	qcom,ports-hstop =		/bits/ 8 <0xff 0x06 0xff 0xff 0xff 0xff>;
+	qcom,ports-word-length =	/bits/ 8 <0x01 0x07 0x04 0xff 0xff 0xff>;
+	qcom,ports-block-pack-mode =	/bits/ 8 <0xff 0x00 0x01 0xff 0xff 0xff>;
+	qcom,ports-block-group-count =	/bits/ 8 <0xff 0xff 0xff 0xff 0x00 0x00>;
+	qcom,ports-lane-control =	/bits/ 8 <0x01 0x00 0x00 0x00 0x00 0x00>;
+};
