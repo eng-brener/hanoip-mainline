@@ -39,8 +39,13 @@ decisão sua · [—] só código/config ao vivo.
     OBSTÁCULO: o pinctrl mainline do LPASS LPI expõe só pinos 0..13; o reset do
     codec é o 24. Exige estender a tabela (14->32) + DTS.
     Precisa: [REBUILD U-Boot (DT) + kernel/módulo pinctrl].
-    RÁDIO FM: NÃO VIÁVEL — o Android usa driver vendor (fm-slim-ifd sobre
-    Slimbus) e o mainline não tem driver de FM Qualcomm.
+    RÁDIO FM: front separada, ADIADA em 28/10. O FM fica no WCN3990 via
+    Slimbus (stock: btfmslim_slave, elemental-addr [00012002 1702]); o Android
+    inicializa com radio_iris_transport + /vendor/bin/fm_qsoc_patches.
+    O mainline JÁ TEM Slimbus core e qcom-ngd-ctrl (CONFIG_SLIMBUS=y,
+    SLIM_QCOM_NGD_CTRL=m) mas NÃO tem btfmslim nem radio-iris (verificado).
+    Retomar exige portar 2 drivers do kernel-msm + DT + lidar com o binário
+    proprietário de patch de RF. Ver seção 7 de LEVANTAMENTO-AUDIO.md.
 
 1.4 GPS / GNSS — SERVIÇO ENCONTRADO EM 28/10 (docs/kernel/LEVANTAMENTO-GPS.md)
     Estado: o motor de GNSS está DENTRO da imagem `modem` (não há firmware

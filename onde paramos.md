@@ -20,7 +20,14 @@
     OBSTÁCULO REAL: o pinctrl sm7150-lpass-lpi expõe só pinos 0..13
     (gpio-ranges 14) e o reset do codec é o 24; o stock declara 32 pinos
     (qcom,num-gpios = 0x20). Exige estender a tabela 14->32 + DTS + rebuild.
-    FM: NÃO VIÁVEL (driver vendor fm-slim-ifd sobre Slimbus; mainline não tem).
+    FM (ADIADO a pedido do usuário): não é "impossível". O rádio fica no
+    WCN3990 via SLIMBUS (stock: btfmslim_slave, elemental-addr [00012002 1702])
+    e o Android inicializa com radio_iris_transport (param fmsmd_set) +
+    /vendor/bin/fm_qsoc_patches. O mainline tem SIM o barramento
+    (CONFIG_SLIMBUS=y, SLIM_QCOM_NGD_CTRL=m) mas NÃO tem os drivers btfmslim e
+    radio-iris (verificado em drivers/media/radio e drivers/bluetooth).
+    Retomar = portar 2 drivers do kernel-msm + DT + binário proprietário de
+    patch de RF (risco de afetar Wi-Fi/BT). Nada foi alterado no aparelho.
     Escopo: mic + earpiece + jack são UM bring-up (1 DTS + 1 patch pinctrl).
 
 ## SESSÃO 28/10/2026 — MODEM INVESTIGADO (sem chip)

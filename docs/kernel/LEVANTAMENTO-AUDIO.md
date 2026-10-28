@@ -99,3 +99,53 @@ RESUMO
     seguidos à risca.
   - O DT é volátil: qualquer teste exige rebuild de U-Boot e `fastboot boot`.
     O par de retorno é work/PRE-GOLD-20261028-1133/ (tem venus e CPU).
+
+7. FM — ANÁLISE PROFUNDA (28/10), ADIADO POR DECISÃO DO USUÁRIO
+---------------------------------------------------------------
+  Correção do que eu havia escrito antes: não é "impossível", é uma frente
+  separada que exige portar driver. O que existe de fato:
+
+  a) O rádio FM NÃO fica no codec de áudio: fica no WCN3990 (o mesmo chip do
+     Wi-Fi/BT), exposto como escravo de SLIMBUS. Prova no stock DT:
+        btfmslim_codec: wcn3990 {
+            compatible = "qcom,btfmslim_slave";
+            elemental-addr = [00 01 20 02 17 02];
+            qcom,btfm-slim-ifd = "btfmslim_slave_ifd";
+            qcom,btfm-slim-ifd-elemental-addr = [00 00 20 02 17 02];
+        };
+
+  b) No Android quem inicializa o FM é um serviço vendor:
+        vendor/etc/init/init.qti.fm.rc -> service fm_dl /vendor/bin/init.qti.fm.sh
+        o .sh faz: echo 1 > /sys/module/radio_iris_transport/parameters/fmsmd_set
+                    /vendor/bin/fm_qsoc_patches <version> <mode>
+     Ou seja: driver de transporte (radio_iris_transport / btfmslim) + um
+     binário proprietário (fm_qsoc_patches) que baixa patches e calibração no
+     core de FM. Há ainda sns_fmv (sensor virtual de FM) via SSC, que não é
+     necessário para o rádio em si.
+
+  c) O que o kernel mainline TEM (verificado no .config e no fonte):
+        CONFIG_SLIMBUS=y, CONFIG_SLIM_QCOM_NGD_CTRL=m
+        drivers/slimbus/{core,messaging,sched,stream,qcom-ngd-ctrl}.c
+     Ou seja: o barramento Slimbus e o controlador QCOM NGD existem — metade do
+     caminho está pronta e é justamente a parte difícil do barramento.
+
+  d) O que o mainline NÃO tem (verificado por busca):
+        drivers/media/radio/ -> nenhum driver iris/slim/qcom (só USB/ISA)
+        drivers/bluetooth/   -> nada de btfm/slim; btqca.c não menciona btfmslim
+     Faltam os dois drivers do downstream: btfmslim (ponte Slimbus<->FM/BT) e
+     radio-iris (transporte FM, que cria o char device e recebe o firmware do
+     fm_qsoc_patches).
+
+  e) Escopo se retomarmos:
+        1. portar btfmslim_slave + btfmslim + radio-iris-transport do
+           kernel-msm do Motorola (drivers/media/radio/) para o 7.3;
+        2. DT: nó slimbus (NGD) + btfmslim_codec com os elemental-addr acima;
+        3. userspace: fm_qsoc_patches é binário Android (bionic) — ou rodá-lo
+           com shim de bionic, ou reimplementar o protocolo de patch (mais
+           arriscado, mexe em firmware de RF);
+        4. só então um app/cliente (v4l2 radio ou o framework do Android).
+     Riscos: patches de RF no chip de Wi-Fi/BT podem afetar Wi-Fi e BT se
+     errados; é a parte mais delicada do aparelho. Nada foi executado.
+
+  f) Situação: ADIADO a pedido do usuário em 28/10. O que já foi feito aqui é
+     a análise; nenhum arquivo do aparelho foi alterado por causa do FM.
