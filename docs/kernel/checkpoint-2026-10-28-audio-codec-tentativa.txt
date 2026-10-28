@@ -408,3 +408,49 @@ endereços de função).
 RESUMO DO QUE A RE ENTREGOU: confirmação de que o AFE e o voto de energia do
 DCODEC existem no firmware, e que o lado Linux (mainline) já faz o possível
 com esse contrato — o que falta está dentro do binário, sem símbolos.
+
+15. CAUSA RAIZ PROVÁVEL: VOTOS DE ENERGIA "macro" E "dcodec" SÃO PULADOS
+-------------------------------------------------------------------------
+Mecanismo encontrado no código do mainline (sound/soc/codecs/lpass-macro-common.c):
+
+    struct lpass_macro *lpass_macro_pds_init(struct device *dev)
+    {
+        if (!of_property_present(dev->of_node, "power-domains"))
+                return NULL;            // <-- pula TUDO silenciosamente
+        ...
+        l_pds->macro_pd  = dev_pm_domain_attach_by_name(dev, "macro");
+        pm_runtime_resume_and_get(l_pds->macro_pd);
+        l_pds->dcodec_pd = dev_pm_domain_attach_by_name(dev, "dcodec");
+        pm_runtime_resume_and_get(l_pds->dcodec_pd);
+    }
+
+Ou seja: se o nó do macro NÃO tem `power-domains`, o driver retorna NULL e
+NUNCA envia os votos de energia "macro" e "dcodec" ao ADSP. Nenhum erro é
+reportado — bate exatamente com o que medimos (todas as chamadas retornam 0).
+
+Nosso DT (`sm7150.dtsi`, nós rxmacro/txmacro) NÃO tem power-domains — verificado
+também em runtime: /proc/device-tree/soc@0/codec@62ee0000/power-domains AUSENTE.
+
+E o firmware do ADSP (ver seção 14) tem exatamente esses dois blocos:
+    LPASS_CORE_HW_MACRO_BLOCK   power request
+    LPASS_CORE_HW_DCODEC_BLOCK  power request   <-- o codec macro
+Sem o voto do DCODEC o AFE aceita o comando de start mas o bloco do codec não
+está energizado; o stream morre logo depois (EIO), sem erro no kernel.
+
+O QUE FALTA PARA CORRIGIR (é o próximo trabalho, não é DT):
+  Em outros SoCs o provedor desses domínios é um clock/power controller do
+  LPASS (ex.: kodiak/sc7280 usa <&lpass_hm LPASS_CORE_CC_..._GDSC> e
+  <&lpass_aon LPASS_AON_CC_..._GDSC>, com power-domain-names = "macro","dcodec").
+  No sm7150 o mainline NÃO TEM esse provedor:
+    - não existe drivers/clk/qcom/lpass*c-sm7150 nem lpasscc no sm7150.dtsi;
+    - a lista de drivers LPASS do mainline tem sc7180/sc7280/sc8280xp/sdm845/
+      sm6115/sm8250, nenhum sm7150.
+  Portanto a correção exige escrever o driver do LPASS clock/power controller do
+  sm7150 (modelo: lpasscc-sc7280.c + lpasscorecc-sc7180.c), expor os GDSCs
+  "macro" e "dcodec", adicionar o nó no DT e declarar power-domains nos macros.
+
+ESTA É A EXPLICAÇÃO MAIS CONSISTENTE PARA TODO O CONJUNTO DE MEDIÇÕES:
+  - kernel: todas as chamadas OK (porque os votos nunca são tentados);
+  - codec: nunca energizado (0 de 413 registradores);
+  - DSP: aceita e aborta (bloco DCODEC sem energia);
+  - nada disso aparece no dmesg (o skip é silencioso por design do driver).
