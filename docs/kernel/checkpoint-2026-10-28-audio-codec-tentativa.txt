@@ -491,3 +491,34 @@ PRÓXIMO PASSO (se retomar): portar a semântica do qcom,audio-ref-clk do vendor
 (codec-ext-clk-src = 9) para o caminho de voto do q6afe no mainline, ou
 implementar um provedor "audio-ref-clk" no DT do sm7150 que envie o voto do
 DCODEC com esse parâmetro. É o único ponto que separa o codec de ser energizado.
+
+17. INVESTIGAÇÃO DO VOTO: o que o ADSP espera (28/10, fechamento)
+-----------------------------------------------------------------
+Como o mainline vota (sound/soc/qcom/qdsp6/q6afe.c):
+    q6afe_vote_lpass_core_hw(dev, hw_block_id, client_name, &handle)
+      -> APR opcode AFE_CMD_REMOTE_LPASS_CORE_HW_VOTE_REQUEST
+         payload { hw_block_id, client_name[?] }
+      -> afe_apr_send_pkt(...); em falha: "AFE failed to vote (%d)"
+  hw_block_id 102 (MACRO) passa; 103 (DCODEC) estoura -ETIMEDOUT.
+
+O firmware do ADSP trata esses votos via NPA (Node Power Architecture):
+    npa_create_sync_client(resource_name, client_name, client_type)
+    LPASS_CORE_HW_MACRO_BLOCK / LPASS_CORE_HW_DCODEC_BLOCK power request
+  Não há, nas strings do firmware, uma lista estática de client_name aceitos —
+  a validação é em runtime, via NPA.
+
+O que o vendor faz e o mainline não:
+    lpass_core_hw_vote { compatible = "qcom,audio-ref-clk";
+                         qcom,codec-ext-clk-src = <9>; }
+  Esse provedor não existe no mainline (procurei "audio-ref-clk" e
+  "codec-ext-clk-src" em todo o fonte: zero ocorrências). É ele que envia o
+  voto do DCODEC com o parâmetro que o ADSP aceita.
+
+CONCLUSÃO: o ponto de falha está isolado e nomeado — o voto
+LPASS_CORE_HW_DCODEC_BLOCK. Para fechar seria preciso reproduzir o contrato do
+qcom,audio-ref-clk do vendor (que não é open source) ou fazer RE do caminho NPA
+no firmware (Hexagon, sem símbolos). Não há mais experimento de DT/kernel
+barato que mude esse quadro.
+
+ESTADO FINAL: aparelho na etapa 10 (codec atacha, card registra), módulos
+originais, nada gravado em partição.
