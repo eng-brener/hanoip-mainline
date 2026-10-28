@@ -33,9 +33,15 @@ decisão sua · [—] só código/config ao vivo.
     e fora do DT do U-Boot.
     Precisa: [REBUILD U-Boot (DT)] + [—].
 
-1.4 GPS / GNSS
-    Estado: nunca iniciado. Depende do modem (QMI) + geoclue.
-    Precisa: [—] + modem funcional (ver 1.5). Nenhum hardware extra.
+1.4 GPS / GNSS — SERVIÇO ENCONTRADO EM 28/10 (docs/kernel/LEVANTAMENTO-GPS.md)
+    Estado: o motor de GNSS está DENTRO da imagem `modem` (não há firmware
+    separado) e o modem anuncia o serviço LOC no QRTR:
+      "16 (0x10) version 2 node 0 port 127 — Location service (~ PDS v2)".
+    Já funciona: qmicli -d qrtr://0 --loc-get-operation-mode (standalone) e
+    --loc-start ("started location tracking, session id 0").
+    Falta: FIX (precisa de céu — coletor de 10 min deixado em /tmp/loc2.log) e
+    a integração com o sistema (gpsd/geoclue). Nenhum rebuild necessário.
+    Precisa: [—] teste na janela/rua + ponte para o Geoclue.
 
 1.5 MODEM: CHAMADAS, SMS E DADOS MÓVEIS
     Estado: o modem sobe (state=running) e o firmware carrega, mas chamada,

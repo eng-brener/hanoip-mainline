@@ -1,5 +1,25 @@
 # Handoff — Moto G60 hanoip mainline
 
+## SESSÃO 28/10/2026 — GPS: SERVIÇO LOC ENCONTRADO
+
+### G. GNSS/QMI_LOC SOBRE QRTR (docs/kernel/LEVANTAMENTO-GPS.md)
+    Android de base: NÃO existe firmware de GNSS separado — o motor está dentro
+    da imagem `modem` (MPSS); o userspace é o QTI GNSS HAL 2.1 (HIDL), que não
+    serve no Linux. Nenhum nó de GNSS no DT do Android.
+    No Linux o caminho é QMI_LOC sobre QRTR, e o kernel já tem tudo (QRTR=y,
+    QRTR_SMD=m, QCOM_SMEM=y). O modem anuncia:
+      qrtr-lookup -> 16 (0x10) version 2 node 0 port 127 "Location service (~PDS v2)"
+    FUNCIONA: qmicli -d qrtr://0 --loc-get-operation-mode -> standalone
+              qmicli -d qrtr://0 --loc-start -> "started location tracking (session 0)"
+    NÃO AINDA: position-report e SV-info dão timeout = sem visão de céu (o
+    transporte responde na hora no get-operation-mode, então não é canal).
+    Coletor de 10 min em /tmp/loc2.log (--loc-follow-position-report) para
+    testar com o aparelho na janela.
+    Armadilhas: --loc-set-nmea-types rejeita nomes conhecidos (enum não exposto;
+    não é preciso para posição) e pkill -f com o padrão do qmicli mata o próprio
+    SSH (matar por PID).
+    Falta: fix na janela + ponte para Geoclue/gpsd + serviço systemd.
+
 ## SESSÃO 28/10/2026 — VENUS (decode de vídeo) + NOVO PRE-GOLD
 
 ### V. VENUS LIGADO E VALIDADO — NOVO PAR DE BOOT (11:33)
