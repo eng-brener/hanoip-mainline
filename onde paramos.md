@@ -249,6 +249,30 @@
       backlight de teclado que não existe; 0 faults de GPU/IOMMU.
     Menores: o spam "disallowed SPMI write to 0x6046" (RTC, não GPU — remover
     allow-set-time do DT).
+### 19. SENSORES NO KALI — rotação corrigida (docs/kernel/LEVANTAMENTO-SENSORES.md)
+    Os sensores NÃO estão em /sys/bus/iio/devices (lá só os ADCs do PMIC):
+    caminho real = ADSP -> fastrpc -> hexagonrpcd -> libssc -> iio-sensor-proxy.
+    ROTAÇÃO (bug real, medido com leitor próprio compilado contra libssc):
+      libssc avisa "Mount matrix provided by firmware is all 0, falling back to
+      identity"; com identidade, em retrato o eixo y sai +9.77 (esperado -9.81)
+      e o proxy conclui "bottom-up" -> compositor vira a tela 180 graus.
+      CORREÇÃO (sem rebuild): ACCEL_MOUNT_MATRIX="-1,0,0;0,-1,0;0,0,1" no device
+      misc /dev/fastrpc-adsp via /etc/udev/rules.d/99-hanoip-ssc.rules.
+      Validado: em retrato o proxy reporta "normal"; usuário confirmou a tela
+      correta com a sessão desbloqueada.
+    PROXIMIDADE: NÃO estava invertida (tampada=1, livre=0) — a sensação vinha da
+    tela virada. LUZ: sempre funcionou (75-85 lux).
+    INTERMITÊNCIA: no suspend/resume o systemd para/inicia o iio-sensor-proxy
+    (o hook hanoip-adsp desliga o ADSP antes do s2idle); após o resume os três
+    sensores voltaram sem intervenção. A tela de BLOQUEIO não segue a rotação
+    de propósito (PIN não gira) — bloquear com o aparelho girado deixa a tela
+    de bloqueio girada, e isso não é sensor quebrado.
+    ABERTO (não é sensor): a tela de bloqueio aparece 180 graus girada em relação
+    à sessão desbloqueada mesmo bloqueando em retrato; só existe um compositor
+    (phoc) e o socket do greeter é órfão. Próximo teste sugerido: reiniciar a
+    sessão gráfica (logoff/login) para o phosh recriar tudo com a matriz nova —
+    não feito sem autorização (exige o PIN do usuário).
+
 ### 17. CPU 100% — FRENTE FECHADA (28/10 ~10:00)
     Levantamento completo (docs/kernel/LEVANTAMENTO-CPU-100.md, seções 7-8):
       boot 16,1 s (era 3min19s; Plymouth mascarado)
