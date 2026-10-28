@@ -202,3 +202,35 @@ f) Caminho sugerido para retomar: comparar sound/soc/codecs/wcd937x.c e
    focando em: configuração de portas/CFG do SoundWire no hw_params, cadeia
    DAPM de playback (HPH/EAR), e tratamento do clock/bank. É patch de driver,
    não de device tree.
+
+10. COMPARAÇÃO DE DRIVERS: wcd937x x wcd938x (28/10)
+----------------------------------------------------
+Objetivo: testar a hipótese "o wcd937x só conhece o caminho APM; o wcd938x
+funciona em q6afe". Resultado: a hipótese NÃO se confirma no código.
+
+  hw_params SoundWire (montagem do stream):
+    wcd937x_sdw_hw_params e wcd938x_sdw_hw_params são funcionalmente idênticos
+    (ch_count, bps=1, frame_rate, direction, SDW_STREAM_PCM, sdw_stream_add_slave
+    com port_config e active_ports). Não há diferença de modelo.
+  wrappers de hw_params (wcd93xx_codec_hw_params): idênticos.
+  DAI ops: os dois expõem hw_params + hw_free + set_stream, mesma estrutura
+    (937x usa wcd937x_codec_set_sdw_stream local; 938x delega ao _sdw.c).
+  Parse do mapa de portas/canais (qcom,rx/tx-port-mapping e -channel-mapping):
+    mesmo código; só muda a constante MAX_SWR_PORTS.
+  Tamanho/riqueza: 937x tem 171 widgets (938x 195) e 7 menções a compander
+    (938x 25), mas a cadeia de playback (HPH/EAR/AUX) existe nos dois.
+
+Conclusão desta comparação: não existe "peça faltando" no caminho de stream do
+wcd937x em relação ao wcd938x. A diferença entre os drivers é de cobertura
+analógica/controles, não de infraestrutura de SoundWire/q6afe. Portanto o
+abort do stream (~0,5 s, EIO) não se explica por essa comparação.
+
+O QUE SOBRA COMO CAUSA PROVÁVEL (para a próxima sessão):
+  a) estado analógico do codec: falta confirmar, registro a registro, que o
+     caminho HPH/EAR é energizado durante o stream. Teste sem rebuild: usar
+     /sys/kernel/debug/regmap (se habilitado) para dump antes/durante/depois de
+     um aplay e comparar com o esperado (EAR_RDAC, RX_EAR, CLSH);
+  b) interação com o firmware do ADSP: o vendor usa techpack próprio (não
+     publicado) e o DSP aceita todos os comandos do mainline sem reportar erro;
+  c) no card, o BE do codec usa RX_CODEC_DMA_RX_0; o sm8250-mtp usa o mesmo e
+     funciona com wcd938x — então a infraestrutura está ok.
