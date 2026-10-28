@@ -43,10 +43,20 @@ decisão sua · [—] só código/config ao vivo.
     a integração com o sistema (gpsd/geoclue). Nenhum rebuild necessário.
     Precisa: [—] teste na janela/rua + ponte para o Geoclue.
 
-1.5 MODEM: CHAMADAS, SMS E DADOS MÓVEIS
-    Estado: o modem sobe (state=running) e o firmware carrega, mas chamada,
-    SMS, dados e validação de SIM (nos dois slots) nunca foram testados.
-    Precisa: [HW: chip SIM com dados] + [—] (QMI/ModemManager, APN).
+1.5 MODEM: CHAMADAS, SMS E DADOS — INVESTIGADO EM 28/10
+    (docs/kernel/LEVANTAMENTO-MODEM.md)
+    O MODEM FUNCIONA no Linux: remoteproc1 carrega modem.mdt, o ModemManager
+    1.24.2 lê firmware (MPSS.AT.4.4-00333-RENNELL), IMEI, h/w rev 10000,
+    modos 2G/3G/4G e todas as bandas; ports qrtr0 (qmi) + rmnet_ipa0 (net),
+    drivers ipa+qrtr, plugin qcom-soc. Estado atual: failed/sim-missing (não há
+    chip) e por isso --enable é recusado (WrongState).
+    Serviços QMI presentes: WDS (dados), NAS (registro), WMS (SMS), Voice v2
+    (chamadas), UIM (SIM), WDA, CSVT. O MM tem API de voz completa.
+    BLOQUEIO: só o SIM. Falta validar registro/SMS/APN/chamada com chip.
+    NÃO VAI FUNCIONAR NEM COM SIM: VoLTE/IMS — o Android usa daemons ims_*
+    (rtp/qmi/data/rcs) que não existem no Linux; chamada dependeria de CS
+    fallback 2G/3G. Em operadora VoLTE-only, chamada não sai.
+    Precisa: [HW: chip SIM] + [—] APN/testes. Sem rebuild.
 
 1.6 DECODE DE VÍDEO (Venus) — FEITO EM 28/10 (ver PRE-GOLD-20261028-1133)
     Estado: HABILITADO E VALIDADO para H.264. /dev/video0 (decoder) anuncia

@@ -1,5 +1,23 @@
 # Handoff — Moto G60 hanoip mainline
 
+## SESSÃO 28/10/2026 — MODEM INVESTIGADO (sem chip)
+
+### M. CHAMADAS/SMS/DADOS (docs/kernel/LEVANTAMENTO-MODEM.md)
+    Investigação sem SIM, a pedido. O modem FUNCIONA no Linux:
+      remoteproc1 = modem.mdt running; ModemManager 1.24.2 enumera:
+      MPSS.AT.4.4-00333-RENNELL_GEN_PACK-3.475832.24, IMEI lido, h/w rev 10000,
+      gsm-umts+lte com lista completa de bandas, ports qrtr0 (qmi) e
+      rmnet_ipa0 (net), drivers ipa+qrtr, plugin qcom-soc.
+      Estado: failed/sim-missing -> --enable recusado (WrongState). rmnet DOWN.
+    Serviços QMI no QRTR: 1 WDS, 2 DMS, 3 NAS, 5 WMS (SMS), 9 Voice v2,
+      11 UIM, 26 WDA, 29 CSVT — todos os que chamada/SMS/dados precisam.
+    Android de base: qcrild+qcrild2 (QMI RIL, DSDS), baseband M7150_25.333.01.85R,
+      e pilha IMS completa (ims_rtp_daemon, imsqmidaemon, imsdatadaemon,
+      imsrcsd) que NÃO existe no Linux.
+    CONSEQUÊNCIA: VoLTE não funciona nem com SIM; chamada dependeria de CS
+      fallback 2G/3G. Com SIM: registro/SMS/APN/chamada devem funcionar (MM tem
+      API de voz completa) — checklist pronto no doc, nada executado.
+
 ## SESSÃO 28/10/2026 — GPS: SERVIÇO LOC ENCONTRADO
 
 ### G. GNSS/QMI_LOC SOBRE QRTR (docs/kernel/LEVANTAMENTO-GPS.md)
