@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 11: voto de energia do DCODEC (o que o driver pula).
+ *
+ * Mecanismo (ver seção 15 do checkpoint): lpass_macro_pds_init() retorna NULL
+ * quando o nó não tem power-domains, então os votos "macro" e "dcodec" nunca
+ * vão ao ADSP. O firmware do ADSP tem exatamente LPASS_CORE_HW_MACRO_BLOCK e
+ * LPASS_CORE_HW_DCODEC_BLOCK, e o clk_summary mostra LPASS_HW_DCODEC com
+ * enable=0.
+ *
+ * Esta variante declara o clock "dcodec" nos dois macros (o driver já faz
+ * devm_clk_get_optional(dev, "dcodec")), e o kernel desta rodada foi patchado
+ * para habilitá-lo (clk_prepare_enable) no probe. Base: etapa10.
+ */
+#include "sm7150-motorola-hanoip-audio-etapa10.dts"
+
+&rxmacro {
+	clocks = <&q6afecc LPASS_CLK_ID_RX_CORE_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&q6afecc LPASS_CLK_ID_RX_CORE_NPL_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&q6afecc LPASS_HW_MACRO_VOTE LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&q6afecc LPASS_HW_DCODEC_VOTE LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&vamacro>;
+	clock-names = "mclk", "npl", "macro", "dcodec", "fsgen";
+};
+
+&txmacro {
+	clocks = <&q6afecc LPASS_CLK_ID_TX_CORE_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&q6afecc LPASS_CLK_ID_TX_CORE_NPL_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&q6afecc LPASS_HW_MACRO_VOTE LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&q6afecc LPASS_HW_DCODEC_VOTE LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&vamacro>;
+	clock-names = "mclk", "npl", "macro", "dcodec", "fsgen";
+};

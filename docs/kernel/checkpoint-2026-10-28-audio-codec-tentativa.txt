@@ -454,3 +454,40 @@ ESTA É A EXPLICAÇÃO MAIS CONSISTENTE PARA TODO O CONJUNTO DE MEDIÇÕES:
   - codec: nunca energizado (0 de 413 registradores);
   - DSP: aceita e aborta (bloco DCODEC sem energia);
   - nada disso aparece no dmesg (o skip é silencioso por design do driver).
+
+16. VOTO DCODEC: TENTADO E REJEITADO PELO ADSP (timeout) — 28/10
+----------------------------------------------------------------
+Patch aplicado (árvore do kernel, commits locais):
+  - lpass-rx-macro.c / lpass-tx-macro.c: habilitar o voto "macro" e depois o
+    voto "dcodec" no probe (os dois clocks eram obtidos e NUNCA habilitados);
+  - DT etapa11: rxmacro/txmacro com clocks "mclk","npl","macro","dcodec","fsgen"
+    (o "dcodec" = LPASS_HW_DCODEC_VOTE, id 103).
+  Módulos buildados, instalados com backup e carregados por reboot.
+
+RESULTADO (dmesg):
+    tx_macro 62ec0000.codec: error -ETIMEDOUT: failed to enable dcodec vote
+    rx_macro 62ee0000.codec: error -ETIMEDOUT: failed to enable dcodec vote
+    tx_macro/rx_macro: probe with driver ... failed with error -110
+  consequência: sem macro, não há SoundWire e o codec nem enumera.
+  clk_summary: LPASS_HW_DCODEC continua enable=0.
+
+Isso é a MESMA falha que o firmware do ADSP declara em string:
+    AFEDeviceDriver.cpp:LPASS_CORE_HW_DCODEC_BLOCK power request failed
+O voto "macro" (LPASS_CORE_HW_MACRO_BLOCK) passa; o do DCODEC estoura timeout.
+
+Diferença para o vendor (stock DT):
+    lpass_core_hw_vote { compatible = "qcom,audio-ref-clk";
+                         qcom,codec-ext-clk-src = <9>; }
+  ou seja, o vendor não vota "LPASS_HW_DCODEC" por um clock genérico do q6afe
+  como o mainline faz: usa o audio-ref-clk com um "codec-ext-clk-src" próprio.
+  É esse contrato (o parâmetro do voto) que o ADSP espera e que o mainline não
+  replica — daí o timeout.
+
+ESTADO: módulos originais restaurados e boot de volta na etapa 10; codec atacha
+e card registra (verificado: sdw Attached/Attached, card=1). Nada gravado em
+partição.
+
+PRÓXIMO PASSO (se retomar): portar a semântica do qcom,audio-ref-clk do vendor
+(codec-ext-clk-src = 9) para o caminho de voto do q6afe no mainline, ou
+implementar um provedor "audio-ref-clk" no DT do sm7150 que envie o voto do
+DCODEC com esse parâmetro. É o único ponto que separa o codec de ser energizado.
