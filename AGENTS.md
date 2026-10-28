@@ -1,3 +1,9 @@
+# REGRA DE CONDUÇÃO (ordem do usuário, 2026-10-28)
+Quando o usuário mandar "ir até o fim" / "continuar até o fim", NÃO parar no
+meio para perguntar, resumir ou devolver o aparelho: seguir trabalhando até
+concluir o objetivo ou esgotar as hipóteses técnicas, reportando só no final.
+Parar no meio depois dessa ordem é considerado falha de execução.
+
 # Device safety
 
 The user forbids flashing or writing any phone partition. Preserve this rule
