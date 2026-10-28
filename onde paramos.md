@@ -232,6 +232,16 @@
         ligada, 180 MHz apagada (validado nos dois sentidos + teste de deriva)
       recovery: NÃO exercitado de propósito (exigiria command stream inválido;
         o hangcheck está armado em 250 ms e não acusa com carga normal)
+    INTERFACE DO KALI USA A GPU? (seção 12 do doc) SIM:
+      phoc (wlroots, backend DRM/GBM) compõe na GPU — 5 fds em renderD128,
+      sem swrast/llvmpipe, nenhum app em software;
+      phosh (GTK3) desenha em software e o compositor compõe na GPU (normal);
+      interação medida: 586 vblanks em 10 s = 58,6 Hz com dpms=On;
+      tela parada = 0 vblanks (correto, sem dano = sem commit);
+      erros: phoc "Atomic commit failed: Device or resource busy" 44 no boot,
+      TODOS em transições de tela (login, apagar/acender, resume), ~0 em uso
+      contínuo; assertion de layer-shell do phoc; gsd-power reclamando de
+      backlight de teclado que não existe; 0 faults de GPU/IOMMU.
     Menores: o spam "disallowed SPMI write to 0x6046" (RTC, não GPU — remover
     allow-set-time do DT).
 ### 17. CPU 100% — FRENTE FECHADA (28/10 ~10:00)

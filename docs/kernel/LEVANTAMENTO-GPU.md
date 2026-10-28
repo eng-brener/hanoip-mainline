@@ -301,3 +301,58 @@ medição meu): as GDSC da GPU existem E desligam quando ociosa.
     Ou seja: WebRender/WebGL do Firefox usam a GPU de verdade, não llvmpipe.
     O compositor da sessão também é acelerado: phoc mantém 5 descritores
     abertos em /dev/dri/renderD128.
+
+
+12. O KALI/PHOSH ESTÁ USANDO A GPU NA INTERFACE? (28/10, medido)
+----------------------------------------------------------------
+Resposta curta: SIM no que importa (composição e apresentação), com uma
+nuance de arquitetura que é do Phosh e não do nosso port.
+
+12.1 Quem renderiza o quê
+    phoc (compositor, wlroots) -> GPU
+      WLR_BACKENDS=drm,libinput (backend DRM/GBM, sem forçar software)
+      5 descritores abertos em /dev/dri/renderD128
+      libs mapeadas: libEGL, libGLESv2, libgbm, libdrm, libgallium,
+      libvulkan — swrast/llvmpipe: 0 ocorrências
+    phosh (a "cara" da interface, GTK3) -> SOFTWARE
+      não abre /dev/dri; desenha com cairo em wl_shm e o phoc compõe na GPU.
+      Isso é o comportamento normal do Phosh (GTK3), não um defeito do port.
+    phosh-mobile-settings (GTK4) -> GPU (5 fds em renderD128)
+    Nenhum processo do sistema tem libgallium mapeada sem renderD128 aberto,
+    ou seja: nenhum app caiu em llvmpipe.
+
+12.2 Taxa de apresentação (prova de que a UI sai na GPU a 60 Hz)
+    perf stat -a -e drm:drm_vblank_event -- sleep 10
+      tela parada .......... 0 vblanks (correto: sem dano, o compositor não
+                             faz commit; não é travamento)
+      usuário interagindo .. 586 vblanks em 10,008 s = 58,6 Hz
+      dpms=On no início e no fim da medição; GPU em 355 MHz (piso)
+    Ou seja: pipeline cliente -> compositor -> painel entregando ~60 Hz.
+
+12.3 Carga de GPU durante o uso normal
+    Interação de 20 s: 96 transições de OPP, GPUSS 41,9 -> 44,5 C, GPU presa
+    no piso de 355 MHz (a UI é leve). Conteúdo pesado sobe sozinho: Firefox
+    com WebGL sustentou 800 MHz e 55 C (seção 11.4).
+    phoc consome ~10% de um núcleo compondo 1080x2460 a 60 Hz com a tela
+    parada; phosh fica em 0% quando ninguém mexe na interface.
+
+12.4 Erros encontrados nos logs (nenhum de renderização)
+    a) phoc: "[backend/drm/atomic.c:82] connector DSI-1: Atomic commit
+       failed: Device or resource busy"  — 44 no boot, TODOS concentrados em
+       transições de estado de tela: 10:05 (3, login do greeter), 10:12 (8,
+       entrada na sessão), 10:15 (2), 10:38 (17) e 10:39 (13) (suspend/resume
+       e os testes de apagar/acender a tela). Durante uso contínuo: ~0.
+       Impacto: o commit é rejeitado e o phoc repete; a imagem volta normal.
+       Suspeita: disputa com o fbdev (DRM_FBDEV_EMULATION=y + framebuffer de
+       firmware mapeado pelo nosso patch de handoff) ou commit durante reset
+       de resume. É cosmético hoje, mas é o único item que eu investigaria
+       se aparecer tela piscando.
+    b) phoc: "phoc_layout_transaction_notify_layer_configured: assertion
+       'self->pending_layer_configures > 0' failed" (10:27, duas vezes) —
+       bug interno de contabilidade de layer-shell do phoc.
+    c) gsd-power: "failed to set dim kbd backlight" + "assertion 'max > min'
+       failed" repetindo — não existe backlight de teclado neste aparelho;
+       ruído puro, dá para silenciar nas configurações de energia.
+    d) phosh-mobile-settings: "Failed to find 0x... handle in toplevel
+       tracker" — bug do app ao mapear toplevel.
+    e) dmesg: 0 faults de adreno/IOMMU, 0 erros de DSI/painel nesse boot.
