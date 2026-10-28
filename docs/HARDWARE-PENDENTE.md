@@ -42,9 +42,12 @@ decisão sua · [—] só código/config ao vivo.
     SMS, dados e validação de SIM (nos dois slots) nunca foram testados.
     Precisa: [HW: chip SIM com dados] + [—] (QMI/ModemManager, APN).
 
-1.6 DECODE DE VÍDEO (Venus)
-    Estado: não habilitado. Reprodução de vídeo cai em software.
-    Precisa: [REBUILD] (DT + firmware) e depois validação.
+1.6 DECODE DE VÍDEO (Venus) — FEITO EM 28/10 (ver PRE-GOLD-20261028-1133)
+    Estado: HABILITADO E VALIDADO para H.264. /dev/video0 (decoder) anuncia
+    H264/VP8/VP9/HEVC/MPEG2, firmware fw_level 0x18, zero erros. Prova: clipe
+    1080p usou 3,80 s de cpu_user no V4L2 contra 10,80 s no avdec_h264 (~2,8x).
+    Ainda FALTA validar com clipe real: VP8, VP9, HEVC, MPEG2.
+    E falta testar o ENCODER (/dev/video1), que existe mas nunca foi usado.
 
 1.7 MICROSD (slot sdhc_2)
     Estado: NÃO usar cartão na variante atual. O DT stock pede 2,95 V no vdd e
@@ -118,6 +121,15 @@ decisão sua · [—] só código/config ao vivo.
 3.6 GPU (Adreno 618)
     Fechada: GL 4.6, GLES 3.2, Vulkan 1.3, 800 MHz sustentado, trilhas
     desligando em idle. Nada pendente de hardware.
+
+3.7b PHOC TRAVA NO LOGIN (não é hardware, mas dói)
+    Estado: em alguns logins o phoc falha commits com "Device or resource busy"
+    e chega a imprimir "Timeout (3000ms) expired with N configures pending",
+    deixando a sessão sem desenhar até reiniciar. Já aconteceu em 28/10 11:32.
+    Origem confirmada no kernel: drm_atomic_helper_setup_commit exige que o
+    commit anterior tenha flip_done. fbdev/fbcon já foi descartado por teste.
+    Precisa: [—] investigação (candidato: commit herdado do greeter no handover
+    de DRM master).
 
 3.7 BLUETOOTH
     Ativo (funcionou nas imagens GOLD). Não há pendência de hardware conhecida,
