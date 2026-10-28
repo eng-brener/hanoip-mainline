@@ -1,5 +1,16 @@
 # Handoff — Moto G60 hanoip mainline
 
+## PLANO FINAL DOS PENDENTES — docs/PLANO-FINAL-PENDENTES.md
+
+### P. Sequência acordada (FM fora, adiado)
+    Fase 1: (1) codec de áudio [pinctrl LPI 14->32 + DTS] e (2) phoc no login.
+    Fase 2: (3) venus VP9/HEVC/encoder, (4) OTG com pendrive, (5) carga on boot.
+    Fase 3: (6) GPS fix+ponte, (7) modem com SIM, (8) microSD (tensão 2,95 V).
+    Fase 4: (9) câmera, (10) digital — as duas grandes.
+    Fase 5: (11) display FIFO/flicker, (12) NFC app/escrita, (13) BT A2DP/HFP.
+    Fase 6: (14) MTP, (15) Waydroid (binderfs), (16) tools Kali — decisões.
+    Cada item tem passos, critério de aceite e risco no documento.
+
 ## SESSÃO 28/10/2026 — ÁUDIO INVESTIGADO (mic / earpiece / jack / FM)
 
 ### A. ÁUDIO: o que falta é o CODEC, não "um patch"
