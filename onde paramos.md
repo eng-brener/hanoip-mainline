@@ -267,11 +267,16 @@
     sensores voltaram sem intervenção. A tela de BLOQUEIO não segue a rotação
     de propósito (PIN não gira) — bloquear com o aparelho girado deixa a tela
     de bloqueio girada, e isso não é sensor quebrado.
-    ABERTO (não é sensor): a tela de bloqueio aparece 180 graus girada em relação
-    à sessão desbloqueada mesmo bloqueando em retrato; só existe um compositor
-    (phoc) e o socket do greeter é órfão. Próximo teste sugerido: reiniciar a
-    sessão gráfica (logoff/login) para o phosh recriar tudo com a matriz nova —
-    não feito sem autorização (exige o PIN do usuário).
+    DECISÃO DO USUÁRIO (28/10): rotação DESLIGADA de vez, com a tela de bloqueio
+    MANTIDA. Estado verificado por ele ("Tudo certo" nos dois estados):
+      orientation-lock=true, lock-enabled=true, disable-lock-screen=false,
+      DSI-1 transform=normal, iio-sensor-proxy ativo (luz/prox seguem).
+    Motivo: com rotação automática o phosh reaplicava transform 180 em alguns
+    ciclos de lock/resume (mesmo com o sensor em "normal"), deixando sessão e
+    bloqueio invertidos entre si. Guarda de login para não voltar virado:
+    /home/kali/.config/autostart/hanoip-orientation.desktop ->
+    /home/kali/.local/bin/hanoip-orientation (força transform normal).
+    A matriz ACCEL_MOUNT_MATRIX continua aplicada caso a rotação seja religada.
 
 ### 17. CPU 100% — FRENTE FECHADA (28/10 ~10:00)
     Levantamento completo (docs/kernel/LEVANTAMENTO-CPU-100.md, seções 7-8):

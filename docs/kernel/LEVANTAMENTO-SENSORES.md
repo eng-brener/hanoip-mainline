@@ -75,14 +75,28 @@ Estado: acelerômetro (rotação), luz e proximidade FUNCIONANDO. A rotação es
      com o aparelho girado, a tela de bloqueio fica girada — não é sensor
      quebrado.
 
-6. ITEM ABERTO (não é sensor)
------------------------------
-  Com o aparelho em retrato, bloqueado ou não, o compositor mantém
-  "Transform: 180" (lido com wlr-randr) e a orientação do sensor é "normal".
-  Desbloqueado o usuário confirma imagem correta; a tela de BLOQUEIO aparece
-  180 graus girada em relação a ela, mesmo com o aparelho em retrato no
-  momento do bloqueio. Só existe UM compositor (phoc 4532, usuário kali) e o
-  socket do greeter (/run/user/996/wayland-0) é órfão — nenhum outro processo
-  desenha a tela. Hipótese a testar: reiniciar a sessão gráfica (logoff/login)
-  para que phosh recrie tudo já com a matriz corrigida. Não foi feito sem
-  autorização porque exige o PIN do usuário.
+6. DECISÃO DO USUÁRIO (28/10): ROTAÇÃO DESLIGADA
+-----------------------------------------------
+  O usuário pediu para desligar a rotação e deixar a tela certa. Estado final,
+  verificado por ele ("Tudo certo" — bloqueio e sessão):
+    orientation-lock (gsd/desktop) .... true   (rotação automática desligada)
+    lock-enabled ...................... true   (tela de bloqueio ATIVA)
+    disable-lock-screen ............... false  (bloqueio de volta)
+    DSI-1 transform ................... normal  (era 180 e virava a tela)
+    iio-sensor-proxy .................. active  (luz e proximidade continuam)
+
+  Por que precisou travar: com a rotação automática ligada o phosh voltava a
+  aplicar "Transform: 180" em alguns ciclos de lock/resume, mesmo com a
+  orientação do sensor em "normal" (medido com wlr-randr no momento). Com
+  transform normal a sessão e o bloqueio ficam os dois corretos; com 180
+  ficavam invertidos entre si (um certo, outro errado, alternando).
+
+  Guarda de login: /home/kali/.config/autostart/hanoip-orientation.desktop ->
+  /home/kali/.local/bin/hanoip-orientation, que confere o transform por 12 s
+  após o login e força "normal" se o phosh tiver aplicado 180. Sem isso, um
+  relogin poderia trazer a tela virada de volta.
+
+  Consequência aceita: o aparelho não gira sozinho (uso sempre em retrato). O
+  sensor de luz continua funcionando (autobrightness), assim como a
+  proximidade. A matriz ACCEL_MOUNT_MATRIX da seção 2 continua aplicada: se um
+  dia a rotação for reativada, ela já parte do sinal correto.
