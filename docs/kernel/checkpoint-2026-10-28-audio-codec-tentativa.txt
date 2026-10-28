@@ -136,3 +136,43 @@ A árvore de build foi devolvida ao estado v4 (188 commits, limpa).
 
 ESTADO FINAL DA SESSÃO: aparelho rodando o PRE-GOLD (cluster-idle + venus,
 kernel v3-teo), verificado. Nada gravado em partição.
+
+8. ETAPA 5 — O PINO CERTO: LPI 6 (CODEC ATACHA, CARD REGISTRA)
+--------------------------------------------------------------
+Aritmética que resolveu (stock x mainline):
+  stock: lpi_pinctrl tambem em 0x62b40000, mas com 32 gpios e offsets
+         0x0..0x1f000; o dtsi mainline mapeia 0x62b52000 + 0xe000 e anota que
+         0x62b40000 + 0x12000 (18 páginas) é o bloco do SSC.
+  => vendor gpio N (N >= 18) == mainline pin (N - 18)
+  => reset do WCD = vendor gpio24 = mainline pin 6
+  => endereço: 0x62b40000 + 24*0x1000 = 0x62b58000 == 0x62b52000 + 6*0x1000
+  Corrobora: sm7150-xiaomi-sweet.dts usa reset-gpios = <&lpass_tlmm 6>.
+  E explica o Oops anterior: mainline pin 24 = 0x62b6a000, FORA da janela de
+  0xe000 — os "pinos 14..31" que eu tentei expor não existem naquele bloco.
+
+ETAPA 5 (sm7150-motorola-hanoip-audio-etapa5.dts): etapa1 + reset em
+<&lpass_tlmm 6> com estado "gpio6" (function gpio). Roda com o KERNEL DO
+PRE-GOLD — nenhum rebuild de kernel foi necessário.
+
+RESULTADO MEDIDO:
+  sdw:2:0:0217:010a:00:4: Attached
+  sdw:3:0:0217:010a:00:3: Attached
+  wcd937x_codec: bound nos dois escravos
+  card 0: G60 [Motorola Moto G60] registrado
+  controles novos: 'Headphone Jack', 'Mic Jack' (MBHC), 'EAR_RDAC Switch',
+                   'EAR_PA Volume', ADC1/2/3, 'TX DEC1 MUX', DMIC0..5
+  mixers de rota: 'RX_CODEC_DMA_RX_0 Audio Mixer MultiMedia1' e
+                  'MultiMedia1 Mixer TX_CODEC_DMA_TX_3'
+
+O QUE AINDA FALTA (próximo passo, não bloqueia o achado):
+  - Playback por hw:0,0 retorna EIO no write. O dmesg mostra o caminho I2S
+    (q6afe_i2s_port_prepare), sugerindo que o backend do alto-falante (amp
+    AW882xx) também entra ou é o único efetivo; falta montar o roteamento
+    correto (UCM): desligar 'SEC_MI2S_RX Audio Mixer MultiMedia1', ligar o
+    mixer do RX_CODEC_DMA_RX_0 e habilitar EAR_RDAC/EAR_PA.
+  - Captura (arecord) ainda não testada.
+  - Card fica ocupado por pipewire; para testar é preciso parar o pipewire.
+
+ESTADO DA SESSÃO: aparelho rodando etapa5 + kernel PRE-GOLD, com o codec
+atacado e o card registrado. Nada gravado em partição. O par de retorno
+conhecido continua work/PRE-GOLD-20261028-1133/.

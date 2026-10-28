@@ -1,5 +1,16 @@
 # Handoff — Moto G60 hanoip mainline
 
+## ÁUDIO: CODEC WCD937x ATACADO (28/10, fim da sessão)
+### O PINO ERA O 6, NÃO O 24
+    O stock numera 32 gpios cobrindo DOIS blocos (18 do SSC + 14 do AP);
+    vendor gpio24 == mainline lpass_tlmm pin 6 (0x62b58000, dentro da janela
+    0xe000). O sweet (mesmo SoC) usa exatamente <&lpass_tlmm 6>.
+    Com etapa5 (reset no pino 6, kernel do PRE-GOLD, SEM rebuild):
+      sdw:2:...:4 e sdw:3:...:3 = Attached; codec bound; card 0 G60 registrado;
+      controles 'Headphone Jack'/'Mic Jack' (MBHC), EAR_RDAC/EAR_PA, ADC1-3.
+    FALTA: playback dá EIO (roteamento DPCM/amp AW882xx) e a captura não foi
+    testada. Detalhes na seção 8 do checkpoint de áudio.
+
 ## TENTATIVA DE ÁUDIO (codec WCD937x) — 28/10, NÃO CONCLUÍDA
 ### (docs/kernel/checkpoint-2026-10-28-audio-codec-tentativa.txt)
     Aparelho RESTAURADO no PRE-GOLD (verificado: 7.3.0-sm7150, 109 módulos,
