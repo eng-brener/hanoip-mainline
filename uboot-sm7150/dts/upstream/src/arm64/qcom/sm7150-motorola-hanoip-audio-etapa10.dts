@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 10: clock CORRETO do macro RX.
+ *
+ * O sm7150.dtsi declara o rxmacro com os clocks do TX:
+ *     clocks = <&q6afecc LPASS_CLK_ID_TX_CORE_MCLK ...>,
+ *              <&q6afecc LPASS_CLK_ID_TX_CORE_NPL_MCLK ...>, ...
+ * (idêntico ao txmacro — copiar/colar). O clock do macro RX é
+ * LPASS_CLK_ID_RX_CORE_MCLK (59) / LPASS_CLK_ID_RX_CORE_NPL_MCLK (60); o vendor
+ * usa "rx_core_clk"/"rx_npl_clk" nesse macro.
+ *
+ * Consequência esperada: sem o MCLK do RX, o master SoundWire RX sobe (as
+ * chamadas retornam sucesso) mas o clock de áudio não existe, e o stream morre
+ * logo depois de começar — exatamente o EIO de ~0,5 s medido.
+ *
+ * Base: etapa9 (audio-routing). Só muda o clock do rxmacro.
+ */
+#include "sm7150-motorola-hanoip-audio-etapa9.dts"
+
+&rxmacro {
+	clocks = <&q6afecc LPASS_CLK_ID_RX_CORE_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&q6afecc LPASS_CLK_ID_RX_CORE_NPL_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&q6afecc LPASS_HW_MACRO_VOTE LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&vamacro>;
+};

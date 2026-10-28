@@ -290,3 +290,49 @@ ESTADO FINAL: aparelho no PRE-GOLD (cluster-idle + venus, kernel v3-teo).
 caminho do codec, que para no DSP. Nenhuma partição foi escrita em nenhuma
 etapa (só `fastboot boot`), exceto o --set-active=a autorizado pelo usuário
 para recuperar os slots após muitos ciclos de boot.
+
+12. ETAPA 10 — BUG REAL ENCONTRADO NO DT (clock do macro RX) E O QUE SOBRA
+--------------------------------------------------------------------------
+BUG CONFIRMADO E CORRIGIDO (é um defeito real do sm7150.dtsi, não do hanoip):
+  O nó `rxmacro: codec@62ee0000` declara
+      clocks = <&q6afecc LPASS_CLK_ID_TX_CORE_MCLK ...>,
+               <&q6afecc LPASS_CLK_ID_TX_CORE_NPL_MCLK ...>, ...
+  ou seja, os clocks do TX, copiados do txmacro. O macro RX deve usar
+  LPASS_CLK_ID_RX_CORE_MCLK (59) e RX_CORE_NPL_MCLK (60); o vendor declara
+  "rx_core_clk"/"rx_npl_clk" nesse macro.
+
+  Correção aplicada em sm7150-motorola-hanoip-audio-etapa10.dts (&rxmacro com
+  os clocks de RX). VERIFICAÇÃO em runtime (boot desta etapa):
+      LPASS_CLK_ID_RX_CORE_MCLK      19200000 Hz  enable=1  código@62ee0000
+      LPASS_CLK_ID_RX_CORE_NPL_MCLK  19200000 Hz  enable=1  código@62ee0000
+      dmesg: clk_id=782 e 783 (antes existiam apenas 780/781, do TX)
+  => a correção entrou em vigor. Mesmo assim o aplay continua com EIO.
+
+O QUE ISSO PROVA E O QUE SOBRA:
+  - o EIO não era o clock do macro RX (agora correto e o erro persiste);
+  - os 413 registradores do codec continuam SEM mudar durante o play
+    (diff = 0), enquanto alternar um kcontrol muda 62 -> o codec NÃO é
+    energizado pelo stream;
+  - a rota `audio-routing` do card É parseada (sm8250.c chama
+    qcom_snd_parse_of, que lê "audio-routing"), e mesmo assim o DAPM não
+    fecha o caminho;
+  - diferença estrutural encontrada: o wcd937x NÃO declara widgets de AIF
+    (SND_SOC_DAPM_AIF = 0), enquanto o wcd934x declara explicitamente
+    ("AIF1 PB"/"AIF1 CAP" via SND_SOC_DAPM_AIF_IN_E/OUT_E e liga nas rotas).
+    Sem esse widget, a ligação "WCD AIF Playback" -> RX1/RX2/RX3 não existe no
+    grafo DAPM, e por isso nenhum registro do codec é tocado.
+
+PRÓXIMO PASSO (patch de driver, não de DT):
+  adicionar ao wcd937x.c os widgets de AIF e as rotas correspondentes, no
+  modelo do wcd934x:
+      SND_SOC_DAPM_AIF_IN("AIF1 PB", "WCD AIF Playback", 0, SND_SOC_NOPM, 0, 0)
+      SND_SOC_DAPM_AIF_OUT("AIF1 CAP", "WCD AIF Capture", 0, SND_SOC_NOPM, 0, 0)
+  e rotas { "RX1", NULL, "AIF1 PB" }, { "RX2", NULL, "AIF1 PB" },
+  { "RX3", NULL, "AIF1 PB" }, { "AIF1 CAP", NULL, "ADC1_OUTPUT" } (idem 2/3).
+  Depois: rebuild de módulo (snd_soc_wcd937x) + teste de aplay/arecord.
+
+ESTADO DO APARELHO (ordem do usuário: NÃO reiniciar):
+  Rodando a etapa 10 (PRE-GOLD + variante de áudio com clock RX corrigido e
+  card só com o codec). Áudio segue: alto-falante ok (fora desta variante),
+  codec não energiza. Retorno seguro quando quiser: PRE-GOLD
+  (work/PRE-GOLD-20261028-1133), sem pressa.
