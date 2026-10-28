@@ -369,3 +369,42 @@ O QUE ISSO FECHA E O QUE RESTA:
     de ~0,5 s, sem reportar erro. Sem o techpack/audio do vendor (não
     publicado) ou engenharia reversa do firmware (Hexagon), não há caminho
     determinístico daqui.
+
+14. ENGENHARIA REVERSA DO FIRMWARE DO ADSP (28/10)
+--------------------------------------------------
+Material disponível (completo, 14 MB, 28 arquivos):
+  firmware.tar: firmware_mnt/image/adsp.mdt + adsp.b00..b26
+  firmware.tar: vendor/dsp/adsp/map_*_7150.adsp.prodQ.txt (mapas pequenos,
+                sem tabela de símbolos útil: 427 B a 2,3 KB)
+
+O que foi encontrado nas strings (segmentos com áudio: b23=819, b26=532,
+b04=135 ocorrências):
+  - o driver AFE está no firmware: "AFEDeviceDriver.cpp:*"
+      "AFE Port 0x%x is AFE Meta Port member and cannot be stopped individually"
+      "Failed to get device rate match info for port id 0x%X"
+      "Failed to close RM port device, port id 0x%X"
+      "LPASS_CORE_HW_MACRO_BLOCK power request failed = %ld!"
+      "LPASS_CORE_HW_DCODEC_BLOCK power request failed = %ld!"
+  - o firmware separa DOIS blocos de energia: MACRO e DCODEC (codec macro).
+  - há também "Warning: DAM driver not supported" e "AFE Meta I2S Not Supported"
+    (DAM e I2S-meta não afetam o nosso caso).
+
+Hipótese testada a partir disso: o mainline vota só LPASS_HW_MACRO_VOTE (102);
+faltaria LPASS_HW_DCODEC_VOTE (103) no macro. Verificação no mainline:
+  - o binding tem os dois ids (102 e 103);
+  - o driver lpass-rx-macro.c pede `devm_clk_get_optional(dev, "dcodec")`
+    (linha 3787) e o tx-macro idem;
+  - PORÉM o driver nunca habilita esse clock (não há clk_prepare_enable de
+    rx->dcodec/tx->dcodec em nenhum ponto) — o handle é obtido e ignorado.
+  => adicionar "dcodec" no DT NÃO mudaria o comportamento; hipótese descartada
+     sem necessidade de boot.
+
+Limite atingido: para ir além seria preciso desmontar código Hexagon (o AFE do
+firmware) para descobrir qual campo/porta ele rejeita. As ferramentas
+disponíveis (Ghidra/rizin/Hopper via REA) não têm suporte a Hexagon, e o
+firmware não tem tabela de símbolos (mapas são só de "shared libs", sem
+endereços de função).
+
+RESUMO DO QUE A RE ENTREGOU: confirmação de que o AFE e o voto de energia do
+DCODEC existem no firmware, e que o lado Linux (mainline) já faz o possível
+com esse contrato — o que falta está dentro do binário, sem símbolos.
