@@ -1,0 +1,40 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 4: reset do codec pelo MUX 2 do LPASS (o que o Android faz).
+ *
+ * Base do achado (fonte do vendor, pinctrl-slpi.c):
+ *   - o driver SLPI escreve o INDICE da funcao no campo mux do pino
+ *   - o enum do vendor e' GPIO=0, func1=1, func2=2, ...
+ *   - no stock do hanoip, o pino 24 (reset do WCD) e' muxado em "func2" (=2)
+ *     com output-high, e "func2" NAO e' o modo GPIO.
+ * Conclusao: no Android o reset do codec nao e' um GPIO comum; ele e' roteado
+ * por uma funcao alternativa do LPASS. Nas etapas 0..3 deixamos o pino em
+ * "gpio" (mux 0), entao o codec nunca saia de reset e ficava UNATTACHED.
+ *
+ * O kernel desta variante tem, no driver sm7150-lpass-lpi, uma funcao
+ * "wcd_rst" posicionada no INDICE 2 do pino 24 (mesmo truque que o mainline ja
+ * usa nos pinos 1 e 5 para casar o valor de mux do vendor).
+ *
+ * janela de registradores: 0x20000 (32 pinos), como na etapa 3.
+ */
+#include "sm7150-motorola-hanoip-audio-etapa1.dts"
+
+&lpass_tlmm {
+	reg = <0 0x62b52000 0 0x20000>;
+	gpio-ranges = <&lpass_tlmm 0 0 32>;
+
+	wcd_reset_active: wcd-reset-active-state {
+		pins = "gpio24";
+		function = "wcd_rst";
+		drive-strength = <16>;
+	};
+};
+
+&wcd9370 {
+	reset-gpios = <&lpass_tlmm 24 GPIO_ACTIVE_LOW>;
+	pinctrl-0 = <&wcd_reset_active>;
+	pinctrl-names = "default";
+
+	qcom,mbhc-buttons-vthreshold-microvolt = <75000 150000 237000 500000
+						  500000 500000 500000 500000>;
+};

@@ -85,3 +85,54 @@ E3. PINCTRL INCOMPLETO: adicionei os pinos 14..31 em sm7150_groups mas não os
   Display, CPU, GPU, venus, UFS, reguladores de bateria, sensores: nada foi
   alterado nas variantes (o diff do DT contra o PRE-GOLD só tem os nós de áudio,
   o estado do pino 24, gpio-ranges e o codec).
+
+6. ETAPA 4 (mux 2) — MEDIDA E DESCARTADA
+----------------------------------------
+Depois de consultar a fonte do vendor (drivers/pinctrl/qcom/pinctrl-slpi.c):
+
+  - o driver SLPI escreve o ÍNDICE da função no campo mux do pino;
+  - enum do vendor: GPIO=0, func1=1, func2=2, ...;
+  - no stock do hanoip o pino 24 (reset do WCD) é muxado em "func2" (=2), com
+    output-high — e mux 2 NÃO é o modo GPIO.
+  Conclusão: no Android o reset do codec não é um GPIO comum; é uma função
+  alternativa do LPASS.
+
+Tentativa: adicionei ao driver uma função "wcd_rst" no índice 2 do pino 24
+(mesmo truque que o mainline usa nos pinos 1 e 5) e muxei o pino nela.
+
+RESULTADO: com o kernel novo (que aplica o mux 2) o sistema entra em
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks
+  pc : cpuidle_enter_state -> cpuidle_enter -> do_idle
+  (foto da tela: IMG_1180, 28/10)
+ou seja, RCU stall no idle do cluster — a mesma classe do histórico "tela
+preta" de colapso de cluster.
+
+ISOLAMENTO FEITO (2 boots):
+  etapa4 DT + kernel PRE-GOLD (pinctrl antigo, ignora o mux) -> liga OK
+  etapa4 DT + kernel novo (aplica mux 2)                     -> RCU stall
+Portanto: o DT (nós de áudio, janela 0x20000, mux 2 declarado) é inofensivo
+com um kernel que ignora o mux; o que desestabiliza é APLICAR o mux 2.
+
+Hipótese: nesse pad, a função 2 roteia um sinal de LPASS (reset/power do
+codec) que interage com o colapso do cluster; sem saber exatamente qual sinal
+é, mux 2 é inseguro e NÃO deve ser reaplicado às cegas.
+
+Patches preservados (aplicáveis por cima do v4):
+  work/audio-20261028/patches/000{1,2,3}-pinctrl-*.patch
+A árvore de build foi devolvida ao estado v4 (188 commits, limpa).
+
+7. O QUE FICA COMO PRÓXIMO PASSO SEGURO
+---------------------------------------
+  1. Descobrir QUAL sinal é o func2 do LPI pino 24. Fontes possíveis: o
+     driver SLPI do vendor não tem tabela por pino (as funções são genéricas),
+     então isso está na documentação interna do LPASS/sm7150 ou no blob do
+     ADSP. Alternativa prática: testar o mux 2 com o cluster idle DESLIGADO
+     (DT local-only) para separar "áudio" de "idle" — se o stall desaparecer,
+     dá para isolar o áudio e depois investigar o idle.
+  2. Alternativa sem tocar em mux: procurar o reset do codec por outro
+     caminho (ex.: deixar o LPASS gerar o reset ao ligar o macro) e ver se o
+     codec atacha sozinho ao dar play.
+  3. Enquanto isso, o áudio continua como estava: só alto-falante.
+
+ESTADO FINAL DA SESSÃO: aparelho rodando o PRE-GOLD (cluster-idle + venus,
+kernel v3-teo), verificado. Nada gravado em partição.

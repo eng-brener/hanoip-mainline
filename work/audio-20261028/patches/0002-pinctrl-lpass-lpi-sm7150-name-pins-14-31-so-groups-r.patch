@@ -1,0 +1,67 @@
+From 5ef7da3a5167e5f4177ae787e0986d55a8be7ebf Mon Sep 17 00:00:00 2001
+From: hanoip <hanoip@local>
+Date: Wed, 28 Oct 2026 16:31:20 +0000
+Subject: [PATCH 2/3] pinctrl: lpass-lpi sm7150: name pins 14-31 so groups
+ resolve
+
+---
+ .../pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c   | 36 +++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
+index 3fc8d08d5..4e18db0f9 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
+@@ -54,6 +54,24 @@ static const struct pinctrl_pin_desc sm7150_lpi_pins[] = {
+ 	PINCTRL_PIN(11, "gpio11"),
+ 	PINCTRL_PIN(12, "gpio12"),
+ 	PINCTRL_PIN(13, "gpio13"),
++	PINCTRL_PIN(14, "gpio14"),
++	PINCTRL_PIN(15, "gpio15"),
++	PINCTRL_PIN(16, "gpio16"),
++	PINCTRL_PIN(17, "gpio17"),
++	PINCTRL_PIN(18, "gpio18"),
++	PINCTRL_PIN(19, "gpio19"),
++	PINCTRL_PIN(20, "gpio20"),
++	PINCTRL_PIN(21, "gpio21"),
++	PINCTRL_PIN(22, "gpio22"),
++	PINCTRL_PIN(23, "gpio23"),
++	PINCTRL_PIN(24, "gpio24"),
++	PINCTRL_PIN(25, "gpio25"),
++	PINCTRL_PIN(26, "gpio26"),
++	PINCTRL_PIN(27, "gpio27"),
++	PINCTRL_PIN(28, "gpio28"),
++	PINCTRL_PIN(29, "gpio29"),
++	PINCTRL_PIN(30, "gpio30"),
++	PINCTRL_PIN(31, "gpio31"),
+ };
+ 
+ /*
+@@ -72,6 +90,24 @@ static const struct pinctrl_pin_desc sm7150_lpi_ssc_pins[] = {
+ static const char * const gpio_groups[] = {
+ 	"gpio0",  "gpio1",  "gpio2",  "gpio3",  "gpio4",  "gpio5",  "gpio6",
+ 	"gpio7",  "gpio8",  "gpio9",  "gpio10", "gpio11", "gpio12", "gpio13",
++	"gpio14",
++	"gpio15",
++	"gpio16",
++	"gpio17",
++	"gpio18",
++	"gpio19",
++	"gpio20",
++	"gpio21",
++	"gpio22",
++	"gpio23",
++	"gpio24",
++	"gpio25",
++	"gpio26",
++	"gpio27",
++	"gpio28",
++	"gpio29",
++	"gpio30",
++	"gpio31",
+ 	"ssc_gpio8", "ssc_gpio9", "ssc_gpio10", "ssc_gpio11",
+ };
+ 
+-- 
+2.43.0
+

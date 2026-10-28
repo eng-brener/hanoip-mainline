@@ -15,9 +15,15 @@
     módulos), Image CRU no boot.img (U-Boot para em "Starting kernel") e
     pinctrl estendido pela metade (nomes faltando → depois Oops em
     lpi_gpio_read por offset/dado de registrador incompleto).
-    PRÓXIMO PASSO: corrigir o pinctrl com o descritor COMPLETO (PINCTRL_PIN +
-    sm7150_groups + gpio_groups + pin_offset / LPI_PINGROUP_OFFSET), validar
-    gpioinfo com 32 linhas sem Oops, e só então religar o reset e os links.
+    ETAPA 4 (mux 2, como o Android faz) TESTADA E DESCARTADA: com o kernel
+    aplicando mux 2 no LPI GPIO24 o sistema entra em RCU STALL no
+    cpuidle_enter_state (foto IMG_1180). Isolamento em 2 boots provou: o DT
+    novo com o kernel antigo liga; o que quebra é APLICAR o mux 2. Hipótese:
+    a função 2 desse pad roteia sinal de LPASS (reset/power do codec) que
+    interage com o colapso de cluster. Patches preservados em
+    work/audio-20261028/patches/ e a árvore de kernel voltou ao v4 limpo.
+    PRÓXIMO PASSO SEGURO: identificar o que é o func2 do pino 24 (ou testar o
+    mux 2 com cluster idle desligado, DT local-only, para separar áudio e idle).
 
 ## PLANO FINAL DOS PENDENTES — docs/PLANO-FINAL-PENDENTES.md
 

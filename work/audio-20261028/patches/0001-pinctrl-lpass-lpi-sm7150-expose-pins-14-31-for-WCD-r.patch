@@ -1,0 +1,42 @@
+From f3ba1db27db2c369b9530122a18a6b80d0051075 Mon Sep 17 00:00:00 2001
+From: hanoip <hanoip@local>
+Date: Wed, 28 Oct 2026 16:25:34 +0000
+Subject: [PATCH 1/3] pinctrl: lpass-lpi sm7150: expose pins 14-31 for WCD
+ reset
+
+---
+ .../pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c    | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
+index de35384c1..3fc8d08d5 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
+@@ -131,6 +131,24 @@ static const struct lpi_pingroup sm7150_groups[] = {
+ 	LPI_PINGROUP(11, LPI_NO_SLEW, dmic2_data, _, _, _),
+ 	LPI_PINGROUP(12, LPI_NO_SLEW, qca_sb_data, _, _, _),
+ 	LPI_PINGROUP(13, LPI_NO_SLEW, qca_sb_clk, _, _, _),
++	LPI_PINGROUP(14, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(15, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(16, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(17, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(18, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(19, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(20, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(21, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(22, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(23, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(24, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(25, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(26, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(27, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(28, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(29, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(30, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(31, LPI_NO_SLEW, _, _, _, _),
+ };
+ 
+ /* Mux values from the vendor tree: func3, func3, func4 and func2. */
+-- 
+2.43.0
+

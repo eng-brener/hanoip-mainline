@@ -1,0 +1,51 @@
+From 24d2e5de95d8952da83373493e102d8f6bd49a1a Mon Sep 17 00:00:00 2001
+From: hanoip <hanoip@local>
+Date: Wed, 28 Oct 2026 16:39:46 +0000
+Subject: [PATCH 3/3] pinctrl: sm7150 lpass-lpi: add wcd_rst mux at index 2 for
+ WCD reset pin
+
+---
+ drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
+index 4e18db0f9..d8e1ca0c0 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-sm7150-lpass-lpi.c
+@@ -35,6 +35,7 @@ enum lpass_lpi_functions {
+ 	LPI_MUX_swr_rx_data,
+ 	LPI_MUX_swr_tx_clk,
+ 	LPI_MUX_swr_tx_data,
++	LPI_MUX_wcd_rst,
+ 	LPI_MUX_gpio,
+ 	LPI_MUX__,
+ };
+@@ -87,6 +88,8 @@ static const struct pinctrl_pin_desc sm7150_lpi_ssc_pins[] = {
+ 	PINCTRL_PIN(3, "ssc_gpio11"),
+ };
+ 
++static const char * const wcd_rst_groups[] = { "gpio24" };
++
+ static const char * const gpio_groups[] = {
+ 	"gpio0",  "gpio1",  "gpio2",  "gpio3",  "gpio4",  "gpio5",  "gpio6",
+ 	"gpio7",  "gpio8",  "gpio9",  "gpio10", "gpio11", "gpio12", "gpio13",
+@@ -177,7 +180,7 @@ static const struct lpi_pingroup sm7150_groups[] = {
+ 	LPI_PINGROUP(21, LPI_NO_SLEW, _, _, _, _),
+ 	LPI_PINGROUP(22, LPI_NO_SLEW, _, _, _, _),
+ 	LPI_PINGROUP(23, LPI_NO_SLEW, _, _, _, _),
+-	LPI_PINGROUP(24, LPI_NO_SLEW, _, _, _, _),
++	LPI_PINGROUP(24, LPI_NO_SLEW, _, wcd_rst, _, _),
+ 	LPI_PINGROUP(25, LPI_NO_SLEW, _, _, _, _),
+ 	LPI_PINGROUP(26, LPI_NO_SLEW, _, _, _, _),
+ 	LPI_PINGROUP(27, LPI_NO_SLEW, _, _, _, _),
+@@ -197,6 +200,7 @@ static const struct lpi_pingroup sm7150_ssc_groups[] = {
+ 
+ static const struct lpi_function sm7150_functions[] = {
+ 	LPI_FUNCTION(audio_ref),
++	LPI_FUNCTION(wcd_rst),
+ 	LPI_FUNCTION(cdc_pdm_rx),
+ 	LPI_FUNCTION(dmic1_clk),
+ 	LPI_FUNCTION(dmic1_data),
+-- 
+2.43.0
+
