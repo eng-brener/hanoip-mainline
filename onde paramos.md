@@ -1,5 +1,28 @@
 # Handoff — Moto G60 hanoip mainline
 
+## SESSÃO 28/10/2026 — ÁUDIO INVESTIGADO (mic / earpiece / jack / FM)
+
+### A. ÁUDIO: o que falta é o CODEC, não "um patch"
+    (docs/kernel/LEVANTAMENTO-AUDIO.md)
+    Já funciona: alto-falante (AW882xx no I2C2 + SEC_MI2S), ADSP e card
+    "Motorola Moto G60" (q6afe/q6asm/q6adm). O amixer só mostra rotas do
+    machine driver e o DT tem "audio-codec-dummy" -> o codec WCD937x NÃO existe.
+    Android de base: bolero-cdc com rx-macro@62ee0000/tx-macro@62ec0000,
+    wcd937x-codec okay, slaves wcd937x-rx/tx, wsa-macro desabilitado.
+    Valores do hanoip (stock DT, phandles resolvidos): reset em LPI GPIO24
+    (func2), L10A 1,8 V (rxtx e vddpx), L15A 1,8 V (buck), BOB (mic-bias),
+    micbias 1/2/3 = 2,8 V, slaves SWR rx 0x1170224 / tx 0x1170223, mapas de
+    canal do stock. No mainline os reguladores batem: vreg_l10a_1p8,
+    vreg_l15a_1p8, vreg_bob.
+    Kernel já tem TUDO compilado: wcd937x, wcd937x_sdw, wcd_mbhc (jack),
+    soundwire-qcom, CODEC_DMA no q6afe (portas 113..125) e swr_tx/swr_rx no
+    dtsi. Template do MESMO SoC: sm7150-xiaomi-sweet.dts.
+    OBSTÁCULO REAL: o pinctrl sm7150-lpass-lpi expõe só pinos 0..13
+    (gpio-ranges 14) e o reset do codec é o 24; o stock declara 32 pinos
+    (qcom,num-gpios = 0x20). Exige estender a tabela 14->32 + DTS + rebuild.
+    FM: NÃO VIÁVEL (driver vendor fm-slim-ifd sobre Slimbus; mainline não tem).
+    Escopo: mic + earpiece + jack são UM bring-up (1 DTS + 1 patch pinctrl).
+
 ## SESSÃO 28/10/2026 — MODEM INVESTIGADO (sem chip)
 
 ### M. CHAMADAS/SMS/DADOS (docs/kernel/LEVANTAMENTO-MODEM.md)

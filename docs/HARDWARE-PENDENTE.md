@@ -25,13 +25,22 @@ decisão sua · [—] só código/config ao vivo.
     Falta: driver + protocolo FPC + ponte TEE (ou reimplementação sem TEE, que
     é o ponto difícil). Precisa: [REBUILD] + pesquisa.
 
-1.3 ÁUDIO — só o ALTO-FALANTE funciona
-    Funciona: reprodução no alto-falante.
-    Falta: MICROFONE, FONE DE OUVIDO (earpiece), DETECÇÃO DE FONE (headset
-    jack), perfis de voz (chamada), proteção do alto-falante (plano de 4
-    passos) e RÁDIO FM. Nodes LPASS existem no kernel v2 mas estão desabilitados
-    e fora do DT do U-Boot.
-    Precisa: [REBUILD U-Boot (DT)] + [—].
+1.3 ÁUDIO — ALTO-FALANTE funciona; codec (mic/earpiece/jack) NÃO está no DT
+    (investigação completa: docs/kernel/LEVANTAMENTO-AUDIO.md)
+    Funciona: reprodução no alto-falante (AW882xx no I2C2 + SEC_MI2S), ADSP de
+    pé, card "Motorola Moto G60" com q6afe/q6asm/q6adm.
+    Falta: MICROFONE, EARPIECE e DETECÇÃO DE FONE — todos dependem do codec
+    WCD937x sobre SoundWire, que NÃO existe no DT atual (lá há um
+    audio-codec-dummy). Todos os drivers já estão compilados (wcd937x,
+    wcd937x_sdw, wcd_mbhc, soundwire-qcom, CODEC_DMA no q6afe) e o dtsi já tem
+    swr_tx/swr_rx prontos. Valores do hanoip extraídos do stock: L10A (rxtx e
+    vddpx), L15A (buck), BOB (mic-bias), micbias 2,8 V, reset em LPI GPIO24,
+    slaves SWR 0x1170223/0x1170224.
+    OBSTÁCULO: o pinctrl mainline do LPASS LPI expõe só pinos 0..13; o reset do
+    codec é o 24. Exige estender a tabela (14->32) + DTS.
+    Precisa: [REBUILD U-Boot (DT) + kernel/módulo pinctrl].
+    RÁDIO FM: NÃO VIÁVEL — o Android usa driver vendor (fm-slim-ifd sobre
+    Slimbus) e o mainline não tem driver de FM Qualcomm.
 
 1.4 GPS / GNSS — SERVIÇO ENCONTRADO EM 28/10 (docs/kernel/LEVANTAMENTO-GPS.md)
     Estado: o motor de GNSS está DENTRO da imagem `modem` (não há firmware
