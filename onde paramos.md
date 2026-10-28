@@ -1,5 +1,642 @@
 # Handoff — Moto G60 hanoip mainline
 
+## SESSÃO 27/10/2026 (noite) — CONSOLIDADO DE TUDO — LEIA ISTO PRIMEIRO
+
+### 0. ESTADO DO APARELHO AGORA (27/10 19:15)
+    cap 100% / status Full / i_bateria 0 mA / 31,2 C
+    entrada: VBUS 5,10 V, 281 mA, ICL 500 mA (SDP = porta de PC)
+    FSM 0x45 (terminado), CHARGING_ENABLE=1, float 0x70=0x50 (4,40 V)
+    enumeração USB: portátil ligado ao PC; usb0 UP (sem IPv4 no momento)
+    Acesso: WiFi 10.0.0.44 (cai por power save às vezes) ou IPv6 link-local
+    em en10 (ssh -6 root@fe80::d14e:ed7a:f52e:ff8c%en10).
+    Rollback de DT: work/usb-20261027/ANTES-otg/ (img e07ff366...).
+
+### 1. REGRA DE ARQUITETURA (a que mais custou e a que mais engana)
+    O DT efetivo vem EMBUTIDO NO U-BOOT (CONFIG_OF_EMBED); o dtb do boot.img
+    do kernel NÃO é usado. Mudar DT = rebuild do U-Boot + `fastboot boot`.
+    O DT é VOLÁTIL: vive na imagem bootada. Bootar um U-Boot antigo reverte
+    silenciosamente (foi assim que o carregador de parede "voltaria a quebrar").
+    Registrado também em AGENTS.md, com as consequências práticas.
+
+### 2. BATERIA / SOC — 4 bugs corrigidos hoje, cada um com medição
+    a) 0182 — o viés do OCV MUDA DE SINAL conforme a fase: +7 pts em CC a
+       440 mA (polarização) e -8 pts em taper a 360 mA (subtração de IR com
+       pouca polarização). Regra: carregando = SÓ Coulomb; em repouso = OCV.
+    b) 0183 — dois bugs na contagem de Coulomb:
+       - RETIFICAÇÃO: contava só amostras positivas de um ADC ruidoso; com a
+         corrente real em torno de -44 mA, inventava carga. Agora filtra a
+         corrente COM SINAL (EMA 8) e só conta acima de +50 mA.
+       - DIVISOR DE 32 BITS: div_s64 tem divisor s32 e o divisor real
+         (3600 x capacidade = 1,78e10) era truncado para 6,0e8 -> contava 27x.
+         Agora div64_s64. Conferido contra a física: 0,85 vs 0,855 mili-%/s.
+    c) 0184 — OCV só em REPOUSO de verdade: |i| < 120 mA por 30 s. Um único
+       sample de -660 mA (Wi-Fi acordando) somava +132 mV com os 200 mOhm e
+       lia 97% num pack a 92%. E o slew liberava até 1 ponto por leitura, mas
+       acumulava degraus (92 -> 97 de uma vez). Agora no máximo 1 por leitura.
+    d) Resistência interna do DT: 30 -> 200 mOhm (duas derivações
+       independentes: dado do Android a 54%/500 mA e medição em campo).
+       Em repouso, 4,3385 V passou de 94% para 91% (curva: 91,3%).
+    Curva OCV real extraída do perfil Motorola do Android
+    (S88731AA1-mc50-ATL-4V45-6000mah): 4446 mV = 100% ... 3400 mV = 0%.
+
+### 3. CARREGADOR DE PAREDE (100 W) — não funcionava por causa do DT
+    Sintoma: plugado, nada (ONLINE=0, APSD_STATUS=0x00). No PC carregava.
+    Causa: o conector Type-C do DT dizia power-role = "source" (herdado do
+    port de referência do Xiaomi). Existe TCPM real no kernel e ele
+    registrava a porta como FONTE PD (Rp + VCONN); carregador USB-C só liga
+    o VBUS ao ver um sink (Rd). O carregador estava certo, o aparelho errado.
+    Tentativa errada: power-role="sink" -> TCPM falha no probe com -EINVAL
+    (sink sem sink-pdos). Correção final (padrão do upstream):
+       power-role = "dual"; data-role = "dual";
+       op-sink-microwatt = <5000000>;   /* 5 W = 5 V * 1 A, nosso teto */
+       sink-pdos = PDO_FIXED(5000, 3000, ...)   /* SÓ 5 V, de propósito */
+    Prova por binário (scripts/fdt_diff.py, DT extraído do u-boot antigo que
+    estava em gzip dentro do .img): 744 nós, 1 propriedade alterada + 1 nova.
+    Resultado: APSD=DCP, typec [sink], vconn=no, carga de 1 A.
+    Bônus (hipótese, não prova): com o carregador de parede a tela NÃO acendeu
+    sozinha nenhuma vez na sonda, o que é consistente com o TCPM-fonte sendo a
+    causa dos acendimentos no PC. Falta uma sessão longa plugado no PC.
+
+### 4. NEGOCIAÇÃO DE ENTRADA (APSD/ICL) — 0185 e 0186
+    0185: o driver negociava no instante do plugue, antes de o APSD terminar,
+    caía no padrão SDP (500 mA, reg 0x370 = 0x0a) e NUNCA re-negociava —
+    o APSD completava como DCP e o limite ficava no valor de SDP (a leitura
+    mostrava 550 mA por causa do decode errado corrigido no 0186). Agora o worker de 10 s compara o tipo e re-negocia; e há um
+    passe extra 2,5 s após ligar a carga.
+    PROVA EM REPLOGUE REAL (dmesg, boot de 18:46):
+      [137s] fonte desconhecido -> 500000 uA     <- o bug acontecendo
+      [147s] APSD agora diz DCP -> 1000000 uA    <- a correção agindo
+      [270s] APSD agora diz SDP -> 500000 uA     <- e descendo quando o cabo
+                                                    voltou para o PC
+    0186: CURRENT_MAX lia o campo de STATUS_2, que no SMB5 é uma TABELA
+    codificada, e multiplicava por 50 mA -> mostrava 600 mA com 1 A real.
+    Agora lê USBIN_CURRENT_LIMIT_CFG (o valor comandado): 1000000 = 0x14.
+
+### 5. TERMINAÇÃO OBSERVADA E O QUE "100%" SIGNIFICA
+    Primeira vez: status Full, 0 mA na bateria, FSM 0x45, 100% no display.
+    MAS a verificação física diz 94,4% — por DOIS métodos independentes:
+      curva OCV em 4,381 V de repouso -> 94,4%
+      Coulomb: 91,5% (4,342 V) + 145 mAh de 4939 -> 94,4%
+    Causa: o ABL deixa float = 4,400 V (reg 0x70 = 0x50) e a curva Motorola
+    só dá 100% em 4,4465 V. O Android usa qcom,fv-max-uv = 4,450 V com
+    iterm 290 mA (dump do DT do charger).
+    DECISÃO (27/10, usuário): MANTER 4,40 V. A célula é velha (4939 mAh
+    aprendidos contra 6174 de projeto). O 100% vale como "o charger terminou,
+    pode tirar da tomada": trava em 99% enquanto carrega, vira 100% só em
+    Full, e volta ao valor real (~94-96%) quando desconecta.
+    Gravado no código no patch 0187 para ninguém "consertar" depois.
+
+### 6. USB / OTG — DT pronto, boot validado, periférico pendente
+    DT: &usb_1_dwc3 { dr_mode = "otg"; usb-role-switch; } (era "peripheral"),
+    espelhando o sunfish (mesmo sm7150, mesmo pm6150). Sem
+    role-switch-default-mode -> padrão peripheral (protege o gadget/SSH USB).
+    O VBUS de OTG já é automático: qcom_pmic_typec_port.c faz
+    regulator_enable(vdd_vbus) quando o papel vira source, e o nosso DT já
+    tem vdd-vbus-supply = <&pm6150_vbus> (500 mA..3 A).
+    TESTE SÓ DE BOOT (18:46) — PASSOU:
+      dr_mode=otg, usb-role-switch presente, /sys/class/usb_role/
+      a600000.usb-role-switch role=device, UDC a600000.usb configured,
+      typec source[sink] vconn=no, usb0+SSH por USB OK, regulador usb_vbus
+      presente e DISABLED (3 A), carga pelo PC SDP/500 mA/+213 mA, sem erro.
+    NÃO TESTADO: periférico plugado (xHCI nunca enumerou), 5 V na porta,
+    host+carregando ao mesmo tempo, MTP.
+
+### 7. FASE 0 DOS MODOS USB — IMPLEMENTADA E INSTALADA, NÃO ATIVADA
+    Em work/nethunter-pro-20261026/hanoip-support/ e instalado no aparelho:
+      hanoip-usb-mode (charge|serial|net|combo|storage[ro]|hid|uvc, mais
+      set/save/status/storage-init/apply-saved), hanoip-usb-mode.service,
+      /etc/hanoip/usb-mode.conf, hanoip-usb-app.py (GTK, app "Porta USB"),
+      .desktop, política polkit org.hanoip.usbmode.set, hanoip-usb-fix
+      (status|fix) e instalar-fase0.sh.
+    Validado só na LEITURA: sh -n, py_compile e `hanoip-usb-mode status`
+    (mostra hanoip-net bound com acm+ncm e hanoip-console unbound).
+    NÃO ativado: hanoip-usbnet segue enabled/active e hanoip-usb-mode
+    disabled/inactive. A virada é um passo separado:
+      systemctl disable --now hanoip-usbnet && systemctl enable --now hanoip-usb-mode
+    Protocolo de teste completo: docs/PENDENTE-fase0-teste-usb.md.
+
+### 8. ARTEFATOS E HASHES
+    pré-GOLD (somente leitura, referência nova):
+      work/PRE-GOLD-20261027-1852/  uboot/ kernel/ dt/ patches/ scripts/
+        uboot img 8d777c9c...  uboot.dtb 0503d416...  dtb fonte 3504e9cb...
+        kernel-hanoip-kali-phosh-v2.img 3b761454...  Image.gz 27248020...
+        modules-7.3.0-sm7150.tar.gz 57c79a20...  patches 187 = 5d2bab38...
+    rollback: work/usb-20261027/ANTES-otg/ (img e07ff366..., só power-role)
+    cópia avulsa dos módulos críticos: work/bateria-soc-20261027/modulos-187/
+      (qcom_qg 0e104aaa..., qcom_smbx 29f507fa..., qcom-spmi-adc5); o aparelho
+      foi conferido byte a byte contra esses hashes.
+
+### 9. DOCUMENTOS CRIADOS/ATUALIZADOS HOJE
+    AGENTS.md .................................. regra "DT vem do U-Boot"
+    onde paramos.md ............................ este consolidado + pré-GOLD
+    docs/PENDENCIAS.md ......................... lista única de tudo que falta
+    docs/PLANO-USB-MODOS.md .................... plano USB (seções 1-14)
+    docs/PENDENTE-fase0-teste-usb.md ........... protocolo de teste da Fase 0
+    docs/kernel/checkpoint-2026-10-27-bateria-RESUMO.txt .. seções 17-27
+    docs/kernel/PENDENTE-recarga-e-AICL-20261027.txt ...... recarga e AICL
+    work/kernel-7.3/v4/README.txt .............. índice 0168-0187
+    work/usb-20261027/LEIA-ME.txt .............. pacote OTG (boot e checklist)
+    work/PRE-GOLD-20261027-1852/PRE-GOLD.txt ... 9 seções, hashes, decisões
+
+### 10. TESTES FEITOS HOJE (todos no aparelho)
+    - carga PC (SDP) 500 mA: +440 a +213 mA, 31-34 C, sem erro
+    - carga PAREDE (DCP 100 W): 1 A, APSD=DCP, reconciliação automática
+    - terminação real: Full, 0 mA, FSM 0x45, 100% no display (2x)
+    - verificação do 100%: 94,4% por curva E por Coulomb
+    - Coulomb contra a física: erro < 2%
+    - boot com DT OTG: role switch em device, UDC ok, reg. VBUS disabled
+    - 187 patches compilam (build rc=0); qcom_qg do build 187:
+      comprimido 0e104aaa..., descomprimido 65a50ec8...
+    - fdt_diff: 1 propriedade alterada (power-role) e depois (dr_mode)
+
+### 11. NÃO TESTADO / BLOQUEADO
+    recarga após terminação e AICL (exigem fonte fraca + tela ligada),
+    OTG com periférico, host+carregando, MTP, Fase 0 ativada, suspend com
+    carga, tela acendendo no PC (sessão longa), rotação de tela.
+
+### 12. QUIRKS APRENDIDOS (não são bugs, mas enganam)
+    - debugfs do charger (hanoip-charge/hanoip-icl/dump) NÃO nasce no boot:
+      o work tenta 8x a cada 5 s e desiste. Solução atual: recarregar
+      qcom_smbx. Correção pendente (A5 em PENDENCIAS.md).
+    - `echo 1 > /sys/kernel/debug/hanoip-charge` dá EACCES (O_TRUNC);
+      use  printf '1\n' | dd of=... bs=2 count=1
+    - hash de .ko muda entre builds sem mudar código (build-id do linker):
+      provar com objdump/cmp, não com sha256. (Aconteceu com o 0187.)
+    - fdt_diff imprimia valor de 4 bytes como inteiro ("otg" -> 1869899520);
+      corrigido para tratar string terminada em NUL.
+    - WiFi do WCN3990 cai por power save; usb0 às vezes perde o IPv4.
+      Alternativas: IPv6 link-local em en10, ou religar o serviço usbnet.
+
+### 13. PRÓXIMOS PASSOS IMEDIATOS
+    ROTEIRO COMPLETO DE TESTE DE USB: docs/TESTE-USB.md (A modos gadget,
+    B OTG com periférico, C host+carregando, D persistência, E virada do
+    serviço, F regressão de bateria, G falhas, H registro, I critérios de
+    saída). Detalhe por modo: docs/PENDENTE-fase0-teste-usb.md.
+    1. testar a Fase 0 (seção A do roteiro) e fazer a virada (seção E)
+    2. seção B: plugar um pendrive e validar OTG (hanoip-usb-fix já instalado)
+    3. A3 (carga ligar no boot) e A5 (debugfs) — dois patches pequenos
+    4. A1+A2 (recarga e AICL) num único momento com o cabo no PC
+    Lista completa e ordenada: docs/PENDENCIAS.md
+
+### 14. APP "PORTA USB" REDESENHADO (27/10 ~19:25)
+    A primeira versão era feia e frágil: janela GTK "crua", sem cara de app de
+    celular, e com bug de ciclo de vida (abria e fechava sozinho).
+    Corrigido:
+      - CAUSA DO "ABRE E FECHA": a janela era criada sem referência e sem ser
+        filha do Gtk.Application (`lambda a: Janela().present()`); o app ficava
+        sem janelas e encerrava. Agora App(Adw.Application) guarda self.win e a
+        janela nasce com application=app.
+      - STATUS SEMPRE SAI 0: `hanoip-usb-mode status` retornava 1 (a última
+        linha do script falhava quando /run/hanoip-usb-mode.state não existia)
+        e o app lia como erro. Corrigido também no hanoip-usb-fix.
+      - UI refeita em GTK4 + libadwaita 1.9 (existe no sistema, verificado):
+        cartão grande com o modo ATUAL (ícone + nome + resumo + selo), lista de
+        modos com ícone e uma linha de explicação, toque único troca, toast com
+        DESFAZER, banner avisando da queda de 1-3 s e o estado técnico dentro de
+        um ExpanderRow fechado.
+      - pkexec roda em thread (não congela a UI); erro abre AlertDialog com
+        "Copiar" e tudo vai para ~/.cache/hanoip-usb-app.log.
+    Limite: NÃO há ferramenta de captura no aparelho (grim/gnome-screenshot
+    ausentes), então a aparência foi validada por processo (roda, não erra, lê
+    estado), não por inspeção visual.
+
+### 18. GPU (Adreno 618) — FRENTE FECHADA 28/10
+    Varredura completa item por item: docs/kernel/LEVANTAMENTO-GPU.md
+    (hardware, DT, kernel, runtime, userspace, energia).
+    FUNCIONA E PERFORMA (medido, não suposto):
+      revision 618 (0x06010800); gpu-initialized: 1 (ZAP rodou)
+      OpenGL 4.6 Core E Compatibility, vendor freedreno, renderer FD618
+      OpenGL ES 3.2 (mesa 26.1.6); 1331 extensões
+      Vulkan 1.3.354 Turnip "Adreno (TM) 618", driverID MESA_TURNIP
+      peglgears: 40.868 FPS (~45 mil em outra amostra = ruído de CPU)
+      vkgears na sessão Phosh: 60,0 FPS estáveis (vsync)
+      90 s de carga contínua: 800 MHz até o fim, 54,5 C, cooling 0/6
+      DVFS 180..800 MHz (simple_ondemand, poll 16 ms); trips 95/110 C
+      speed bin 3 -> 800 MHz é o teto real do silício; 825/700/610 filtrados
+    ENERGIA — CICLO PROVADO (correção de duas conclusões minhas erradas):
+      cx_gdsc e gx_gdsc (gpucc) EXISTEM e DESLIGAM:
+        ocioso: cx=off-0 gx=off-0 gpu_cc_cx_gmu_clk enable=0
+        sob carga: cx=on gx=on 800 MHz; 4 s após parar volta a off-0
+      A medição que dizia "ficam sempre on" foi feita logo depois da carga
+      (active_time ~204 s) — artefato de amostragem. A GMU é o consumidor
+      dos dois GDSC, por isso o nó da GPU não precisa de power-domains.
+    NÃO são defeitos: "supply vdd/vddcx dummy" (caminho legado a3xx-a5xx;
+    no a618 a tensão é votada pela GMU), falta de clock "core" no nó da GPU
+    (idem), e "sync_state() pending due to 506a000.gmu" (informativo).
+    ÚNICO BURACO DE COBERTURA: GPU através de suspend/resume (s2idle).
+    Menores: piso de 355 MHz posto pelo hanoip-perf-tune (escolha de UI,
+    custa idle; poderia cair a 180 com a tela apagada) e o spam
+    "disallowed SPMI write to 0x6046" (RTC, não GPU — remover
+    allow-set-time do DT).
+
+### 17. CPU 100% — FRENTE FECHADA (28/10 ~10:00)
+    Levantamento completo (docs/kernel/LEVANTAMENTO-CPU-100.md, seções 7-8):
+      boot 16,1 s (era 3min19s; Plymouth mascarado)
+      8 núcleos · schedutil 300..1805/300..2304 · EAS ativo com energy model
+      OPP completos (10/13) e voto de banda escalando 9,6 -> 46,7 GB/s
+      idle psci_idle + TEO (adicionado ao kernel nesta sessão) + cluster S1
+      térmica: 10 min de 8 núcleos, pico 71,9/74,8/76,4 C, ZERO throttling
+      suspend: s2idle com hook do ADSP, soak de 3 ciclos sem crash
+      RTC: 19.066 dias atrasado -> corrigido por offset em userspace
+      DSI: 0 erros de FIFO neste boot · systemd: 0 falhas
+    Causa raiz do RTC (kretprobe + dmesg): o ÁRBITRO SPMI do PMIC nega escrita
+    ("disallowed SPMI write to 0x6046", ACL por APID: write_ee != nosso EE).
+    Não é software: driver nunca poderá escrever o RTC. Offset em userspace
+    (/etc/hanoip/rtc-offset + hanoip-rtc.service) resolve.
+    TEO: CONFIG_CPU_IDLE_GOV_TEO=y no config-7.3-hanoip; kernel recompilado e
+    bootado como kernel-hanoip-kali-phosh-v3-teo.img (60b54914...).
+    Novos artefatos em hanoip-support/: hanoip-adsp (sleep hook), hanoip-rtc,
+    rtc-set, teste-termico, hanoip-cpu-tune (+service, persiste idle=teo e
+    thermal=power_allocator no boot). Log térmico em work/cpu-20261028/.
+    FECHAMENTO FINAL: PMU renomeado para armv8_cortex_a76 (era a78; fdt_diff
+    provou 1 propriedade), linux-perf 7.1.5 instalado e testado (1,16 G ciclos
+    em 0,5 s), perf_event_paranoid=1, boot em 14,7 s, 0 falhas systemd.
+
+### 16. SUSPEND, RTC E BOOT DE 3 MIN (28/10) — detalhe em
+    work/cpu-20261028/SUSPEND-RTC-BOOT.md e docs/kernel/LEVANTAMENTO-CPU-100.md
+    (G5, G6, G6b).
+    SUSPEND: o kernel só tem s2idle (mem_sleep=[s2idle]; sem deep). Três testes:
+      (1) rtcwake direto -> 1,04 s e ADSP morre (não roda hooks do systemd);
+      (2) systemctl suspend com hook só de FastRPC -> 30 s, ADSP morre igual
+          (hipótese desmentida);
+      (3) hook desligando o REMOTEPROC (echo stop) -> 31 s de suspend real,
+          ADSP volta running, 0 crashes, usb0 com IPv4 restaurado.
+      Hook: /usr/lib/systemd/system-sleep/hanoip-adsp (fonte em
+      hanoip-support/). Falta soak de 3-4 ciclos.
+    RTC: estava 19.066 dias atrasado (1974). Causa: offset nvmem ausente no DT;
+    e set_time dava -ENODEV. Com "allow-set-time" no DT o ioctl passou a chegar
+    mas falha com ERANGE (vem do SPMI, não do regmap) — correção de kernel
+    pendente. Solução efetiva por userspace: /etc/hanoip/rtc-offset
+    (1647376775 s) + hanoip-rtc.service aplicando raw+offset no boot; testado
+    (relógio forçado a 1974 -> acertou para 2026).
+    BOOT DE 3 MIN: era o Plymouth (plymouth-start 186 s, "start-post operation
+    timed out"). O splash não desenha no DSI e o systemd espera ~3 min; a tela
+    fica no texto do initramfs (parecia travamento). Mascarado; esperado ~15 s.
+
+### 15. KALI NETHUNTER PRO: PESQUISA DOS APPS PADRÃO (27/10 ~19:40)
+    Fonte autoritativa: gitlab.com/kalilinux/nethunter/build-scripts/
+    kali-nethunter-pro (a página kali.org/docs/nethunter-pro/ só ensina a
+    instalar). Receita em 3 camadas: include/packages-base.yaml,
+    include/packages-phosh.yaml e devices/qcom/packages-{base,phosh}.yaml.
+
+    PRESENTES aqui: kali-linux-core, kali-themes-mobile, mobian-base,
+    openssh-server, vim, firefox-esr, gnome-sound-recorder, loupe,
+    mobian-phosh, powersupply-gtk, squeekboard,
+    webext-ublock-origin-firefox, gnome-snapshot.
+
+    FALTAM (instaláveis): firefox-esr-mobile-config (1 pkg),
+    mobian-phosh-phone (13 pkgs, é o metapacote dos apps de telefone),
+    gstreamer1.0-plugins-base-apps, yq, systemd-repart (inútil aqui: a camada
+    qcom apaga /etc/repart.d).
+
+    NOMES MORTOS: "nethunter" não existe mais. Sobrou kali-nethunter-core
+    (INSTALADO), nethunter-utils (INSTALADO), kali-nethunter-nano/-full (628
+    pacotes o full) e kali-linux-nethunter (transicional). São "rootfs
+    packages" do modelo CHROOT do NetHunter clássico; no Pro não existe Android
+    nem chroot, logo NÃO há app NetHunter separado — as ferramentas são CLI.
+    "hijacker" e "kalitorify" também saíram do Kali (kali.org/tools -> 404,
+    pkg.kali.org -> not found).
+
+    INSTALADOS nesta sessão, a pedido: gstreamer1.0-plugins-base-apps 1.28.8-1
+    (traz gstreamer1.0-tools) e yq 3.4.3-3 (traz python3-yaml/xmltodict).
+    Verificado: gst-inspect-1.0 lista 1414 elementos, gst-launch-1.0 presente,
+    yq devolve 42 no teste. Rootfs segue com 3,8 G livres.
+
+    ACHADO IMPORTANTE: não há NENHUMA ferramenta de pentest instalada (nem
+    nmap; só netcat-traditional e tcpdump). A receita oficial também não traz
+    tools — instala só kali-linux-core. NetHunter Pro é "Kali puro".
+    Para menu de ferramentas na grade do Phosh existe kali-menu (candidato
+    2026.3.4); sem tools instaladas não há o que listar.
+
+    EM ABERTO: instalar firefox-esr-mobile-config e mobian-phosh-phone?
+    Instalar kali-menu + conjunto escolhido de ferramentas? Ou
+    kali-nethunter-nano/full?
+
+## LISTA ÚNICA DE PENDÊNCIAS: docs/PENDENCIAS.md (27/10 19:10)
+
+Consolidado de todas as frentes, com o que cada item precisa (PC, rebuild,
+hardware externo, decisão do usuário) e ordem recomendada. Resumo: bateria
+tem 2 itens bloqueados por hardware (recarga e AICL, precisam de porta fraca)
+e 4 acionáveis; USB tem o OTG pronto mas não testado com periférico, e a
+ferramenta/app de troca de modo (Fase 0) ainda não existe; sensores aguardam
+mount matrix; câmera/digital/áudio seguem pausados/parados.
+
+## PRÉ-GOLD 27/10/2026 18:52 — NOVA REFERÊNCIA (kernel + DT + U-Boot)
+
+work/PRE-GOLD-20261027-1852/ (somente leitura, PRE-GOLD.txt + SHA256SUMS).
+É o primeiro estado em que bateria corrigida, carregador de PAREDE funcionando,
+terminação observada e OTG habilitado coexistem. Par de boot:
+  fastboot boot uboot/u-boot-hanoip-pmos-perif-batt-OTG.img   (8d777c9c...)
+  fastboot boot kernel/kernel-hanoip-kali-phosh-v2.img        (3b761454...)
+  módulos:  kernel/modules-7.3.0-sm7150.tar.gz                (57c79a20...)
+  DT fonte: dt/sm7150-motorola-hanoip.dts                     (3504e9cb...)
+  patches:  patches/ = 187, conjunto 5d2bab38...
+  módulos:  os 859 .ko estão DENTRO do tarball acima; cópia avulsa dos três
+            críticos em work/bateria-soc-20261027/modulos-187/
+            (qcom_qg 0e104aaa..., qcom_smbx 29f507fa..., qcom-spmi-adc5)
+            e o aparelho foi conferido byte a byte contra esses hashes.
+
+Contém: curva OCV real + IR 200 mOhm; Coulomb com filtro e div64_s64; OCV só
+em repouso e 1 ponto por leitura; trava em 99% e 100% = "pode tirar da tomada"
+(float 4,40 V mantido, decisão registrada); Type-C dual/sink-pdos 5 V; DCP com
+1 A reconciliado sozinho; dr_mode=otg + usb-role-switch com padrão peripheral.
+
+NÃO validado (não tratar como pronto): OTG com periférico (xHCI nunca
+enumerou, 5 V nunca saíram), recarga automática, AICL, MTP, ferramenta/app de
+modos USB (Fase 0), suspend com carga. Rollback: work/usb-20261027/ANTES-otg/
+(só power-role sink, e07ff366...). Plano e pendências:
+docs/PLANO-USB-MODOS.md, docs/kernel/PENDENTE-recarga-e-AICL-20261027.txt.
+
+## [HISTÓRICO — manhã/tarde de 27/10] BATERIA — SOC corrigido, CARGA FUNCIONANDO
+
+> Esta seção é HISTÓRICA. O estado atual está no CONSOLIDADO acima.
+> Aqui o aparelho estava em ~86%, com a carga desligada e sem o
+> carregador de parede funcionando. Leia o topo do arquivo primeiro.
+
+LEIA PRIMEIRO: docs/kernel/checkpoint-2026-10-27-bateria-RESUMO.txt (tudo o
+que descobrimos, em um documento) e work/bateria-soc-20261027/ (artefatos).
+
+ESTADO NA PAUSA (27/10/2026, fim do dia — retomamos depois):
+  - carga DESLIGADA a pedido do usuário (enable=0x00, FSM DISABLE_CHARGE,
+    i_batt=0, dmesg "charging disabled"). Modo manual até observarmos a
+    terminação.
+  - aparelho DESPLUGADO pelo usuário no fim da sessão: sem USB, logo sem a
+    rede USB 172.16.42.1. Para retomar, precisa replugar o cabo (ou usar
+    wlan0 10.0.0.44, se estiver na mesma rede).
+  - última leitura conhecida: ~86% (ver explicação do salto abaixo),
+    ~33 C, descarregando devagar.
+  - nada pendente de escrita: nenhum experimento ficou pela metade.
+
+POR QUE A PORCENTAGEM SAIU DE 79% PARA 86% (não é regressão):
+  Eu recarreguei o módulo do qcom_qg para instalar o patch 0170. Ao carregar,
+  o driver INICIALIZA o valor suavizado a partir da estimativa bruta daquele
+  instante — e naquele momento a bateria tinha acabado de sair de 15 min de
+  carga, com a tensão de terminal ainda elevada por "carga de superfície"
+  (v_avg = 4,3028 V). A curva Motorola diz ~88% para 4,3028 V, então o valor
+  inicial veio 86%. Sem carga há horas isso não aconteceria.
+  Ou seja: o salto veio do RELOAD (reinicialização do estado), não do filtro,
+  e reflete um viés conhecido de estimador só-OCV logo após carregar.
+  Com o aparelho desplugado a tensão relaxa/cai e o número converge para
+  baixo (deriva de 1% a cada 2 min; e se o desvio passar de 10 pontos, adota
+  na hora, por causa do patch 0170).
+  Regra prática para o futuro: NÃO recarregar o módulo logo depois de
+  carregar a bateria — ou aceitar que o primeiro valor virá alto.
+
+  ligar:    echo 1 > /sys/kernel/debug/hanoip-charge   (limite 1 A)
+  desligar: echo 0 > /sys/kernel/debug/hanoip-charge
+  registros: cat /sys/kernel/debug/c440000.spmi:pmic@0:charger@1000
+  log:      /usr/local/sbin/hanoip-batt-log 900 2000 /root/batt.csv
+  boot:     work/bateria-soc-20261027/u-boot-...-perif-batt.img
+            + kernel-hanoip-kali-phosh-v2.img + módulos do kernel v4
+
+1) PORCENTAGEM (resolvido). Oscilava porque o DT não tinha tabela OCV (mapa
+linear de 12,5 mV por 1%) e a suavização era um caminhante de 1%/20 s que
+perseguia o ruído. Correção: curva REAL da Motorola extraída do perfil que o
+Android usa neste aparelho (4.447 V no topo) + histerese de 2% + deriva de
+1% a cada 2 min + adoção imediata quando o desvio passa de 10 pontos; direção
+pelo STATUS do charger (current_now é errático na transição). Validado:
+amplitude de 1 ponto em 15 min ocioso, zero saltos, e sob carga de 79 mV de
+queda a capacidade ficou cravada.
+
+2) DESCOBERTA DE ARQUITETURA: a device tree efetiva vem EMBUTIDA NO U-BOOT
+(CONFIG_OF_EMBED) — o dtb do boot.img do kernel NÃO é usado. Mudança de DT =
+reconstruir U-Boot (variante sm7150-motorola-hanoip-pmos-perif-batt.dts).
+scripts/fdt_diff.py compara DTs compiladas (usar sempre).
+
+3) POR QUE NÃO CARREGAVA (laudo B0, somente leitura): faltava UM bit,
+CHARGING_ENABLE_CMD (0x42) bit0; entrada/APSD(SDP)/float 4.400 V/JEITA/
+terminação/recharga já estavam corretos. O watchdog do charger estava armado
+com "bite desliga a carga" e o fast-charge vinha em 2,0 A.
+
+4) CARGA (funciona, validada): 3 escritas (desarma watchdog, 1,0 A, habilita).
+Sessão de 15 min em porta USB de PC: entrada 497 mA, bateria +440 mA,
+79% -> 81%, 32,6-33,7 C (sem aquecimento). Desligar testado e limpo.
+
+5) ÍCONE vs APP: com entrada de 500 mA e TELA LIGADA o aparelho consome mais
+do que recebe, a corrente fica negativa e o UPower mostra "descarregando"
+enquanto o sysfs mostra "Charging". Não é bug; resolve com B4 (APSD/ICL).
+Com a tela apagada carrega normal (+440 mA).
+
+6) COMPARAÇÃO COM O ANDROID: float 4,45 V, FCC 3,6 A, iterm 290 mA, ICL 3 A
+em carregador de parede, 15-45 C, capacidade aprendida 4.939.000 uAh (igual à
+nossa). O que a ABL deixou é um subconjunto conservador.
+
+7) B4 FEITO (27/10, mais tarde): o driver agora detecta o tipo de fonte por
+APSD ao ligar a carga e programa o limite de entrada (SDP 500 mA, CDP 1,5 A,
+DCP 1,0 A, teto 1,5 A; ajustável por módulo). Validado em porta de PC: detecta
+SDP e mantém 500 mA, tela apagada carrega +432 mA com ícone de carregando e
+2,0 h para cheio; tela ligada fica negativo (conta física). FALTA validar DCP
+num carregador de parede. Extra: /sys/kernel/debug/hanoip-icl força o limite
+(último recurso; AICL protege se a fonte não aguentar).
+
+8) SESSÃO DE CARGA LONGA (27/10, 14:22-15:30): a bateria subiu de 85% a 95%
+e entrou na fase final (FSM TAPER, tensão no float de 4.400 V, corrente caindo
+de 445 para ~230 mA, 30 C estável). A TERMINAÇÃO (status Full) ainda NÃO foi
+observada — o limite de terminação deixado pela ABL é mais baixo que os 290 mA
+do Android (registrador ainda não dumpado). Nessa sessão apareceram e foram
+corrigidos 3 bugs do driver: teto de tempo ainda limitando (0174), wind-up de
+5% liberando salto de 2 pontos (0175) e USO DE MEMÓRIA LIBERADA no debugfs
+após reload — o dump mostrava msoc=0 enquanto o sysfs dizia 95% (0176).
+Kernel v4 agora com 178 patches (0174..0178: teto do orçamento, FULL imediato,
+cleanup de debugfs no unload, recusa de tensão impossível no boot e criação
+tardia dos arquivos de debugfs). Achados do primeiro boot limpo: (1) o ADC
+devolve 6,38 V nas primeiras amostras e isso jogava o SOC para 100% — agora é
+descartado; (2) o driver sonda antes de /sys/kernel/debug existir, então os
+arquivos de debugfs só apareciam após reload — agora são criados com retry.
+O reboot desliga a carga (opt-in confirmado).
+
+9) ESTADO NO FIM DO DIA (27/10, ~16h): kernel v4 com **180 patches**
+(0167..0180). A porcentagem está estável e reportando (92%), a carga funciona e
+está LIGADA por enquanto, e o dump de estado existe:
+  cat /sys/kernel/debug/qcom_qg            (cheia SDAM, msoc, orçamento, corrente usada)
+  cat /sys/kernel/debug/c440000.spmi:pmic@0:charger@1000
+  echo 1|0 > /sys/kernel/debug/hanoip-charge ; echo <uA> > /sys/kernel/debug/hanoip-icl
+MAPEAMENTO IMPORTANTE (medido): só os registradores de ÚLTIMO ADC da QGauge são
+confiáveis (voltage_now 0xc0, current_now 0xc2). voltage_avg/current_avg
+congelam ou devolvem 0, voltage_ocv está congelado, e o algoritmo periódico da
+QGauge (que no Android faz a contagem de Coulomb) não roda aqui. Toda vez que o
+driver usou um registrador "avançado" a taxa errou ~3x.
+BOOT: o reboot desliga a carga (opt-in, confirmado) e a criação dos arquivos de
+debugfs é tardia (8 s + retries), porque o driver sonda antes de
+/sys/kernel/debug existir.
+
+10) AUDITORIA E CORREÇÕES FINAIS (27/10, fim do dia): kernel v4 com 182
+patches. Foram corrigidos, depois de auditoria de código + matemática: o
+fallback de tensão que era código morto (podia zerar o SOC), o abs() na
+contagem de Coulomb (subia o SOC com a bateria descarregando), o snap sem
+limite, a corrente média inflada e, por fim, o viés de OCV que MUDA DE SINAL
+entre CC e TAPER (agora: carregando = só Coulomb; em repouso = OCV).
+Resistência interna do DT: 30 -> 200 mOhm (derivada de duas fontes: dado do
+Android a 54%/500 mA e a nossa medição em campo).
+Comparação com outros ports (seção 17 do RESUMO): o port do MESMO SoC
+(fork sm7150-qg) usa SOC LINEAR e reporta status UNKNOWN; o sm7125 upstream
+nem tem node de bateria. O nosso é o mais completo em reporte.
+
+PRÓXIMOS PASSOS: (a) validar a subida com carga líquida positiva (tela apagada
+ou carregador de parede) — com a tela ligada em porta de PC o consumo (631 mA)
+supera a entrada (496 mA) e o display corretamente não sobe; (b) observar a
+TERMINAÇÃO; (c) validar DCP; (d) decidir se a carga liga no boot; (e) opcional
+1,5 A no DCP com térmica.
+
+11) CONTAGEM DE COULOMB CORRIGIDA (patch 0183, 183 patches): dois bugs reais
+achados ao ver 95% -> 100% em minutos com a tela apagada. (a) retificação do
+ruído: contava só as amostras positivas de um ADC ruidoso, inventando carga
+com a bateria entregando corrente; agora filtra a corrente COM SINAL (EMA 8)
+e só conta acima de +50 mA. (b) div_s64 tem divisor de 32 bits e o divisor
+real (3600 * capacidade em uAh = 1,78e10) era truncado para 6,0e8, contando
+27x a carga real; agora div64_s64. Medido depois: 62 mili-% em 60 s a 192 mA
+(teoria 71). Teto do orçamento 2000 -> 1000 mili-% (1% por passo) e o valor
+PARA EM 99% enquanto carrega; 100% só quando o charger reportar FULL.
+Prova de que o 100% era falso: ao recarregar o módulo o valor caiu para 92%.
+
+12) CARREGADOR DE PAREDE (PD) DESTRAVADO — ERA O DT (27/10 tarde, 185
+patches): um carregador USB-C de 100 W nao entregava nada. Causa: o DT em
+sm7150-motorola-hanoip.dts declarava o conector Type-C como
+power-role="source" (herdado do port de referencia do Xiaomi), e existe um
+TCPM real no kernel; com "source" ele registrava a porta como FONTE PD
+(Rp + VCONN) e o carregador, corretamente, nunca ligava o VBUS. Agora:
+power-role="dual" + data-role="dual" + sink-pdos SO 5 V + op-sink 5 W.
+"sink" sozinho NAO funciona (TCPM falha no probe com -EINVAL). Prova por
+binario com scripts/fdt_diff.py (DT extraido do u-boot antigo, que estava em
+gzip dentro do .img): 744 nos, 1 propriedade alterada. Resultado: APSD=DCP,
+typec [sink], +186..250 mA na bateria, 32-33 C, e a tela NAO acendeu sozinha
+ao plugar (os acordares eram provavelmente o TCPM tentando ser fonte).
+Patch 0185: o driver negociava antes do APSD terminar, ficava no padrao SDP
+e nunca re-negociava (medido: DCP preso em 550 mA); agora o worker de 10 s
+reconcilia o tipo e ha um passe extra 2,5 s apos ligar a carga.
+
+13) TERMINACAO OBSERVADA e o que "100%" significa (27/10 ~18:05, 187 patches):
+status Full, 0 mA na bateria, FSM 0x45, 100% no display — primeira vez. Mas a
+verificacao fisica diz 94,4%, por DOIS metodos independentes (curva OCV em
+4,381 V de repouso; Coulomb: 91,5% + 145 mAh/4939 mAh). Causa: o ABL deixa o
+float em 4,400 V (reg 0x70=0x50) e a curva Motorola só dá 100% em 4,4465 V;
+o Android usa qcom,fv-max-uv = 4,450 V (dump do DT). DECISAO: manter 4,40 V
+(célula velha, 4939 mAh aprendidos de 6174 de projeto) e usar o 100% apenas
+como "charger terminou, pode tirar da tomada" — trava em 99% antes e volta ao
+valor real quando desconecta. Gravado em comentário no driver (patch 0187).
+
+FRENTE USB / MODOS (27/10 ~18:20, PLANEJADA, nada alterado ainda): o usuário
+quer trocar o modo da porta pela interface como o Android faz. Viabilidade
+verificada por evidência: o kernel JÁ tem CONFIG_USB_CONFIGFS (+ ACM, ECM, EEM,
+NCM, RNDIS, MASS_STORAGE, HID, SERIAL, OBFS/F_FS, UVC=m), USB_ROLE_SWITCH,
+DWC3_DUAL_ROLE, USB_OTG, XHCI (host), TYPEC_QCOM_PMIC e — importante —
+REGULATOR_QCOM_USB_VBUS (o boost de OTG tem driver mainline próprio, já
+habilitado no nosso DT com 500 mA..3 A). Lacunas reais: (L1) falta ferramenta/UI
+de troca de modo e temos dois gadgets separados; (L2) DT com dr_mode =
+"peripheral" e sem usb-role-switch; (L3) ninguém habilita o boost quando o
+papel vira source; (L4) MTP precisa de servidor em userspace sobre f_fs;
+(L5) sem persistência do modo; (L6) Phosh não tem UI de USB. Plano completo,
+com fases, comandos, critérios e proibições (nunca exportar partição por
+mass_storage; nunca habilitar VBUS com papel sink) em docs/PLANO-USB-MODOS.md.
+Do dump do Android: gadget configfs "g1", is_otg=1, e o papel de host vem do
+SMB5 por extcon (lá /sys/class/usb_role nem existe).
+
+REVISÃO 2 do plano USB (27/10 ~18:30) — análise de reboot, verificada:
+SÓ A FASE 1 PRECISA REBUILD+REBOOT (dr_mode="otg" + usb-role-switch; o DT vive
+dentro do U-Boot). Fase 0 (ferramenta/app/gadget único/serviço), Fase 3 (MTP
+sobre F_FS, já =y) e Fase 4 (persistência) são AO VIVO. E a antiga Fase 2
+(energizar o periférico) DEIXOU de existir: qcom_pmic_typec_port.c já chama
+regulator_enable(vdd_vbus) quando o papel vira source, e o nosso DT já tem
+vdd-vbus-supply = <&pm6150_vbus> com 500 mA..3 A. O sunfish (mesmo sm7150 e
+mesmo pm6150) faz OTG com exatamente DUAS linhas de DT, e o nosso link
+usb_1_dwc3_hs <-> pm6150_hs_in já é igual ao dele.
+CONSTRUÍDO E NÃO TESTADO (27/10 fim do dia): o U-Boot com OTG está pronto em
+work/usb-20261027/otg/ (img 8d777c9c..., dtb 0503d416...) e a imagem que está
+RODANDO foi preservada em work/usb-20261027/ANTES-otg/ (img e07ff366...).
+fdt_diff prova 744 nós, 1 propriedade alterada (dr_mode peripheral->otg) e 1
+nova (usb-role-switch). Nenhum reboot foi feito. Script de recuperação
+(hanoip-usb-fix status|fix, tolera UDC ausente em modo host) escrito em
+work/nethunter-pro-20261026/hanoip-support/ mas NÃO instalado. Instruções de
+boot, checklist e pendências em work/usb-20261027/LEIA-ME.txt.
+
+TESTE SÓ DE BOOT — PASSOU (27/10 18:46). O aparelho está rodando a imagem OTG
+agora. Verificado: dr_mode="otg", usb-role-switch presente e SEM
+role-switch-default-mode (padrão peripheral), role switch registrado
+(/sys/class/usb_role/a600000.usb-role-switch role=device), UDC configured,
+Type-C segue sink/device sem VCONN, usb0+SSH por USB OK, regulador usb_vbus
+presente e DESLIGADO (3 A máx), carga pelo PC segue SDP/500 mA/+213 mA, sem
+erros no dmesg. NÃO testado de propósito: periférico, saída de 5 V, carregador
+de parede com esta imagem. Achado antigo a corrigir: o dump de debugfs do
+charger não nasce no boot (o work desiste após 8 tentativas) — hoje exige
+recarregar o módulo.
+
+ARMADILHA REGISTRADA: o DT é VOLÁTIL — vive na imagem de U-Boot que bootamos.
+Se alguém bootar o U-Boot antigo, voltam o power-role errado e a ausência de
+OTG. A imagem nova precisa virar par de boot padrão, com hash, e o snapshot
+desta frente tem de guardar a imagem do U-Boot, não só o rootfs.
+
+PENDENTE ANOTADO (27/10 ~18:10): recarga após terminação (item 1) e AICL
+(item 3) NÃO podem ser observados no carregador de parede — com o cabo
+plugado a bateria fica em 0 mA (não descarrega, então nunca cruza o limiar de
+recharge) e uma fonte de 100 W não afunda o VBUS (não há o que o AICL limitar).
+Protocolo completo, comandos, o que esperar e os limites de segurança estão em
+docs/kernel/PENDENTE-recarga-e-AICL-20261027.txt. Precisa de porta de PC +
+tela ligada. Loggers já rodando no aparelho: charge-watch
+(/root/charge-watch.log, 10 s) e dpms-watch (/root/dpms-watch.log).
+
+## KALI NETHUNTER PRO (Phosh) — FUNCIONAL e com SNAPSHOT (27/10/2026)
+
+O Kali roda no hanoip com quase tudo do pmOS e mais: Phosh, Wi-Fi 5 GHz com
+internet, SSH root por chave, rede USB (Mac 172.16.42.2), sensores SSC
+(accel com orientação, luz, proximidade), vibração, LED, flash, áudio no
+alto-falante (UCM+rota+S16LE+mono, 6 dB), tuning de desempenho (GPU 355 MHz /
+poll 16 ms, UFS 200 MHz, CPU schedutil), relógio com fake-hwclock+NTP e fuso
+America/Sao_Paulo. NFC lê cartão ISO14443-A (kernel + neard).
+
+SNAPSHOT: work/kali-20261027-snapshot/ (rootfs.tar.zst 2,1 GB + configs +
+packages + README com restauração + SHA256SUMS). Tirado do pmOS com o rootfs
+montado RO — fazer dentro do Kali travou a interface.
+
+Boot (SÓ volátil; NUNCA reiniciar para o Android):
+  fastboot boot work/GOLD-20261026-1712/u-boot-hanoip-pmos-perif-v2026.10.img
+  fastboot boot work/nethunter-pro-20261026/artifacts/kernel-hanoip-kali-phosh-v2.img
+  (cmdline: NÃO usar console=ttyGS0, que trava o PID 1 do systemd)
+
+CORRIGIDO em 27/10 — "Failed to mount /dev/disk/by-partlabel/userdata":
+  causa era a NOSSA regra udev /etc/udev/rules.d/99-hanoip-blockdev-ro.rules
+  usando KERNEL=="sd*", que travava o DISCO inteiro (/dev/sdb ro=1); com o
+  disco RO o `mount -w` do initramfs falha com EPERM. Agora é KERNEL=="sd*[0-9]"
+  (só partições). A regra foi corrigida no rootfs E no initrd, e o initrd foi
+  reconstruído dentro do Kali. Evidência completa em
+  work/nethunter-pro-20261027-fix-mount/LEIA-ME.txt.
+  Também foi reparado um ext4 com inodes órfãos/bitmaps (e2fsck -fy, 27/10).
+  Reboot seguro: /usr/local/sbin/hanoip-reboot (sync + remount RO + b);
+  NUNCA `echo b > /proc/sysrq-trigger` sozinho — foi isso que corrompeu o ext4.
+  AUDITORIA COMPLETA de logs (dmesg inteiro + journal inteiro) em
+  work/nethunter-pro-20261027-fix-mount/AUDITORIA-LOGS-KERNEL.txt:
+  kernel sem Oops/WARNING/hung/OOM; corrigido /etc com uid 502 (2320 arquivos,
+  systemd-tmpfiles recusava operações) e regulatory.db (apontava para o
+  assinado pela Debian, kernel só confia no upstream → domínio US).
+  Pendências: (A) bateria "Not charging" com corrente 0 (continua aberta),
+  (B) zram RESOLVIDO em 27/10 (systemd-zram-generator + zstd 1,7 GiB +
+  swappiness 100; 11:1 de compressão no teste de pressão), (C) atomic commit
+  do DSI-1 medido: 917 IRQs/15 s = 61 Hz e ZERO falhas com a tela em uso; as
+  falhas restantes são só do modeset inicial e da abertura de janelas
+  (EBUSY transitório do wlroots) — não justifica mexer no kernel.
+  Também corrigido no mesmo dia: hanoip-ssc (sensores) falhava no boot a frio
+  porque o hexagonrpcd era iniciado uma única vez, antes do ADSP ficar
+  "running" — agora espera o remoteproc e tenta até 6 vezes (validado em boot
+  a frio: try 1, Result=success). E bootmac-bluetooth.service foi mascarado
+  (script do Mobian/SDM845 que dá timeout; o hci0 já sobe com MAC estável
+  D8:CF:BF:3C:EE:74). Estado final: is-system-running = running, ZERO units
+  falhando.
+
+Descobertas que custaram tempo (não repetir):
+ - console=ttyGS0 na cmdline => PID 1 bloqueado em n_tty_write => tela preta,
+   systemctl/SSH travados e "user@0 Connection timed out". Usar console=tty0.
+ - greetd: phrog NÃO aceita -s; usar `command = "phrog"` e o symlink
+   display-manager.service; _greetd nos grupos video/render.
+ - Relógio errado (1974/Sep 22) fazia o PAM recusar a conta; hoje há
+   fake-hwclock + NTP.
+ - Wi-Fi: o modem Motorola precisa do SMEM mmi_unit_info (identidade do ABL);
+   sem hanoip_mmi_unit_info.ko o firmware do WLAN crasha
+   ("firmware crashed!"). Ordem: firmware -> mmi -> modem -> ath10k.
+ - iio-sensor-proxy precisa ser reiniciado depois que o hanoip-ssc publica.
+ - Áudio: 3 peças (UCM, regra udev da rota, WirePlumber S16LE) + 6 dB.
+
+PENDENTE no Kali: app gráfico de NFC (hanoip-nfc.py pronto, não instalado),
+câmera, digital, microfone/fone, suspend.
+
 ## >>> ÍNDICE — COMECE POR AQUI (26/10/2026 ~19h30)
 
 COLETA FINAL DO ANDROID (26/10 ~20h50): `work/android-dump-20261026-final/`
@@ -237,13 +874,17 @@ normal, voltar à GOLD-20261026-1500 (copiar as imagens antes de bootar).
   v4 VALIDADA (~43 s): serviços ok, wlan0 com IP, DSI irqs=0, sdb23 RO,
   tainted 4096 (pré-existente), ssccli accel+luz ok, KWin rodando.
   Telefone agora na v4. Detalhes em `orient-fix/NOTAS-diagnostico.txt`.
+- Kernel v3 (166 patches) VALIDADO em boot volátil 26/10 ~21h: SSH, DSI
+  irqs=0, wlan0 com IP, AW882xx probe OK (0x1852), módulos no overlay RAM.
+  Pronto para empacotar como .deb do Kali.
 - Próximo da rotação (quando pedirem): ponte libssc→kscreen-doctor ou
   retomar o stream QMI com essas evidências.
 - LED white:status VALIDADO visualmente pelo usuário (brilho 511 acende;
   trigger de volta em pattern, feedbackd no controle).
-- NOVA GOLD 26/10 ~15h00: `work/GOLD-20261026-1500/` (GOLD.txt + SHA256SUMS,
-  somente leitura) — par v4-base-fast, retorno padrão daqui em diante.
-  U-Boot confere com perif-v5.
+- NOVA GOLD 26/10 ~17h12: `work/GOLD-20261026-1712/` (GOLD.txt + SHA256SUMS,
+  somente leitura) — U-Boot v2026.10 + kernel #6, retorno padrão daqui em
+  diante. U-Boot refeito sobre o oficial (delta reaplicado, DWC3 descartado);
+  validado volátil (DSI irqs=0, wlan0, SSH ~40 s). GOLD-20261026-1500 preservada.
 - Push PENDENTE (usuário irritou-se, não insistir): commit local `57b68c527`
   "Sensores via ADSP, GOLD rapida, LED, cameras" criado no branch
   `kernel-7.3` (ahead 1 do remoto); push à `main` subiu só até `b9334203e`
