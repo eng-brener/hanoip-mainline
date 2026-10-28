@@ -1,0 +1,54 @@
+#!/bin/sh
+# hanoip: GPU frequency floor follows the display state.
+#
+# Why: 355 MHz is the validated floor while the screen is on (see
+# hanoip-perf-tune.sh: a 180 MHz start with a 50 ms poll ramped up too late
+# and produced 124 frequency changes in 20 s of scrolling). With the display
+# off nobody is watching the UI, so the floor can drop to 180 MHz (lowest
+# OPP, MIN_SVS) and save leakage/voltage in idle. simple_ondemand still
+# boosts to 800 MHz if something renders offscreen.
+#
+# Signal: DRM DPMS state of the panel, with backlight brightness == 0 as a
+# fallback for compositors that blank without touching DPMS.
+#
+# Measured caveat (28/10/2026, tela apagada): the GPU rails are already
+# collapsed in that state (cx_gdsc/gx_gdsc = off-0) and the GMU clock is
+# gated, so 180 vs 355 changes nothing while truly idle — the floor only
+# matters if something still renders offscreen. Keep the floor low anyway:
+# it is the correct value for that state and costs nothing.
+set -eu
+
+GPU=/sys/class/devfreq/5000000.gpu
+ON_FLOOR=355000000
+OFF_FLOOR=180000000
+
+log() { printf 'hanoip-gpu-floor: %s\n' "$*" > /dev/kmsg 2>/dev/null || true; }
+
+display_off() {
+    dpms=$(cat /sys/class/drm/card0-DSI-1/dpms 2>/dev/null || echo On)
+    [ "$dpms" = Off ] && return 0
+    for b in /sys/class/backlight/*/brightness; do
+        [ -r "$b" ] || continue
+        [ "$(cat "$b" 2>/dev/null)" = 0 ] && return 0
+    done
+    return 1
+}
+
+cur=""
+while :; do
+    if display_off; then want=$OFF_FLOOR; state=tela-apagada; else want=$ON_FLOOR; state=tela-ligada; fi
+    if [ -w "$GPU/min_freq" ]; then
+        actual=$(cat "$GPU/min_freq" 2>/dev/null || echo "")
+        if [ "$actual" != "$want" ]; then
+            if echo "$want" > "$GPU/min_freq" 2>/dev/null; then
+                if [ "$actual" = "$cur" ]; then
+                    log "min_freq=$want ($state)"
+                else
+                    log "min_freq=$want ($state) DRIFT: estava ${actual:-?}"
+                fi
+                cur=$want
+            fi
+        fi
+    fi
+    sleep 1
+done

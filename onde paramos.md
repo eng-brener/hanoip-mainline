@@ -223,12 +223,17 @@
     NÃO são defeitos: "supply vdd/vddcx dummy" (caminho legado a3xx-a5xx;
     no a618 a tensão é votada pela GMU), falta de clock "core" no nó da GPU
     (idem), e "sync_state() pending due to 506a000.gmu" (informativo).
-    ÚNICO BURACO DE COBERTURA: GPU através de suspend/resume (s2idle).
-    Menores: piso de 355 MHz posto pelo hanoip-perf-tune (escolha de UI,
-    custa idle; poderia cair a 180 com a tela apagada) e o spam
-    "disallowed SPMI write to 0x6046" (RTC, não GPU — remover
+    TESTES DE FECHAMENTO (28/10, todos documentados na seção 11):
+      suspend/resume: peglgears 46.391 -> 44.926 FPS, FD618 e Turnip
+        revalidados, GDSC off, 0 erros, suspend_stats.success=1
+      Firefox (WebRender/WebGL) usa a GPU: GL_RENDERER "FD618", 800 MHz
+        sustentado, 415 transições de OPP, 55 C; phoc com 5 fds em renderD128
+      piso dinâmico: novo hanoip-gpu-idle-floor.service -> 355 MHz com a tela
+        ligada, 180 MHz apagada (validado nos dois sentidos + teste de deriva)
+      recovery: NÃO exercitado de propósito (exigiria command stream inválido;
+        o hangcheck está armado em 250 ms e não acusa com carga normal)
+    Menores: o spam "disallowed SPMI write to 0x6046" (RTC, não GPU — remover
     allow-set-time do DT).
-
 ### 17. CPU 100% — FRENTE FECHADA (28/10 ~10:00)
     Levantamento completo (docs/kernel/LEVANTAMENTO-CPU-100.md, seções 7-8):
       boot 16,1 s (era 3min19s; Plymouth mascarado)

@@ -1,0 +1,15 @@
+[Unit]
+Description=hanoip: GPU frequency floor follows the display state
+Documentation=docs/kernel/LEVANTAMENTO-GPU.md
+After=hanoip-perf-tune.service
+Wants=hanoip-perf-tune.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/hanoip-gpu-idle-floor
+Restart=always
+RestartSec=3
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

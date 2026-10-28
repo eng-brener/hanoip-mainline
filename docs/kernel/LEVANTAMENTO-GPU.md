@@ -197,22 +197,31 @@ medição meu): as GDSC da GPU existem E desligam quando ociosa.
 
 8. O QUE NÃO FOI TESTADO (honestidade do levantamento)
 ------------------------------------------------------
-  a) GPU através de suspend/resume (s2idle). O sistema suspende e volta
-     (LEVANTAMENTO-CPU-100), mas não rodei carga de GPU antes/depois de um
-     ciclo para provar que o contexto volta.
-  b) Caminho de FALHA (hangcheck / coredump / recovery). Não há contador
-     /sys/kernel/debug/dri/0/fault neste kernel e não provoquei fault.
+  a) RESOLVIDO 28/10: GPU em suspend/resume — ver 11.2.
+  b) Caminho de FALHA (hangcheck / coredump / recovery). Não há injetor de
+     fault no kernel; o hangcheck só dispara com um job REALMENTE travado
+     (fence sem progresso e sem progresso do motor), o que exigiria injetar
+     um command stream inválido na GPU. Foi decidido não fazer: risco de
+     travar o aparelho inteiro sem ganho proporcional. O que se sabe:
+       - hangcheck_period_ms = 250 (timer ativo)
+       - máquina de recovery presente no fonte (hangcheck_handler ->
+         gpu->recover_work -> msm_gpu_recover)
+       - /sys/class/devcoredump presente e habilitado (disabled=0)
+     Baixar hangcheck_period_ms para 1 ms NÃO provoca reset: com o motor
+     fazendo progresso o driver corretamente não acusa (testado).
   c) Recursos de DRM/MSM expostos por ioctl (VM_BIND, preempção, prio de
      contexto) — não consultei MSM_PARAM; o que foi provado é o que está em 7.
   d) Decode de vídeo (Venus) não faz parte da GPU e não foi tocado aqui.
+  e) RESOLVIDO 28/10: uso real de app — Firefox com WebRender/WebGL, ver 11.4.
 
 
 9. PENDÊNCIAS REAIS (curtas)
 ----------------------------
-  1. Testar GPU antes/depois de um s2idle (item 8a) — é o único buraco de
-     cobertura de GPU que sobrou. Não exige rebuild.
-  2. Opcional: baixar o piso de 355 -> 180 MHz com a tela apagada, para
-     economia em idle (escolha de política, não bug).
+  1. RESOLVIDO 28/10 — piso de clock segue a tela (355 ligada / 180 apagada),
+     ver 11.1. Ganho medido: praticamente nulo em idle porque as trilhas já
+     estão colapsadas; o piso só pesa quando algo renderiza.
+  2. Caminho de falha: só seria exercitável injetando command stream inválido
+     (ver 8b). Decisão: não fazer.
   3. Limpar o spam "disallowed SPMI write to sid=0, addr=0x6046" removendo
      allow-set-time do &pm6150_rtc no DT (o offset de RTC em userspace já
      resolve o relógio). Isso é RTC, não GPU, mas polui o dmesg.
@@ -238,3 +247,57 @@ medição meu): as GDSC da GPU existem E desligam quando ociosa.
 
   ATENÇÃO: NÃO fazer `cat /sys/kernel/debug/dri/0/gpu` nem `.../mm` sem
   filtrar — eles despejam buffers em ascii85 e travam a sessão SSH.
+
+
+11. TESTES EXECUTADOS EM 28/10 (fechamento da cobertura)
+--------------------------------------------------------
+11.1 PISO DE CLOCK SEGUE A TELA — implementado e validado
+    Serviço: hanoip-gpu-idle-floor.service ->
+             /usr/local/sbin/hanoip-gpu-idle-floor
+    Lógica: lê DPMS de card0-DSI-1 (com backlight==0 como reserva) a cada 1 s;
+            355 MHz com a tela ligada, 180 MHz com a tela apagada.
+            Reafirma o valor (idempotente) e registra deriva no dmesg.
+    Instalação:
+      install -D -m 0755 hanoip-gpu-idle-floor /usr/local/sbin/
+      install -D -m 0644 hanoip-gpu-idle-floor.service /etc/systemd/system/
+      systemctl enable --now hanoip-gpu-idle-floor
+    Validação (tela apagada/acessa pelo usuário):
+      dpms=Off -> min_freq=180000000, cur_freq=180000000
+      dpms=On  -> min_freq=355000000
+    Teste de deriva: com min_freq forçado a 800 manualmente, o serviço
+    corrigiu em <=1 s e logou "DRIFT: estava 800000000".
+    NUANCE HONESTA: com a tela apagada as GDSC já estão off-0 e o clock da GMU
+    gateado; nesse estado 180 x 355 não muda consumo. O piso só pesa se algo
+    renderizar com a tela apagada. Não foi possível medir a diferença em mAh
+    porque o aparelho estava no USB (qcom_qg em "Not charging", i=0).
+
+11.2 GPU EM SUSPEND/RESUME — validado
+    Procedimento: alarme RTC de 25 s + systemctl suspend; gancho temporário em
+    /usr/lib/systemd/system-sleep/99-gpu-resume-test medindo no post.
+    Antes : peglgears 46.391 FPS
+    Depois: peglgears 44.926 FPS  (dentro do ruído observado de 44-46 mil)
+    Pós-resume: devfreq cur=355 MHz, governor simple_ondemand,
+                GDSC cx=off-0 gx=off-0, eglinfo FD618,
+                vulkaninfo "Turnip Adreno (TM) 618"
+    dmesg: 0 erros de adreno/iommu/drm; suspend_stats.success = 1
+    Gancho de teste removido depois (não ficou nada pendurado no sistema).
+
+11.3 CAMINHO DE FALHA (hangcheck/recovery) — NÃO exercitado, por decisão
+    Ver 8b. Resumo: a máquina existe e está armada (hangcheck 250 ms,
+    recover_work, devcoredump habilitado), mas acioná-la exige um job
+    realmente travado. hangcheck_period_ms=1 ms com carga normal não dispara
+    (o driver vê progresso e está correto em não acusar). Injetar um command
+    stream inválido foi descartado: risco de travar o aparelho inteiro, sem
+    ganho de informação proporcional.
+
+11.4 USO REAL DE APP — Firefox acelerado, validado
+    Página de teste /tmp/webgl.html: canvas WebGL2 com triângulo em
+    requestAnimationFrame e FPS no título.
+    Resultado: o log do Firefox mostra "Couldn't sanitize GL_RENDERER FD618"
+    (é o aviso conhecido dele ao receber um renderer fora do padrão — prova
+    que a string chegou e é o Adreno 618). Durante o teste:
+      GPU em 800 MHz de forma sustentada, 415 transições de OPP,
+      gpuss0 em ~55 C, load ~2,2 (8 núcleos)
+    Ou seja: WebRender/WebGL do Firefox usam a GPU de verdade, não llvmpipe.
+    O compositor da sessão também é acelerado: phoc mantém 5 descritores
+    abertos em /dev/dri/renderD128.
