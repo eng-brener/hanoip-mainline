@@ -336,3 +336,36 @@ ESTADO DO APARELHO (ordem do usuário: NÃO reiniciar):
   card só com o codec). Áudio segue: alto-falante ok (fora desta variante),
   codec não energiza. Retorno seguro quando quiser: PRE-GOLD
   (work/PRE-GOLD-20261028-1133), sem pressa.
+
+13. TENTATIVA 2: WIDGETS DE AIF NO wcd937x (PATCH DE DRIVER) — SEM EFEITO
+------------------------------------------------------------------------
+Patch aplicado (kernel tree, commit local "ASoC: wcd937x: add AIF DAPM
+widgets and playback/capture routes"):
+  + SND_SOC_DAPM_AIF_IN("AIF1 PB", "WCD AIF Playback", ...)
+  + SND_SOC_DAPM_AIF_OUT("AIF1 CAP", "WCD AIF Capture", ...)
+  + rotas {"RX1","AIF1 PB"}, {"RX2","AIF1 PB"}, {"RX3","AIF1 PB"},
+          {"AIF1 CAP","ADC1/2/3_OUTPUT"}
+Buildado como módulo, vermagic 7.3.0-sm7150, instalado em
+/lib/modules/.../snd-soc-wcd937x.ko.zst (backup do original em
+/root/wcd937x.ko.zst.orig) e carregado por reboot (U-Boot etapa10 + kernel).
+
+RESULTADO: card subiu sem erro de DAPM/duplicidade, codec atachado, e o teste
+repetiu exatamente o mesmo quadro:
+  aplay -> EIO; registradores alterados durante o play: 0
+
+CONCLUSÃO DEFINITIVA (duas evidências independentes):
+  1. ligar a rota analógica à mão (EAR_RDAC/HPHL/HPHR/RDAC3_MUX) não muda nada;
+  2. adicionar os widgets/rotas de AIF no codec também não muda nada.
+  => o abort do stream NÃO depende do estado do codec. Ele acontece no DSP.
+
+Módulo original restaurado no aparelho (backup aplicado) para deixar o sistema
+no estado conhecido; o patch permanece versionado na árvore do kernel e no
+histórico deste documento.
+
+O QUE ISSO FECHA E O QUE RESTA:
+  - fechado: reset (pino LPI 6), clock do macro RX (bug real corrigido),
+    portas/canais do SWR, janela do pinctrl, roteamento do card, DAPM do codec.
+  - resta: a razão pela qual o firmware do ADSP aborta a porta CODEC_DMA depois
+    de ~0,5 s, sem reportar erro. Sem o techpack/audio do vendor (não
+    publicado) ou engenharia reversa do firmware (Hexagon), não há caminho
+    determinístico daqui.
