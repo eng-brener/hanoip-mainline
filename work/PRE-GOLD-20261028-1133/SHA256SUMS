@@ -1,0 +1,11 @@
+ede8116a8ac4a2e35472f1eb4da6dff5b3c85f85096e5c504915315d11f8f038  ./dt/sm7150-motorola-hanoip-clusteridle-test.dts
+f343012acc304a2c0a7321045e8bb7b98952875b4b7acdf8ba220fd2a2f0a1c7  ./dt/sm7150-motorola-hanoip-clusteridle-venus.dts
+60b54914cedae8f442d4db31c3a7cb06d898b31fc7326fa9f28be4b1d0014fcb  ./kernel/kernel-hanoip-kali-phosh-v3-teo.img
+53effc7d032c968ea3b6b7e837e0f9f7930fd3126e477d330daba79bb39bf934  ./patches/0001-media-venus-add-SM7150-resources-experimental.patch
+8fcb22cd0318b1c6a1ec44c9db41b07ca2013af30c77346c0ead804e5c042c8a  ./PRE-GOLD.txt
+56ba70fe796ff5072e3cca2fb086de4703c51c15156857220ee392252eb40b67  ./prova/runtime.txt
+12a1348347b86209c3547420676d64493141657c0d336b8be29edf9c3db27afb  ./scripts/build-uboot.sh
+655cc6554d83a5ba59052a3b19d77f91b29bb070790414cb5c07513c0a41e0b5  ./scripts/fdt_diff.py
+928581cd12dba9e8ec90e916aec80db98de476770cedd4ab9c5dcd339e51298f  ./uboot/u-boot-sm7150-motorola-hanoip-clusteridle-venus.img
+4999c8c87ca4890da01c9abea4f3eb17ff3acb9769b1ee272a1f6554d700f786  ./uboot/u-boot.bin
+f36b670f804cf456f80ba7ee3e383ce8dac451250b88383fd70e9702c71eaa14  ./uboot/uboot.dtb

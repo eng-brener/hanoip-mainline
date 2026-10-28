@@ -1,0 +1,77 @@
+PRE-GOLD 2026-10-28 11:33 — Kali/Phosh + Venus (decode de vídeo) + cluster-idle
+================================================================================
+Congelado a pedido do usuário em 28/10/2026 11:33. É o par de boot que estava
+rodando quando o decode por hardware foi validado, EM CIMA das últimas
+correções de CPU (cluster-idle + TEO + EAS), com o mesmo kernel v3-teo.
+
+Nada aqui foi gravado em partição: o boot é volátil (`fastboot boot`).
+
+1. O QUE ESTE PAR ENTREGA (medido, não suposto)
+-----------------------------------------------
+  Kernel: 7.3.0-sm7150 #24 SMP PREEMPT Wed Oct 28 12:47:13 UTC 2026
+          (mesmo kernel de antes; nenhuma mudança de kernel nesta frente)
+  U-Boot: construído a partir de
+          sm7150-motorola-hanoip-clusteridle-venus.dts
+          = base clusteridle-test + &venus { status=okay; firmware-name=... }
+
+  CPU (igual ao estado validado de 28/10):
+    8 CPUs online (0-7), schedutil nos dois clusters, EAS=1,
+    cpuidle psci_idle com governor TEO,
+    cluster com os TRÊS estados (S0/S1/S2) — o colapso de cluster está ligado.
+
+  GPU: FD618 (GL 4.6 / GLES 3.2), Vulkan "Turnip Adreno (TM) 618".
+
+  VENUS (novo neste PRE-GOLD):
+    DT efetivo: status=okay, firmware-name=qcom/sm7150/motorola/hanoip/venus.mdt
+    firmware carregado: fw_level = 0x18 (v24) em /sys/kernel/debug/venus/fw_level
+    devices: /dev/video0 (decoder) e /dev/video1 (encoder), driver qcom-venus
+    formatos de decodificação: H264, VP8, VP9, HEVC, MPEG2 (dyn-resolution)
+    módulos em uso: venus_core, venus_dec, venus_enc (+ videobuf2/v4l2)
+    dmesg: 0 erros de venus; 0 faults de adreno/IOMMU
+
+  Prova de que o decode é HARDWARE (clipe 1080p, 10 s, 3 execuções):
+    HARDWARE (v4l2h264dec): parede 3,96 s · cpu_user 3,80 s · cpu_sys 0,33 s
+    SOFTWARE (avdec_h264) : parede 2,66 s · cpu_user 10,80 s · cpu_sys 0,61 s
+    -> o caminho V4L2 usa ~2,8x menos CPU (offload real no Venus). A parede do
+       hardware ficou maior porque o pipeline inclui qtdemux/h264parse e o
+       caminho V4L2 tem latência de fila; o ganho é de CPU/energia, não de
+       throughput neste clipe pequeno.
+
+  Sensores: matriz do acelerômetro corrigida (ACCEL_MOUNT_MATRIX no device
+    misc fastrpc-adsp); rotação DESLIGADA a pedido (orientation-lock=true),
+    transform normal, tela de bloqueio ativa. Luz/proximidade funcionando.
+
+2. COMO BOOTAR ESTE PAR (volátil, um comando por vez)
+-----------------------------------------------------
+  fastboot devices                          # obter o serial
+  fastboot boot uboot/u-boot-sm7150-motorola-hanoip-clusteridle-venus.img
+  # esperar ~6 s o U-Boot subir (ele responde fastboot com produto hanoip)
+  fastboot boot kernel/kernel-hanoip-kali-phosh-v3-teo.img
+
+  ATENÇÃO: o DT vive DENTRO do U-Boot (CONFIG_OF_EMBED). Bootar outro U-Boot
+  reverte o DT inteiro — inclusive o venus e o cluster-idle.
+
+3. HASHES
+---------
+  Ver SHA256SUMS (u-boot img/bin, uboot.dtb, kernel img, dts, patch, script)
+  e prova/runtime.txt, que traz os hashes dos módulos realmente em uso no
+  aparelho (msm, venus-core, venus-dec, venus-enc).
+
+4. LIMITES CONHECIDOS (herdados, nenhum é regressão do venus)
+-------------------------------------------------------------
+  - "Atomic commit failed: Device or resource busy" no phoc aparece algumas
+    vezes no login (commit herdado sem flip_done). Depois do login a sessão
+    fica normal; se travar com "Timeout (3000ms) expired with N configures
+    pending", reiniciar a sessão resolve.
+  - Rotação desligada por decisão do usuário (não gira).
+  - Carregamento é opt-in (bit CHARGING_ENABLE reseta em power cycle).
+  - Encoder existe (/dev/video1) mas NÃO foi testado.
+  - Só H.264 foi decodificado de fato; VP8/VP9/HEVC/MPEG2 estão anunciados
+    pelo device, não validados com clipe.
+  - microSD continua não utilizável nesta variante (ver docs/HARDWARE-PENDENTE).
+
+5. COMO VOLTAR ATRÁS
+--------------------
+  Basta bootar a U-Boot do PRE-GOLD anterior
+  work/PRE-GOLD-20261027-1852/uboot/ com o mesmo kernel; o DT volta ao estado
+  sem venus.

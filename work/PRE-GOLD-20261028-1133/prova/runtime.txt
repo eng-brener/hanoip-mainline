@@ -1,0 +1,39 @@
+== PRE-GOLD 2026-10-28 11:33 — prova de runtime ==
+data_coleta: 2026-10-28T11:33:21-03:00
+uname: Linux kali 7.3.0-sm7150 #24 SMP PREEMPT Wed Oct 28 12:47:13 UTC 2026 aarch64 GNU/Linux
+uptime_s: 306.32
+
+-- VENUS (decode de video) --
+dt_status: okay
+dt_firmware: qcom/sm7150/motorola/hanoip/venus.mdt
+fw_level: 0x00000018
+devices: /dev/video0 /dev/video1 
+driver: qcom-venus
+formats_out: 
+modulos: venus_enc venus_dec venus_core 
+
+-- CPU (cluster idle + TEO) --
+online: 0-7
+governors: schedutil/schedutil
+cpuidle: psci_idle/teo
+eas: 1
+cluster_idle_states: 4
+
+-- GPU --
+gpu_rev: 06010800 Status: gpu-initialized: 1 revision: 618 (06010800)
+gl: FD618
+vk: Turnip Adreno (TM) 618
+
+-- SENSORES --
+udev_matrix: ACCEL_MOUNT_MATRIX=-1,0,0;0,-1,0;0,0,1
+orientation_lock: true
+
+-- HASHES DOS MODULOS EM USO --
+msm: 03fd2679174c6f9abda600c3df2400dc (463628 bytes) /lib/modules/7.3.0-sm7150/kernel/drivers/gpu/drm/msm/msm.ko.zst
+venus-core: c53558905b6533bbac86ea1fee6ced5f (56416 bytes) /lib/modules/7.3.0-sm7150/kernel/drivers/media/platform/qcom/venus/venus-core.ko.zst
+venus-dec: 25cda3033468629c83db4d94485bd0b8 (14731 bytes) /lib/modules/7.3.0-sm7150/kernel/drivers/media/platform/qcom/venus/venus-dec.ko.zst
+venus-enc: 0aefe1c5076229812d2d93a3375974cf (14148 bytes) /lib/modules/7.3.0-sm7150/kernel/drivers/media/platform/qcom/venus/venus-enc.ko.zst
+
+-- ERROS DE KERNEL (gpu/iommu/venus) --
+adreno/iommu faults: 0
+venus errors: 0

@@ -3,6 +3,44 @@
 The user forbids flashing or writing any phone partition. Preserve this rule
 throughout this project, including later sessions.
 
+# THE DEVICE TREE COMES FROM U-BOOT, NEVER FROM THE KERNEL boot.img
+
+This is a safety rule, not a detail. The effective DT of this board is EMBEDDED
+in U-Boot (CONFIG_OF_EMBED); the dtb inside the kernel boot.img is NOT used.
+Verified in the field: a DT edit only takes effect after rebuilding U-Boot and
+booting that image, and /proc/device-tree then shows the new values.
+
+Consequences that must shape every change and every record:
+
+- any DT change (battery OCV table, internal resistance, panel, Type-C role,
+  dr_mode, regulators) requires an U-Boot rebuild, and a fresh `fastboot boot`;
+- the DT state is VOLATILE and lives inside the booted image. Booting another
+  U-Boot, for example an older one, silently reverts the DT even with the same
+  rootfs and the same modules. That is how a fixed wall charger can "break"
+  again with nothing changed on the phone;
+- therefore any snapshot/GOLD of a state with DT changes MUST store the U-Boot
+  image together with the kernel and modules (see
+  work/PRE-GOLD-20261027-1852/ and work/PRE-GOLD-20261028-1133/, which keep
+  uboot/, kernel/, dt/ and patches/);
+- CURRENT BASELINE PAIR (user-designated 2026-10-28 11:33):
+  work/PRE-GOLD-20261028-1133/ = cluster-idle U-Boot + VENUS enabled
+  (status=okay, firmware qcom/sm7150/motorola/hanoip/venus.mdt) + kernel
+  7.3.0-sm7150 #24 (v3-teo). Hardware H.264 decode validated there
+  (/dev/video0, fw_level 0x18, ~2.8x less CPU than avdec_h264). Boot it with
+  `fastboot boot uboot/u-boot-*-clusteridle-venus.img` then
+  `fastboot boot kernel/kernel-hanoip-kali-phosh-v3-teo.img`. Read-only.
+- prove DT changes surgically with scripts/fdt_diff.py between the built .dtb
+  files, never by reading the .dts. Note that 4-byte string values ("otg") used
+  to be printed as integers by this tool; it is fixed, but distrust round
+  numbers when they appear where a string belongs;
+- do not trust a .ko hash to prove "only comments changed": the linker build-id
+  differs between builds. Compare objdump output or cmp ignoring those bytes.
+
+DT changes that were actually killed/prepared here: Type-C power-role
+"source" -> "dual" with 5 V sink PDOs (this is what unblocked the wall charger),
+the Motorola OCV curve plus 200 mOhm internal resistance, and
+dr_mode="otg" + usb-role-switch for USB host.
+
 - Never use fastboot flash/erase/format/update, change the active slot, write
   /dev/block devices, repair phone filesystems, or push files onto partitions.
 - Do not execute historical flashing examples in README.md or docs/.
@@ -29,6 +67,26 @@ throughout this project, including later sessions.
 - Volatile tests with `fastboot boot` have been authorized and used in this
   session. Keep diagnostic root filesystems in RAM, without automounting disks.
 - Keep known-good images and hashes before preparing another variant.
+
+# Bateria: SOC corrigido e CARGA funcionando (2026-10-27, Kali)
+
+A porcentagem agora vem de uma tabela OCV REAL, extraída do perfil de bateria
+que o Android usa neste aparelho (S88731AA1-mc50-ATL-4V45-6000mah). O DT que
+vale no sm7150 vem EMBUTIDO NO U-BOOT (CONFIG_OF_EMBED) — o dtb do boot.img do
+kernel não é usado; mudar DT = reconstruir U-Boot. Use scripts/fdt_diff.py
+para provar que a variante muda só o esperado.
+
+A carga FUNCIONA e é OPT-IN, desligada por padrão:
+  echo 1|0 > /sys/kernel/debug/hanoip-charge      (limite 1 A, watchdog
+                                                   desarmado antes de ligar)
+  cat /sys/kernel/debug/c440000.spmi:pmic@0:charger@1000     (dump read-only)
+Validado 15 min: 497 mA de entrada (SDP), +440 mA na bateria, 32-34 C, sem
+erro. Float 4.400 V, JEITA e terminação continuam como a ABL deixou.
+Com entrada de 500 mA e TELA LIGADA o aparelho consome mais do que recebe: a
+corrente fica negativa, o UPower mostra "descarregando" e o sysfs "Charging".
+Próximo passo combinado: B4 (APSD/ICL) para carregar com a tela ligada.
+Detalhes: docs/kernel/checkpoint-2026-10-27-bateria-RESUMO.txt e
+work/bateria-soc-20261027/. Nada disso autoriza escrever partição.
 
 # Latest runtime: sensors PASSED via ADSP, 2026-10-26
 
@@ -313,3 +371,11 @@ default return pair from now on. Never modify files in that folder; build new
 variants elsewhere. Volatile fastboot boot only, never flash. Battery/charger, LCDB/display robustness, CPUs6/7, long-run
 stability and suspend remain pending. Touch polish stays deferred. No flash
 or phone partition writes under any circumstances.
+
+# Reboot rule (2026-10-26, user request)
+
+ALWAYS reboot into the bootloader (Motorola fastboot), never into Android.
+Reason: Android would boot with the Kali rootfs in userdata and could try to
+format/factory-reset it, destroying the Kali install. From Linux, trigger the
+reset and make sure the device lands in fastboot before doing anything else;
+if it lands in Android, stop and ask the user to force the bootloader.

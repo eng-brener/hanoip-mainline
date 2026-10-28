@@ -1,5 +1,23 @@
 # Handoff — Moto G60 hanoip mainline
 
+## SESSÃO 28/10/2026 — VENUS (decode de vídeo) + NOVO PRE-GOLD
+
+### V. VENUS LIGADO E VALIDADO — NOVO PAR DE BOOT (11:33)
+    work/PRE-GOLD-20261028-1133/ (read-only, PRE-GOLD.txt + SHA256SUMS):
+      U-Boot = base cluster-idle (mesmas correções de CPU: 8 CPUs, TEO, EAS,
+        cluster S0/S1/S2) + &venus { status=okay; firmware-name=
+        qcom/sm7150/motorola/hanoip/venus.mdt }
+      kernel = o MESMO de antes, 7.3.0-sm7150 #24 (v3-teo)
+    O patch do venus (media: venus: add SM7150 resources) JÁ estava no fonte do
+    kernel (sm7150_res, compatible qcom,sm7150-venus); faltava só o DT.
+    Prova de hardware: /dev/video0 (decoder) com H264/VP8/VP9/HEVC/MPEG2,
+    fw_level 0x18, 0 erros; clipe 1080p: cpu_user 3,80 s (v4l2h264dec) contra
+    10,80 s (avdec_h264) -> ~2,8x menos CPU. A parede do hardware ficou maior
+    (3,96 x 2,66 s) por overhead de fila/demux: o ganho é CPU/energia.
+    Diferença de DT provada por scripts/fdt_diff.py: 1 prop alterada (status)
+    + 1 nova (firmware-name), nada mais.
+    NÃO validado: VP8/VP9/HEVC/MPEG2 com clipe real e o encoder /dev/video1.
+
 ## SESSÃO 27/10/2026 (noite) — CONSOLIDADO DE TUDO — LEIA ISTO PRIMEIRO
 
 ### 0. ESTADO DO APARELHO AGORA (27/10 19:15)

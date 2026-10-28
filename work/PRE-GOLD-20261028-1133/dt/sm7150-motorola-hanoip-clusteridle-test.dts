@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * Variante de TESTE: religa o colapso de cluster (L3/CX/AOSS).
+ *
+ * Por que precisou de um arquivo:
+ *   a cadeia do perif-batt herda, no fim, o sm7150-motorola-hanoip-
+ *   cpuidle-local-diagnostic.dts, que faz
+ *       &cluster_pd { /delete-property/ domain-idle-states; };
+ *   porque em 25/10 o colapso de cluster produziu TELA PRETA. Resultado: hoje
+ *   o kernel registra apenas S0 no domínio de cluster (ver
+ *   /sys/kernel/debug/pm_genpd/power-domain-cluster/idle_states) e o aparelho
+ *   roda, na prática, em idle "local-only".
+ *
+ * O que esta variante faz:
+ *   devolve os tres estados que o dtsi define — cluster-sleep-0 (PC),
+ *   cluster-sleep-1 (CX retention) e cluster-sleep-2 (AOSS) — mantendo TODO o
+ *   resto igual ao perif-batt (8 CPUs, cpufreq nos dois clusters, OTG, bateria,
+ *   display). Assim o teste isola o colapso de cluster, sem outras variáveis.
+ *
+ * RISCO CONHECIDO: tela preta ao colapsar o cluster. Nada e' gravado em
+ * particao; o retorno e' bootar a imagem do pre-GOLD.
+ */
+#include "sm7150-motorola-hanoip-pmos-perif-batt.dts"
+
+&cluster_pd {
+	domain-idle-states = <&cluster_sleep_pc
+			      &cluster_sleep_cx_ret
+			      &cluster_aoss_sleep>;
+};
