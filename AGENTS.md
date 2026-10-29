@@ -28,7 +28,29 @@ Consequences that must shape every change and every record:
   image together with the kernel and modules (see
   work/PRE-GOLD-20261027-1852/ and work/PRE-GOLD-20261028-1133/, which keep
   uboot/, kernel/, dt/ and patches/);
-- CURRENT BASELINE PAIR (user-designated 2026-10-28 11:33):
+- CURRENT BASELINE PAIR (user-designated 2026-10-29 15:34):
+  work/PRE-GOLD-20261029-1534/ = U-Boot cam-tres (audio-etapa14 DT + camss
+  + S5K4H7/S5KHM2/OV32B + VCMs, CCI 1 MHz) + the SAME kernel img as 1707
+  (#29). Cameras come from modules installed in the Kali rootfs
+  (/lib/modules: qcom-camss, i2c-qcom-cci, s5k4h7, hanoip-cam, hanoip-vcm;
+  tunings in /etc/libcamera/ipa/simple/), user-authorized 2026-10-29,
+  backup in /root/backup-cameras-20261029/. Source: work/kernel-7.3/v6
+  (194 patches, tree f4dccdc7). The main S5KHM2 is C-PHY (3 trios), NOT
+  D-PHY. Three cameras validated by the user in Snapshot after a normal
+  boot. Boot it with
+  `fastboot boot uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img` then
+  `fastboot boot kernel/kernel-hanoip-kali-phosh-v5.img`. Read-only.
+  The OV02B1B depth camera stays out of the app (user decision).
+- PREVIOUS BASELINE PAIR (user-designated 2026-10-28 17:07):
+  work/PRE-GOLD-20261028-1707/ = U-Boot audio-etapa14 (cluster-idle + Venus +
+  full audio DT) + kernel v5 #29 (work/kernel-7.3/v5, code-identical to #24)
+  + fixed modules snd-soc-wcd937x-sdw/soundwire-qcom and the hanoip UCM
+  installed in the rootfs. Speaker, earpiece, headphones, 3 mics, jack
+  detection and PipeWire validated. Boot it with
+  `fastboot boot uboot/u-boot-sm7150-motorola-hanoip-audio-etapa14.img` then
+  `fastboot boot kernel/kernel-hanoip-kali-phosh-v5.img`. Read-only.
+  Booting it with the ORIGINAL modules leaves left headphone/earpiece silent.
+- PREVIOUS BASELINE PAIR (user-designated 2026-10-28 11:33):
   work/PRE-GOLD-20261028-1133/ = cluster-idle U-Boot + VENUS enabled
   (status=okay, firmware qcom/sm7150/motorola/hanoip/venus.mdt) + kernel
   7.3.0-sm7150 #24 (v3-teo). Hardware H.264 decode validated there

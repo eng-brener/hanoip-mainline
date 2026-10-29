@@ -1,0 +1,62 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 12: card completo (alto-falante + earpiece + fone + mics).
+ *
+ * Reavaliação de 28/10 (docs/kernel/REAVALIACAO-AUDIO-20261028.md): o EIO das
+ * etapas 5..11 NÃO era o DSP nem o voto DCODEC. Medido em runtime na etapa 10:
+ *   - com 'RX_MACRO RX0 MUX'=AIF1_PB (+ INT0 MIX/DEM) o aplay roda (rc=0);
+ *     com o mux em ZERO dá EIO — o AIF do macro não liga no DAPM e a
+ *     interface CODEC_DMA não é habilitada;
+ *   - idem na captura com 'TX DEC0 MUX'=SWR_MIC;
+ *   - rotear o MESMO FE (MultiMedia1) nos dois sentidos corrompe a sessão do
+ *     q6routing (um port_id por sessão) -> ADM_CMD_DEVICE_OPEN_V5 EBADPARAM.
+ *
+ * Base: etapa5 (reset do WCD937x em <&lpass_tlmm 6>, link do alto-falante
+ * preservado). Mudanças:
+ *   1. clock do rxmacro com os ids de RX (bug do sm7150.dtsi, ver etapa10);
+ *   2. audio-routing = o do stock/upstream, ligando macro <-> codec
+ *      (IN1_HPHL<-HPHL_OUT ... TX SWR_ADC2<-ADC2_OUTPUT). Substitui as rotas
+ *      "WCD AIF Playback" da etapa9, que deixavam o codec sempre ligado;
+ *   3. FE MultiMedia2 só de captura (as sessões ASM/ADM ficam separadas);
+ *   4. MultiMedia1 só de playback.
+ */
+#include "sm7150-motorola-hanoip-audio-etapa5.dts"
+
+&rxmacro {
+	clocks = <&q6afecc LPASS_CLK_ID_RX_CORE_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&q6afecc LPASS_CLK_ID_RX_CORE_NPL_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&q6afecc LPASS_HW_MACRO_VOTE LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+		 <&vamacro>;
+};
+
+&q6asmdai {
+	dai@0 {
+		direction = <Q6ASM_DAI_RX>;
+	};
+
+	dai@1 {
+		reg = <MSM_FRONTEND_DAI_MULTIMEDIA2>;
+		direction = <Q6ASM_DAI_TX>;
+	};
+};
+
+&{/sound} {
+	/* stock qcom,audio-routing (sem os widgets de máquina "Analog Mic") */
+	audio-routing =
+		"AMIC1", "MIC BIAS1",
+		"AMIC2", "MIC BIAS2",
+		"AMIC3", "MIC BIAS3",
+		"IN1_HPHL", "HPHL_OUT",
+		"IN2_HPHR", "HPHR_OUT",
+		"IN3_AUX", "AUX_OUT",
+		"TX SWR_ADC0", "ADC1_OUTPUT",
+		"TX SWR_ADC2", "ADC2_OUTPUT";
+
+	mm2-dai-link {
+		link-name = "MultiMedia2";
+
+		cpu {
+			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA2>;
+		};
+	};
+};

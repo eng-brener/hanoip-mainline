@@ -1,0 +1,84 @@
+PRE-GOLD 2026-10-29 15:34 -03 — Kali/Phosh + ÁUDIO + TRÊS CÂMERAS
+===================================================================
+Designada pelo usuário em 29/10/2026 ("claro essa vai ser a nova pre gold").
+É o par que estava rodando nesse momento. Substitui PRE-GOLD-20261028-1707
+como par de retorno. Boot volátil (fastboot boot); nada gravado em partição
+do aparelho fora do rootfs Kali (instalação de módulos/tunings autorizada
+pelo usuário em 29/10, ver 4).
+
+1. O QUE ESTE PAR ENTREGA (medido)
+----------------------------------
+  Tudo do PRE-GOLD-20261028-1707 (8 CPUs, idle/EAS, GPU, Venus, bateria/
+  carga, USB OTG, áudio completo), mais câmeras, validadas pelo usuário no
+  app Snapshot (libcamera 0.7.2 do sistema) num boot normal, sem passo
+  manual ("sucesso"):
+  - traseira principal S5KHM2 108 MP, 4000x3000 (binning 3x3), C-PHY de
+    3 trios, Bayer GBRG;
+  - traseira wide/macro S5K4H7 8 MP, 3264x2448, Bayer GRBG;
+  - frontal OV32B 32 MP, 3264x2448 (binning), Bayer BGGR;
+  - troca entre as três sem tela preta (CCI com reset na retomada: 9/9,
+    0 timeouts); cores com as CCM do tuning do vendor; foco das duas
+    traseiras por hanoip-vcm (posição fixa: main 450, wide 180; nós de
+    lente v4l-subdev controláveis).
+  A OV02B1B (profundidade) fica fora do app por decisão do usuário.
+  Detalhes: docs/kernel/checkpoint-2026-10-28-camera.txt, itens 7-19.
+
+2. CONTEÚDO
+-----------
+  uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img  5cb08127...
+      (+ u-boot.bin, uboot.dtb). DT embutido = audio-etapa14 (DT da
+      PRE-GOLD-1707) + cam-etapa1 (camss) + cam-s5k4h7 (S5K4H7, VCM,
+      CSIPHY supplies, refgen always-on) + cam-tres (S5KHM2 C-PHY, OV32B,
+      VCM da principal, CCI a 1 MHz). Fontes em dt/.
+  kernel/kernel-hanoip-kali-phosh-v5.img  c0a0c822...
+      = o MESMO boot.img da PRE-GOLD-1707 (kernel #29, cmdline sem
+        blacklist). As câmeras vêm todas de módulos.
+  kernel/Image.gz, kernel.dtb, modules-7.3.0-sm7150.tar.gz, version.txt,
+      config-7.3.0-sm7150-v6 = build reproduzível work/kernel-7.3/v6
+      (194 patches, árvore f4dccdc7). O código do Image é o do #29; só
+      módulos mudaram.
+  modules/kernel/...  os módulos corrigidos/novos como estão instalados em
+      /lib/modules/7.3.0-sm7150/ no rootfs:
+        drivers/media/platform/qcom/camss/qcom-camss.ko.zst  7f85290d (0190-0192)
+        drivers/i2c/busses/i2c-qcom-cci.ko.zst               b7e962e9 (0193)
+        drivers/media/i2c/s5k4h7.ko.zst                      a225bd75 (0194)
+        drivers/media/i2c/hanoip-cam.ko.zst                  a95a6106 (0194)
+        drivers/media/i2c/hanoip-vcm.ko.zst                  bfd93ecf (0194)
+        sound/soc/codecs/snd-soc-wcd937x-sdw.ko.zst          5de8447b (0188)
+        drivers/soundwire/soundwire-qcom.ko.zst              1f75b80e (0189)
+  tuning/  = /etc/libcamera/ipa/simple/ do aparelho:
+        s5k4h7.yaml ef61c4b9, ov32b.yaml 49ab8c4a, s5khm2.yaml 02ea9012
+        (gerados por scripts/ccm-from-tuned.py dos com.qti.tuned.* do
+        vendor; os .bin do vendor não estão aqui).
+  ucm2/  = UCM EXATAMENTE como está no aparelho agora:
+        Motorola/hanoip/HiFi.conf 88aabaf7 (ganho de mic da tarde de 28/10,
+        diferente do 4b16f5a1 da PRE-GOLD-1707);
+        conf.d/sm8250/Motorola Moto G60.conf 7449d14b.
+  patches/0190-0194  = commits de câmera sobre o v5.
+  scripts/ fdt_diff.py, build-uboot.sh, test-tres.sh, vcm.py,
+        ccm-from-tuned.py.
+
+3. BOOT
+-------
+  fastboot boot uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img
+  (esperar o fastboot do U-Boot, serial "????????????")
+  fastboot boot kernel/kernel-hanoip-kali-phosh-v5.img
+  Boote a partir de uma CÓPIA se alguma ferramenta escrever ao lado da
+  imagem (esta pasta é somente leitura).
+
+4. ROOTFS (o que precisa estar no aparelho)
+-------------------------------------------
+  Os módulos de modules/ em /lib/modules/7.3.0-sm7150/ (depmod feito) e os
+  tunings em /etc/libcamera/ipa/simple/. Instalados em 29/10 com
+  autorização do usuário; backup dos dois módulos substituídos e dos
+  índices do depmod em /root/backup-cameras-20261029/ (LEIA-ME com a
+  reversão). Com o U-Boot da PRE-GOLD-1707 (sem nós de câmera) estes
+  módulos simplesmente não carregam.
+
+5. LIMITES CONHECIDOS
+---------------------
+  - sem autofoco (a pipeline simple da libcamera 0.7.2 não tem AF);
+  - sem LSC (sombreamento) no softISP; CCM do vendor, AWB grey-world;
+  - CAMSS mantém params de diagnóstico (inofensivos se não escritos);
+  - a libcamera não se recupera bem de um STREAMON com erro (o
+    wireplumber pode precisar de restart), raro agora sem os timeouts.

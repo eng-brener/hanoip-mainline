@@ -1,0 +1,139 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * CÂMERA — S5K4H7 (traseira wide/macro, 8 MP), slot 3.
+ *
+ * Reconstrução (29/10) do DTS da S5K4H7 que se chamava cam-etapa3: aquele
+ * arquivo foi sobrescrito em 28/10 20:35 pela etapa3 da OV02B1B (alimentação
+ * dos CSIPHY), e o U-Boot 9668a6dc... que leu "chip id 0x487b" se perdeu.
+ * Valores: checkpoint-2026-10-28-camera.txt e o camid de 26/10
+ * (sm7150-motorola-hanoip-pmos-camid.dts, ID lido nesses mesmos rails):
+ *   CCI0 master1 0x2d, VIO L13A 1,8 V, VANA gpio46 2,8 V (divide com o
+ *   OV02B1B), VDIG gpio33 1,2 V, MCLK1 24 MHz (gpio14), reset gpio24
+ *   ativo-baixo, CSIPHY1 4 lanes, link 366 MHz.
+ * Base: cam-etapa1 (só camss). Inclui a alimentação dos CSIPHY da etapa3 da
+ * OV02B1B, validada lá. Driver: work/cameras-20261028/s5k4h7.
+ */
+#include <dt-bindings/clock/qcom,sm7150-camcc.h>
+#include "sm7150-motorola-hanoip-cam-etapa1.dts"
+
+/ {
+	cam_rear_aux_avdd: regulator-cam-rear-aux-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_rear_depth_wide_avdd_2p8";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		gpio = <&tlmm 46 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_bob>;
+	};
+
+	cam_rear_wide_dvdd: regulator-cam-rear-wide-dvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_rear_wide_dvdd_1p2";
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		gpio = <&tlmm 33 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_s8c_1p2>;
+	};
+
+	/* VCM supply shared by the main and wide AF motors (stock gpio-regulator@5). */
+	cam_rear_afvdd: regulator-cam-rear-afvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_rear_main_wide_afvdd_2p8";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		gpio = <&tlmm 64 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_bob>;
+	};
+};
+
+&tlmm {
+	cam_mclk1_default: cam-mclk1-default-state {
+		pins = "gpio14";
+		function = "cam_mclk";
+		drive-strength = <2>;
+		bias-disable;
+	};
+};
+
+&cci0 {
+	status = "okay";
+};
+
+&cci0_i2c1 {
+	clock-frequency = <1000000>;	/* FM+; base DT default, 29/10 */
+
+	s5k4h7: camera@2d {
+		compatible = "samsung,s5k4h7";
+		reg = <0x2d>;
+
+		clocks = <&camcc CAMCC_MCLK1_CLK>;
+		clock-names = "eclk";
+		assigned-clocks = <&camcc CAMCC_MCLK1_CLK>;
+		assigned-clock-rates = <24000000>;
+
+		vio-supply = <&vreg_l13a_1p8>;
+		vana-supply = <&cam_rear_aux_avdd>;
+		vdig-supply = <&cam_rear_wide_dvdd>;
+
+		reset-gpios = <&tlmm 24 GPIO_ACTIVE_LOW>;
+
+		/*
+		 * Android: sensor-position-roll 90, yaw 180 (same as the
+		 * OV02B1B, slot 2); this stack needs 270 for upright images.
+		 */
+		orientation = <1>;
+		rotation = <270>;
+		lens-focus = <&s5k4h7_vcm>;
+
+		pinctrl-0 = <&cam_mclk1_default>;
+		pinctrl-names = "default";
+
+		port {
+			s5k4h7_ep: endpoint {
+				data-lanes = <1 2 3 4>;
+				link-frequencies = /bits/ 64 <366000000>;
+				remote-endpoint = <&csiphy1_ep>;
+			};
+		};
+	};
+
+	/*
+	 * Stock actuator@1 (cci0 master1, actuator-src of slot 3) uses the
+	 * mot_hanoip_dw9714 profile, but its init list writes 0x02 (PD), 0x06
+	 * (AAC presc), 0x07 (AAC time): the DW9768 register map. With VAF on,
+	 * only 0x0c acks on this bus (29/10 scan) and dw9768 init + DAC writes
+	 * there succeed; the DW9714 protocol does not.
+	 */
+	s5k4h7_vcm: camera-lens@c {
+		compatible = "dongwoon,dw9768";
+		reg = <0x0c>;
+		vin-supply = <&vreg_l13a_1p8>;
+		vdd-supply = <&cam_rear_afvdd>;
+	};
+};
+
+&camss {
+	vdda-phy-supply = <&refgen>;
+	vdda-pll-supply = <&vreg_l3c_1p23>;
+
+	ports {
+		port@1 {
+			csiphy1_ep: endpoint {
+				clock-lanes = <7>;
+				data-lanes = <0 1 2 3>;
+				remote-endpoint = <&s5k4h7_ep>;
+			};
+		};
+	};
+};
+
+/* Igual à etapa3: o refgen também alimenta o PHY do DSI (tela). */
+&refgen {
+	regulator-always-on;
+};

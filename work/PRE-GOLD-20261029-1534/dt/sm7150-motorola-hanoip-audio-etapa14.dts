@@ -1,0 +1,19 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 14: etapa13 + IRQ de wake do SoundWire TX.
+ *
+ * O MBHC (detecção do fone) avisa por interrupção do escravo TX. Com o
+ * master TX em runtime suspend (clock stop), ela só chega pela IRQ de wake.
+ * Medido na etapa13: com o master TX suspenso, plugar o fone gera 0
+ * interrupções; com ele forçado acordado, "Headphone Jack"/"Mic Jack" = on.
+ * O stock declara no tx_swr_master:
+ *     interrupts = <0 0x128 0>, <0 0x1f4 0>;  (swr_master_irq, swr_wake_irq)
+ * O qcom-soundwire do mainline pega a segunda IRQ (índice 1) como wake.
+ */
+#include "sm7150-motorola-hanoip-audio-etapa13.dts"
+
+&swr_tx {
+	interrupts = <GIC_SPI 296 IRQ_TYPE_LEVEL_HIGH>,
+		     <GIC_SPI 500 IRQ_TYPE_LEVEL_HIGH>;
+	interrupt-names = "core", "wakeup";
+};

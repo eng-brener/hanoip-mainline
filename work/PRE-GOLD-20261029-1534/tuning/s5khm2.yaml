@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: CC0-1.0
+# s5khm2: softISP tuning with the vendor CCMs (cc13 table at 0xbc138 of
+# com.qti.tuned.mot_hanoip_s5khm2.bin, 5 CCT regions, ct = middle of each range).
+# Black level 64 @ 10 bits = 4096 @ 16 bits, measured on this phone.
+%YAML 1.1
+---
+version: 1
+algorithms:
+  - BlackLevel:
+      blackLevel: 4096
+  - Awb:
+  - Ccm:
+      ccms:
+        - ct: 2200   # 2000-2400 K
+          ccm: [  1.8188, -0.3103, -0.5086,
+                 -0.6004,  1.7525, -0.1521,
+                 -0.7763, -0.4268,  2.2031 ]
+        - ct: 2800   # 2600-3100 K
+          ccm: [  2.0187, -0.5936, -0.4251,
+                 -0.5485,  1.7240, -0.1756,
+                 -0.4792, -0.7251,  2.2043 ]
+        - ct: 3800   # 3600-4100 K
+          ccm: [  1.6620, -0.6761,  0.0141,
+                 -0.3908,  1.6434, -0.2526,
+                 -0.0913, -0.6594,  1.7507 ]
+        - ct: 5000   # 4600-5300 K
+          ccm: [  1.8105, -0.7010, -0.1095,
+                 -0.3084,  1.5590, -0.2506,
+                 -0.0017, -0.8505,  1.8522 ]
+        - ct: 6900   # 6300-10000 K
+          ccm: [  1.8538, -0.8000, -0.0539,
+                 -0.2546,  1.5032, -0.2486,
+                  0.0206, -0.6837,  1.6630 ]
+  - Adjust:
+  - Agc:
+...
