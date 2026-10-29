@@ -8,7 +8,9 @@
     módulos ainda NÃO instalados no rootfs) e comitado (a2c5b9568).
     Persistência AUTORIZADA e instalada (módulos v6 + /etc/libcamera/ipa/
     simple/*.yaml; backup /root/backup-cameras-20261029). Boot com câmeras:
-    U-Boot cam-tres + kernel do PRE-GOLD-1707. Validação pendente.
+    U-Boot cam-tres + kernel do PRE-GOLD-1707. VALIDADO 29/10 ~15:55:
+    "sucesso", tudo automático no boot normal. Candidato a nova base
+    (aguarda o usuário designar).
     S5K4H7 (traseira wide), S5KHM2 (traseira principal 108 MP, 4000x3000)
     e OV32B (frontal) no Snapshot, trocando entre as 3. A principal é C-PHY
     (3 trios): primeiro C-PHY no CAMSS do mainline para SM7150. Foco da
