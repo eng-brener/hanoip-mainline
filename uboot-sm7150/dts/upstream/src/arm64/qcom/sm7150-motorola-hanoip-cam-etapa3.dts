@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * CÂMERA — ETAPA 3: etapa2 + alimentação dos CSIPHY.
+ *
+ * Etapa2 medida: o OV02B1B sobe (ID ok, link ao CSIPHY3), o stream liga sem
+ * erro, mas nenhum frame chega e o CSIPHY lê versão 0x0. O camss caiu em
+ * dummy para vdda-phy/vdda-pll, e no aparelho a L3C (1,2 V) estava com
+ * use_count 0. O Android alimenta cada CSIPHY com mipi-csi-vdd = PM6150L L3
+ * (L3C, 1,2 V) e refgen (qcom,refgen-regulator @ ff1000), mais o GDSC do Titan.
+ */
+#include "sm7150-motorola-hanoip-cam-etapa2.dts"
+
+&camss {
+	vdda-phy-supply = <&refgen>;
+	vdda-pll-supply = <&vreg_l3c_1p23>;
+};
+
+/*
+ * O refgen também serve o PHY do DSI (display), que hoje funciona só porque
+ * o bootloader o deixou ligado (use_count 0 no mainline). Sem always-on, o
+ * camss o desligaria ao fim do stream e poderia apagar a tela.
+ */
+&refgen {
+	regulator-always-on;
+};

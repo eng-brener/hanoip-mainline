@@ -1,0 +1,871 @@
+CÂMERA — RETOMADA 28/10/2026 (noite)
+====================================
+ATUALIZAÇÃO: cam-etapa2 bootado por fastboot boot com kernel v5 #29.
+DT efetivo contém camera@3d; CCI0 registrou i2c-13, driver ov02b10
+vinculou em 13-003d e media graph mostra sensor -> CSIPHY3. O módulo
+já existia no rootfs em extra/ e autocarregou; SHA256 a2b958365158f2edbb99522e2b4d8217029d074d8e992f79552b3717bc6c32d9,
+igual ao arquivo local. Nesta retomada não foi instalado no rootfs.
+Tentativa de captura SBGGR10 1600x1200 via CSIPHY3 -> CSID0 -> VFE0 RDI0,
+pBAA, timeout 12 s: zero frames, arquivo de 0 bytes em /dev/shm. Links
+validaram, CSIPHY HW Version=0, VFE e CSID inicializaram; investigar PHY,
+alimentações dummy e sequência do sensor sem concluir causa. Kernel tainted
+4096 observado após teste, sem atribuição causal estabelecida. Sistema SSH
+permaneceu acessível. Nenhuma partição foi escrita por esta retomada.
+
+DIAGNÓSTICO (teste adicional): durante stream, sensor runtime active,
+MCLK3 24 MHz, L13A 1,8 V e AVDD 2,8 V com votos ativos. Function trace
+confirma video_start_streaming -> csid_set_stream -> csiphy_lanes_enable
+-> ov02b10_s_stream. Capture repetida, zero frames. CSIPHY IRQ=0 não é
+evidência de ausência de sinal: driver mascara todas as IRQs da PHY.
+Tainted 4096 é O (módulo externo hanoip_mmi_unit_info no boot), não WARN.
+Achado forte: em stream os clocks csiphy3_timer e timer_src medem 19,2 MHz;
+Android stock configura timer_src 300 MHz (0x11e1a300). No v5 camss.c,
+csiphy_res_7150[3] põe 300 MHz em csiphy3_timer_src, mas
+csiphy_set_clock_rates só aceita nomes exatos csiphy3_timer ou csiphy3;
+esses têm tabela de frequências {0}. Assim não configura a frequência nem
+inicializa timer_clk_rate nesse caminho, usado no cálculo de settle. Possível
+causa principal, ainda não demonstrada por correção/captura. Também falta
+avaliar refgen/rail MIPI e revisão HW lida como zero. Não alterar clocks ao
+vivo sem variante controlada. O driver sensor já existia no rootfs antes da
+retomada atual; não foi gravado nesta sessão.
+
+VARIANTE CLOCK: work/cameras-20261028/camss-timer-test/ contém cópia do
+CAMSS v5, com apenas a frequência 300 MHz movida de csiphy3_timer_src para
+csiphy3_timer; clock branch tem CLK_SET_RATE_PARENT. Compilou vermagic
+7.3.0-sm7150; qcom-camss.ko SHA256 e48e0355a81a7e09b0b21d02c073b2d0db1169c9b29f6705a35cb85a6c59cd2c.
+Descarregar CAMSS original e inserir variante NO MESMO BOOT falhou ao
+registrar csiphy0: irq type mismatch, -ENXIO; sem media0. Variante não
+foi testada. Não repetir reload: reiniciar em bootloader. Preparado
+kernel-v5-camss-blacklist.img (cópia v5 com modprobe.blacklist=qcom_camss
+na cmdline) para boot volátil com U-Boot cam-etapa2, impedindo autoload do
+original; verificar antes de inserir variante em /dev/shm. PRE-GOLD intacta.
+
+TESTE CLOCK: boot cam-etapa2 + kernel-v5-camss-blacklist. Com original
+bloqueado, modprobe videobuf2_dma_sg e insmod variante em /dev/shm. Grafo
+sensor -> CSIPHY3 reapareceu; VFE0 vídeo virou /dev/video2 (Venus agora 0/1).
+Na captura, timer_src e timer medidos a 300 MHz: correção comprovada.
+Apesar disso, captura pBAA 1600x1200 por 10 s terminou timeout, 0 bytes;
+versão CSIPHY permanece 0. Logo clock incorreto NÃO é a única causa.
+Durante novo stream, cphy_rx_src e ife0_cphy_rx medidos 19,2 MHz e
+csiphy0_clk desligado. Stock csiphy3 declara cphy_rx_clk_src 400 MHz,
+csiphy0_clk e csiphy3_clk, além do timer 300 MHz. São diferenças candidatas,
+sem prova de causalidade. Stock usa refgen e pm6150l L3 (1,2 V); no Linux
+refgen já votado pelo DSI, L3C consta em 1,2 V (voto UFS), mas os supplies
+camss ainda são dummy; não concluir que a alimentação da câmera está correta.
+Não houve escrita em partição. Variante carregada temporariamente neste boot.
+
+CCI tracing na captura: work/cameras-20261028/camss-timer-test/i2c-stream-trace.txt
+registra ID reg 03 = 2b e sequência de inicialização e stream por I2C;
+213 eventos coletados, sem inferir presença de sinal CSI só dos ACKs.
+Próximo experimento isolado: camss-rxclk-test/qcom-camss.ko conserva fix do
+timer e vota cphy_rx_src a 400 MHz apenas na PHY3, conforme stock. SHA256
+7bc3a987be49e27167dcb1c5685fe59b1fbc413b5458210caf73eeced45165ed.
+Compilado, NÃO testado; precisa boot limpo blacklist, pois reload do CAMSS
+no mesmo boot falha com conflito IRQ. Voltar sempre ao bootloader.
+
+RXCLK TESTADO: em boot limpo variante acima confirma cphy_rx_src 400 MHz e
+timer 300 MHz durante captura; zero frames, 10 s timeout, PHY versão zero.
+Outra variante compilada (NÃO testada) em camss-phy0clk-test: além dos dois
+clocks, habilita csiphy0_clk durante uso de PHY3, como stock. SHA256
+b0b27ceda1b56d0df8569e513bf5709fe861b1461fe0146e9ac30fdb0f1d237f.
+Requer outro boot limpo blacklist e teste em RAM. Nada gravado em partição.
+
+PHY0CLK TESTADO: com timer 300 MHz + cphy_rx 400 MHz + csiphy0 ligado,
+OV02B1B produziu 4 frames pBAA 1600x1200 de 2.400.000 bytes cada. Teste
+seguinte 150 frames em /dev/null a 30,15–30,16 fps, sem timeout; durante
+stream clocks confirmados em 300/400 MHz e csiphy0 habilitado. Os quatro
+frames diferem; preview monocromático simples apresenta ruído sem cena
+identificável, portanto NÃO declarar imagem/câmera validada visualmente.
+Primeiros quadros e preview em camss-phy0clk-test/first-frames.raw e
+preview.png. Verificar lente de profundidade desobstruída, iluminação,
+formato/decodificação RAW10 e exposição. Sem escrita em partição.
+
+TESTE ILUMINAÇÃO: usuário apontou para cena iluminada; quatro novos frames
+em bright.raw, média amostrada de bytes 81,71 contra 35,88 na captura
+anterior, consistente com resposta à luz mas não prova imagem correta.
+Prévia RAW10 simples bright-preview.png mostra faixas diagonais; variar
+stride na prévia (stride-grid.png) não resolveu. Tentativa BG10 não
+empacotado falhou corretamente com EPIPE: video_check_format exige pBAA.
+Driver VFE17x configura WM PACKER_CFG=0 e STRIDE/BUFFER_WIDTH=0xff01;
+investigar comportamento de frame-based MIPI RAW, alinhamento e configuração
+de exposição/saída antes de concluir defeito de sensor. Sem partição escrita.
+
+INVESTIGAÇÃO SEGUINTE: comparado trace CCI com lista 6 do bin vendor: as 95
+escritas são idênticas e na ordem correta, com apenas fd=00 redundante;
+ID 2b e stream on/off presentes, nenhuma transação I2C retornou erro.
+Teste TPG RAW10 e também RAW8 no boot PHY0CLK não reproduziu o TPG antigo:
+timeouts e muitas IRQs VFE; não permite concluir que o VFE está correto ou
+incorreto. Após desligar TPG e restaurar os links, duas capturas reais
+voltaram a fornecer frames; SSH ativo, tainted 4096 (módulo externo).
+Não repetir TPG neste boot sem antes investigar o estado/IRQ e a diferença
+com etapa1. O defeito visual permanece pendente. Nada escrito em partição.
+
+ACHADO RESOLUTIONDATA: no sensormodule vendor os nomes resolutionInfo,
+resolutionData, streamConfiguration, integrationInfo e regSetting precedem
+os 10 registros da lista 1 (fd00, 50=40, 52=b0, fd01, 03=70, 05=10,
+07=20, 09=b0, 12=03, 15=05). A variante original NÃO os escreve. Forte
+hipótese de modo omitido, não comprovada. Construída variante isolada
+ov02b10-mode-test/ov02b10.ko: adiciona lista 1 após init e antes de stream.
+SHA256 45cdcb6006e57e44d5c42eb1cc299c752833b496ca683af6f5c5009a9f1dc0b5.
+Bootimg local kernel-v5-dual-blacklist.img bloqueia autoload de ambos os
+drivers para inserir em RAM ov02b10-mode e camss-phy0clk em boot limpo.
+Sensor atual está suspenso mas módulo com refcnt=1, não forçar remoção.
+Outro TPG em CSID1/VFE1 falhou no reset VFE1 (-EIO), sem comparação válida.
+Nenhum teste do módulo modo foi feito ainda. Nenhuma partição gravada.
+
+PRIMEIRA IMAGEM REAL — modo TESTADO: boot cam-etapa2 + kernel dual blacklist,
+insmod ov02b10-mode e camss-phy0clk em RAM. Quatro frames RAW10 pBAA
+1600x1200 capturados; conversão manual para Bayer16 mostrou cena legível sem
+faixas (mode-preview.png e mode-color.png). Trace I2C confirma as 10 escritas
+do modo entre init e stream on, sem erros (i2c-mode-trace.txt). Antes dessas
+escritas a imagem apresentava faixas; mudança de modo solucionou neste teste.
+150 frames subsequentes em /dev/null, ~30,18 fps, sem timeout, sem novo
+Oops/stall/fault no dmesg. Tainted 4096 já existia por módulo externo.
+Queda temporária da rede USB durante primeiro scp, voltou sozinha; não foi
+estabelecida relação causal. Drivers apenas em /dev/shm; PRE-GOLD intacta.
+Limites: câmera auxiliar de profundidade, não câmera principal/frontal;
+orientação, Bayer/cores, exposição, AE/AWB, libcamera/preview em app,
+repetibilidade em novo boot e estabilidade longa ainda não validadas.
+
+PÓS-PROCESSAMENTO E EXPOSIÇÃO: average-raw10.py desempacota pBAA, calcula
+média temporal de 4 frames de cena estática, subtrai black level 64 e salva
+Bayer16LE. average-preview.png é demo local com ffmpeg, BGGR e gamma 1.3;
+ordem Bayer e cores não estão validadas e movimento gera fantasmas. Não é AE
+nem processamento em tempo real. REA analisou a lib vendor SHA256
+0af2e177f3932a33228eb2881ef424ae0dcd925f78a8c6eb2c1e6c8026feb6c5;
+evidências completas em ov02b10-mode-test/vendor-exposure-evidence.json.
+CalculateExposure limita ganho analógico a 1..15,5x e gera registro com x16.
+FillExposureSettings usa 7 escritas incluindo página 1 e fe=02, vblank =
+max(frameLength - 1220, 5); endereços de vblank/exposição/ganho vêm de
+campos de estrutura passados ao callback, não são constantes no .so. Sem
+confirmação desses endereços, NÃO implementar escrita de ganho/exposição
+por palpite. Nenhuma partição foi gravada nesta etapa.
+
+CONTROLES — fontes públicas encontradas: Motorola publicou driver do mesmo
+OV02B1B em outro aparelho (kyoto/MediaTek):
+https://github.com/MotorolaMobilityLLC/kernel-mtk/commit/048a7d0321357f5cac9c7836b338a3601a30fddd.patch
+Página 1: exposição 0e/0f, ganho 22 (10..f8), aplicar fe=02. Frame length
+14/15 relativo a 1220. Bate com o algoritmo do .so deste aparelho; outro
+projeto/SoC não prova comportamento no hanoip. A ficha de produto OV02B:
+https://resources.ampheo.com/static/datasheets/omnivision-technologies/ov02b1b-ga5a-001a.pdf
+identifica OV02B1B como b&w e OV02B10 como color; por isso a imagem deste
+sensor de profundidade deve ser monocromática, apesar do formato Bayer
+provisório no driver. Não extrapolar para as demais câmeras.
+Variante ov02b1b-controls-test/ov02b10.ko compilada, não bootada nem testada:
+controles V4L2 EXPOSURE (4..1218 linhas, default 0x21a) e ANALOGUE_GAIN
+(0x10..0xf8, default 0xf8); frame length fixo, max exp = 1225-7. Valores
+em cache quando suspenso, aplicados durante stream; ganho padrão f8 difere de
+ff do init anterior. SHA256 3b3be4ab42e97f8d10f9b0b9fcdda83000c2695882dc39815b7a1c47f450b785.
+Próximo: boot limpo dual blacklist, carregar variante de controles e CAMSS
+phy0clk em RAM, comparar quadros na mesma iluminação com ganho/exposição
+controlados; conferir trace CCI, FPS e ausência de erros. Nenhuma partição.
+Tentativa de boot seguinte: cam-etapa2 e dual-blacklist enviados com sucesso;
+USB 172.16.42.1 respondeu a ping, mas porta SSH 22 recusa conexão de forma
+persistente; console serial não respondeu, ADB e fastboot não aparecem.
+Nenhum módulo foi transferido ou carregado neste boot. Verificar tela e SSH
+antes de prosseguir; não reiniciar para Android nem presumir estado do rootfs.
+
+CONTROLES RUN1: Kali voltou a iniciar; ext4 relatou recovery complete e
+montagem rw, sem validação de integridade; journal recovery pode escrever.
+Com autorização do usuário prosseguimos sem fsck, integridade desconhecida.
+Módulos variantes carregados em /dev/shm, V4L2 exp 4..1218 e gain 16..248
+apareceram. Primeiro stream com exp=538/gain=248 entregou 4 quadros de
+2.400.000 bytes. Stream imediatamente seguinte, solicitado exp=538/gain=64,
+falhou com i2c-qcom-cci master1 queue0 timeout, sem frame; terceiro pedido
+exp=1000/gain=64 também falhou e ocasionou 3 WARNINGs call_s_stream. Tainted
+4608 = O+W. Não demonstrou que os controles mudam a imagem; não atribuir
+causa ao ganho sem isolamento. dmesg em ov02b1b-controls-test/run1-dmesg.txt.
+Sensor runtime suspended; SSH funcionando. Não repetir streams neste boot;
+investigar CCI e rollback CAMSS em erro (warnings), preservar modo-test
+conhecido e não executar reparo de filesystem sem autorização aplicável.
+DIAGNÓSTICO DO WARNING: camss-video.c video_start_streaming inicia subdevices
+em sequência; se um posterior falha, chama pipeline_stop sem parar os que já
+foram iniciados. Na próxima tentativa o wrapper V4L2 detecta s_stream já
+habilitado e emite WARN. Isso explica os WARNs posteriores ao timeout CCI,
+mas não explica o timeout inicial. Próximo teste após boot limpo: manter UM
+stream contínuo e ajustar controles durante ele, capturando quadros e trace
+I2C; evitar múltiplos start/stop até entender timeout. Não houve novo teste
+no boot já contaminado. Integridade ext4 ainda desconhecida.
+
+CONTROLES RUN2 PASSOU EM STREAM CONTÍNUO: boot limpo dual blacklist, módulos
+controles e CAMSS phy0clk em RAM. 150 frames a ~30,07 fps, sem timeout nem
+WARN, tainted 4096 (O preexistente). Em um único stream: ganho 248->64 com
+exposição 538 reduziu média amostrada dos bytes altos de 37,8 para 21,7;
+exposição 538->1000 com ganho 64 elevou para 26,9; ganho 64->16 com exposição
+1000 reduziu para 18,4. Estas médias incluem pedestal, são medidas relativas
+da cena e não calibração linear. Trace CCI run2-i2c-trace.txt confirma página
+1, 22=40, 0e=03/0f=e8, 22=10, e fe=02, sem erro registrado. Controles
+funcionam durante captura; start/stop repetido e rollback após falha ainda
+pendentes. Exemplos g248-e538.png e g16-e1000.png, cinza bruto com nível de
+preto 64, sem balanço de cor. Frames individuais preservados localmente;
+arquivo temporário de 344 MiB removido do tmpfs após coleta. Nenhuma partição
+gravada pelos comandos de teste. Integridade do ext4 segue não verificada.
+
+PRÓXIMO TESTE ROLLBACK: camss-rollback-test/qcom-camss.ko acrescenta rollback
+dos subdevs iniciados, em ordem inversa, ao falhar STREAMON (limite 16,
+preserva erro original); hash 5583e03292c54a7f5218486a6fafadd4aa2d9de50c8768b242da995afc0bb806.
+ov02b1b-fault-test/ov02b10.ko deriva de controles e aceita parâmetro
+fail_start_once=1 para retornar -EIO UMA vez antes de energizar sensor;
+hash ad045d13af9b9c87dcf9b8b12370e77787d8a2924d5f7b30285e55c05e113a01.
+Ambos compilados, não testados. Próximo boot limpo dual-blacklist, carregar
+em RAM sensor com fail_start_once=1 e CAMSS rollback: primeiro STREAMON deve
+falhar sem WARNING, segundo deve capturar, depois avaliar repetibilidade.
+Injeção é erro lógico, não reproduz fisicamente timeout de CCI. Preservar
+variante funcional phy0clk e driver controles. Nenhuma partição gravada.
+Antes de trocar o boot, no RUN2 funcional, três ciclos adicionais de
+start/stop com espera de 2 s entre eles retornaram 4 frames cada (9.600.000
+bytes por ciclo), tainted 4096 sem WARNING/timeout CCI novo. Não prova que
+restart imediato seja seguro nem a causa do timeout anterior. Preparado
+camss-rollback-test/run-boot-tests.sh para combinar, em um só boot: erro
+injetado, recuperação, três ciclos com pausas e controles durante 90 frames;
+interrompe no primeiro erro. Dados apenas em /dev/shm.
+
+ROLLBACK RUN3 TESTADO: erro lógico de início injetado -EIO; primeiro stream
+falhou como previsto e seguinte capturou quatro frames, sem WARNING. Três
+ciclos de 4 frames com pausas passaram. Após eles, teste de controles não
+iniciou: timeout CCI real, zero frames; rollback evitou os WARNs anteriores,
+tainted permaneceu 4096. Stream seguinte capturou 4 frames: recuperação
+após falha real comprovada nesta execução. Outro ciclo com trace reproduziu
+o timeout na PRIMEIRA escrita I2C [fd-00] da sequência de power-on/ID, antes
+dos controles de ganho; retorno -110, restart-cci-trace.txt preservado.
+Com CCI power/control=on durante experimento, 6/6 ciclos (4 frames cada)
+passaram. Depois restaurado auto (autosuspend 1000 ms): mais 6/6 ciclos,
+confirmado suspended antes de cada início, também passaram. Amostra pequena;
+runtime PM é hipótese, não causa estabelecida e on não foi validado como
+correção. Nenhum novo WARNING, taint 4096. CAMSS rollback e sensor fault
+permanecem voláteis; falha injetada consumida. Registros em run3-dmesg.txt
+e restart-cci-trace.txt. Nenhuma partição gravada por comandos de teste.
+
+PRÓXIMA ETAPA MONOCROMÁTICA: 20 ciclos adicionais com CCI autosuspend e
+espera de 2 s passaram (2 frames cada, estado CCI suspended antes de todos,
+tainted 4096). Amostra ainda limitada, timeout não considerado corrigido.
+O sensor OV02B1B é b&w, mas driver anuncia SBGGR; CAMSS já suporta
+MEDIA_BUS_FMT_Y10_1X10 -> CSI2 RAW10 -> V4L2_PIX_FMT_Y10P. Preparada
+ov02b1b-mono-test/ov02b10.ko, derivada do driver de controles e alterando só
+formato anunciado para Y10 (sem troca para Bayer ao rotation=180). Compilada
+sem teste, SHA256 9c5b2821c7e11c8e56b0bbedfa6ccbd363c31ae4946c4843a272580d654ff791.
+No próximo boot limpo dual-blacklist: sensor mono e CAMSS rollback, formatar
+todas as etapas Y10_1X10 e vídeo Y10P, testar captura, controles e repeat,
+depois estudar compatibilidade GStreamer/libcamera; não presumir preview
+automático. O driver de injeção não é o driver de uso. O filesystem segue
+com integridade não verificada, nenhuma partição gravada pelos testes.
+
+Y10P TESTADO: boot limpo dual-blacklist, sensor mono 9c5b2821... e CAMSS
+rollback 5583e032... em RAM. Sensor e pipeline negociam Y10_1X10; vídeo
+/dev/video2 Y10P, 1600x1200, bytesperline 2000, 2.400.000 bytes/frame.
+Quatro frames gravados em tmpfs, preview monocromático real e reconhecível
+em ov02b1b-mono-test/mono-preview.png. 90 frames seguintes a 30,07 fps com
+gain=64/exposure=1000 ajustados durante stream; sem WARN, tainted 4096.
+Libcamera 0.7.2 simple reconhece e adiciona o sensor mas não negocia com
+libcamerasrc ! fakesink (not-negotiated); debayer EGL diz formato R10_CSI2P
+não suportado, seleção/crop do sensor não implementados, sem propriedades
+estáticas/helper/IPA calibrada. Log em mono-test/libcamera-test.log. v4l2src
+sem caps selecionou arbitrariamente YUYV 3840x2160 e falhou; não prova
+incompatibilidade geral do GStreamer. Formato vídeo restaurado para Y10P.
+Ambos comandos GST de teste usaram GST_REGISTRY em /dev/shm; o inventário
+anterior gst-inspect sem essa variável pode ter atualizado cache do usuário,
+não verificado. Sem escrita explícita em partição pelos testes de captura.
+
+PONTE GST (neste boot): compilado y10p-to-gray8.c (aarch64 estático), arquivo
+e binário em ov02b1b-mono-test; converte 1600x1200 Y10P em GRAY8, descarta
+2 bits baixos e subtrai pedestal 64 para preview. v4l2-ctl stdout -> bridge ->
+gst fdsrc/rawvideoparse/identity/fakesink recebeu 30 buffers de 1.920.000
+bytes, caps GRAY8/1600x1200/30, pipe rc=0 e tainted 4096. Log gst-live.log.
+Ainda não é app integrado nem caminho libcamera, não garante fps ou latência
+para apresentação, e a conversão perde precisão. Preparado preview-live.sh
+com waylandsink para sessão Wayland autenticada; NÃO testado visualmente:
+loginctl só mostrava greeter _greetd, nenhuma sessão de usuário autenticada.
+Binário e script copiados em /dev/shm, GST_REGISTRY apontado para /dev/shm.
+Usuário deve entrar na sessão gráfica antes de testar preview. No inventário
+waylandsink a inspeção de gtk4paintablesink sem GST_REGISTRY explícito pode
+ter atualizado cache do usuário; não verificado. Não houve gravação explícita
+de arquivos de teste em partição nesta etapa.
+
+PREVIEW WAYLAND: após usuário entrar no Kali, sessão kali c2 Wayland ativa;
+app Snapshot mostrou 'no camera found', compatível com falha libcamera já
+observada; ponte não a registra como câmera. Lançado como kali, via socket
+/run/user/1000/wayland-0, preview-live.sh com 600 frames (~20s): pipeline
+v4l2-ctl -> conversor Y10P/GRAY8 -> rawvideoparse -> videoconvert ->
+waylandsink terminou rc=0 sem mensagem de erro, tainted 4096. Isso confirma
+execução, não visibilidade ao usuário: aguardar confirmação. Script e binário
+em /dev/shm, GST_REGISTRY em /dev/shm; nenhum app ou arquivo instalado em
+partição. Persistem integração real no aplicativo e timeout CCI intermitente.
+CONFIRMAÇÃO: usuário respondeu "eu vi sim" à pergunta sobre a imagem da
+câmera no telefone. Prévia ao vivo Wayland validada visualmente pelo usuário;
+não confundir com integração do app Snapshot, que continua pendente.
+
+LIBCAMERA 0.7.2: código upstream em work/cameras-20261028/libcamera-mono-src
+tag v0.7.2, commit 191e202178f02430b5942397c70d215cdd2056fa. Código de
+software ISP CPU e EGL aceita apenas ordem Bayer padrão; sensor real reporta
+MONO/R10_CSI2P. Preparada variante experimental CPU para descompactar RAW10
+mono em RGB de canais iguais e produzir estatísticas de luminância sem AWB
+cromático; sem alteração da biblioteca instalada. Build isolado em container
+Ubuntu arm64, somente para validação local; configuração desabilita EGL para
+usar CPU. Ainda não validado, sem alegar integração no app. A biblioteca IPA
+também precisa de helper de sensor para ganho correto e o driver sensor não
+implementa crop/selection; tratar separadamente. Preservar a prévia já validada
+e não gravar em partição do telefone.
+
+INTEGRAÇÃO LIBCAMERA — ESTADO: variante mono compila a biblioteca; build
+completo (libcamera.so + IPA simple + plugin GStreamer) em contêiner Ubuntu
+arm64 persistente. Scripts deploy-libcamera.sh (copia para /dev/shm, nunca
+instala) e test-on-phone.sh (LD_LIBRARY_PATH/GST_PLUGIN_PATH/LIBCAMERA_IPA_*
+em RAM, GST_REGISTRY em /dev/shm). Preparada variante de driver
+ov02b1b-selection-test (mesmo driver mono + get_selection CROP/CROP_DEFAULT/
+CROP_BOUNDS devolvendo o modo atual; NÃO declara NATIVE_SIZE nem área física,
+que seguem desconhecidas). Compilada, hash 328996383324e48f0df6d5dadab3e61a9b6df506d3d4e2af8e15017849d85aca, não bootada.
+Pendências antes de alegar app funcionando: helper de ganho ov02b10 no IPA
+(código V4L2 = real x16; black level 64@10 bits = 4096 em 16 bits), entrada
+em camera_sensor_properties (PixelArraySize/localização), assinatura do IPA
+com a chave deste build, e teste com app Snapshot. Nada instalado no rootfs.
+
+RESULTADO LIBCAMERA (28/10 ~19:20): pipeline NEGOCIA o sensor: log mostra
+"configuring streams ... 1536x864", "IPASoft: Exposure 4-1218, gain 1-15.5"
+e "Input 1600x1200-MONO-10-CSI2P stride 2000". 349 frames GRAY8 em 12 s
+(videoconvert) por libcamera; frame 300 estéreo e nítido em
+libcamera-mono-src/libcamera-frame-300.png. Debayer medido a 23,6 ms/frame
+no CPU (limite próximo de 30 fps; ainda não otimizado). Com
+num-buffers/parada abrupta houve assert FATAL em PipelineHandler::stop
+(queuedRequests_ não vazio); com SIGINT a parada foi limpa — registrar como
+bug de desligamento do caminho de teste, não como falha de captura.
+APP: Snapshot não usa libcamerasrc direto; usa portal Camera do PipeWire.
+O nó libcamera já existia com a lib do sistema (que falha em MONO). Com
+LD_LIBRARY_PATH/LIBCAMERA_IPA_* só do serviço do usuário (systemctl --user
+set-environment + restart wireplumber), o wireplumber passou a carregar
+/dev/shm/libcamera-mono/lib e o IPA /dev/shm/.../ipa/ipa_soft_simple.so;
+o app então configurou 1536x864-XRGB8888 e iniciou stream MONO. Nenhum
+arquivo foi instalado no rootfs; tudo isso desaparece no reboot. Áudio e
+demais serviços foram reiniciados junto (verificar se voltaram). Erro
+"Atomic commit failed" do phoc apareceu no log; não atribuído.
+Aguardando confirmação visual do usuário no app antes de declarar válido.
+
+APP DE CÂMERA FUNCIONANDO (28/10 ~19:27, confirmado pelo usuário): o app
+Snapshot mostra a imagem ao vivo. Foi preciso, além da libcamera mono:
+reportar rotação. Android declara sensor-position-roll = 90 para o slot 2
+(ov02b1b); anunciar 90 no libcamera deixou a imagem de ponta-cabeça, então
+o valor correto nesta pilha é 270 (convenções de sentido opostas). Usuário
+confirmou "agora sim" com a imagem na posição correta. Caminho completo:
+sensor OV02B1B -> CSI2 RAW10 mono -> CAMSS/VFE -> libcamera (debayer mono
+próprio) -> PipeWire (libspa-0.2-libcamera) -> portal Camera -> app.
+Artefatos reproduzíveis: work/cameras-20261028/libcamera-mono-ov02b1b.patch
+(7 arquivos, +95/-4, SHA256 8dac0288c4257edd4045b03d83ae68223803bda5a4fbf9efc7d3c77a072a3fec)
+sobre libcamera v0.7.2; libcamera.so ff2ec77f, ipa_soft_simple.so 24efe12b,
+libgstlibcamera.so fb29e369. Nada instalado no rootfs: tudo em /dev/shm e
+nas configurações do serviço de usuário (systemctl --user set-environment),
+que somem no reboot. Desempenho: debayer CPU 23,6 ms/frame, no limite de
+30 fps; ainda não otimizado. Pendente: driver com get_selection (para sumir
+os avisos e permitir crop correto), exposição/ganho automáticos conferidos
+no app, câmeras principal/frontal, e decidir como persistir (pacote do
+libcamera + módulos) sem gravar partição sem autorização.
+
+PRÓXIMA CÂMERA — S5K4H7 (slot 3, ultrawide/macro, 8 MP): confirmado no DTS do
+probe de ID de 26/10 (work/cameras-20261026/step1-camid):
+  slot 3 rear wide S5K4H7 CCI0 master1 endereço 0x2d, CSIPHY1 (ace2000),
+  MCLK1 GPIO14, reset GPIO24, com autofoco (é a lente que faz macro).
+As tabelas vendor decodificam com decode-regs-v2.py: por exemplo a lista
+principal traz 0x034c=0x0cc0 e 0x034e=0x0990, ou seja 3264x2448 (8 MP),
+0x0136/0x0137 = PLL, 0x0820..0x0823 = MIPI. Ainda NÃO existe driver no
+mainline nem tabelas convertidas; próximo trabalho é extrair init/stream
+para C e escrever o driver V4L2 + DT (cam-etapa3) e validar por CCI.
+Pendências pequenas que ficam registradas para a OV02B1B: carregar o driver
+com get_selection (já compilado, hash 32899638...) para tirar os avisos de
+metadados e fixar o crop; conferir AE/AWB dentro do app; debayer CPU a
+23,6 ms/frame é o próximo gargalo de desempenho; decidir persistência
+(pacote libcamera + módulos) sem gravar partição sem autorização.
+
+S5K4H7 — TRABALHO INICIADO (28/10 ~19:34): tabelas vendor convertidas para C
+por s5k4h7-tables.py em s5k4h7/s5k4h7-regs.h (listas: 1=50 escritas, 2=44,
+3=430 + 66 de 16 bits, 4=6; a lista 3 trouxe 67 entradas com dado de 16 bits,
+que exigem escrita de 16 bits — exposição 0x0200, frame length 0x0202 e ganho
+0x0204 são desse tipo). Driver novo s5k4h7/s5k4h7.c compila:
+s5k4h7.ko SHA256 11b72eb326ad22ef5ae19ceeecb0305f23a940397e3f048bc2c76f3582bc6578,
+tabelas c267dbcb198f53f0e40f32cec10babccd3712377d26adb26dfd4fb00564e22b9.
+Usa endereços de registrador de 16 bits (i2c_transfer), 4 lanes, link 366 MHz
+(0x0820/0x0821 = 0x02dc), 3264x2448, ID 0x487b (valor esperado do DT de 26/10),
+e loga o ID sem falhar o probe. DT novo
+uboot-sm7150/dts/.../sm7150-motorola-hanoip-cam-etapa3.dts: cci0_i2c1
+camera@2d, MCLK1 gpio14, reset gpio24, VIO L13A 1,8, VANA gpio46, VDIG gpio33
+1,2 V, CSIPHY1 4 lanes. U-Boot cam-etapa3 em construção.
+NÃO testado ainda: ordem de energia (powerSetting vendor não decodificado),
+lane count real, polaridade/timing de reset, ganho mínimo e fps são suposições
+documentadas; validar primeiro o ID por CCI e depois o primeiro frame.
+U-Boot cam-etapa3 CONSTRUÍDO: work/uboot-builds-20261026/out/
+sm7150-motorola-hanoip-cam-etapa3/u-boot-sm7150-motorola-hanoip-cam-etapa3.img
+SHA256 9668a6dc8465f4b92ca9321e78d6954f0958bfd28f3dbc0c5b0e75e96eec7176
+(u-boot.bin 6056b411..., uboot.dtb 1dcae14b...). Corrigido no caminho: o DTS
+etapa3 declara localmente cam_rear_aux_avdd (o label vinha da etapa2).
+Próximo boot de teste: fastboot boot dessa U-Boot + kernel dual-blacklist,
+modprobe do s5k4h7.ko e checagem do log "chip id 0x487b" antes de qualquer
+tentativa de captura; só depois ligar CSIPHY1 -> CSID0 -> VFE0.
+
+RESULTADO DO PRIMEIRO TESTE DO S5K4H7 (28/10 ~19:52): boot cam-etapa3 +
+kernel dual-blacklist. O DT vale: CCI criou 13-002d e o CAMCC registrou
+"sync_state pending due to 13-002d". Carregadas as dependências
+(v4l2_fwnode, videodev, videobuf2_dma_sg) e o s5k4h7.ko, o probe leu
+"s5k4h7 13-002d: chip id 0x487b, mode 0x0000" — ID exato do DT vendor.
+Isso confirma energia (VIO/VANA/VDIG), MCLK1, reset gpio24 e I²C a 0x2d.
+CAMSS carregado, grafo com s5k4h7 -> CSIPHY1 -> CSID0 -> VFE0/RDI0; formatos
+3264x2448 SGRBG10 e pBAA aceitos; porém a captura de 2 frames deu timeout,
+0 bytes, tainted 4224 (4096 O + 128 W, um WARNING emitido). Ainda NÃO há
+frame. Suspeitos, em ordem: clocks do CSIPHY1 (o PHY3 precisou de ajuste
+equivalente), lane count/mapeamento (4 lanes não confirmadas), timing do
+PON do sensor. dmesg fica inundado por "disallowed SPMI write" e esconde as
+mensagens do CAMSS; filtrar por subsistema antes de concluir. Sem escrita em
+partição; PRE-GOLD intacta.
+DIAGNÓSTICO: durante a tentativa de stream, TODOS os clocks do CSIPHY1
+aparecem desligados (N) no clk_summary: csiphy1, csiphy1_timer, cphy_rx_src
+e ife0_cphy_rx, e não houve NENHUMA mensagem do CAMSS (nem csiphy_reset, nem
+"validating link"), diferente do caso do PHY3. Ou seja, a PHY não chegou a ser
+energizada: o problema está antes do sensor (links/formato do pipeline), não
+em lanes. Depois disso o media-ctl -p travou, indicando CAMSS preso após a
+tentativa falha; precisa de boot novo. Próximo teste: boot limpo, carregar
+módulos, montar links/formatos, capturar e ler o log do CAMSS desde o início.
+REPETIDO EM BOOT LIMPO (28/10 ~20:01): mesmo resultado — captura de 1 frame
+em 3264x2448 pBAA deu 0 bytes e o dmesg NÃO mostrou nenhuma linha do CAMSS.
+O ring buffer está sendo inundado por "spmi spmi-0: disallowed SPMI write"
+(milhares de linhas por segundo), o que provavelmente descarta as mensagens
+do CAMSS antes de serem lidas; media-ctl voltou a travar depois. Para
+diagnosticar de verdade é preciso capturar o log AO VIVO pelo console serial
+(earlycon/tty) em vez de dmesg, ou silenciar essa origem de SPMI. Estado:
+sensor identificado, pipeline montado, nenhum frame ainda. Nada gravado.
+CAUSA RAIZ ENCONTRADA E CORRIGIDA (28/10 ~20:12): o aviso era em
+camss_get_link_freq <- csiphy_set_power, e abortava a energização da PHY.
+Motivo: no driver novo o menu V4L2_CID_LINK_FREQ apontava para um array
+composto de escopo de bloco (ponteiro inválido depois da função). Corrigido
+para static const; s5k4h7.ko 6b48bfbf381bab52dd6e99a509ba08eeec7dd205383aec9e14a201aa3cdcc592.
+Depois da correção o PHY1 ENERGIZA: csiphy_reset id 1, VFE 1.3.0, CSID 2.0.0,
+links validados e IRQs de CSID/VFE. Falta de formato: o pipeline expõe
+pgAA (SGRBG10) e o teste pedia pBAA -> "format mismatch"; com pgAA o
+casamento passa. Mesmo assim ainda NÃO veio frame no prazo de 12 s, então o
+próximo alvo é a transmissão do sensor (tabelas/stream on) e não mais o
+CAMSS. Diagnóstico ficou possível com log_buf_len=16M no cmdline, que evita
+o ring buffer ser inundado pelo spam de SPMI.
+PESQUISA (driver público S5K4H7 da MediaTek, kernel Unplugged):
+os.unplugged.com/.../s5k4h7_mipi_Sensor.c. Confirma 4 lanes (0x0114=0x03,
+SENSOR_MIPI_4_LANE) e 24 MHz MCLK, 3264x2448 com 0x034C=0x0CC0/0x034E=0x0990,
+iguais à nossa lista 1. Revela duas coisas que NOSSO driver não faz:
+(1) antes de programar o modo, escreve 0x0100=0x00 e faz POLL em 0x0005 até
+ler 0xFF (sensor realmente em standby), até 100x de 1 ms; (2) só liga o
+stream (0x0100=0x01) depois de programar PLL, MIPI, crop, tamanho, VTS/HTS
+e exposição, sem delongas intermediárias longas. Nosso driver escreve as
+listas e vai direto ao 0x0100=0x01, sem esperar standby nem conferir 0x0005.
+Também vale conferir a ordem: PLL (0x0136/0137, 0x0305-0x0307, 0x030D-0x030F,
+0x3C1F/0x3C17/0x3C1C/0x3C1D, 0x0301) antes de 0x0820-0x0823.
+PENDÊNCIA TÉCNICA CONCRETA para o próximo teste, sem depender de lane count.
+
+S5K4H7 — ONDE PAROU (28/10 ~20:25): corrigido o bug do LINK_FREQ (PHY1 passou
+a energizar) e o formato do vídeo (pgAA, não pBAA). O standby do sensor
+CONFIRMADO: a leitura de 0x0005 devolve 0xff00 (byte de status 0xff) — o
+aviso anterior era comparação errada minha. Ainda sem frame. Hipótese atual:
+a ordem das tabelas. A lista 1 (50 escritas) é o setfile de modo 3264x2448
+(crop, 0x034C/0x034E, PLL, MIPI) e a lista 3 (430 + 66 de 16 bits) parece
+ser a inicialização; escrever a lista 3 depois da lista 1 sobrescreveria o
+modo. Módulo corrigido pronto (ordem lista 3 -> lista 1 -> 0x0100=0x01 e
+comparação do standby pelo byte alto):
+  s5k4h7.ko d9286d9b97ce96c9d474031ec3a88d90471926b210b50eaca43b943208746321
+NÃO TESTADO: a sessão do servidor reiniciou no meio do boot. Retomar:
+  1) fastboot boot work/uboot-builds-20261026/out/sm7150-motorola-hanoip-cam-etapa3/
+     u-boot-sm7150-motorola-hanoip-cam-etapa3.img
+  2) ESPERAR o fastboot do U-Boot aparecer como "????????????" (o aparelho
+     voltou ao fastboot da Motorola quando o kernel foi enviado cedo demais:
+     cair no bootloader da Motorola = kernel nao subiu, nao e travamento)
+  3) fastboot boot work/cameras-20261028/s5k4h7/kernel-v5-cam-etapa3.logbuf.img
+     (cmdline com log_buf_len=16M e modprobe.blacklist=qcom_camss,ov02b10)
+  4) scp s5k4h7.ko + qcom-camss.ko para /dev/shm; modprobe v4l2_fwnode,
+     videodev, videobuf2_dma_sg; insmod dos dois
+  5) media-ctl -l "msm_csiphy1:1->msm_csid0:0[1],msm_csid0:1->msm_vfe0_rdi0:0[1]"
+     e -V fmt:SGRBG10_1X10/3264x2448 em csiphy1:0/1, csid0:0/1, vfe0_rdi0:0
+  6) v4l2-ctl -d /dev/video2 --set-fmt-video=width=3264,height=2448,
+     pixelformat=pgAA --stream-mmap --stream-count=1 --stream-to=/dev/shm/x.raw
+  Nao usar pBAA (format mismatch), nao usar /dev/video0 (e o Venus).
+  Leitura de log: dmesg | grep -iE "camss|csiphy|s5k4h7|format|WARNING"
+  (o spam de SPMI e neutralizado pelo log_buf_len=16M).
+
+S5K4H7 — PRIMEIROS FRAMES (29/10 ~13:15):
+  1) O U-Boot cam-etapa3 da S5K4H7 (9668a6dc...) SE PERDEU: em 28/10 20:35 o
+     DTS cam-etapa3 foi sobrescrito pela etapa3 da OV02B1B (alimentação dos
+     CSIPHY) e o U-Boot foi reconstruído a partir dela (8ed2e35a...). O nome
+     "cam-etapa3" agora = OV02B1B + CSIPHY supplies. DTS da S5K4H7
+     RECONSTRUÍDO em sm7150-motorola-hanoip-cam-s5k4h7.dts (etapa1 + supplies
+     do CSIPHY + refgen always-on + camera@2d + port@1 4 lanes); U-Boot
+     work/uboot-builds-20261026/out/sm7150-motorola-hanoip-cam-s5k4h7/
+     img df233b76..., dtb 3041a92b... fdt_diff contra a etapa3: só troca o nó
+     OV02B1B/port@3/MCLK3 pelo S5K4H7/port@1/MCLK1 + regulador VDIG.
+     Bootado: "chip id 0x487b" de novo.
+  2) Com o CAMSS rollback: stream dá timeout; cphy_rx em 300 MHz e
+     csiphy0_clk desligado (mesmo quadro do PHY3 antes do fix phy0clk).
+     Variante work/cameras-20261028/camss-phy1clk-test/qcom-camss.ko
+     d149df355de4b10f2b0bf7beaa549e9ca13497763c1bec3df9d35eaef2766008 aplica ao
+     PHY1 o mesmo: clocks csiphy1, csiphy1_timer_src, csiphy1_timer (300),
+     cphy_rx_src (400), csiphy0. RESULTADO: 2 frames 3264x2448 pgAA de
+     9.987.840 bytes, rc=0, sem WARNING, taint 4096; restart 3x ok.
+  3) Os frames são UNIFORMES (~951/952 de 1023): saturação. Causa achada no
+     driver: S5K4H7_REG_COARSE_INTEGRATION era 0x0200 (fine integration) e
+     FRAME_LENGTH era 0x0202 (= coarse integration): o VBLANK gravava 2532
+     linhas de exposição. Tabela vendor confirma CCS: 0x0340=0x09e2 frame
+     length, 0x0342 line length, 0x0200=0x0d6c fine, 0x0202=0x0002 coarse.
+     Corrigido para 0x0202/0x0340: s5k4h7.ko
+     a24f89ba780c30978408dd21af31697a9b7090e18ef40f183fd719ebb1f455a1
+     (anterior guardado como s5k4h7.ko.d9286d9b). NÃO testado ainda (rmmod
+     impossível com CAMSS segurando; precisa boot limpo).
+  4) TESTADO a24f89ba (29/10 ~13:40): continua ~951 constante em exposure
+     2528/800/200 (exp=50: 1 timeout CCI). Durante stream VIO/VANA/VDIG=1,
+     gpio24/33/46 altos, MCLK1 24 MHz, csiphy1 400 MHz, 30,03 fps. Logo NÃO
+     é exposição. CAUSA PROVÁVEL: a "lista 3" é sequência de leitura de OTP
+     (0x0a00/0x0a02/0x0a04, começa com 0x0100=0x5a), não init. A init real
+     é a LISTA 2 (0x0100=0, 0x0b05=1, 0x3074=06, 0x3075=2f, 0x308a=20...),
+     igual ao início do sensor_init público da MTK. Driver agora escreve
+     lista 2 -> lista 1 -> controles -> 0x0100=1: s5k4h7.ko
+     c8a3d441b6978191eb884192c832c76b9cad3726789a3154f24d081075537bac
+     (anterior em s5k4h7.ko.a24f89ba). NÃO testado ainda.
+  5) PRIMEIRA IMAGEM REAL DA S5K4H7 (29/10 ~14:00) com c8a3d441 (lista 2
+     -> lista 1) + camss-phy1clk d149df35: cena reconhecível (monitor com
+     dock de ícones), 3264x2448 SGRBG10 pgAA, 9.987.840 bytes/frame, rc=0,
+     sem WARNING, taint 4096. Resposta linear: exposure 2528 vs 800 = 3,16x,
+     média acima do preto 3,1x (R/G/B 6,5/15,5/26,8 vs 2,1/5,0/8,5 em ambiente
+     escuro). Preto ~64. Frames e prévias (debayer GRBG meia resolução,
+     subamostrado, WB cinza): work/cameras-20261028/s5k4h7-first-image/
+     e2528.raw aca789fb..., e800.raw 0ce3beab..., e2528.png, e800.png.
+     Pendente: ganho analógico (escala do 0x0204), orientação/rotação,
+     ordem Bayer confirmada com alvo colorido, lista 4 (0x00ed/0x0002/0x0006
+     = provável OTP, não escrita), limpar write_array16/lista 3 do driver,
+     timeout CCI ocasional (exp=50), levar camss-phy1clk ao patch do v5,
+     DTS cam-s5k4h7 ainda não comitado.
+  6) GANHO MEDIDO (29/10 ~14:15, exposure 800 fixo): código 32/64/128/256
+     -> sinal 3,87/7,69/15,29/30,61 (G): linear, código 32 = 1x. Máximo
+     limitado a 512 (16x, como o driver público MTK).
+     TEMPORIZAÇÃO: PLL vendor 24/6*136 = 544 MHz, vt_pix_clk_div 4, 2
+     pipelines -> pixel rate 272 MHz; 3580 x 2530 (0x0342/0x0340) = 30,03 fps
+     = medido. Driver dizia 292,8 MHz/3584/2532 (AE ~7% errado). Corrigido.
+     Driver 925c9e136b38efd9fb98b39f910f3ce1c3f35bb40ad912f4d8afb6c9e954ddc2:
+     timing real, ganho até 512, NATIVE_SIZE no get_selection, rotation/
+     orientation via v4l2_fwnode, sem write_array16 (c8a3d441 guardado).
+     DT cam-s5k4h7 v2: + orientation=<1>, rotation=<270> (Android roll 90 /
+     yaw 180, igual ao slot 2; 270 foi o valor certo na OV02B1B). U-Boot
+     img d7986e04..., dtb f6855477...; fdt_diff vs v1 (guardado em
+     out/...cam-s5k4h7.v1-df233b76/) = só essas 2 props. NÃO bootado ainda.
+  7) APP SNAPSHOT COM A S5K4H7 (29/10 ~13:30), CONFIRMADO PELO USUÁRIO:
+     imagem ao vivo "certinha e em pé" com a libcamera DO SISTEMA (0.7.2-1,
+     sem patch): "Adding camera ...camera@2d for pipeline handler simple",
+     nó PipeWire "Built-in Back Camera" (orientation do DT), rotation 270
+     vinda do controle V4L2. gst libcamerasrc 1632x1224: 30,17 fps, 0 drop.
+     Basta: U-Boot cam-s5k4h7 v2 (d7986e04) + insmod dos 2 módulos +
+     systemctl --user restart wireplumber (a câmera surge depois da sessão).
+     Usuário: "as cores não tão boas e nem a qualidade". Causas: tuning
+     uncalibrated (sem CCM), sem helper de ganho, e FOCO: o slot 3 tem VCM
+     Dongwoon DW9714 (sensormodule: actuatorName mot_hanoip_dw9714; stock
+     actuator@1 cci0/m1; VAF = camera_rear_main_wide_afvdd_2p8 = gpio64).
+     Tuning volátil work/cameras-20261028/s5k4h7/tuning/s5k4h7.yaml (BLC 4096,
+     CCM genérica moderada, NÃO calibrada) em /dev/shm/lc-tuning/simple/ via
+     systemctl --user set-environment LIBCAMERA_IPA_CONFIG_PATH; log confirma
+     "Using tuning file"; o ISP roda na GPU (EGL) no wireplumber.
+     Foco: pipeline simple da 0.7.2 NÃO tem AF/lente. Plano: dw9714.ko
+     (work/cameras-20261028/dw9714/, 3768dbce..., fonte do próprio 7.3) +
+     DT cam-s5k4h7 v3 (lente @0x0c, regulador gpio64, lens-focus): img
+     fa8aac32..., dtb d416e659...; fdt_diff vs v2 (guardado) = só lente,
+     regulador e lens-focus. Endereço 0x0c é o padrão do DW9714, NÃO lido
+     ainda. Depois: varredura de foco por RAW e posição fixa por V4L2.
+  8) PRINCIPAL (S5KHM2) + FRONTAL (OV32B) PREPARADAS (29/10 ~14:00), NÃO
+     bootadas. Ferramentas novas em work/cameras-20261028/:
+     - decode-regs-v3.py: rotula cada lista pela seção (pareia listas e
+       regSetting da tabela de símbolos; S5K4H7 10/10, OV32B 12/12) e lê o
+       pool certo: registerData = nData u32 completados a 8 bytes + delay
+       u64; op 1 = burst (TnP da HM2). Com isso a init da HM2 tem 659
+       escritas e 0 entradas inválidas (o v2 corrompia depois do burst).
+     - mode-params.py: fps, lanes, line/frame, outClk e tamanho por modo.
+     - gen-sensor-tables.py: tabelas C com largura e delay por entrada.
+     OV32B: init 2442 (lista 10), modo 3264x2448@30.034 (lista 2), stream
+     0x0100, 4 lanes, link 414 MHz, VTS 0x380e=2664, exposição 0x3500.
+     S5KHM2: init 659 (lista 12), modo 4000x3000@30.062 (lista 2, binning
+     0x0900=0x1233), FLL 3200/LLP 16632, stream on 0x0100=1 + 0x0101=3.
+     ATENÇÃO: "lanes 3" NÃO é C-PHY: 0x0111 = 2 = D-PHY (ccs-regs.h), 3
+     lanes a 1012,32 MHz. Um protótipo de C-PHY no CAMSS foi escrito
+     (camss-cphy-test/, tabela csiphy_3ph_v1_2 do vendor) e fica SEM USO.
+     Driver genérico hanoip-cam/hanoip-cam.ko (ovti,ov32b + samsung,s5khm2;
+     ordem Bayer = parâmetro "bayer" gravável em runtime; ganho em código
+     cru, escala NÃO medida; VDIG da HM2 = L6A a 1,104 V, único consumidor).
+     CAMSS camss-allphy-test/qcom-camss.ko: os 4 CSIPHY com csiphyN,
+     timer_src, timer 300, cphy_rx 400, csiphy0 (como o DT do vendor; o
+     PHY0 antigo derrubaria o cphy_rx a 300 com o link da HM2).
+     DT sm7150-motorola-hanoip-cam-tres.dts = cam-s5k4h7 v3 + HM2 (cci0 m0
+     0x56, CSIPHY0 lanes 0-2) + OV32B (cci1 m0 0x10, CSIPHY2 lanes 0-3,
+     rotation 90 NÃO verificada) + cci1 okay; CCI i2c-bus@0 a 400 kHz.
+     fdt_diff vs cam-s5k4h7 v3: só esses nós + renumeração de phandles.
+     Mapeamento físico das lanes não confirmado ("laneAssign 0x4320" da
+     OV02B1B era um campo V de registro, não o valor).
+     Teste: work/cameras-20261029-tres/test-tres.sh (load / cap <cam>).
+     Hashes: qcom-camss.ko 60202c86..., hanoip-cam.ko 434c1261...,
+     dw9714.ko 3768dbce..., s5k4h7.ko 925c9e13..., U-Boot cam-tres img
+     437cd65d... (dtb abac8ada...).
+  9) BOOT cam-tres (29/10 ~14:00): IDs das 3 lidos (0x487b, 0x1ad2, 0x3242).
+     OV32B FRONTAL: 1º frame 3264x2448 com cena real; ganho 0x100/0x200/0x400
+     dobra o sinal (0x100 = 1x); Bayer BGGR confirmado (pele quente; RGGB
+     fica azulado). No app: "Built-in Front Camera", usuário confirmou que
+     aparece; "feia e cinzenta, pouca cor" (cena em contraluz, ~15 níveis
+     acima do preto; CCM genérica melhorou "bem pouco").
+     S5KHM2: o sensor TRANSMITE (contador 0x0005 sobe ~30/s; 0x0100=1,
+     0x0111=2 D-PHY, 0x0114=2 = 3 lanes, 4000x3000, FLL 3200 lidos por I2C),
+     L6A 1,104 V, PHY0 400 MHz, timer 300 MHz, mas 0 bytes e nenhum IRQ do
+     CSID: nada chega. VC do stream principal = 0 (PDAF dt 0x30 no VC1).
+     Suspeitos: posição física das lanes / settle. CAMSS de diagnóstico
+     camss-diag-test/qcom-camss.ko 9311813e... (params lane_map, dphy_settle,
+     phy_status). test-tres.sh hm2diag percorre as 24 posições.
+     DW9714 em 0x0c deu NACK. A init do atuador no bin (0x02/0x06/0x07/0x08)
+     é o mapa do DW9768; DT agora dongwoon,dw9768 @0x1a (0x34 antes da lista
+     no bin), vin L13A + vdd afvdd. dw9768.ko 495cef15...; U-Boot cam-tres
+     v2 5c417e77... (v1 guardado em out/...cam-tres.v1-437cd65d/).
+     hanoip-cam.ko 9122bb5d...: entidade "ov32b"/"s5khm2" (tuning por nome).
+  10) BOOT cam-tres v2 (29/10 ~14:20):
+     VCM da S5K4H7: dw9768 @0x1a também não responde. Varredura só-leitura
+     (dw9768-scan, 1 byte por endereço com VAF ligado): SÓ 0x0c responde.
+     Com addr=0x0c (dw9768-scan/dw9768.ko 44621f88..., params addr/focus) a
+     init do DW9768 passa, AF 2,8 V ligado, escritas de DAC aceitas (byte
+     alto lido de volta acompanha 0/300/777). Varredura de foco 0..1023 sem
+     efeito mensurável: cena escura (~37 acima do preto), medida dominada por
+     ruído. Repetir com cena clara e textura perto. DT cam-tres v3: lente
+     dongwoon,dw9768 @0x0c (img 697381fa...; v2 em ...cam-tres.v2-5c417e77/).
+     S5KHM2: 24 posições de lane (lane_map) e settle 6..55 (lanes 0,1,2):
+     zero bytes em todas. phy_status de referência com stream ativo:
+     OV32B/PHY2 "14 01 80 22 00 50 04 00 8a 4f 04 d5", S5K4H7/PHY1
+     "04 01 80 20 00 10 04 00 82 40 04 d5"; HM2/PHY0 "00 00 80 00 00 08 00
+     00 00 00 00 95": o PHY0 não vê atividade nas lanes. Tabela D-PHY do
+     mainline = vendor (115 entradas idênticas). csiphy-sd-index 0 confirma.
+     Revisão do chip: 0x0002 = 0xa0. O vendor tem 3 bins da HM2 com init
+     diferentes (s5khm2 659, _compatible 2614, _v2 293) e modos diferentes;
+     não decodificado qual vale (a propriedade rear.main.type só controla
+     exposição longa; o 0xa0 da lista 15 é o EEPROM). hanoip-cam.ko
+     66d3520a... tem as 3 (param hm2_variant 0/1/2, lido a cada stream).
+     ATENÇÃO lane_map grava na config: voltar com "0:0,1,2" explícito.
+  11) FOCO DA S5K4H7 FUNCIONANDO (29/10 ~14:40), alvo com texto a ~10-15 cm:
+     com a init padrão do dw9768 (0x02=0 -> 0x02=AAC) a lente NÃO se move
+     (recortes 0 e 800 iguais). Com a lista 10 do vendor via I2C
+     (work/cameras-20261029-tres/vcm.py: 0xed=0xab, 0x02=1, 0x02=0 +1 ms,
+     0x06=0x84, 0x07=0x01, 0x08=0x78; posição em 0x03/0x04, 10 bits) a
+     nitidez central vai de ~600-1100 a 10076 em 260 (150: 1100, 220: 2819,
+     300: 6201, 340: 1437, 450: 686). Recorte em 260 lê o texto da tela;
+     focus-450-vs-260.png. O dw9768 do mainline só serve para energia; falta
+     um driver (ou patch) com a init do vendor e o controle FOCUS_ABSOLUTE.
+  12) BOOT cam-tres v3 (29/10 ~14:50): as 3 variantes da HM2 (init 659,
+     2614, 293) dão o mesmo: 0 bytes e PHY0 sem atividade. NÃO é variante.
+     REVISÃO: a HM2 deve ser C-PHY. 0x0111 = 2 é "CSI-2" no SMIA++ (só no
+     CCS novo 2 = D-PHY); modos 1/3/4/5 (outClk 864,6 MHz) exigiriam 2,88
+     Gbps por lane D-PHY, acima do limite do SM7150; e um receptor D-PHY
+     diante de C-PHY fica exatamente sem atividade. Preparado:
+     camss-cphydiag-test/qcom-camss.ko 9c673386... (diag + C-PHY: tabela
+     csiphy_3ph_v1_2 do vendor, CTRL5 bits 2n+1, param cphy_settle_cnt;
+     CSID PHY_TYPE_SEL); hanoip-cam.ko e99dfc6f... (endpoint D/C-PHY pelo
+     DT); DT cam-tres v4 (HM2 e port@0 com bus-type = 1, sem clock-lanes):
+     img ae4682bb... (v3 guardado em ...cam-tres.v3-697381fa/).
+  13) PRINCIPAL S5KHM2 FUNCIONANDO VIA C-PHY (29/10 ~14:42): boot cam-tres
+     v4 + camss-cphydiag + hanoip-cam e99dfc6f, variante 0 (s5khm2.bin):
+     "CSIPHY0 C-PHY: 3 trios, lane_enable 0x2a, settle 20" e 1º frame
+     4000x3000 RAW10, 15.024.000 bytes (stride 5008), cena real legível
+     (tela com o texto do terminal). Bayer GRBG (G em 00/11; ícones do dock
+     com as mesmas cores da S5K4H7 na mesma tela). Ganho 32/64/128 ->
+     4,87/9,77/19,62 (32 = 1x, linear). PRIMEIRO C-PHY no CAMSS do mainline
+     para SM7150 (tabela csiphy_3ph_v1_2 do vendor). A hipótese D-PHY
+     (0x0111 = 2) estava ERRADA. Transferir RAW de 15 MB pela rede USB
+     derrubou o link duas vezes (sem reboot): gerar prévias no aparelho
+     (work/cameras-20261029-tres/preview.py) e trazer só PNG.
+  14) APP COM AS 3 (29/10 ~14:48): wireplumber lista Front + 2 Back, cada
+     uma com seu tuning (s5k4h7/s5khm2/ov32b.yaml). A PRINCIPAL abriu no app
+     (4000x3000 GRBG -> 1920x1080 XRGB8888). Usuário: troca de câmera lenta,
+     cores não batem entre câmeras, uma preta. A preta foi a S5K4H7:
+     "i2c-qcom-cci ac4a000.cci: master 1 queue 0 timeout" no início do stream
+     -> STREAMON EIO. Depois disso o wireplumber ficou preso (stop-sigterm
+     estourou 90 s, systemd matou) e o Snapshot seguinte travou ("Could not
+     start camerabin"). Contorno aplicado: power/control=on nos dois CCI
+     (ac4a000.cci, ac4b000.cci); runtime PM do CCI segue como suspeito do
+     timeout intermitente (visto também na OV02B1B). Lentidão: init da HM2
+     ~2 mil escritas a 400 kHz + init EGL por troca.
+  15) AS 3 CÂMERAS NO APP, CONFIRMADO PELO USUÁRIO (29/10 ~14:55): "tudo
+     certo na troca entre as 3 câmeras" (S5K4H7 traseira wide, S5KHM2
+     traseira principal 4000x3000 via C-PHY, OV32B frontal), com CCI
+     power/control=on e libcamera 0.7.2 DO SISTEMA. Tudo volátil (/dev/shm +
+     systemctl --user set-environment). Pacote do boot: U-Boot cam-tres v4
+     ae4682bb..., kernel-v5-cam-etapa3.logbuf.img, camss-cphydiag-test
+     9c673386..., s5k4h7.ko 925c9e13..., hanoip-cam.ko e99dfc6f...,
+     dw9768.ko 495cef15... (só energia; foco via vcm.py com a init do vendor).
+     Pendente: driver de VCM com a init do vendor + controle de foco (S5K4H7)
+     e DW9800 da principal; CCI runtime PM (correção de verdade); recuperação
+     do wireplumber após falha de stream; calibração de cor por câmera;
+     I2C mais rápido (troca lenta); OV02B1B junto (precisa da libcamera mono);
+     levar C-PHY e clocks dos 4 PHY para os patches do kernel v5; persistência
+     e commit.
+  16) CALIBRAÇÃO DO VENDOR + PREPARO DO BOOT SEGUINTE (29/10 ~15:10):
+     - Tunings do vendor (vendor-odm.tar do dump 20261026-final):
+       com.qti.tuned.mot_hanoip_{s5k4h7,ov32b,s5khm2,s5khm2_v2,ov02b1b}.bin
+       em work/cameras-20261029-tuning/vendor/ (+ SHA256SUMS). /data/vendor/
+       camera/rear_main_name.bin = "mot_s5khm2" (confirma a variante 0).
+     - CCM (cc13): entradas de 0x48 bytes, [início, fim] de CCT (floats em
+       slots de 8) antes de 9 floats RGB linha-a-linha (linhas somam 1). A
+       PRIMEIRA tabela é a do sensor; as seguintes repetem a da S5KHM2
+       (diag 1,811/1,559/1,852). ccm-from-tuned.py gera s5k4h7/ov32b/
+       s5khm2.yaml (5 faixas 2000-10000 K) em out/; aplicados no aparelho
+       (volátil). Avaliação visual do usuário PENDENTE.
+     - VCM da principal: com VAF ligado, 0x0c responde no i2c-12 (CCI0 m0).
+       hanoip-vcm.ko e94f6c85... (FOCUS_ABSOLUTE, init do vendor por
+       compatible: dw9768 = wide/lista 10, dw9800 = main/lista 16,
+       default_pos 200). Sensores agora com v4l2_async_register_subdev_sensor
+       (lens-focus => nó de lente; EXIGE hanoip-vcm carregado):
+       s5k4h7.ko ba695f2c..., hanoip-cam.ko db87dffe....
+     - CCI: resume runtime só fazia cci_init sem reset; cci-resume-reset/
+       i2c-qcom-cci.ko c125a291... faz cci_reset na retomada.
+     - DT cam-tres v6: lente dw9800 @0x0c na principal + lens-focus; CCI a
+       1 MHz nos 3 barramentos; img 5cb08127... (v4 e v5 guardados).
+     - Decisão do usuário: a OV02B1B (profundidade) NÃO precisa aparecer no
+       app; integração dela fica fora.
+  17) BAYER DA PRINCIPAL CORRIGIDO: usuário viu azul virar laranja com GRBG;
+     com bayer=1 (GBRG) "principal com as cores certas" (frontal errada só
+     porque o parâmetro vale para as duas). A escolha GRBG pela cor dos
+     ícones na prévia estava ERRADA. hanoip-cam.ko agora com bayer_def
+     por sensor: S5KHM2 GBRG, OV32B BGGR: hanoip-cam.ko 7f8e6cc2... (não bootado).
+  18) BOOT cam-tres v6 (29/10 ~15:30): hanoip-vcm liga as 2 lentes (main
+     12-000c, wide 13-000c), nós v4l-subdev17/19 (lens-focus funcionando).
+     CCI COM RESET NA RETOMADA: 9/9 aberturas (3 rodadas x 3 câmeras, CCI
+     suspenso antes de quase todas), 0 timeouts, sem power/control=on.
+     Abertura + 1 frame a 1 MHz: 0,4-0,9 s. Usuário: "foco da principal
+     bugado" = posição 200 longe da faixa útil. Varredura com o celular
+     apoiado, texto a ~20-30 cm: principal pico em 540 (3669; 520: 1547,
+     560: 2216; 0-200: ~68; >900 fim de curso), recorte main-200-vs-520.png
+     mostra a grade de pixels da tela. hanoip-vcm.ko a3770e86...: posição
+     inicial por lente (main 450, wide 180; param default_pos sobrescreve).
+  Roteiro: U-Boot cam-s5k4h7 -> kernel-v5-cam-etapa3.logbuf.img -> insmod
+  camss-phy1clk-test/qcom-camss.ko + s5k4h7/s5k4h7.ko -> media-ctl igual
+  ao passo 5 abaixo -> v4l2-ctl /dev/video2 pgAA, variar -c exposure.
+
+Base: PRE-GOLD-20261028-1707. Estado anterior: passo 1 (IDs dos 4 sensores
+por CCI) validado em 26/10; passo 2 (1ª imagem no OV02B1B) nunca rodou.
+Ver também checkpoint-2026-10-26-cameras.txt e work/cameras-20261026/.
+
+1. O QUE O KERNEL 7.3 JÁ TEM (verificado no fonte do v5)
+--------------------------------------------------------
+  - drivers/media/platform/qcom/camss: compatible "qcom,sm7150-camss"
+    (sm7150_resources: 4 CSIPHY 3ph, 2 CSID gen2, VFE 170/175, icc
+    cam_ahb/hf/sf); CONFIG_VIDEO_QCOM_CAMSS=m.
+  - camcc-sm7150 (CONFIG_SM_CAMCC_7150=y), ATIVO no aparelho
+    (ad00000.clock-controller, driver camcc-sm7150).
+  - CCI: qcom,sm7150-cci (CONFIG_I2C_QCOM_CCI=m), nós cci0/cci1 no dtsi.
+  - NÃO tem driver de sensor para S5KHM2 / S5K4H7 / OV02B1B / OV32B.
+  - TPG dedicado (camss-tpg) só existe para sa8775p/x1e80100; mas o CSID
+    gen2 tem gerador de teste interno (CSID_TPG_CTRL 0x600...).
+
+2. NÓ camss DO U-BOOT x DRIVER (cruzamento por nome)
+----------------------------------------------------
+  O dtsi do U-Boot é uma cópia antiga (169 linhas) e o do kernel 7.3 é maior
+  (BPS/IPE/ICP/JPEG etc.). O driver busca recursos por nome; para o sm7150:
+    clocks 28 pedidos, todos presentes; irqs 7/7; power domains ife0/ife1/top;
+    interconnects 3/3.
+    regs: "csid0"/"csid1" não existem em NENHUM dos dois nós, e não precisam:
+    para CAMSS_8250/CAMSS_7150 o CSID é mapeado dentro da VFE
+    (VFE_480_CSID_OFFSET = 0x4000):
+       CSID0 = 0xacaf000 + 0x4000 = 0xacb3000  (stock: qcom,csid0@acb3000) OK
+       CSID1 = 0xacb6000 + 0x4000 = 0xacba000  (stock: qcom,csid1@acba000) OK
+       CSID-lite: driver usaria vfe_lite + 0x200 = 0xacc4200, stock diz
+       0xacc8000 (= +0x4000) -> ERRADO, mas o sm7150 não declara CSID lite.
+  SMMU: os 14 iommus do nó = exatamente o contexto "ife" do Android
+  (msm_cam_smmu_ife), mesma ordem.
+
+3. PLANO
+--------
+  etapa1  &camss okay (sem sensor): media graph + frame do TPG do CSID0
+          pela VFE0/RDI0 até a memória.
+  etapa2  1º sensor (OV02B1B, 1 lane, CSIPHY3, CCI0 m1 0x3D): driver V4L2
+          a partir das tabelas do sensormodule.bin (decode-regs.py) + DT do
+          sensor/endpoint; depois libcamera.
+
+4. ETAPA 1 — RESULTADO (28/10 ~17:32): PIPELINE DO CAMSS FUNCIONA
+-----------------------------------------------------------------
+  Boot: U-Boot cam-etapa1 (fdt_diff x PRE-GOLD-1707: só camss status=okay)
+  + kernel v5 #29 da PRE-GOLD.
+  - qcom-camss liga; /dev/media0, 16 subdevs, 10 nós de vídeo da VFE;
+    nenhum fault de SMMU. Avisos vdda-phy/vdda-pll (dummy) só importam com
+    sensor.
+  - Efeito colateral: o Venus passa para /dev/video10 (dec) e /dev/video11 (enc).
+  - Captura com o TPG do CSID0:
+      media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+      media-ctl -V '"msm_csid0":0[fmt:SRGGB8_1X8/640x480 field:none]' (idem :1 e rdi0:0)
+      v4l2-ctl -d /dev/v4l-subdev4 -c test_pattern=9   (Color bars)
+      v4l2-ctl -d /dev/video0 --set-fmt-video=width=640,height=480,pixelformat=RGGB \
+               --stream-mmap --stream-count=8 --stream-to=/tmp/tpg.raw
+    8 frames x 307200 bytes, ~5 fps, IRQ da VFE por frame. Demosaico simples
+    do frame 3 = as 8 barras de cor corretas
+    (work/cameras-20261028/tpg-frame3-rgb.png).
+  - Ruído: o qcom-camss do fork imprime "vfe irq handled!" por frame e
+    "Writing reset_bits=..." em nível de log alto (limpar depois).
+  CONCLUSÃO: CSID -> VFE/RDI -> SMMU -> memória -> V4L2 validado no sm7150.
+  O que falta é do lado do sensor: driver, CCI, reguladores/MCLK e CSIPHY.
+
+5. OV02B1B — DADOS PARA O DRIVER (extraídos do sensormodule.bin, 28/10)
+-----------------------------------------------------------------------
+  Formato do .bin resolvido (work/cameras-20261028/decode-regs-v2.py):
+  cada lista = N escritas de 80 bytes [t, addr, n][t+1, addrType, dataType,
+  op, ?][t+2, ?] seguida de um pool de N entradas de 16 bytes
+  [regData, delayUs]; o pool começa 8 bytes antes do fim da lista. Alinhado
+  contra valores conhecidos da família OV02B10: 9/9 acertos. O decode-regs.py
+  de 26/10 lia o "n" (sempre 1) como dado.
+  Listas (work/cameras-20261028/ov02b1b-regs.txt):
+    6: init, 95 escritas (soft reset 0xfc=1 + 5 ms; PLL 0x24..0x2a;
+       timing na página 1; MIPI na página 3)
+    2/3: par stream (0x10 0/1 na pág. 1, 0xc2 1/0 na pág. 3)
+    1, 4, 5: listas curtas (exposição/ganho/flip, a identificar)
+    7: outra tabela lida fora de alinhamento (descartar)
+  Modo único: 1600x1200 Raw10 Bayer (preto 64, branco 1023), MCLK 24 MHz,
+  clock de saída 66 MHz -> 660 Mbps em 1 lane -> link 330 MHz (DDR),
+  linha 448 (x4) / frame 1225 -> 30,07 fps (o bin diz 30.07).
+  laneAssign = 0x4320 -> lane lógica 0 na lane física 0 do CSIPHY3.
+  Hardware (DT de 26/10, IDs lidos): CCI0 master1 0x3D, ID 0x2B no reg 0x03,
+  VIO L13A 1,8 V, AVDD gpio46 (compartilhado com o S5K4H7), MCLK3 (gpio16),
+  reset gpio26 ativo-baixo. Sem foco.
+  DT do endpoint (modelo db845c): camss port@3 { endpoint { clock-lanes = <7>;
+  data-lanes = <0>; } }.
+  Ordem de Bayer: a determinar pela imagem.
+
+6. ONDE PAROU (28/10 noite, interrompido por falta de tokens)
+-------------------------------------------------------------
+  Aparelho: U-Boot cam-etapa1 + kernel v5 #29 (PRE-GOLD-1707 + camss okay).
+  Retorno seguro: PRE-GOLD-20261028-1707.
+  Driver OV02B1B: NADA escrito ainda. Plano: copiar drivers/media/i2c/
+  ov02a10.c (cópia em scratchpad; está no volume hanoip-kernel73-v3-src) e
+  trocar:
+    - ID: página 0 (0xfd=0), reg 0x03 (1 byte) = 0x2B;
+    - init = lista 6 de work/cameras-20261028/ov02b1b-regs.txt (95 escritas,
+      0xfc=1 + 5 ms);
+    - stream on = lista 2 (fd01,10=00,fd03,c2=01); off = lista 3;
+    - remover mirror/flip (0x3f) e TX speed (0xa1) do 02A10;
+    - link 330 MHz, pixel_rate 66 MHz, 1 lane, Raw10, HTS 1792 (448x4),
+      VTS 1225, eclk 24 MHz; compatible novo "ovti,ov02b10";
+    - powerdown-gpios opcional (o hanoip só tem reset gpio26).
+  Exposição/ganho (RE do com.qti.sensor.mot_ov02b1b.so, só matemática):
+    ganho reg = real x16, 0x10..0xf8 (faixas 1x/2x/4x/8x);
+    vblank = frameLength - 1220 (mín. 5), 2 bytes;
+    o .so monta uma lista-modelo com constantes do rodata (offsets 944/960:
+    {0xfe,1} e {0xfd,1}) -> confirma página 1 e "0xfe=1/2" como aplicar.
+    Endereços exatos de exposição/VTS/ganho AINDA NÃO confirmados; candidatos
+    da família OV02B10: exp 0x0e/0x0f, ganho 0x22, VTS 0x14/0x15 (pág. 1),
+    aplicar com 0xfe 0x02. Para o 1º frame dá para ir sem esses controles
+    (usar os valores do init).
+  DT a fazer (cam-etapa2): sensor em &cci0_i2c1 @0x3d com vio L13A,
+    avdd gpio46 (regulador fixo do DT de 26/10), MCLK3 + pinctrl, reset
+    gpio26 ativo-baixo; endpoint em camss port@3 {clock-lanes=<7>;
+    data-lanes=<0>;} e link-frequencies = /bits/ 64 <330000000> no sensor;
+    &cci0 okay. Base dos nós: work/cameras-20261026/step1-camid/*.dts.
+
+7. DRIVER + ETAPAS 2/3 (28/10 ~20:40)
+-------------------------------------
+  Driver: work/cameras-20261028/ov02b10/ov02b10.c (gerado do ov02a10.c:
+  ID byte 0x03=0x2b na pág. 0, init da lista 6, soft reset 0xfc+5 ms, stream
+  on/off das listas 2/3, link 330 MHz, HTS 1792 / VTS 1225, powerdown
+  opcional; SEM controles de exposição/ganho por enquanto). Módulo fora da
+  árvore, vermagic 7.3.0-sm7150, instalado em /lib/modules/.../extra + depmod.
+  Etapa2 (sensor no CCI0 m1 0x3d + endpoint CSIPHY3, lane 0): o driver liga,
+  link ov02b10 -> msm_csiphy3 criado, stream inicia sem erro (ID ok), mas
+  0 frames em 25 s e "CSIPHY 3PH HW Version = 0x0".
+  Causa provável: CSIPHY sem alimentação. vdda-phy/vdda-pll = dummy e a L3C
+  (1,2 V) com use_count 0. O Android usa mipi-csi-vdd = PM6150L L3 (L3C)
+  e refgen @ff1000.
+  Etapa3: &camss { vdda-phy-supply = <&refgen>; vdda-pll-supply = <&vreg_l3c_1p23>; }
+  e &refgen { regulator-always-on; }, porque o refgen também serve o DSI e
+  só está ligado pelo bootloader.
+  Antes da etapa2 o aparelho caiu sozinho no fastboot durante a pausa (pstore
+  vazio; causa desconhecida, não reproduzida).

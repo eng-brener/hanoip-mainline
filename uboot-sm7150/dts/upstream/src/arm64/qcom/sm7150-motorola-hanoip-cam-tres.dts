@@ -1,0 +1,183 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * CÂMERAS — três sensores no mesmo boot (29/10):
+ *   slot 3 S5K4H7 traseira wide + VCM DW9714  (cam-s5k4h7 v3, validada)
+ *   slot 0 S5KHM2 traseira principal 108 MP  CCI0 m0 0x56, CSIPHY0
+ *   slot 1 OV32B  frontal 32 MP              CCI1 m0 0x10, CSIPHY2
+ * Rails, MCLK e reset da principal e da frontal são os do camid de 26/10
+ * (IDs 0x1ad2 e 0x3242 lidos nesses mesmos valores). Modo/lanes/link vêm
+ * do sensormodule vendor (mode-params.py): S5KHM2 4000x3000 D-PHY
+ * (0x0111 = 2) 3 lanes a 1012.32 MHz; OV32B 3264x2448 4 lanes a 414 MHz.
+ * O mapeamento físico das lanes NÃO está confirmado (usado 0..n-1).
+ * Driver dos dois novos: work/cameras-20261028/hanoip-cam.
+ */
+#include "sm7150-motorola-hanoip-cam-s5k4h7.dts"
+
+/ {
+	cam_rear_main_avdd: regulator-cam-rear-main-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_rear_main_avdd_2p8";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		gpio = <&tlmm 72 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_bob>;
+	};
+
+	cam_front_avdd: regulator-cam-front-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_front_avdd_2p8";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		gpio = <&tlmm 65 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_bob>;
+	};
+
+	cam_front_dvdd: regulator-cam-front-dvdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_front_dvdd_1p1";
+		regulator-min-microvolt = <1100000>;
+		regulator-max-microvolt = <1100000>;
+		gpio = <&tlmm 93 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_s8c_1p2>;
+	};
+};
+
+&tlmm {
+	cam_mclk0_default: cam-mclk0-default-state {
+		pins = "gpio13";
+		function = "cam_mclk";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	cam_mclk2_default: cam-mclk2-default-state {
+		pins = "gpio15";
+		function = "cam_mclk";
+		drive-strength = <2>;
+		bias-disable;
+	};
+};
+
+&cci0_i2c0 {
+	clock-frequency = <1000000>;	/* FM+; base DT default, 29/10 */
+
+	s5khm2: camera@56 {
+		compatible = "samsung,s5khm2";
+		reg = <0x56>;
+
+		clocks = <&camcc CAMCC_MCLK0_CLK>;
+		clock-names = "eclk";
+		assigned-clocks = <&camcc CAMCC_MCLK0_CLK>;
+		assigned-clock-rates = <24000000>;
+
+		vio-supply = <&vreg_l13a_1p8>;
+		vana-supply = <&cam_rear_main_avdd>;
+		vdig-supply = <&vreg_l6a_1p2>;	/* set to 1.104 V by the driver */
+
+		reset-gpios = <&tlmm 23 GPIO_ACTIVE_LOW>;
+
+		/* Android: roll 90, yaw 180, as the other rear sensors. */
+		orientation = <1>;
+		rotation = <270>;
+		lens-focus = <&s5khm2_vcm>;
+
+		pinctrl-0 = <&cam_mclk0_default>;
+		pinctrl-names = "default";
+
+		/*
+		 * C-PHY, 3 trios (29/10): as D-PHY the CSIPHY0 status showed no
+		 * lane activity in any lane order/settle, while the sensor
+		 * counted frames; modes 1/3/4/5 (864.6 MHz out) would need
+		 * 2.88 Gbps per D-PHY lane, above the SM7150 limit. 0x0111 = 2
+		 * is SMIA++ "CSI-2", not proof of D-PHY.
+		 */
+		port {
+			s5khm2_ep: endpoint {
+				bus-type = <1>;	/* MEDIA_BUS_TYPE_CSI2_CPHY */
+				data-lanes = <1 2 3>;
+				link-frequencies = /bits/ 64 <1012320000>;
+				remote-endpoint = <&csiphy0_ep>;
+			};
+		};
+	};
+
+	/*
+	 * Stock actuator@0 (cci0 master0), profile "mot_hanoip_dw9800": acks at
+	 * 0x0c with VAF on (29/10 read-only probe). Driven by hanoip-vcm with
+	 * the vendor init list (ofilm_mot_hanoip_s5khm2 list 16).
+	 */
+	s5khm2_vcm: camera-lens@c {
+		compatible = "dongwoon,dw9800";
+		reg = <0x0c>;
+		vin-supply = <&vreg_l13a_1p8>;
+		vdd-supply = <&cam_rear_afvdd>;
+	};
+};
+
+&cci1 {
+	status = "okay";
+};
+
+&cci1_i2c0 {
+	clock-frequency = <1000000>;	/* FM+; base DT default, 29/10 */
+
+	ov32b: camera@10 {
+		compatible = "ovti,ov32b";
+		reg = <0x10>;
+
+		clocks = <&camcc CAMCC_MCLK2_CLK>;
+		clock-names = "eclk";
+		assigned-clocks = <&camcc CAMCC_MCLK2_CLK>;
+		assigned-clock-rates = <24000000>;
+
+		vio-supply = <&vreg_l13a_1p8>;
+		vana-supply = <&cam_front_avdd>;
+		vdig-supply = <&cam_front_dvdd>;
+
+		reset-gpios = <&tlmm 25 GPIO_ACTIVE_LOW>;
+
+		/*
+		 * Android: roll 270, yaw 0. The rear sensors need 360 - roll
+		 * in this stack, so 90 here; NOT verified on screen yet.
+		 */
+		orientation = <0>;
+		rotation = <90>;
+
+		pinctrl-0 = <&cam_mclk2_default>;
+		pinctrl-names = "default";
+
+		port {
+			ov32b_ep: endpoint {
+				data-lanes = <1 2 3 4>;
+				link-frequencies = /bits/ 64 <414000000>;
+				remote-endpoint = <&csiphy2_ep>;
+			};
+		};
+	};
+};
+
+&camss {
+	ports {
+		port@0 {
+			csiphy0_ep: endpoint {
+				bus-type = <1>;	/* MEDIA_BUS_TYPE_CSI2_CPHY */
+				data-lanes = <0 1 2>;
+				remote-endpoint = <&s5khm2_ep>;
+			};
+		};
+
+		port@2 {
+			csiphy2_ep: endpoint {
+				clock-lanes = <7>;
+				data-lanes = <0 1 2 3>;
+				remote-endpoint = <&ov32b_ep>;
+			};
+		};
+	};
+};

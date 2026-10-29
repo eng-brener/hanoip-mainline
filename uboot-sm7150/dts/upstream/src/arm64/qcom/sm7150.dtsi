@@ -643,7 +643,14 @@
 	};
 
 	pmu-a76 {
-		compatible = "arm,cortex-a78-pmu";
+		/*
+		 * A76, não A78: o nó se chama pmu-a76 e o cluster é Cortex-A76
+		 * (Kryo 470 Gold). O compatible estava "arm,cortex-a78-pmu",
+		 * herdado do fork. Funcionalmente o init é o mesmo
+		 * (PMUV3_INIT_SIMPLE nos dois), mas o nome do PMU registrado sai
+		 * errado (armv8_cortex_a78) e confunde qualquer análise de perf.
+		 */
+		compatible = "arm,cortex-a76-pmu";
 		interrupts = <GIC_PPI 7 IRQ_TYPE_LEVEL_LOW>;
 	};
 

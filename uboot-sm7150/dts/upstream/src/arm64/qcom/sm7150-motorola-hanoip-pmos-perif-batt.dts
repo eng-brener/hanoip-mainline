@@ -1,0 +1,57 @@
+// SPDX-License-Identifier: BSD-3-Clause
+#include "sm7150-motorola-hanoip-pmos-perif.dts"
+
+/*
+ * "perif" + the battery state-of-charge curve of THIS device.
+ *
+ * qcom_qg turns the open-circuit-voltage estimate into a percentage with
+ * power_supply_batinfo_ocv2cap(). Without an ocv-capacity-table it falls back
+ * to a linear 3.2 V - 4.45 V mapping (~12.5 mV per percent), which followed
+ * every ADC wobble and load transient: the reported percentage wandered
+ * (measured 93% -> 91% in 26 s with 0 mA).
+ *
+ * The table below is NOT generic: it is the pc-temp-v1 LUT of the pack profile
+ * the Android build on this phone uses (S88731AA1-mc50-ATL-4V45-6000mah,
+ * column 25 C), extracted with scripts/battery_curve_from_android.py.
+ * The only edited point is 0%, where the model's 3.000 V cut-off is replaced
+ * by a realistic end-of-discharge voltage (3.400 V).
+ *
+ * Cross-check: Android reported 3.836 V at 54% while charging at 500 mA; this
+ * curve gives 3.90 V at 54% (~50 mV, the IR drop of that current).
+ *
+ * It only changes what is reported. The charger path in this port is
+ * read-only for monitoring, and charging itself is opt-in and separate
+ * (see docs/PLANO-BATERIA-ENERGIA.md and the qcom_smbx charge control).
+ */
+&hanoip_battery {
+	/*
+	 * Internal resistance used to remove the IR drop before the OCV lookup.
+	 * This is the whole loop (cell + protection + connector + sense), not
+	 * the cell datasheet AC value: 30 mOhm under-compensated so badly that
+	 * the estimate ran ~7 points high while charging at 440 mA.
+	 *
+	 * Two independent derivations agree on ~200 mOhm:
+	 *  - downstream reference: Android reported 3.836 V at 54% while
+	 *    charging at 500 mA, and this curve gives 3.935 V for 54%
+	 *    -> 99 mV / 500 mA = 197 mOhm;
+	 *  - on this device: ~7 points of overshoot at 440 mA, and the curve is
+	 *    14.8 mV per point there -> 104 mV / 440 mA = 235 mOhm (6 points:
+	 *    202 mOhm).
+	 * See docs/kernel/checkpoint-2026-10-27-bateria-RESUMO.txt, section 15.
+	 */
+	factory-internal-resistance-micro-ohms = <200000>;
+
+	/* SOC (%) -> open circuit voltage (uV), from the Motorola/Qualcomm model */
+	ocv-capacity-celsius = <25>;
+	ocv-capacity-table-0 = <4446500 100>, <4388900 95>,
+			       <4320900 90>, <4272600 85>,
+			       <4198600 80>, <4151100 75>,
+			       <4084000 70>, <4043400 65>,
+			       <3991500 60>, <3945800 55>,
+			       <3889800 50>, <3868900 45>,
+			       <3842200 40>, <3828400 35>,
+			       <3813600 30>, <3804800 25>,
+			       <3780800 20>, <3755900 15>,
+			       <3711100 10>, <3682200 5>,
+			       <3400000 0>;
+};

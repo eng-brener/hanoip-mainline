@@ -1,0 +1,82 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * CÂMERA — ETAPA 2: primeiro sensor, OV02B1B (traseira, profundidade).
+ *
+ * Base: cam-etapa1 (CAMSS validado com o TPG do CSID). Só este sensor é
+ * declarado. Valores de docs/kernel/checkpoint-2026-10-28-camera.txt:
+ *   CCI0 master1 0x3d, VIO L13A 1,8 V, AVDD gpio46 (2,8 V, divide com o
+ *   S5K4H7), MCLK3 24 MHz (gpio16), reset gpio26 ativo-baixo,
+ *   1 lane MIPI 660 Mbps (link 330 MHz) na lane física 0 do CSIPHY3.
+ * Rails/MCLK/reset já validados na leitura de ID de 26/10
+ * (work/cameras-20261026/step1-camid). Driver: work/cameras-20261028/ov02b10.
+ */
+#include <dt-bindings/clock/qcom,sm7150-camcc.h>
+#include "sm7150-motorola-hanoip-cam-etapa1.dts"
+
+/ {
+	cam_rear_aux_avdd: regulator-cam-rear-aux-avdd {
+		compatible = "regulator-fixed";
+		regulator-name = "cam_rear_depth_wide_avdd_2p8";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		gpio = <&tlmm 46 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		startup-delay-us = <1000>;
+		vin-supply = <&vreg_bob>;
+	};
+};
+
+&tlmm {
+	cam_mclk3_default: cam-mclk3-default-state {
+		pins = "gpio16";
+		function = "cam_mclk";
+		drive-strength = <2>;
+		bias-disable;
+	};
+};
+
+&cci0 {
+	status = "okay";
+};
+
+&cci0_i2c1 {
+	clock-frequency = <400000>;
+
+	ov02b1b: camera@3d {
+		compatible = "ovti,ov02b10";
+		reg = <0x3d>;
+
+		clocks = <&camcc CAMCC_MCLK3_CLK>;
+		clock-names = "eclk";
+		assigned-clocks = <&camcc CAMCC_MCLK3_CLK>;
+		assigned-clock-rates = <24000000>;
+
+		dovdd-supply = <&vreg_l13a_1p8>;
+		avdd-supply = <&cam_rear_aux_avdd>;
+
+		reset-gpios = <&tlmm 26 GPIO_ACTIVE_LOW>;
+
+		pinctrl-0 = <&cam_mclk3_default>;
+		pinctrl-names = "default";
+
+		port {
+			ov02b1b_ep: endpoint {
+				data-lanes = <1>;
+				link-frequencies = /bits/ 64 <330000000>;
+				remote-endpoint = <&csiphy3_ep>;
+			};
+		};
+	};
+};
+
+&camss {
+	ports {
+		port@3 {
+			csiphy3_ep: endpoint {
+				clock-lanes = <7>;
+				data-lanes = <0>;
+				remote-endpoint = <&ov02b1b_ep>;
+			};
+		};
+	};
+};

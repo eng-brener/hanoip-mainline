@@ -1,0 +1,253 @@
+--- ../camss-phy1clk-test/camss.c	2026-10-29 12:59:46
++++ camss.c	2026-10-29 13:45:50
+@@ -1996,9 +1996,12 @@
+ 			{ .supply = "vdda-phy", .init_load_uA = 0 },
+ 			{ .supply = "vdda-pll", .init_load_uA = 0 }
+ 		},
+-		.clock = { "csiphy2", "csiphy2_timer" },
+-		.clock_rate = { { 19200000, 300000000, 384000000, 400000000 },
+-				{ 300000000 } },
++		.clock = { "csiphy2", "csiphy2_timer_src", "csiphy2_timer", "cphy_rx_src", "csiphy0" },
++		.clock_rate = { { 0 },
++				{ 0 },
++				{ 300000000 },
++				{ 384000000, 400000000, 400000000 },
++				{ 0 } },
+ 		.reg = { "csiphy2" },
+ 		.interrupt = { "csiphy2" },
+ 		.csiphy = {
+@@ -4972,14 +4975,13 @@
+ 	if (ret)
+ 		return ret;
+ 
+-	/*
+-	 * Most SoCs support both D-PHY and C-PHY standards, but currently only
+-	 * D-PHY is supported in the driver.
+-	 */
+-	if (vep.bus_type != V4L2_MBUS_CSI2_DPHY) {
++	/* C-PHY is only implemented for the SM7150 CSIPHY (v1.2 tables). */
++	if (vep.bus_type != V4L2_MBUS_CSI2_DPHY &&
++	    vep.bus_type != V4L2_MBUS_CSI2_CPHY) {
+ 		dev_err(dev, "Unsupported bus type %d\n", vep.bus_type);
+ 		return -EINVAL;
+ 	}
++	lncfg->cphy = vep.bus_type == V4L2_MBUS_CSI2_CPHY;
+ 
+ 	csd->interface.csiphy_id = vep.base.port;
+ 
+--- ../camss-phy1clk-test/camss-csiphy.c	2026-10-29 12:59:46
++++ camss-csiphy.c	2026-10-29 13:45:50
+@@ -153,9 +153,8 @@
+ 	for (i = 0; i < csiphy->nclocks; i++) {
+ 		struct camss_clock *clock = &csiphy->clock[i];
+ 
+-		/* Controlled SM7150 CSIPHY1/3 experiment: stock votes 400 MHz. */
++		/* SM7150: stock votes cphy_rx at 400 MHz for every CSIPHY. */
+ 		if (csiphy->camss->res->version == CAMSS_7150 &&
+-		    (csiphy->id == 1 || csiphy->id == 3) &&
+ 		    !strcmp(clock->name, "cphy_rx_src")) {
+ 			ret = clk_set_rate(clock->clk, 400000000);
+ 			if (ret < 0)
+--- ../camss-phy1clk-test/camss-csiphy.h	2026-10-29 12:59:31
++++ camss-csiphy.h	2026-10-29 13:45:50
+@@ -33,11 +33,13 @@
+  * @num_data: number of data lanes
+  * @data:     data lanes configuration
+  * @clk:      clock lane configuration (only for D-PHY)
++ * @cphy:     C-PHY link; num_data and data[] then describe trios
+  */
+ struct csiphy_lanes_cfg {
+ 	int num_data;
+ 	struct csiphy_lane *data;
+ 	struct csiphy_lane clk;
++	bool cphy;
+ };
+ 
+ struct csiphy_csi2_cfg {
+--- ../camss-phy1clk-test/camss-csid.c	2026-10-29 12:59:31
++++ camss-csid.c	2026-10-29 13:46:17
+@@ -1285,6 +1285,7 @@
+ 			csid->phy.lane_cnt = tpg->res->lane_cnt;
+ 			csid->phy.csiphy_id = tpg->id;
+ 			csid->phy.lane_assign = csid_get_lane_assign(NULL, csid->phy.lane_cnt);
++			csid->phy.cphy = false;
+ 			csid->tpg_linked = true;
+ 		} else {
+ 			csiphy = v4l2_get_subdevdata(sd);
+@@ -1298,6 +1299,7 @@
+ 
+ 			lane_cfg = &csiphy->cfg.csi2->lane_cfg;
+ 			csid->phy.lane_cnt = lane_cfg->num_data;
++			csid->phy.cphy = lane_cfg->cphy;
+ 			csid->phy.lane_assign = csid_get_lane_assign(lane_cfg, lane_cfg->num_data);
+ 			csid->tpg_linked = false;
+ 		}
+--- ../camss-phy1clk-test/camss-csid.h	2026-10-29 12:59:31
++++ camss-csid.h	2026-10-29 13:45:50
+@@ -68,6 +68,7 @@
+ 	u8 csiphy_id;
+ 	u8 lane_cnt;
+ 	u32 lane_assign;
++	bool cphy;
+ 	u32 en_vc;
+ 	u8 need_vc_update;
+ };
+--- ../camss-phy1clk-test/camss-csid-gen2.c	2026-10-29 12:59:31
++++ camss-csid-gen2.c	2026-10-29 13:45:50
+@@ -183,6 +183,8 @@
+ 	val = (lane_cnt - 1) << CSI2_RX_CFG0_NUM_ACTIVE_LANES;
+ 	val |= phy->lane_assign << CSI2_RX_CFG0_DL0_INPUT_SEL;
+ 	val |= phy->csiphy_id << CSI2_RX_CFG0_PHY_NUM_SEL;
++	if (phy->cphy)
++		val |= 1 << CSI2_RX_CFG0_PHY_TYPE_SEL;
+ 	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG0);
+ 
+ 	val = 1 << CSI2_RX_CFG1_PACKET_ECC_CORRECTION_EN;
+--- ../camss-phy1clk-test/camss-csiphy-3ph-1-0.c	2026-10-29 12:59:31
++++ camss-csiphy-3ph-1-0.c	2026-10-29 13:46:25
+@@ -14,6 +14,7 @@
+ 
+ #include <linux/delay.h>
+ #include <linux/interrupt.h>
++#include <linux/moduleparam.h>
+ #include <linux/io.h>
+ 
+ #define CSIPHY_3PH_LNn_CFG1(n)			(0x000 + 0x100 * (n))
+@@ -1233,7 +1234,99 @@
+ 		writel_relaxed(val, csiphy->base + r->reg_addr);
+ 		if (r->delay_us)
+ 			udelay(r->delay_us);
++	}
++}
++
++/*
++ * SM7150 (CSIPHY v1.2) C-PHY trio settings, trio 0, from the vendor
++ * cam_csiphy_1_2_hwreg.h (csiphy_3ph_v1_2_reg). Trio n adds 0x200 * n to the
++ * 0x1xx lane block and 0x100 * n to the 0x9xx block. The vendor data-rate
++ * delta table only changes these values above 5.7 Gbps per trio.
++ */
++static const struct csiphy_lane_regs cphy_trio_regs_sm7150[] = {
++	{ 0x015c, 0x46, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0990, 0x08, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0994, 0x08, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0998, 0x1a, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x098c, 0xaf, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0168, 0xa0, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x016c, 0x25, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0104, 0x06, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x010c, 0x00, 0, CSIPHY_SETTLE_CNT_LOWER_BYTE },
++	{ 0x0108, 0x00, 0, CSIPHY_SETTLE_CNT_HIGHER_BYTE },
++	{ 0x0114, 0x20, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0150, 0x00, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0188, 0x00, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x018c, 0x7f, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0190, 0x7f, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0118, 0x3e, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x011c, 0x41, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0120, 0x41, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0124, 0x7f, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0128, 0x00, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x012c, 0x00, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0144, 0x22, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0160, 0x02, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x01cc, 0x41, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0164, 0x33, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x01dc, 0x50, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x0984, 0xa0, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x09b0, 0x01, 0, CSIPHY_DEFAULT_PARAMS },
++	{ 0x09b4, 0x02, 0, CSIPHY_DEFAULT_PARAMS },
++};
++
++static int cphy_settle_cnt = -1;
++module_param(cphy_settle_cnt, int, 0644);
++MODULE_PARM_DESC(cphy_settle_cnt, "SM7150 C-PHY settle count override (-1 = computed)");
++
++static void csiphy_cphy_lanes_enable_sm7150(struct csiphy_device *csiphy,
++					    struct csiphy_lanes_cfg *c,
++					    u8 settle_cnt)
++{
++	struct csiphy_device_regs *regs = csiphy->regs;
++	u32 lane_enable = 0;
++	int i, j;
++
++	if (cphy_settle_cnt >= 0)
++		settle_cnt = cphy_settle_cnt;
++
++	/* Vendor: trio n is enabled by bit 2n + 1 of COMMON_CTRL5. */
++	for (i = 0; i < c->num_data; i++)
++		lane_enable |= BIT(c->data[i].pos * 2 + 1);
++
++	writel_relaxed(lane_enable, csiphy->base +
++		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 5));
++	writel_relaxed(0x01, csiphy->base +
++		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 6));
++	writel_relaxed(0x52, csiphy->base +
++		       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 7));
++	writel(0x03, csiphy->base +
++	       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 0));
++	usleep_range(1000, 1100);
++	writel(0x0e, csiphy->base +
++	       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 0));
++
++	for (i = 0; i < c->num_data; i++) {
++		u32 pos = c->data[i].pos;
++
++		for (j = 0; j < ARRAY_SIZE(cphy_trio_regs_sm7150); j++) {
++			const struct csiphy_lane_regs *r = &cphy_trio_regs_sm7150[j];
++			u32 addr = r->reg_addr;
++			u32 val = r->reg_data;
++
++			addr += addr >= 0x900 ? 0x100 * pos : 0x200 * pos;
++			if (r->csiphy_param_type == CSIPHY_SETTLE_CNT_LOWER_BYTE)
++				val = settle_cnt & 0xff;
++			else if (r->csiphy_param_type == CSIPHY_SETTLE_CNT_HIGHER_BYTE)
++				val = 0;
++			writel_relaxed(val, csiphy->base + addr);
++		}
+ 	}
++	writel(0x0e, csiphy->base +
++	       CSIPHY_3PH_CMN_CSI_COMMON_CTRLn(regs->offset, 0));
++	dev_info(csiphy->camss->dev,
++		 "CSIPHY%u C-PHY: %d trios, lane_enable 0x%02x, settle %u\n",
++		 csiphy->id, c->num_data, lane_enable, settle_cnt);
+ }
+ 
+ static u8 csiphy_get_lane_mask(struct csiphy_lanes_cfg *lane_cfg)
+@@ -1241,6 +1334,13 @@
+ 	u8 lane_mask;
+ 	int i;
+ 
++	if (lane_cfg->cphy) {
++		lane_mask = 0;
++		for (i = 0; i < lane_cfg->num_data; i++)
++			lane_mask |= 1 << lane_cfg->data[i].pos;
++		return lane_mask;
++	}
++
+ 	lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+ 
+ 	for (i = 0; i < lane_cfg->num_data; i++)
+@@ -1286,6 +1386,15 @@
+ 
+ 	settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
+ 
++	if (c->cphy) {
++		if (csiphy->camss->res->version != CAMSS_7150) {
++			dev_err(csiphy->camss->dev, "C-PHY not supported here\n");
++			return;
++		}
++		csiphy_cphy_lanes_enable_sm7150(csiphy, c, settle_cnt);
++		goto irq_mask;
++	}
++
+ 	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+ 	for (i = 0; i < c->num_data; i++)
+ 		val |= BIT(c->data[i].pos * 2);
+@@ -1310,6 +1419,7 @@
+ 	else
+ 		csiphy_gen1_config_lanes(csiphy, cfg, settle_cnt);
+ 
++irq_mask:
+ 	/* IRQ_MASK registers - disable all interrupts */
+ 	for (i = 11; i < 22; i++) {
+ 		writel_relaxed(0, csiphy->base +

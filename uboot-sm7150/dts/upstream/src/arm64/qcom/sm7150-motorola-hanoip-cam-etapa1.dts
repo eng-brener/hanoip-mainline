@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * CÂMERA — ETAPA 1: só o CAMSS (CSIPHY/CSID/VFE), sem sensor.
+ *
+ * Base: PRE-GOLD-20261028-1707 (áudio etapa14). Objetivo: o qcom-camss sobe
+ * (media graph em /dev/media0) e o gerador de padrão interno do CSID gen2
+ * (CSID_TPG_CTRL, 0x600) leva um frame até a memória pela VFE/RDI, sem
+ * tocar em sensor, CCI, MCLK ou reguladores de câmera.
+ *
+ * Conferido antes (docs/kernel/checkpoint-2026-10-28-camera.txt):
+ *  - clocks, IRQs, power domains e interconnects pedidos pelo driver para o
+ *    sm7150 existem neste nó; os regs do CSID ficam dentro da VFE
+ *    (VFE+0x4000 = 0xacb3000/0xacba000, iguais ao stock);
+ *  - os 14 stream IDs da SMMU são os do contexto "ife" do Android.
+ */
+#include "sm7150-motorola-hanoip-audio-etapa14.dts"
+
+&camss {
+	status = "okay";
+};

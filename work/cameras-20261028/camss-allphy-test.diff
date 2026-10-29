@@ -1,0 +1,47 @@
+--- camss-phy1clk-test/camss.c	2026-10-29 12:59:46
++++ camss-allphy-test/camss.c	2026-10-29 13:51:18
+@@ -1957,11 +1957,11 @@
+ 			{ .supply = "vdda-phy", .init_load_uA = 0 },
+ 			{ .supply = "vdda-pll", .init_load_uA = 0 }
+ 		},
+-		.clock = { "cphy_rx_src", "csiphy0", "csiphy0_timer_src", "csiphy0_timer" },
++		.clock = { "csiphy0", "csiphy0_timer_src", "csiphy0_timer", "cphy_rx_src" },
+ 		.clock_rate = { { 0 },
+-				{ 300000000, 384000000, 400000000 },
+-				{ 0 },	
+-				{ 300000000 } },
++				{ 0 },
++				{ 300000000 },
++				{ 384000000, 400000000, 400000000 } },
+ 		.reg = { "csiphy0" },
+ 		.interrupt = { "csiphy0" },
+ 		.csiphy = {
+@@ -1996,9 +1996,12 @@
+ 			{ .supply = "vdda-phy", .init_load_uA = 0 },
+ 			{ .supply = "vdda-pll", .init_load_uA = 0 }
+ 		},
+-		.clock = { "csiphy2", "csiphy2_timer" },
+-		.clock_rate = { { 19200000, 300000000, 384000000, 400000000 },
+-				{ 300000000 } },
++		.clock = { "csiphy2", "csiphy2_timer_src", "csiphy2_timer", "cphy_rx_src", "csiphy0" },
++		.clock_rate = { { 0 },
++				{ 0 },
++				{ 300000000 },
++				{ 384000000, 400000000, 400000000 },
++				{ 0 } },
+ 		.reg = { "csiphy2" },
+ 		.interrupt = { "csiphy2" },
+ 		.csiphy = {
+--- camss-phy1clk-test/camss-csiphy.c	2026-10-29 12:59:46
++++ camss-allphy-test/camss-csiphy.c	2026-10-29 13:50:57
+@@ -153,9 +153,8 @@
+ 	for (i = 0; i < csiphy->nclocks; i++) {
+ 		struct camss_clock *clock = &csiphy->clock[i];
+ 
+-		/* Controlled SM7150 CSIPHY1/3 experiment: stock votes 400 MHz. */
++		/* SM7150: stock votes cphy_rx at 400 MHz for every CSIPHY. */
+ 		if (csiphy->camss->res->version == CAMSS_7150 &&
+-		    (csiphy->id == 1 || csiphy->id == 3) &&
+ 		    !strcmp(clock->name, "cphy_rx_src")) {
+ 			ret = clk_set_rate(clock->clk, 400000000);
+ 			if (ret < 0)

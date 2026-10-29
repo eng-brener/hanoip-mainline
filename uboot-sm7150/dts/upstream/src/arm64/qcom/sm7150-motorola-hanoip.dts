@@ -54,7 +54,16 @@
 		ranges;
 
 		stdout-path = "serial0:115200n8";
-		bootargs = "earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops console=tty1 loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0 maxcpus=6 cpuidle.off=1 cpufreq.off=1 idle=poll";
+		/*
+		 * NAO reintroduzir maxcpus=6 nem cpuidle.off=1/cpufreq.off=1/idle=poll
+		 * aqui. Com maxcpus=6 o kernel fecha as capacidades do sistema com os
+		 * A55 e depois RECUSA o CPU6 ("Detected conflict for capability 80
+		 * (Spectre-v2)"); cpuidle.off/cpufreq.off desligam justamente o que se
+		 * quer; e idle=poll nao existe em arm64. No historico isso limitou o
+		 * aparelho a 6 nucleos por semanas. Os 8 nucleos e o cpufreq nos dois
+		 * clusters foram validados em 25/10 e de novo em 28/10.
+		 */
+		bootargs = "earlycon=msm_geni_serial,0xa88000 console=ttyMSM0,115200n8 console=ttyGS0 console=ramoops console=tty1 loglevel=8 ignore_loglevel panic_on_oops=1 panic=5 pause_on_oops=5 pstore.backend=ramoops clk_ignore_unused consoleblank=0 vt.global_cursor_default=0";
 
 		framebuffer@9c000000 {
 			compatible = "simple-framebuffer";
@@ -584,6 +593,19 @@
 
 &pm6150_rtc {
 	status = "okay";
+
+	/*
+	 * O driver calcula time = contador_cru + offset, e o offset vem de uma
+	 * celula nvmem que este DT nao declara (nem ha a alternativa
+	 * qcom,uefi-rtc-info). Resultado medido em 28/10: read_time devolvia
+	 * 1974-08-15 (o contador cru do PMIC, ~19.066 dias atras) e set_time
+	 * falhava com -ENODEV, entao o RTC nunca acertava.
+	 *
+	 * allow-set-time faz o driver escrever o contador do PMIC direto. Com
+	 * isso "hwclock -w" grava a hora certa de forma permanente (a PMIC
+	 * mantem o contador) e o relogio nao volta para 1974 a cada boot.
+	 */
+	allow-set-time;
 };
 
 &pm6150_typec {
@@ -594,12 +616,34 @@
 	connector {
 		compatible = "usb-c-connector";
 
-		power-role = "source";
+		/*
+		 * A telefone e' SINK: ele RECEBE energia (carrega), e o TCPM do
+		 * kernel negocia PD.
+		 *
+		 * Com power-role = "source" (valor que veio do port de referencia
+		 * do Xiaomi) o TCPM registrava a porta como FONTE PD: apresentava
+		 * Rp/VCONN na linha CC e um carregador USB-C nunca ligava o VBUS.
+		 * Medido com carregador de 100 W: APSD_STATUS = 0x00, ONLINE = 0,
+		 * nada de carga; o aparelho so carregava quando o ABL ja tinha
+		 * estabelecido o VBUS antes do kernel subir.
+		 *
+		 * "sink" sozinho nao serve: o TCPM falha no probe com -EINVAL sem
+		 * sink-pdos. Entao: papel dual (a porta registra) com sink-pdos
+		 * contendo APENAS 5 V. Sem PDO de 9/12 V o VBUS nunca sobe acima de
+		 * 5 V -- e' a escolha conservadora de proposito.
+		 */
+		power-role = "dual";
 		data-role = "dual";
 		self-powered;
 
+		/* 5 W = 5 V * 1 A, o mesmo teto de entrada que o driver programa. */
+		op-sink-microwatt = <5000000>;
+
 		source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_DUAL_ROLE |
 			       PDO_FIXED_USB_COMM | PDO_FIXED_DATA_SWAP)>;
+
+		sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_DUAL_ROLE |
+			     PDO_FIXED_USB_COMM | PDO_FIXED_DATA_SWAP)>;
 
 		ports {
 			#address-cells = <1>;
@@ -845,7 +889,22 @@
 };
 
 &usb_1_dwc3 {
-	dr_mode = "peripheral";
+	/*
+	 * OTG: o controlador passa a poder ser HOST, nao so' device.
+	 *
+	 * Quem decide o papel a cada plugue e' o TCPM, olhando as linhas CC:
+	 * periferico (Rd) -> somos source/host (xHCI carrega, UDC some, o
+	 * regulador pm6150_vbus e' habilitado pelo proprio TCPM e 5 V saem
+	 * pela porta); PC (Rp) -> somos sink/device (gadget sobe como hoje).
+	 *
+	 * Sem "role-switch-default-mode" o padrao do dwc3, verificado em
+	 * drivers/usb/dwc3/drd.c, e' PERIPHERAL: no boot sem cabo o aparelho
+	 * continua sendo dispositivo e o SSH por USB segue funcionando.
+	 * Espelha o sm7150-google-sunfish.dts, que e' o mesmo SoC e o mesmo
+	 * PMIC com OTG funcionando.
+	 */
+	dr_mode = "otg";
+	usb-role-switch;
 	maximum-speed = "high-speed";
 	phys = <&usb_1_hsphy>;
 	phy-names = "usb2-phy";

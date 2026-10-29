@@ -1,5 +1,154 @@
 # Handoff — Moto G60 hanoip mainline
 
+## TRÊS CÂMERAS FUNCIONANDO NO APP (29/10 ~14:55, confirmado pelo usuário)
+    S5K4H7 (traseira wide), S5KHM2 (traseira principal 108 MP, 4000x3000)
+    e OV32B (frontal) no Snapshot, trocando entre as 3. A principal é C-PHY
+    (3 trios): primeiro C-PHY no CAMSS do mainline para SM7150. Foco da
+    S5K4H7 move com a init do vendor (vcm.py; chip em 0x0c). Tudo volátil.
+    Boot: U-Boot work/uboot-builds-20261026/out/sm7150-motorola-hanoip-cam-tres/
+    + kernel work/cameras-20261028/s5k4h7/kernel-v5-cam-etapa3.logbuf.img;
+    módulos camss-cphydiag-test, s5k4h7, hanoip-cam, dw9768; roteiro
+    work/cameras-20261029-tres/test-tres.sh; tuning em /dev/shm/lc-tuning;
+    CCI power/control=on. Detalhes e pendências: checkpoint da câmera,
+    itens 7-15 da seção "S5K4H7 — PRIMEIROS FRAMES".
+
+## S5K4H7 (wide/macro 8 MP): PRIMEIRA IMAGEM REAL (29/10 ~14:00)
+    Cena reconhecível 3264x2448 RAW10, resposta linear à exposição.
+    Três correções: (1) U-Boot da S5K4H7 tinha sido sobrescrito; DTS refeito
+    como sm7150-motorola-hanoip-cam-s5k4h7.dts (img df233b76...); (2) CAMSS
+    PHY1 precisava do mesmo fix de clocks do PHY3 (cphy_rx 400 MHz +
+    csiphy0): camss-phy1clk-test/qcom-camss.ko d149df35...; (3) driver:
+    registradores CCS corretos (0x0202 coarse, 0x0340 frame length) e init
+    = LISTA 2 (lista 3 era leitura de OTP): s5k4h7.ko c8a3d441...
+    "cam-etapa3" agora é só OV02B1B. Detalhes, roteiro de boot e pendências
+    no checkpoint da câmera, seção "S5K4H7 — PRIMEIROS FRAMES (29/10)".
+
+## PRÓXIMA CÂMERA: S5K4H7 (wide/macro 8 MP) — driver e U-Boot prontos (28/10)
+    SITUAÇÃO ATUAL (28/10 ~20:25): sensor identificado (chip id 0x487b),
+    trilhos/MCLK/reset/CCI OK, PHY1 já energiza (corrigido bug do LINK_FREQ
+    no driver) e o formato do vídeo é pgAA. CONFIRMADO que o sensor entra em
+    standby (0x0005 = 0xff).AINDA SEM FRAME. Hipótese atual: ordem das
+    tabelas do sensor (init lista 3 antes do modo lista 1). Módulo corrigido
+    pronto: s5k4h7.ko d9286d9b97ce96c9d474031ec3a88d90471926b210b50eaca43b943208746321
+    (NÃO testado: sessão do servidor reiniciou no meio do boot).
+    Roteiro exato de boot e teste no checkpoint da câmera, seção
+    "S5K4H7 — ONDE PAROU". REGRA IMPORTANTE discovered aqui: enviar o
+    kernel antes do fastboot do U-Boot aparecer faz o aparelho CAIR no
+    fastboot da Motorola (não é travamento; é o kernel não subindo).
+    Slot 3: CCI0 master1 0x2d, CSIPHY1, MCLK1 gpio14, reset gpio24, AF.
+    Driver novo work/cameras-20261028/s5k4h7/ (registradores de 16 bits,
+    tabelas geradas do bin vendor) e U-Boot cam-etapa3 já construído em
+    work/uboot-builds-20261026/out/sm7150-motorola-hanoip-cam-etapa3/.
+    NADA TESTADO ainda: próximo passo é bootar e confirmar ID 0x487b por CCI
+    antes de tentar frame. Detalhes e hashes no checkpoint da câmera.
+
+## CÂMERA NO APP DO KALI FUNCIONANDO (28/10 ~19:27)
+    OV02B1B (auxiliar/profundidade, b&w) mostra imagem ao vivo no app
+    Snapshot, na orientação correta. Caminho: sensor -> CSI2 RAW10 mono ->
+    CAMSS -> libcamera com debayer mono próprio (patch de 7 arquivos,
+    +95/-4, v0.7.2) -> PipeWire -> portal Camera -> app. Exigiu também
+    anunciar rotação 270 (Android declara roll 90; sentidos opostos).
+    TUDO VOLÁTIL: /dev/shm + `systemctl --user set-environment` (reboot
+    desfaz). Patch e hashes em docs/kernel/checkpoint-2026-10-28-camera.txt.
+    Pendente: get_selection no driver, AE/AWB conferidos, câmera principal e
+    frontal, desempenho do debayer (23,6 ms/frame) e decisão de persistência.
+
+## CÂMERA: PRIMEIRA IMAGEM REAL (28/10 noite)
+    UPDATE: OV02B1B monocromático Y10P -> bridge GRAY8 -> GStreamer/Wayland;
+    usuário confirmou que viu a prévia ao vivo na tela. App Snapshot ainda
+    diz "no camera found"; integração libcamera permanece pendente.
+    UPDATE: exposição e ganho analógico V4L2 comprovados em stream contínuo,
+    150 frames ~30 fps, trace CCI sem erros; start/stop repetido teve timeout
+    e rollback defeituoso em teste anterior. Ver checkpoint da câmera RUN2.
+    OV02B1B auxiliar/profundidade produz RAW10 1600x1200 reconhecível;
+    150 frames a ~30,18 fps. Precisou dos clocks CAMSS PHY3 (timer 300 MHz,
+    cphy_rx 400 MHz, csiphy0 ligado) e das 10 escritas resolutionData faltantes
+    no driver. Somente boot/módulos voláteis, sem gravação em partição.
+    Detalhes, hashes, artefatos e limites em
+    docs/kernel/checkpoint-2026-10-28-camera.txt, PRIMEIRA IMAGEM REAL.
+    Ainda sem validar cores/Bayer, controles, app, câmera principal/frontal.
+
+## CÂMERA EM ANDAMENTO (28/10 noite) — LER docs/kernel/checkpoint-2026-10-28-camera.txt
+    Etapa 1 OK: CAMSS do mainline funciona (TPG do CSID0 -> VFE0/RDI0 ->
+    memória, barras de cor corretas). U-Boot cam-etapa1 = PRE-GOLD-1707 + só
+    camss okay. Venus vira /dev/video10/11 com camss ligado.
+    OV02B1B: formato do sensormodule.bin decifrado (decode-regs-v2.py),
+    init de 95 escritas + stream on/off extraídos, modo 1600x1200 Raw10 30 fps,
+    1 lane 660 Mbps (link 330 MHz), CSIPHY3 lane 0. Driver ainda NÃO escrito;
+    plano e pendências na seção 6 do checkpoint.
+    Também pendente da sessão: validar de ouvido o novo ganho do mic
+    (UCM 88aabaf7 no aparelho, TX_DEC0 100/110) e comitar v4/v5/DTs.
+
+## MIC NO PIPEWIRE (28/10 ~17:20, DEPOIS da PRE-GOLD-1707)
+    Achados: o PipeWire abria o mic em estéreo com o canal R zerado (só DEC0
+    ligado) e com ADC2 Volume = 0 (o BootSequence nunca foi instalado).
+    UCM do aparelho trocado (HiFi.conf 88aabaf7; o da PRE-GOLD, 4b16f5a1, está
+    em /root/ucm-backup/HiFi.conf.pregold-1707): CaptureChannels 1, ADCx Volume 10,
+    TX_DEC0 Volume 100 (mics internos) / 110 (headset), valores do UCM upstream.
+    Validado: mono [MONO] no PipeWire e a voz "clara, mas baixa" ANTES do +16 dB.
+    NÃO validado de ouvido: o nível com TX_DEC0 = 100. Fonte em
+    work/audio-20261028/ucm2/.
+
+## NOVA PRE-GOLD: work/PRE-GOLD-20261028-1707 (designada pelo usuário 28/10 17:07)
+    U-Boot audio-etapa14 + kernel v5 #29 + módulos de áudio corrigidos + UCM.
+    É o par de retorno a partir de agora (substitui PRE-GOLD-20261028-1133).
+    Ver PRE-GOLD.txt na pasta (somente leitura, SHA256SUMS conferido).
+    Achado na conferência: o conf.d do UCM no aparelho é o SEM BootSequence
+    (meu scp com espaços não sobrescreveu); a PRE-GOLD guarda exatamente o
+    do aparelho, e a versão com ganhos ficou como proposta não testada.
+
+## ÁUDIO COMPLETO + PACOTE CANDIDATO (28/10 noite, ÚLTIMO ESTADO)
+### work/PRE-GOLD-20261028-audio/PRE-GOLD.txt e REAVALIACAO-AUDIO seção 7
+    Aparelho: U-Boot etapa14 + kernel #24 do PRE-GOLD + 2 módulos corrigidos
+    (wcd937x-sdw 0188, soundwire-qcom 0189) + UCM novo. Tudo validado:
+    alto-falante, earpiece, fone L+R, 3 mics, detecção do fone com o TX
+    suspenso, PipeWire trocando sozinho de saída/entrada, SoundWire 12/12
+    com runtime PM. NÃO promovido: o par de retorno continua sendo o
+    PRE-GOLD-20261028-1133 até o usuário decidir.
+    Kernel reproduzível: work/kernel-7.3/v5 (189 patches, árvore 2df2c4d6;
+    módulos com código idêntico aos instalados). BOOTADO E VALIDADO:
+    work/kernel-7.3/v5/out/kernel-hanoip-kali-phosh-v5.img (#29) + U-Boot
+    etapa14: tela ok, som pelo PipeWire ok. O Image difere do #24 só em 32
+    bytes de carimbo de build. Aparelho AGORA está no #29.
+    ATENÇÃO: work/kernel-7.3/v4 foi sobrescrito por engano e RESTAURADO
+    (patches verificados = árvore 96194064, config = /proc/config.gz);
+    ver nota no fim de v4/README.txt.
+    Pendente: botões do headset, suspend com áudio, ruído de log
+    (bus clsh/clk already disabled), envio do 0188 ao upstream.
+
+## ÁUDIO FUNCIONANDO: FONE L+R, EARPIECE, MIC DO HEADSET E MICS (28/10 noite)
+### docs/kernel/REAVALIACAO-AUDIO-20261028.md seção 6
+    Validado de ouvido pelo usuário. Aparelho: U-Boot etapa12 + kernel
+    PRE-GOLD + snd-soc-wcd937x-sdw.ko CORRIGIDO instalado (backup em
+    /root/wcd937x-sdw.ko.zst.orig). rx-macro original restaurado.
+    CAUSA do HPHL/earpiece mudos: bug upstream em wcd937x-sdw.c: o laço do
+    qcom,tx-channel-mapping (12 entradas) estoura tx_ch_info[11] e grava
+    BIT(3) em rx_ch_info[0].ch_mask (HPH_L) -> master DP1 ch_mask 0x8 em vez
+    de 0x1. Patch: work/audio-20261028/patches/0010-*.patch.
+    muxsel 0x62c25020 do vendor: TESTADO E DESCARTADO (RX a 0,77x, voz grave).
+    Pendente: runtime PM do SoundWire (usar power/control=on nos testes),
+    MBHC não detecta o plug, UCM, levar o fix ao build v3/GOLD.
+
+## ÁUDIO REAVALIADO DO ZERO: O CODEC FUNCIONA (28/10 tarde)
+### docs/kernel/REAVALIACAO-AUDIO-20261028.md — LEIA ANTES DAS SEÇÕES ABAIXO
+    As conclusões "DSP aborta" / "falta voto DCODEC" (seções 11-18 do
+    checkpoint do codec) estavam ERRADAS:
+      - codec-ext-clk-src=9 no techpack = AUDIO_LPASS_CORE_HW_VOTE = bloco
+        MACRO (já votado pelo mainline). O stock nunca vota DCODEC (seria 11).
+      - o EIO era o MUX do macro nunca configurado: com 'RX_MACRO RX0 MUX'=
+        AIF1_PB (+INT0 MIX/DEM) o aplay roda; com ZERO dá EIO. Idem captura
+        com 'TX DEC0 MUX'=SWR_MIC. Medido na etapa 10, só com amixer.
+      - segundo defeito: um FE (MM1) nos dois sentidos corrompe a sessão do
+        q6routing (ADM_CMD_DEVICE_OPEN_V5 EBADPARAM / "Audio Client already
+        active"). Precisa de FE de captura separado (MultiMedia2).
+    Mics medidos: amic1 = SMIC ADC0/ADC1; amic3 = SMIC ADC2/ADC2 INP3 (bate
+    com o qcom,audio-routing do stock). Codec energiza (ANA_EAR=0x80).
+    ETAPA 12 (bootada e validada, ver acima): routing do stock, MM2 captura, link do
+    alto-falante de volta, clock RX. img b48e15e4... em
+    work/uboot-builds-20261026/out/sm7150-motorola-hanoip-audio-etapa12/.
+    Falta: confirmação física (ouvir/falar), UCM, MBHC com fone plugado.
+    Patches dcodec/AIF/q6afe da sessão anterior são DESNECESSÁRIOS.
+
 ## ÁUDIO: VOTO DO DCODEC MEDIDO — o ADSP RECUSA O BLOCO 4 (28/10, ÚLTIMO ESTADO)
 ### Seção 18 de docs/kernel/checkpoint-2026-10-28-audio-codec-tentativa.txt
     ONDE O APARELHO ESTÁ: U-Boot etapa10 + kernel PRE-GOLD (7.3.0-sm7150,
