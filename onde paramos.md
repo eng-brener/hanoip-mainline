@@ -1,6 +1,12 @@
 # Handoff — Moto G60 hanoip mainline
 
 ## TRÊS CÂMERAS FUNCIONANDO NO APP (29/10 ~14:55, confirmado pelo usuário)
+    ATUALIZAÇÃO ~15:40: cores certas nas 3 (CCM do tuning do vendor;
+    Bayer S5KHM2 = GBRG), foco das 2 traseiras pelo hanoip-vcm (main 450,
+    wide 180), CCI com reset na retomada (sem contorno). Tudo isso agora
+    está no kernel 7.3 v6 (work/kernel-7.3/v6, árvore f4dccdc7, build ok,
+    módulos ainda NÃO instalados no rootfs) e comitado (a2c5b9568).
+    Persistência no rootfs Kali aguarda autorização do usuário.
     S5K4H7 (traseira wide), S5KHM2 (traseira principal 108 MP, 4000x3000)
     e OV32B (frontal) no Snapshot, trocando entre as 3. A principal é C-PHY
     (3 trios): primeiro C-PHY no CAMSS do mainline para SM7150. Foco da
