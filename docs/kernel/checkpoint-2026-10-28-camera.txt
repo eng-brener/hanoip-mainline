@@ -730,6 +730,16 @@ S5K4H7 — PRIMEIROS FRAMES (29/10 ~13:15):
      560: 2216; 0-200: ~68; >900 fim de curso), recorte main-200-vs-520.png
      mostra a grade de pixels da tela. hanoip-vcm.ko a3770e86...: posição
      inicial por lente (main 450, wide 180; param default_pos sobrescreve).
+  19) PERSISTÊNCIA AUTORIZADA PELO USUÁRIO ("eu autorizo", 29/10 ~15:45):
+     instalados no rootfs Kali (userdata, montado rw) os módulos do build
+     v6: qcom-camss 7f85290d, i2c-qcom-cci b7e962e9, s5k4h7 a225bd75,
+     hanoip-cam a95a6106, hanoip-vcm bfd93ecf (.ko.zst), depmod; tunings em
+     /etc/libcamera/ipa/simple/{s5k4h7 ef61c4b9, ov32b 49ab8c4a, s5khm2
+     02ea9012}.yaml. Backup dos dois substituídos + índices do depmod em
+     /root/backup-cameras-20261029/ (LEIA-ME com a reversão). Boot normal
+     com câmeras: U-Boot cam-tres (5cb08127) + kernel do PRE-GOLD-1707
+     (kernel-hanoip-kali-phosh-v5.img, cmdline sem blacklist). Validação
+     desse boot: PENDENTE.
   Roteiro: U-Boot cam-s5k4h7 -> kernel-v5-cam-etapa3.logbuf.img -> insmod
   camss-phy1clk-test/qcom-camss.ko + s5k4h7/s5k4h7.ko -> media-ctl igual
   ao passo 5 abaixo -> v4l2-ctl /dev/video2 pgAA, variar -c exposure.
