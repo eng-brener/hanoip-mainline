@@ -1,0 +1,24 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 13: etapa12 + estabilidade do SoundWire RX + limiares de MBHC.
+ *
+ * 1. &swr_rx: qcom,clock-stop-not-supported (precisa do patch
+ *    "soundwire: qcom: allow DT to opt out of clock stop"). Medido na etapa12:
+ *    com runtime PM em auto, 6 de 8 ciclos "autosuspend -> play" falham
+ *    (link failed to connect, escravo RX UNATTACHED, DPN_PortCtrl -5): o
+ *    master RX perde o contexto quando o rx-macro desliga o MCLK, e o resume
+ *    rápido de clock-stop não reinicializa. Com a propriedade, o resume faz
+ *    reset + init + re-enumeração.
+ * 2. &wcd9370: limiares de MBHC do stock (qcom,msm-mbhc-hs-mic-max/min
+ *    -threshold-mv = 2700/116) no lugar dos defaults do driver (1700/50).
+ */
+#include "sm7150-motorola-hanoip-audio-etapa12.dts"
+
+&swr_rx {
+	qcom,clock-stop-not-supported;
+};
+
+&wcd9370 {
+	qcom,mbhc-headset-vthreshold-microvolt = <2700000>;
+	qcom,mbhc-headphone-vthreshold-microvolt = <116000>;
+};

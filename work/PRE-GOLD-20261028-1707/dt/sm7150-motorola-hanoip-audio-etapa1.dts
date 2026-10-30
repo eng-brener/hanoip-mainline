@@ -1,0 +1,80 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 1: codec WCD9370 + links de playback e captura.
+ *
+ * Base: etapa 0 (SoundWire ligado). Descoberta da etapa 0: o codec ENUMERA sem
+ * reset (sdw:2:...:4 e sdw:3:...:3), então o reset real (LPI GPIO24, que o
+ * pinctrl mainline não expõe) NÃO é necessário para o codec viver.
+ *
+ * ATENÇÃO — RESET FICTÍCIO: o driver exige reset-gpios (devm_gpiod_get não
+ * opcional). Aqui apontamos para o TLMM GPIO100, que o DT do hanoip não usa,
+ * só para satisfazer o driver. O pino real do codec segue como o bootloader
+ * deixou (fora de reset). Quando o pinctrl LPI for estendido (14->32), trocar
+ * por <&lpass_tlmm 24 GPIO_ACTIVE_LOW> e revalidar.
+ *
+ * Tensões: L10A (vdd-rxtx e vdd-px), L15A (vdd-buck), BOB (mic-bias), todas
+ * 1,8 V e micbias 2,8 V como no stock. Nada foi inventado.
+ *
+ * Links: "WCD Playback" em RX_CODEC_DMA_RX_0 (earpiece/fone) e "WCD Capture"
+ * em TX_CODEC_DMA_TX_3, padrão do sm8250-mtp (mesmo modelo q6afe) adaptado aos
+ * masters separados do sm7150.
+ */
+#include <dt-bindings/gpio/gpio.h>
+#include "sm7150-motorola-hanoip-audio-etapa0.dts"
+
+/ {
+	wcd9370: audio-codec-0 {
+		compatible = "qcom,wcd9370-codec";
+
+		/* reset fictício: ver comentário do topo */
+		reset-gpios = <&tlmm 100 GPIO_ACTIVE_LOW>;
+
+		vdd-buck-supply = <&vreg_l15a_1p8>;
+		vdd-rxtx-supply = <&vreg_l10a_1p8>;
+		vdd-px-supply = <&vreg_l10a_1p8>;
+		vdd-mic-bias-supply = <&vreg_bob>;
+
+		qcom,micbias1-microvolt = <2800000>;
+		qcom,micbias2-microvolt = <2800000>;
+		qcom,micbias3-microvolt = <2800000>;
+
+		qcom,rx-device = <&wcd937x_rx>;
+		qcom,tx-device = <&wcd937x_tx>;
+
+		#sound-dai-cells = <1>;
+	};
+};
+
+&{/sound} {
+	wcd_playback_dai_link: wcd-playback-dai-link {
+		link-name = "WCD Playback";
+
+		cpu {
+			sound-dai = <&q6afedai RX_CODEC_DMA_RX_0>;
+		};
+
+		platform {
+			sound-dai = <&q6routing>;
+		};
+
+		codec {
+			sound-dai = <&wcd9370 0>, <&swr_rx 0>, <&rxmacro 0>;
+		};
+	};
+
+	wcd_capture_dai_link: wcd-capture-dai-link {
+		link-name = "WCD Capture";
+
+		cpu {
+			sound-dai = <&q6afedai TX_CODEC_DMA_TX_3>;
+		};
+
+		platform {
+			sound-dai = <&q6routing>;
+		};
+
+		codec {
+			sound-dai = <&wcd9370 1>, <&swr_tx 0>, <&txmacro 0>;
+		};
+	};
+};

@@ -1,0 +1,157 @@
+PRÉ-GOLD — 27/10/2026 18:52 -03
+================================
+Estado congelado a pedido do usuário: "essa vai ser a nova pré-GOLD, tanto o
+kernel, DT e U-Boot". Contém a primeira combinação em que, AO MESMO TEMPO:
+
+  - a porcentagem da bateria vem de curva OCV real + compensação de IR,
+    com contagem de Coulomb corrigida (filtro de ruído e divisor 64 bits);
+  - o carregador de PAREDE funciona (era bloqueado pelo papel Type-C do DT);
+  - a carga completa de verdade foi observada (terminação do charger);
+  - o controlador USB está em modo OTG (host possível), com boot validado.
+
+Nada aqui foi promovido a GOLD: é PRÉ-GOLD porque ainda faltam os testes de
+OTG com periférico, recarga automática e AICL (lista no fim).
+
+
+1. PAR DE BOOT (volátil, nada gravado em partição)
+--------------------------------------------------
+  fastboot boot uboot/u-boot-hanoip-pmos-perif-batt-OTG.img
+  sleep 20
+  fastboot boot kernel/kernel-hanoip-kali-phosh-v2.img
+
+  O fastboot do U-Boot NÃO reporta serial (???????????? é normal).
+  Depois do boot, os módulos instalados no rootfs precisam corresponder a
+  kernel/modules-7.3.0-sm7150.tar.gz (build 187). Os arquivos de debugfs do
+  charger só nascem após recarregar qcom_smbx (quirk conhecido, ver item 7).
+
+
+2. HASHES (lista completa em SHA256SUMS)
+----------------------------------------
+  uboot/u-boot-hanoip-pmos-perif-batt-OTG.img   imagem BOOTADA neste estado
+  uboot/uboot.dtb                              DT efetivo (vem daqui!)
+  kernel/kernel-hanoip-kali-phosh-v2.img       kernel+initramfs da Kali
+  kernel/Image.gz                              kernel 7.3.0-sm7150 (187 patches)
+  kernel/modules-7.3.0-sm7150.tar.gz           módulos correspondentes
+  kernel/config-7.3.0-sm7150                   config exata do build
+  dt/sm7150-motorola-hanoip.dts                fonte do DT que gerou o U-Boot
+  patches/                                     187 patches (o kernel é
+                                               reproduzível a partir deles)
+
+  Conjunto dos 187 patches (cat | sha256):
+    5d2bab385b7272b14f3ad652e0b6b31e894ab03f64634e164f62c538b297e618
+
+
+3. O QUE O DT CONTÉM (e por quê)
+--------------------------------
+Bateria (sm7150-motorola-hanoip-pmos-perif-batt.dts):
+  - ocv-capacity-table extraída do perfil REAL do Android
+    (S88731AA1-mc50-ATL-4V45-6000mah): 4446 mV = 100% ... 3400 mV = 0%
+  - factory-internal-resistance-micro-ohms = 200000 (200 mOhm)
+  - charge-full-design e limites de tensão do pack
+Type-C / USB (sm7150-motorola-hanoip.dts):
+  - connector power-role = "dual" (era "source"; com source o carregador de
+    parede não ligava o VBUS)
+  - sink-pdos com APENAS 5 V (de propósito: o VBUS nunca sobe)
+  - op-sink-microwatt = 5000000 (5 W = 5 V * 1 A, o nosso teto de entrada)
+  - &usb_1_dwc3 { dr_mode = "otg"; usb-role-switch; } (era "peripheral")
+    sem role-switch-default-mode => padrão peripheral (protege o gadget)
+  - &pm6150_vbus habilitado (500 mA..3 A): boost de OTG, mainline, mas quem
+    o liga é o TCPM (vdd-vbus-supply), e SÓ quando o papel vira source
+
+IMPORTANTE: o DT efetivo vem EMBUTIDO NO U-BOOT (CONFIG_OF_EMBED). O dtb do
+boot.img do kernel NÃO é usado. Trocar DT = reconstruir U-Boot. Portanto este
+pré-GOLD é indissociável da imagem de U-Boot da pasta uboot/.
+
+
+4. VALIDADO NO APARELHO (com evidência)
+---------------------------------------
+Display/touch/wifi/SSH/USB-net/sensores ADSP: herdados do snapshot de 27/10
+(sessão anterior), revalidados no boot deste estado.
+
+BATERIA — SOC:
+  - curva em repouso: 4,3385 V -> 91,3% pela curva, 91% no display (erro <1 pt)
+  - resistência 30 -> 200 mOhm: em repouso 4,3385 V passou de 94% para 91%
+  - carga: SÓ contagem de Coulomb (o viés do OCV muda de sinal entre CC e
+    taper: +7 pts em CC a 440 mA, -8 pts em taper a 360 mA)
+  - repouso: OCV só com |i| < 120 mA por 30 s, no máximo 1 ponto por leitura
+  - orçamento de Coulomb conferido contra a física:
+      62 mili-% em 60 s a 192 mA (teoria 71) e 0,85 vs 0,855 mili-%/s
+  - terminação observada: status Full, 0 mA, FSM 0x45, 100% no display
+
+BATERIA — CARGA:
+  - PC (SDP): 500 mA, +213 mA na bateria, 31-33 C, sem erros
+  - PAREDE (DCP, 100 W): APSD=DCP, ICL reconciliado para 1 A SOZINHO num
+    replug real (o bug apareceu em 137 s e a correção agiu em 147 s:
+    "fonte desconhecido -> 500000" e depois "APSD agora diz DCP -> 1000000")
+  - boost de VBUS permanece DESLIGADO enquanto somos sink (verificado)
+  - typec segue sink/device, vconn_source=no (sem backfeed)
+  - float 4,40 V, JEITA e FCC 1 A intocados (herdados do ABL)
+
+USB / OTG (somente BOOT):
+  - dr_mode = "otg", usb-role-switch presente, sem role-switch-default-mode
+  - /sys/class/usb_role/a600000.usb-role-switch -> role=device (padrão seguro)
+  - UDC a600000.usb configured, high-speed; usb0/SSH por USB funcionando
+  - regulador usb_vbus presente, disabled, 3000000 uA
+  - nenhum erro de typec/role-switch/regulador/dwc3 no dmesg
+
+
+5. NÃO VALIDADO (não tratar como pronto)
+----------------------------------------
+  - OTG com PERIFÉRICO: nenhum pendrive/teclado/hub foi plugado; xHCI nunca
+    enumerou nada e a saída de 5 V nunca foi exercitada.
+  - RECARGA automática após terminação (nunca observada).
+  - AICL (só aparece com fonte fraca; não exercitado).
+  - MTP/PTP.
+  - Ferramenta/app de troca de modos USB (Fase 0) — não existe ainda.
+  - Carregador de parede com a imagem OTG: FEITO (item 4). Carregador de
+    parede com periférico simultâneo: não testado.
+  - Suspend/resume com carga.
+
+
+6. DECISÕES CONGELADAS (não alterar sem conversa)
+------------------------------------------------
+  - float 4,400 V: NÃO subir para 4,45 V (do Android). A célula é velha
+    (4939 mAh aprendidos contra 6174 de projeto). O 100% do display significa
+    "o charger terminou, pode tirar da tomada", e volta ao valor da curva
+    (~94-96%) quando desconectado. Registrado no código (patch 0187).
+  - carga é OPT-IN: o bit CHARGING_ENABLE reseta em power cycle; ligar com
+    `printf '1\n' | dd of=/sys/kernel/debug/hanoip-charge bs=2 count=1`
+    (o `echo` falha por causa do O_TRUNC).
+  - mass_storage só com ARQUIVO-IMAGEM; nunca partição real.
+  - nunca bootar Android (poderia formatar o rootfs Kali em userdata).
+  - nada de flash; só `fastboot boot`.
+
+
+7. QUIRKS CONHECIDOS (documentados para não confundir com regressão)
+--------------------------------------------------------------------
+  - debugfs do charger (hanoip-charge, hanoip-icl e o dump) NÃO nasce sozinho
+    no boot: o work tenta 8x a cada 5 s e desiste. Solução atual: recarregar
+    qcom_smbx. Correção pendente.
+  - The .ko hash muda entre builds mesmo sem mudança de código (build-id do
+    linker): compare com objdump, não com sha256 do arquivo.
+  - WiFi (WCN3990) cai por power save; quando o IPv4 de usb0 some, use
+    ssh -6 root@<fe80::...>%en10.
+  - `echo 1 >` em hanoip-charge dá EACCES (O_TRUNC); use dd.
+
+
+8. ROLLBACK / COMPARAÇÃO
+------------------------
+  Imagem anterior (só power-role sink, SEM OTG), preservada e validada:
+    work/usb-20261027/ANTES-otg/  (img e07ff366..., dtb 22cbe176...)
+  Se algo estranhar com o OTG, bootar aquela imagem devolve exatamente o
+  comportamento anterior, sem perder nada deste pacote.
+
+
+9. PRÓXIMOS PASSOS
+------------------
+  1. instalar scripts/hanoip-usb-fix (status|fix) e só então plugar periférico
+  2. testar OTG: pendrive -> xHCI enumera? 5 V na porta? T < 42 C?
+  3. Fase 0 do plano USB: hanoip-usb-mode + serviço + app no Phosh
+  4. recarga automática e AICL (protocolo em
+     docs/kernel/PENDENTE-recarga-e-AICL-20261027.txt)
+  5. corrigir o quirk do debugfs do charger
+  6. só depois disso cogitar promover a GOLD
+
+Documentação relacionada: onde paramos.md, docs/PLANO-USB-MODOS.md,
+docs/kernel/checkpoint-2026-10-27-bateria-RESUMO.txt (seções 17-25),
+work/usb-20261027/LEIA-ME.txt.

@@ -1,0 +1,18 @@
+Syntax 3
+
+SectionUseCase."HiFi" {
+	File "/Motorola/hanoip/HiFi.conf"
+	Comment "HiFi quality Music."
+}
+
+# Gains measured on 2026-10-28 (docs/kernel/REAVALIACAO-AUDIO-20261028.md).
+BootSequence [
+	cset "name='RX_RX0 Digital Volume' 84"
+	cset "name='RX_RX1 Digital Volume' 84"
+	cset "name='TX_DEC0 Volume' 84"
+	cset "name='HPHL Volume' 16"
+	cset "name='HPHR Volume' 16"
+	cset "name='EAR_PA Volume' 4"
+	cset "name='ADC1 Volume' 10"
+	cset "name='ADC2 Volume' 10"
+]

@@ -1,0 +1,67 @@
+#!/bin/sh
+# hanoip-adsp — sobreviver ao suspend-to-idle.
+#
+# PROBLEMA MEDIDO (28/10): ao entrar em s2idle com o hanoip-ssc ativo, o ADSP
+# morre com asserção de firmware:
+#   qcom_q6v5_pas 62400000.remoteproc: fatal error received:
+#     err_qdi.c:1040:EX:sensor_process:0x1:frpc_dsp:0xc7
+#   remoteproc remoteproc0: crash detected in adsp: type fatal error
+# e NAO recupera depois (state=firmware crashed; iio cai para 2 dispositivos).
+# O interrupt do crash ainda aborta o suspend (~1 s em vez dos 25 s pedidos).
+#
+# SOLUÇÃO (userspace, reversível, sem tocar em firmware): encerrar o canal
+# FastRPC (hexagonrpcd via hanoip-ssc) ANTES de suspender — assim o ADSP não
+# tem sessão aberta para quebrar — e religar depois. É o mesmo princípio que o
+# Android usa: o processador de sensores é parado antes do suspend.
+#
+# systemd chama: hanoip-adsp pre|post suspend|hibernate|...
+# (colocar em /usr/lib/systemd/system-sleep/)
+
+LOG=/run/hanoip-adsp-sleep.log
+
+log() { printf '%s %s\n' "$(date '+%F %T')" "$*" >> "$LOG"; }
+
+case "$1" in
+pre)
+    log "pre $2: desligando o ADSP antes do suspend"
+    systemctl stop hanoip-ssc 2>/dev/null
+    pkill -f hexagonrpcd 2>/dev/null
+    sleep 1
+
+    # MEDIDO (28/10): fechar so' o FastRPC NAO basta — o ADSP ainda morre no
+    # s2idle (err_qdi.c:1040, frpc_dsp). Entao desligamos o proprio remoteproc:
+    # nada vivo durante o suspend, nada para crashar. O hanoip-ssc religa no
+    # post (ele faz "echo start" quando encontra state=offline).
+    for p in /sys/class/remoteproc/remoteproc*; do
+        case "$p" in *62400000.remoteproc*)
+            log "pre $2: adsp antes stop=$(cat "$p/state" 2>/dev/null)"
+            echo stop > "$p/state" 2>/dev/null
+            sleep 1
+            log "pre $2: adsp depois stop=$(cat "$p/state" 2>/dev/null)"
+        ;; esac
+    done
+    log "pre $2: hexagonrpcd=$(pgrep -c hexagonrpcd 2>/dev/null || echo 0)"
+    ;;
+post)
+    log "post $2: religando hanoip-ssc"
+    systemctl start hanoip-ssc 2>/dev/null
+
+    # O usb0 volta do resume SEM IPv4 (medido em 28/10: so link-local), o que
+    # derruba o SSH por USB. Reaplicamos endereco e DHCP do host.
+    if [ -e /sys/class/net/usb0 ]; then
+        ip addr add 172.16.42.1/24 dev usb0 2>/dev/null
+        ip link set usb0 up 2>/dev/null
+        if ! pgrep -f "dnsmasq.*usb0" >/dev/null 2>&1 && command -v dnsmasq >/dev/null 2>&1; then
+            dnsmasq --interface=usb0 --bind-interfaces --except-interface=lo \
+                    --dhcp-range=172.16.42.2,172.16.42.2,255.255.255.0,12h \
+                    --pid-file=/run/hanoip-dnsmasq.pid --port=0 2>/dev/null
+        fi
+        log "post $2: usb0=$(ip -br addr show usb0 2>/dev/null | awk '{print $3}')"
+    fi
+
+    sleep 2
+    log "post $2: adsp=$(cat /sys/class/remoteproc/remoteproc0/state 2>/dev/null) hexagonrpcd=$(pgrep -c hexagonrpcd 2>/dev/null || echo 0) iio=$(ls /sys/bus/iio/devices 2>/dev/null | wc -l)"
+    ;;
+esac
+
+exit 0

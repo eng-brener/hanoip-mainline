@@ -1,0 +1,1 @@
+savedcmd_s5k4h7.ko := aarch64-linux-gnu-ld -r -EL  -maarch64elf -z noexecstack --no-warn-rwx-segments --build-id=sha1 --force-group-allocation  -T /src/obj/scripts/module.lds -o s5k4h7.ko s5k4h7.o s5k4h7.mod.o .module-common.o

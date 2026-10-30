@@ -1,0 +1,5 @@
+Types: deb deb-src
+URIs: https://repo.mobian.org/
+Suites: forky
+Components: main non-free-firmware
+Signed-By: /usr/share/keyrings/mobian-archive-keyring.gpg

@@ -29,3 +29,22 @@ reescrever as correções do dwc3 sobre o código novo, rodar
 `work/uboot-builds-20261026/build.sh` contra a árvore nova e testar o par
 volátil (fastboot do U-Boot, boot do kernel, display, USB) antes de trocar a
 GOLD. O U-Boot atual funciona; a atualização é opcional.
+
+ATUALIZAÇÃO v2026.10 EXECUTADA (26/10/2026 ~17h15, validada no aparelho)
+Árvore nova em uboot-sm7150-v2026.10/ (= v2026.10 oficial + delta abaixo);
+clone de referência em work/uboot-v2026.10/ (ignorado no git).
+- DWC3: TODOS os hunks descartados — já estão no upstream (dctl_write_safe,
+  core_is_valid, macros de versão, timeouts, udelays). Só restou 1 linha:
+  dev_err→dev_dbg "was not queued" no gadget.c.
+- sm7150.dtsi: veio do fork (upstream não tem); hunks aggre1→aggre2 mantidos.
+- pm6150.dtsi: upstream + nós do fork (bat_therm, qgauge, qg_sdam).
+- clock/pinctrl-sm7150: idênticos fork==upstream, zero trabalho.
+- Todo o resto aplicou limpo (12 arquivos). Novo diff-record:
+  patches/hanoip-vs-upstream-v2026.10.diff (62 hunks).
+- Build do zero OK (Docker hanoip-uboot, gcc 13.3, DT perif):
+  out-v2026.10/u-boot-hanoip-pmos-perif-v2026.10.img (544768 B, SHA256SUMS).
+  Nota: Docker no Mac não enxerga /Volumes/SSDExterno — build roda com a
+  árvore copiada para /tmp/uboot-new.
+- Teste volátil no aparelho: fastboot do U-Boot OK, kernel da GOLD-1500,
+  SSH em ~40 s, DSI irqs=0, wlan0 com IP, hanoip-ssc started,
+  PMOS_FULL_RO_RAM_READY. Troca da GOLD ainda NÃO feita (decisão do usuário).

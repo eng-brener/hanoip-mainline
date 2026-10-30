@@ -1,0 +1,15 @@
+[Unit]
+Description=Hanoip firmware links from the read-only vendor partitions
+# Runs before anything that loads firmware (Wi-Fi, Bluetooth, GPU, ADSP).
+Before=network-pre.target bluetooth.service systemd-udev-trigger.service
+After=local-fs.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/hanoip-firmware
+StandardOutput=journal
+
+[Install]
+WantedBy=sysinit.target

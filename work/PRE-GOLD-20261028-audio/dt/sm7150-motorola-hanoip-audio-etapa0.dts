@@ -1,0 +1,162 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 0 (diagnóstico): SoundWire ligado + escravos do WCD937x.
+ *
+ * O DT do U-Boot é uma cópia mais antiga do sm7150.dtsi e NÃO tem os nós de
+ * áudio (txmacro/rxmacro/vamacro/swr_tx/swr_rx). Eles são portados aqui,
+ * verbatim do sm7150.dtsi de 7.3 (mesma definição que o kernel usa), em vez de
+ * alterar o dtsi compartilhado.
+ *
+ * Objetivo desta variante: saber se o codec enumera no barramento SEM mexer em
+ * reset (LPI GPIO24) nem em tensões. Se enumerar, o pinctrl não é necessário
+ * para o próximo passo; se não, estendemos pinctrl-sm7150-lpass-lpi.c (14->32).
+ *
+ * Nada aqui configura tensão, micbias ou reset: risco elétrico nenhum.
+ */
+#include <dt-bindings/sound/qcom,q6dsp-lpass-ports.h>
+#include "sm7150-motorola-hanoip-clusteridle-venus.dts"
+
+&soc {
+	txmacro: codec@62ec0000 {
+		compatible = "qcom,sm8250-lpass-tx-macro";
+		reg = <0 0x62ec0000 0 0x1000>;
+		clocks = <&q6afecc LPASS_CLK_ID_TX_CORE_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+			 <&q6afecc LPASS_CLK_ID_TX_CORE_NPL_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+			 <&q6afecc LPASS_HW_MACRO_VOTE LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+			 <&vamacro>;
+		clock-names = "mclk", "npl", "macro", "fsgen";
+		#clock-cells = <0>;
+		clock-output-names = "mclk";
+
+		pinctrl-0 = <&tx_swr_active>;
+		pinctrl-names = "default";
+
+		#sound-dai-cells = <1>;
+
+		status = "disabled";
+	};
+
+	rxmacro: codec@62ee0000 {
+		compatible = "qcom,sm8250-lpass-rx-macro";
+		reg = <0 0x62ee0000 0 0x1000>;
+		clocks = <&q6afecc LPASS_CLK_ID_TX_CORE_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+			 <&q6afecc LPASS_CLK_ID_TX_CORE_NPL_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+			 <&q6afecc LPASS_HW_MACRO_VOTE LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+			 <&vamacro>;
+		clock-names = "mclk", "npl", "macro", "fsgen";
+		#clock-cells = <0>;
+		clock-output-names = "mclk";
+
+		pinctrl-0 = <&rx_swr_active>;
+		pinctrl-names = "default";
+
+		#sound-dai-cells = <1>;
+
+		status = "disabled";
+	};
+
+	vamacro: codec@62f20000 {
+		compatible = "qcom,sm8250-lpass-va-macro";
+		reg = <0 0x62f20000 0 0x1000>;
+		/* O firmware do ADSP rejeita LPASS_CLK_ID_VA_CORE_MCLK */
+		clocks = <&q6afecc LPASS_CLK_ID_TX_CORE_MCLK LPASS_CLK_ATTRIBUTE_COUPLE_NO>,
+			 <&q6afecc LPASS_HW_MACRO_VOTE LPASS_CLK_ATTRIBUTE_COUPLE_NO>;
+		clock-names = "mclk", "macro";
+		#clock-cells = <0>;
+		clock-output-names = "fsgen";
+
+		#sound-dai-cells = <1>;
+
+		status = "disabled";
+	};
+
+	swr_tx: soundwire@62ed0000 {
+		compatible = "qcom,soundwire-v1.5.1";
+		reg = <0 0x62ed0000 0 0x2000>;
+		interrupts = <GIC_SPI 296 IRQ_TYPE_LEVEL_HIGH>;
+		interrupt-names = "core";
+		clocks = <&txmacro>;
+		clock-names = "iface";
+
+		qcom,din-ports = <5>;
+		qcom,dout-ports = <0>;
+		qcom,ports-sinterval-low =	/bits/ 8 <0x01 0x03 0x03 0x03 0x03>;
+		qcom,ports-offset1 =		/bits/ 8 <0x00 0x00 0x00 0x00 0x00>;
+		qcom,ports-offset2 =		/bits/ 8 <0x00 0x00 0x00 0x00 0x00>;
+		qcom,ports-hstart =		/bits/ 8 <0xff 0xff 0xff 0xff 0xff>;
+		qcom,ports-hstop =		/bits/ 8 <0xff 0xff 0xff 0xff 0xff>;
+		qcom,ports-word-length =	/bits/ 8 <0xff 0xff 0xff 0xff 0xff>;
+		qcom,ports-block-pack-mode =	/bits/ 8 <0xff 0xff 0xff 0xff 0xff>;
+		qcom,ports-block-group-count =	/bits/ 8 <0xff 0xff 0xff 0xff 0xff>;
+		qcom,ports-lane-control =	/bits/ 8 <0x01 0x01 0x01 0x01 0x01>;
+
+		#sound-dai-cells = <1>;
+		#address-cells = <2>;
+		#size-cells = <0>;
+
+		status = "disabled";
+	};
+
+	swr_rx: soundwire@62ef0000 {
+		compatible = "qcom,soundwire-v1.5.1";
+		reg = <0 0x62ef0000 0 0x2000>;
+		interrupts = <GIC_SPI 297 IRQ_TYPE_LEVEL_HIGH>;
+		interrupt-names = "core";
+		clocks = <&rxmacro>;
+		clock-names = "iface";
+
+		qcom,din-ports = <0>;
+		qcom,dout-ports = <5>;
+		qcom,ports-sinterval-low =	/bits/ 8 <0x03 0x3f 0x1f 0x03 0x03>;
+		qcom,ports-offset1 =		/bits/ 8 <0x00 0x00 0x0b 0x01 0x01>;
+		qcom,ports-offset2 =		/bits/ 8 <0x00 0x00 0x0b 0x00 0x00>;
+		qcom,ports-hstart =		/bits/ 8 <0xff 0x03 0xff 0xff 0xff>;
+		qcom,ports-hstop =		/bits/ 8 <0xff 0x06 0xff 0xff 0xff>;
+		qcom,ports-word-length =	/bits/ 8 <0x01 0x07 0x04 0xff 0xff>;
+		qcom,ports-block-pack-mode =	/bits/ 8 <0xff 0x00 0x01 0xff 0xff>;
+		qcom,ports-block-group-count =	/bits/ 8 <0xff 0xff 0xff 0xff 0x00>;
+		qcom,ports-lane-control =	/bits/ 8 <0x01 0x00 0x00 0x00 0x00>;
+
+		#sound-dai-cells = <1>;
+		#address-cells = <2>;
+		#size-cells = <0>;
+
+		status = "disabled";
+	};
+};
+
+&txmacro {
+	status = "okay";
+};
+
+&rxmacro {
+	status = "okay";
+};
+
+&vamacro {
+	status = "okay";
+};
+
+&swr_tx {
+	status = "okay";
+
+	wcd937x_tx: codec@0,3 {
+		compatible = "sdw20217010a00";
+		reg = <0 3>;
+		qcom,tx-port-mapping = <2 3 4 5>;
+		qcom,tx-channel-mapping = /bits/ 8 <1 1 2 1 2 3 3 4 1 2 3 4>;
+		#sound-dai-cells = <1>;
+	};
+};
+
+&swr_rx {
+	status = "okay";
+
+	wcd937x_rx: codec@0,4 {
+		compatible = "sdw20217010a00";
+		reg = <0 4>;
+		qcom,rx-port-mapping = <1 2 3 4 5>;
+		qcom,rx-channel-mapping = /bits/ 8 <1 2 1 1 2 1 1 2>;
+		#sound-dai-cells = <1>;
+	};
+};

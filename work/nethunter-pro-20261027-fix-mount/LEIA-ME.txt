@@ -1,0 +1,127 @@
+KALI no hanoip: "Failed to mount /dev/disk/by-partlabel/userdata"
+Correção definitiva — 27/10/2026
+
+SINTOMA
+  O initramfs do Kali caía no shell do BusyBox:
+    Begin: Running /scripts/init-premount ... done.
+    Failed to mount '/dev/disk/by-partlabel/userdata' as root file system.
+  O rootfs estava íntegro (blkid mostrava LABEL="kali" e um `e2fsck -fn`
+  depois do reparo fechava com RC=0).
+
+DIAGNÓSTICO (passo a passo, tudo medido no aparelho)
+
+  1) O initramfs foi instrumentado com `console=tty0 console=ttyGS0`
+     (ttyGS0 por ÚLTIMO = /dev/console no serial) para ter shell pelo Mac.
+
+  2) O dispositivo raiz EXISTIA:
+       /dev/disk/by-label/kali -> (presente)
+       /dev/disk/by-partlabel/userdata -> (presente)
+
+  3) Montar na mão funcionava em RO, mas falhava em RW:
+       mount -t ext4 -o ro /dev/sdb24 /mnt          -> rc=0
+       mount -w  -t ext4 /dev/sdb24 /root           -> rc=255
+       mount: mounting /dev/sdb24 on /root failed: Permission denied
+
+  4) Os flags estavam travados:
+       /sys/class/block/sdb/ro    = 1     <-- O DISCO INTEIRO RO
+       /sys/class/block/sdb24/ro  = 1
+     Um disco RO torna todas as partições não graváveis, e o `local` do
+     initramfs monta a raiz com `-w` (é o que gera o EPERM).
+
+  5) Prova de que era o udev re-trancando:
+       blockdev --setrw /dev/sdb; blockdev --setrw /dev/sdb24
+       -> sdb=0 sdb24=0
+       udevadm trigger --action=change --subsystem-match=block
+       -> sdb=1 sdb24=1          <-- voltou tudo para RO
+
+CAUSA RAIZ
+  A regra udev do próprio projeto, /etc/udev/rules.d/99-hanoip-blockdev-ro.rules,
+  usava KERNEL=="sd*", que casa TAMBÉM com o disco inteiro (sdb não tem
+  partlabel, então ID_PART_ENTRY_NAME != "userdata"):
+
+     ACTION!="remove", SUBSYSTEM=="block", KERNEL=="sd*", \
+       ENV{ID_PART_ENTRY_NAME}!="userdata", RUN+="/sbin/blockdev --setro /dev/%k"
+
+  No initrd antigo (26/10) o udev processava os eventos ANTES do
+  hanoip-guard, que então reabria tudo e o boot funcionava. O initrd novo
+  (27/10, gerado com `update-initramfs`) mudou o conjunto/ordem das regras
+  (entraram 99-hanoip-speaker-route.rules, 99-hanoip-ssc.rules e o
+  mobile-root do qcom-phone-utils) e o re-trancamento passou a acontecer
+  DEPOIS do guard, exatamente na hora do mount.
+
+  Contribuição secundária: scripts/init-premount/mobile-root (do pacote
+  qcom-phone-utils) sobrescreve ROOT com o valor cru de mobile.root= e é
+  por isso que a mensagem cita "/dev/disk/by-partlabel/userdata" e não
+  "/dev/sdb24". Não é a causa, mas explica o texto e piora a leitura do erro.
+
+CORREÇÃO APLICADA
+  1) Regra udev: só partições, nunca o disco.
+       KERNEL=="sd*[0-9]"      (antes: KERNEL=="sd*")
+     Arquivo corrigido: 99-hanoip-blockdev-ro.rules (nesta pasta).
+     Instalado em /etc/udev/rules.d/ no Kali e verificado também dentro do
+     initrd (usr/lib/udev/rules.d/99-hanoip-blockdev-ro.rules).
+
+  2) Initrd reconstruído dentro do Kali (`update-initramfs -u -k 7.3.0-sm7150`),
+     confirmado por unmkinitramfs: regra nova + os 4 arquivos a615_zap.*.
+
+  3) Boot.img novo (initrd canônico + cmdline correta):
+       kernel-hanoip-kali-phosh-v2.img
+       sha256 (imagem) ... (ver SHA256SUMS)
+
+ESTADO VERIFICADO NO BOOT CORRIGIDO
+  root:  /dev/disk/by-partlabel/userdata ext4 rw,relatime; escrita OK
+  flags: sdb=0 sdb24=0 (rw) | sdb1/sdb23/sda1=1 (RO)
+  GPU:   sem "Unable to load a615_zap.mdt" e sem "gpu hw init failed";
+         devfreq 355 MHz/simple_ondemand; phoc com 10 fds em /dev/dri;
+         nenhum "Atomic commit failed" persistente, nenhum llvmpipe
+  OSK:   mobi.phosh.OSK.service ativo (as falhas de 09:53 são os retries
+         dos primeiros 30 s; subiu em 09:53:27)
+  sensores: iio:device0/1 presentes, iio-sensor-proxy active
+  wi-fi: wlan0 UP 10.0.0.44
+  áudio: pipewire + wireplumber ativos, card 0 "Motorola Moto G60"
+  único unit falhando: bootmac-bluetooth.service (hci0 já sobe UP RUNNING
+  com BD Address D8:CF:BF:3C:EE:74; o bootmac --bluetooth do Kali dá timeout)
+
+LIÇÕES (não repetir)
+  - NUNCA escrever regra udev com KERNEL=="sd*" que faça blockdev --setro:
+    travar o disco inteiro quebra o mount -w do initramfs. Sempre sd*[0-9].
+  - Depois de mexer em regra udev, testar com `udevadm trigger` e reler
+    /sys/class/block/*/ro — o erro só aparece no próximo boot.
+  - O "Permission denied" no mount rw do initramfs é RO de dispositivo,
+    não permissão de arquivo nem corrupção de filesystem.
+  - Reboot seguro: usar /usr/local/sbin/hanoip-reboot (sync + remount RO +
+    b), nunca `echo b > /proc/sysrq-trigger` sozinho.
+
+---------------------------------------------------------------------
+EXTRA 1 — hanoip-ssc (sensores) falhava na primeira tentativa no boot
+---------------------------------------------------------------------
+Sintoma: no boot a frio, hanoip-ssc.service saía com status 1; um
+`systemctl restart` logo depois funcionava. dmesg mostrava:
+    hanoip-ssc: hexagonrpcd died
+O script tentava subir o hexagonrpcd UMA vez, 5 s depois do start; no boot
+frio o ADSP/remoteproc ainda estava subindo e o daemon morria.
+
+Correção (em /usr/local/sbin/hanoip-ssc, fonte em
+work/nethunter-pro-20261026/hanoip-support/hanoip-ssc.sh):
+ - espera o remoteproc 62400000.remoteproc reportar "running" antes de tentar;
+ - até 6 tentativas com 4 s de intervalo, logando o motivo de cada falha;
+ - mata um hexagonrpcd remanescente (senão o novo não abre /dev/fastrpc-adsp);
+ - unit hanoip-ssc.service ganhou Restart=on-failure / RestartSec=10 como
+   segunda camada.
+Validado em boot a frio: "hexagonrpcd up (pid 1588, try 1)", Result=success,
+NRestarts=0, iio:device0/1 publicados, iio-sensor-proxy active.
+
+---------------------------------------------------------------------
+EXTRA 2 — bootmac-bluetooth.service (único unit falhando)
+---------------------------------------------------------------------
+/usr/bin/bootmac é o script do Mobian para SDM845: aplica um MAC vindo de
+config via hciconfig. No hanoip o hci0 já sobe com BD Address estável
+(D8:CF:BF:3C:EE:74, igual em boots consecutivos) e o serviço só gerava
+"command timed out after 5 seconds" e unit failed no boot.
+
+Ação: bootmac-bluetooth.service mascarado (systemctl mask) com nota em
+/etc/systemd/system/bootmac-bluetooth.service.d/README.conf.
+Se algum dia o MAC do Bluetooth aparecer errado, o caminho é tirar o endereço
+do SMEM mmi_unit_info do ABL (mesma fonte que o hanoip-mmi usa para o Wi-Fi).
+
+Resultado final: `systemctl is-system-running` = running, 0 units falhando.

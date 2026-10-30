@@ -1,0 +1,37 @@
+Checking patch drivers/gpu/drm/msm/dsi/dsi_host.c...
+Hunk #1 succeeded at 445 (offset 16 lines).
+Hunk #2 succeeded at 1004 (offset 14 lines).
+Hunk #3 succeeded at 1043 (offset 14 lines).
+Hunk #4 succeeded at 1059 (offset 14 lines).
+Hunk #5 succeeded at 1138 (offset 14 lines).
+Hunk #6 succeeded at 1874 (offset 14 lines).
+Hunk #7 succeeded at 1897 (offset 14 lines).
+Hunk #8 succeeded at 2176 (offset 14 lines).
+Hunk #9 succeeded at 2239 (offset 14 lines).
+Hunk #10 succeeded at 2251 (offset 14 lines).
+Hunk #11 succeeded at 2276 (offset 14 lines).
+Hunk #12 succeeded at 2583 (offset 14 lines).
+Hunk #13 succeeded at 2600 (offset 12 lines).
+Hunk #14 succeeded at 2610 (offset 12 lines).
+Hunk #15 succeeded at 2628 (offset 12 lines).
+Hunk #16 succeeded at 2648 (offset 12 lines).
+Hunk #17 succeeded at 2694 (offset 12 lines).
+Hunk #18 succeeded at 2702 (offset 12 lines).
+Hunk #19 succeeded at 2719 (offset 12 lines).
+Applied patch drivers/gpu/drm/msm/dsi/dsi_host.c cleanly.
+SOURCE /tmp/dsi-fix-compile-tvpjqhkv/linux/drivers/gpu/drm/msm/dsi/dsi_host.c: af07504d80bb524b754a96e214e633cd66639d324dfd45515faf82908545271c
+SOURCE /tmp/dsi-fix-compile-tvpjqhkv/linux/drivers/input/touchscreen/ilitek-hanoip-spi.c: 61f3746a27cafaaf882f74f0ce98d816bbd97c4b5286a12cd433bdf8a36c7bcf
+PASS lane_invalid_index: 8 invalid entries rejected; all 8 supported lane permutations preserved
+PASS dsc_zero_slice: both zero slice dimensions rejected; non-DSC preserved
+PASS dsc_valid_and_invalid_dimensions: 3 geometry checks
+PASS mode_allocation_failure: old mode preserved on ENOMEM; success replaces and frees old mode
+PASS dsi_runtime_pm_failures: resume/rate/clock/pinctrl/timing failures unwind; missing mode rejected; successful activation and idempotence preserved
+PASS dsc_timing_error_propagation: actual timing function propagates RC error, rejects zero slices before writes, and preserves valid setup
+PASS touch_packets: 8192 X/Y-coordinate values, invalid checksum/type and SPI error; no partial input events
+PASS touch_firmware_validation: valid image; 106 truncated/oversized lengths, 100 metadata mutations, 3 block corruptions
+PASS: handoff, independent rails, error propagation, rollback, voltage bounds/headroom, concurrent callbacks
+PASS: command preparation rejects resume/rate/enable errors without MMIO or leaked votes; HS/LPM success and restore preserved
+PASS: 13 manager cases: single/bonded prepare failures, success and command-error cleanup
+PASS: both parent errors propagate and stop rate setting; success preserved
+PASS: teardown frees final owned mode after draining queue, and accepts NULL mode/queue
+PASS: corrected experimental DSI host compiled ARM64 with saved Kbuild flags and -Werror

@@ -1,0 +1,878 @@
+RESUMO CONSOLIDADO — SUBSISTEMA DE BATERIA DO hANOIP (27/10/2026)
+=================================================================
+Tudo o que descobrimos e medimos hoje, em um só lugar. Documentos detalhados
+citados no fim. Estado: carga DESLIGADA (modo manual, a pedido do usuário).
+
+---------------------------------------------------------------------
+1. PORCENTAGEM (SOC) — corrigida e validada
+---------------------------------------------------------------------
+SINTOMA: a porcentagem subia e descia sozinha.
+
+CAUSAS (duas, somadas):
+ a) o DT não tinha `ocv-capacity-table`, então o qcom_qg caía num mapa LINEAR
+    3,2 V..4,45 V = ~12,5 mV por 1%. Ruído de ADC (25 mV) = 2%; queda por
+    carga (79 mV medidos) = ~6%;
+ b) a suavização era um "caminhante" de 1% a cada 20 s que só andava numa
+    direção conforme o status: perseguia o ruído sem nunca estabilizar
+    (medido: 93% -> 92% -> 91% em 26 s com corrente 0 e tensão parada).
+    O kernel NÃO cria tabela OCV padrão (conferido em power_supply_core.c):
+    sem DT, `power_supply_batinfo_ocv2cap()` devolve -EINVAL.
+
+CORREÇÃO:
+ a) DT com a curva REAL do nosso pack, extraída do perfil que o Android usa
+    neste aparelho (S88731AA1-mc50-ATL-4V45-6000mah, LUT pc-temp-v1, 25 C):
+      100% 4.447 V | 90% 4.321 V | 85% 4.273 V | 50% 3.890 V | 10% 3.711 V
+    21 pontos, gerados por scripts/battery_curve_from_android.py.
+ b) driver (patch 0167 + 0170): banda morta de 2%; deriva 1% a cada 2 min nas
+    duas direções; adoção imediata se o desvio for > 10 pontos (valor inicial
+    ruim não fica mais preso); direção pelo STATUS do charger, não por
+    current_now; clamp 0..100.
+
+VALIDAÇÃO:
+ - 15 min ocioso, 1 Hz, 452 amostras: amplitude 1 ponto, ZERO saltos > 2%.
+ - carga de CPU (6 busy loops): -708 mA, tensão 4,234 -> 4,155 V (79 mV, ~6%
+   no mapa antigo) e a capacidade ficou cravada.
+ - durante a carga real: 79% -> 81% (coerente com ~440 mA por 15 min).
+
+LIMITE CONHECIDO: estimador só de OCV superestima logo após carregar (tensão
+de superfície): medimos 86% quando o real era ~81%. Converge quando a tensão
+relaxa (deriva de 1%/2 min). O Android resolve isso com contagem de Coulomb
+(qpnp-qg completo). Registrado como diferença estrutural, não como bug.
+
+---------------------------------------------------------------------
+2. DESCOBERTA DE ARQUITETURA (custou horas): A DT VEM DO U-BOOT
+---------------------------------------------------------------------
+A device tree efetiva no sm7150 é EMBUTIDA no U-Boot (CONFIG_OF_EMBED).
+O `dtb` que vai dentro do boot.img do kernel NÃO é usado (o do Kali tem
+93049 bytes e nem contém o node da bateria, mas /proc/device-tree/battery
+existe). Portanto:
+  - mudanças de DT vão em uboot-sm7150/dts/upstream/src/arm64/qcom/ e exigem
+    rebuild do U-Boot (work/uboot-builds-20261026/build.sh DT_NAME);
+  - criamos scripts/fdt_diff.py para provar que uma variante muda só o
+    esperado (a variante -batt difere da perif em 3 propriedades, 744 nós).
+
+---------------------------------------------------------------------
+3. POR QUE NÃO CARREGAVA (laudo B0, só leitura)
+---------------------------------------------------------------------
+Dump read-only via debugfs (patch 0168) em /sys/kernel/debug/<device>:
+
+  0x0042 CHARGING_ENABLE_CMD   = 0x00   <<< O ÚNICO BLOQUEIO
+  0x0006 STATUS_1              = 0x47   (FSM em DISABLE_CHARGE)
+  0x0070 FLOAT_VOLTAGE_CFG     = 0x50   (4.400 V, correto)
+  0x0051 CHGR_CFG2             = 0x2c   (I_TERM=1, AUTO_RECHG=1)
+  0x0090 JEITA_EN_CFG          = 0x1b   (HARDLIMIT + limites quentes)
+  0x0007 STATUS_2              = 0x08   (BAT_OV=0)
+  0x000d STATUS_7              = 0x00   (sem falha térmica)
+  0x0307/0x0308 APSD           = 0x11/0x01 (concluída, fonte = SDP)
+  0x0310 INT_RT_STS            = 0x10   (VBUS presente)
+  0x0340 USBIN_CMD_IL          = 0x00   (não suspenso)
+  0x0061 FAST_CHARGE_CURRENT   = 0x28   (2.0 A, default do bootloader)
+  0x0651 WD_CFG = 0x62 / 0x0653 SNARL = 0x8c  (watchdog armado; o "bite"
+                                               desliga a carga)
+  ICL = 500 mA · POWER_PATH = 0x95 (usa USBIN, entrada válida)
+
+Conclusão: entrada, tipo de fonte, float, JEITA, terminação e recharga já
+estavam corretos. Faltava só o bit de habilitação — que ninguém escrevia
+porque o driver roda em monitor_only (o probe retorna antes das escritas).
+
+---------------------------------------------------------------------
+4. CARGA LIGADA E VALIDADA (B3)
+---------------------------------------------------------------------
+Controle manual em /sys/kernel/debug/hanoip-charge (patch 0169), DESLIGADO
+por padrão. Ao ligar faz 3 escritas, nesta ordem:
+  1. SNARL 0x8c -> 0x00 e WD_CFG 0x62 -> 0x00  (desarma o watchdog)
+  2. FAST_CHARGE_CURRENT 0x28 -> 0x14          (2,0 A -> 1,0 A)
+  3. CHARGING_ENABLE_CMD 0x00 -> 0x01          (o switch)
+Float 4,400 V, JEITA, ICL e terminação: INTOCADOS.
+
+SESSÃO DE 15 MIN (porta USB de PC, SDP):
+  entrada 497 mA estável (no limite) | bateria +439..+444 mA
+  79% -> 81% | temperatura 32,6..33,7 C (sem aquecimento) | dmesg limpo
+DESLIGAMENTO testado: enable=0x00, i_batt=0, FSM=0x47, "charging disabled".
+
+---------------------------------------------------------------------
+5. COMPARAÇÃO COM O ANDROID (o que o aparelho faz de fábrica)
+---------------------------------------------------------------------
+  parâmetro           Android                 nós hoje
+  float / FV máx      4,450 V                 4,400 V (já vinha assim)
+  CC-CV               4,440 V                 —
+  fast-charge (FCC)   3,6 A (perfil: 4,0 A)   2,0 A default / 1,0 A no teste
+  iterm               290 mA (charger)        I_TERM=1 (valor não dumpado)
+  ICL em SDP          500 mA                  500 mA (igual)
+  ICL em DCP          3,0 A                   500 mA (APSD não roda)
+  temperatura         15 C .. 45 C            JEITA hardlimit ativo
+  capacidade aprendida 4.939.000 uAh          igual (nosso qg lê do SDAM)
+  perfil do pack      ATL e SUNWODA 6000 mAh, beta NTC 3440, ID 100 kΩ
+Ou seja: o que a ABL deixou é um subconjunto conservador do Android, e o
+nosso envelope de teste fica abaixo disso.
+
+---------------------------------------------------------------------
+6. ÍCONE DA BATERIA X APP POWERSUPPLY (não é bug)
+---------------------------------------------------------------------
+  sysfs (app "powersupply"): status = Charging
+  UPower (ícone do Phosh):   state  = discharging
+O UPower refina o status pelo SINAL da corrente. Com a entrada em 500 mA
+(SDP) e a TELA LIGADA, o aparelho consome ~500-620 mA: a bateria cobre a
+diferença e a corrente fica negativa (-18 a -127 mA medidos) → "discharging".
+Com a tela apagada: +439..+444 mA → UPower mostra carregando.
+Os dois "estão certos": o charger carrega, mas a bateria entrega líquido.
+
+---------------------------------------------------------------------
+7. PRÓXIMOS PASSOS (em ordem)
+---------------------------------------------------------------------
+  B4  — negociação de entrada (APSD + ICL): SDP 500 mA / CDP 1,5 A /
+        DCP 1 A e depois 1,5 A com temperatura vigiada. É o que faz o
+        aparelho carregar com a tela ligada e viabiliza uso diário.
+        (o teto do registrador USBIN_CURRENT_LIMIT_CFG está em 750 mA e
+        também precisa subir)
+  B3b — observar a TERMINAÇÃO num ciclo completo (o usuário escolheu modo
+        manual justamente por isso): FSM -> TERMINATE, status -> Full,
+        corrente de terminação, capacity chegando a 100% e parando.
+  Depois: decidir se a carga liga sozinha no boot (serviço systemd) ou
+        continua manual.
+  Pendências menores: dumpar o registrador de terminação; dumpar os limites
+        térmicos (JEITA/MMI zones); melhorar a temperatura com o NTC
+        (beta 3440); avaliar contagem de Coulomb (a QGauge só roda o
+        algoritmo dela se alguém o alimentar — hoje não roda).
+
+---------------------------------------------------------------------
+8. COMO USAR / REVERTER
+---------------------------------------------------------------------
+  Ligar carga:    echo 1 > /sys/kernel/debug/hanoip-charge
+                  (limite por módulo: charge_current_ua, default 1.000.000)
+  Desligar:       echo 0 > /sys/kernel/debug/hanoip-charge
+  Ver registros:  cat /sys/kernel/debug/c440000.spmi:pmic@0:charger@1000
+  Log de energia: /usr/local/sbin/hanoip-batt-log 900 2000 /root/batt.csv
+  Boot com tudo:  u-boot-sm7150-motorola-hanoip-pmos-perif-batt.img
+                  + kernel-hanoip-kali-phosh-v2.img
+                  + módulos do kernel v4 (qcom_qg, qcom_smbx)
+  Reverter SOC:   usar o U-Boot perif normal (sem a curva) e o módulo
+                  qcom_qg.ko.zst.ANTERIOR
+  Reverter carga: echo 0 (ou simplesmente não escrever nada — default off)
+
+---------------------------------------------------------------------
+9. DOCUMENTOS DETALHADOS
+---------------------------------------------------------------------
+  docs/PLANO-BATERIA-ENERGIA.md                    plano completo B0..B8
+  docs/kernel/checkpoint-2026-10-27-bateria-soc.txt       SOC: causa/fix
+  docs/kernel/checkpoint-2026-10-27-bateria-b0-registradores.txt  laudo
+  docs/kernel/checkpoint-2026-10-27-bateria-carga-ligada.txt      carga
+  docs/kernel/checkpoint-2026-10-27-bateria-vs-android.txt        comparação
+  work/bateria-soc-20261027/                       artefatos (u-boot, módulos,
+                                                   dts, LEIA-ME, protocolo)
+  scripts/fdt_diff.py · scripts/battery_curve_from_android.py
+  work/kernel-7.3/v4/                              patches 0167..0170 + README
+
+---------------------------------------------------------------------
+10. B4 — NEGOCIAÇÃO DE ENTRADA (27/10, mesmo dia, depois do resumo acima)
+---------------------------------------------------------------------
+Implementado no driver (patch 0171): ao ligar a carga, o driver agora pergunta
+ao PMIC que fonte está conectada (APSD, que já existia no código mas nunca era
+usado no caminho monitor) e programa o limite de entrada:
+
+    SDP (porta USB)      500 mA   (como a fonte só entrega isso)
+    CDP (porta com dados) 1,5 A
+    DCP (carregador)      1,0 A   <- Android usa 3 A; começamos bem abaixo
+    teto absoluto         1,5 A   (também é o teto do registrador)
+    ajustáveis por módulo: icl_sdp_ua / icl_cdp_ua / icl_dcp_ua
+
+VALIDADO em porta de PC (SDP):
+    dmesg: "fonte SDP (porta USB padrão) -> limite de entrada 500000 uA"
+    APSD_RESULT_STATUS 0x01 (SDP) · USBIN_CURRENT_LIMIT_CFG 0x0a (500 mA)
+    tela apagada: bateria +432 mA, UPower "charging", tempo p/ cheio 2,0 h
+    tela ligada:  bateria -20 a -300 mA, UPower "discharging"
+    -> nos dois casos o comportamento está correto; a diferença é a conta
+       500 mA de entrada x consumo do aparelho
+
+NÃO VALIDADO AINDA: DCP (precisa de carregador de parede de verdade). Quando
+o usuário plugar um, o esperado é: APSD = DCP, ICL = 1,0 A, entrada ~1 A,
+bateria positiva mesmo com a tela ligada e ícone de carregando.
+
+EXTRA (patch 0172, ferramenta de último recurso): /sys/kernel/debug/hanoip-icl
+permite FORÇAR o limite de entrada (escrita em uA, 100 mA..1,5 A). Serve para
+carregadores que mantêm as linhas de dados e se apresentam como SDP mesmo
+tendo potência de sobra. É seguro mesmo se a fonte não aguentar: o AICL do
+PMIC reduz a corrente sozinho quando o VBUS cai. Fica desligado/inerte por
+padrão (nada é escrito sem um write explícito).
+
+SEMÂNTICA QUE CONFUNDE (anotar): "status" do charger é a FSM (carregando);
+a corrente da bateria é o LÍQUIDO (carga - consumo). Com 500 mA de entrada e
+tela ligada, a FSM está em FULLON_CHARGE e a corrente é negativa ao mesmo
+tempo. O sysfs mostra Charging, o UPower mostra discharging; ambos corretos.
+
+---------------------------------------------------------------------
+11. ANÁLISE DA SUBIDA DURANTE A CARGA (27/10, mesma sessão)
+---------------------------------------------------------------------
+Medido com o watcher (10 s), 9,4 min de carga em porta de PC:
+
+  capacidade 82% -> 87%, monotônica, passos de 1%, SEM oscilação
+  corrente da bateria 309..447 mA (média 435)
+  temperatura 29,6..30,0 C (variação -0,1 C) -> sem aquecimento
+  entrada USB 494..498 mA (limite SDP respeitado)
+  status sempre Charging, FSM 0x03 (FULLON/CC), INT_RT_STS 0x10 (só VBUS)
+  BAT_OV (bit1 de STATUS_2) = 0, STATUS_7 (térmico) = 0, JEITA 0x1b ativo
+
+COERÊNCIA: a taxa estava 3,6x acima da física.
+  tela:             32%/hora
+  física (435 mA / 4939 mAh): 8,8%/hora
+  estimativa bruta pela tensão: 91,5% quando o real era ~84% (+7,5 pontos)
+Causa: durante a carga a tensão de terminal fica ~90 mV acima do OCV do mesmo
+estado (polarização da célula); nossa compensação só cobre a parte ôhmica
+(30 mOhm ~ 13 mV). O filtro de 1%/2 min apenas retardava o erro.
+
+SEGURANÇA: aprovada nos números.
+  tensão 4,340 V contra float 4,400 V (60 mV) e design do pack 4,450 V (110 mV)
+  corrente <= 0,09C contra limite de 1 A; temperatura 13 C abaixo do aborto
+  e, principalmente: o número do SOC NÃO controla a carga; quem termina é o
+  laço CC/CV do hardware.
+
+CORREÇÃO (patch 0173): contagem de Coulomb na subida.
+  Integra |I| (magnitude, com o status do charger como porteiro) em um
+  orçamento de mili-porcento da capacidade APRENDIDA (lida do SDAM, 4939 mAh),
+  e só deixa o valor subir pelo que realmente entrou. Orçamento limitado a 5%
+  (wind-up) e ignora lacunas > 10 min. O snap de >10 pontos fica desativado
+  durante a carga (ali o desvio é polarização, não um degrau real).
+  Esperado: ~1% a cada 6-7 min a 445 mA (antes eram 1% a cada 2 min).
+
+BITS AINDA NÃO DECODIFICADOS (anotado, sem indício de falha)
+  STATUS_2 = 0x28 = BIT(5)|BIT(3). BIT(3) já existia antes de carregar;
+  BIT(5) apareceu com a carga. Não geram IRQ ativa (INT_RT_STS=0x10) e o
+  BAT_OV que o driver checa (BIT(1) para SMB5) está limpo. Vale decodificar
+  com o smb5-lib do vendor antes de cargas longas não assistidas.
+
+---------------------------------------------------------------------
+12. TRÊS BUGS ENCONTRADOS AO VALIDAR A CORREÇÃO (27/10, tarde)
+---------------------------------------------------------------------
+Todos no driver e todos corrigidos; nenhum afetou a segurança da carga.
+
+(a) O teto de TEMPO ainda mandava (patch 0174)
+    Mesmo com o orçamento de Coulomb, eu mantinha o teto de 1% por 2 min como
+    segundo limite. Quando o orçamento tinha folga, ele virava o limitador de
+    novo: medido 13,4%/h contra 8,5%/h físicos. Agora, durante a carga, o
+    ÚNICO limite é o orçamento (o teto de tempo vale só fora da carga).
+
+(b) Wind-up de 5% (patch 0175)
+    O orçamento acumulava até 5% e liberava de uma vez: observado salto de
+    93% -> 95%. Teto baixado para 2% (no máximo 2 pontos por liberação).
+
+(c) USO DE MEMÓRIA LIBERADA no debugfs (patch 0176) — o mais sério
+    debugfs_create_file() guarda um ponteiro para o estado do driver e não é
+    removido no unload. Depois de um modprobe -r/modprobe, o arquivo antigo
+    sobrevivia apontando para memória liberada: o dump passou a mostrar
+    "msoc = 0%" e a leitura do SDAM falhava, enquanto o sysfs dizia 95%.
+    Além de mentir, poderia dar oops. Agora os quatro arquivos (qcom_qg,
+    dump do charger, hanoip-charge, hanoip-icl) são criados por helpers que
+    registram devm action de remoção.
+
+LIÇÃO: ao depurar driver com debugfs, reiniciar o módulo NÃO limpa o nó: ele
+continua apontando para a instância velha. Sempre remover no unload (devm
+action) — e desconfiar de valores "impossíveis" no dump.
+
+---------------------------------------------------------------------
+13. O QUE O PRIMEIRO BOOT LIMPO REVELOU (27/10, ~15:30)
+---------------------------------------------------------------------
+Depois do reboot, dois defeitos de robustez apareceram — nenhum de hardware
+(a tensão normalizou em segundos) e nenhum de segurança.
+
+(a) AMOSTRA DE TENSÃO IMPOSSÍVEL NO BOOT (patch 0177)
+    O ADC da QGauge devolve lixo nas primeiras leituras após o power-on:
+    medido 6,3779 V num pack cujo máximo de projeto é 4,45 V. Essa amostra
+    virou o valor inicial do SOC e a porcentagem ficou em 100% pelo resto da
+    sessão (a tabela satura no topo).
+    Correção: ignorar tensões fora de 2,5..4,8 V e manter o valor anterior.
+    (Amostras normais depois do boot: v_now 4,3517 / v_avg 4,3243 / ocv 4,2369.)
+
+(b) DEBUGFS CRIADO ANTES DE EXISTIR (patches 0177 e 0178)
+    O driver sonda em ~1,5 s; o systemd só monta /sys/kernel/debug em ~4 s.
+    Resultado: debugfs_create_file() falhava em silêncio e os arquivos
+    (qcom_qg, dump do charger, hanoip-charge, hanoip-icl) simplesmente NÃO
+    existiam depois do boot — só apareciam após um reload manual.
+    Correção: criar por delayed work, 8 s depois do probe, com até 8 retries de
+    5 s. Junto com a remoção via devm (patch 0176), os arquivos agora nascem e
+    morrem corretamente.
+
+ESTADO APÓS O REBOOT (verificado)
+    carga: CHARGING_ENABLE_CMD voltou a 0x00 -> o reboot DESLIGA a carga
+           (é o comportamento opt-in: ninguém liga sozinho)
+    charger: online=1, fonte SDP, ICL 500 mA, float 4,400 V preservado
+    bateria: tensões sãs, corrente 0, 31,3 C
+
+---------------------------------------------------------------------
+14. MAPA DE CONFIABILIDADE DOS REGISTRADORES DA QGAUGE (o que aprendemos
+    na marra, validando a correção no aparelho)
+---------------------------------------------------------------------
+  registrador              comportamento real              usar para
+  voltage_now (0xc0/ult.ADC) atualiza a cada leitura       SIM (tensão)
+  voltage_avg (0x80)        atualiza raramente; às vezes   fallback
+                            devolve 0
+  voltage_ocv (SDAM 0x4c)   congelado (não muda há horas)  último recurso
+  current_now (0xc2/ult.ADC) acompanha a carga real        SIM (corrente)
+  current_avg (0x82)        congela e às vezes guarda um   NUNCA para conta
+                            valor alto irreal
+  capacity (SDAM 0x68)      capacidade APRENDIDA (4939 mAh) SIM (cheia)
+Motivo: o algoritmo periódico da QGauge (quem atualiza os _avg/_ocv) não roda
+aqui — no Android é ele que faz a contagem de Coulomb de verdade.
+
+Consequência prática (patch 0180): a estimativa usa o ÚLTIMO ADC para corrente
+e tenta média -> último ADC -> OCV do SDAM para tensão. Cada iteração em que eu
+usava um registrador "avançado" produzia erro de 3x na taxa.
+
+SEQUÊNCIA DE CORREÇÕES DO DIA (para referência)
+  0167 tensão/corrente médias + histerese ......... base
+  0170 direção pelo status + snap > 10 ............ corrige travar em 100%
+  0173 orçamento de Coulomb ....................... corrige overshoot
+  0174 só Coulomb durante a carga ................. corrige teto de tempo
+  0175 teto 2% + FULL imediato .................... corrige salto de 2 pontos
+  0176 cleanup de debugfs no unload ............... corrige use-after-free
+  0177 recusa tensão impossível + debugfs tardio .. corrige SOC=100% no boot
+  0178 debugfs tardio no smbx ..................... mesma coisa no charger
+  0179 fallback de tensão (3 fontes) .............. corrige capacity EAGAIN
+  0180 corrente do último ADC ..................... corrige taxa 3x rápida
+
+---------------------------------------------------------------------
+15. AUDITORIA COMPLETA DO CÓDIGO + VERIFICAÇÃO MATEMÁTICA (27/10, fim)
+---------------------------------------------------------------------
+Revisão de qcom_qg.c (732 linhas) e qcom_smbx.c (1638), com a matemática
+reproduzida em Python e conferida contra a tabela OCV e as medições de campo.
+
+=== BUGS ENCONTRADOS (todos corrigidos no patch 0181) ===
+
+A) CÓDIGO MORTO NO FALLBACK DE TENSÃO (crítico)
+   `if (!qcom_qg_voltage_ok(voltage_now))` testava `voltage_now` ANTES de ela
+   ser atribuída (variável não inicializada) e, logo abaixo, o ramo da tabela
+   OCV RE-LIA o registrador médio por cima do fallback, sem validar de novo.
+   Consequência numérica: amostra 0 V -> ocv2cap(-13 mV) = 0% -> delta -95 ->
+   SNAP (>10) -> valor reportado ia a 0%. Era o "0% (should be ignored)" do
+   UPower. Só não aparecia sempre porque, com status Charging, a regra "nunca
+   cai carregando" segurava.
+   Correção: escolher a tensão UMA vez (média -> último ADC -> OCV do SDAM),
+   nunca reler depois, e tratar falha de ocv2cap como amostra inválida.
+
+B) abs() NA CONTAGEM DE COULOMB (real)
+   O orçamento somava |I|, então um charger "carregando" com a bateria
+   entregando corrente (tela ligada em porta de 500 mA) ADICIONAVA carga que
+   não entrou: medido no código, +101 mili-% a cada 2 min com -150 mA.
+   Correção: só acumular com corrente positiva (carga entrando).
+
+C) SNAP SEM LIMITE (real)
+   Bastava uma amostra absurda para mover o valor até 100 pontos de uma vez.
+   Correção: adota na hora só se |delta| <= 30; acima disso o valor anda pelo
+   caminho normal.
+
+=== FÍSICA: RESISTÊNCIA INTERNA (medida, não chutada) ===
+   O perfil da Motorola NÃO traz DCIR (só max-voltage, fastchg, NTC/ID e as
+   LUTs pc-temp). Derivamos de duas fontes independentes:
+     downstream: Android a 54% carregando 500 mA media 3,836 V; a curva diz
+                 3,935 V para 54% -> 99 mV / 500 mA = 197 mOhm
+     campo:      ~7 pontos de adiantamento a 440 mA; a curva tem 14,8 mV por
+                 ponto em ~85% -> 104 mV / 440 mA = 235 mOhm (6 pts: 202)
+   Conclusão: ~200 mOhm (célula + proteção + conector + sense). O valor do DT
+   passou de 30 mOhm para 200 mOhm. Com 30 mOhm a estimativa corria ~7 pontos
+   à frente carregando a 440 mA.
+
+=== MATEMÁTICA CONFERIDA (está correta) ===
+   - interpolação ocv2cap: reproduzida a função do kernel
+     (power_supply_ocv2cap_simple + fixp_linear_interpolate); bate exatamente
+     nos pontos da tabela (4.4465->100, 4.3209->90, 4.1986->80, 3.4000->0) e
+     interpola 4,2369 V -> 82,6%;
+   - conversões de unidade: tensão 194637 uV/LSB e corrente ibat_lsb_na/1000
+     (uA) conferem com os valores medidos (4,2369 V e 197 mA);
+   - contagem de Coulomb: add = I*dt*1e5/(3600*C_full) mili-%; confere com a
+     física (200 mA -> 1% em 14,8 min; 440 mA -> 1% em 6,7 min; 1 A -> 1% em
+     3,0 min);
+   - inversão de sinal da corrente (PSY positiva ao carregar) coerente com o
+     IR drop nos dois sentidos (carga e descarga);
+   - ordem das escritas do B3 (desarmar watchdog -> corrente -> enable) e
+     ausência de locks aninhados (guard() sempre em escopo que retorna).
+
+=== NÃO CORRIGIDO (consciente) ===
+   - o orçamento acumula enquanto delta < 0 carregando (wind-up); limitado a
+     2% pelo teto, impacto <= 2 pontos;
+   - qcom_qg_get_status cai para o sinal da corrente quando o charger não
+     responde (raro: o charger está sempre no DT como fornecedor);
+   - comentário duplicado acima de qcom_qg_batt_full_uah (cosmético).
+
+---------------------------------------------------------------------
+16. VERIFICAÇÃO DE SEGURANÇA DOS VALORES (auditoria final, 27/10)
+---------------------------------------------------------------------
+Pedido do usuário: "tenha certeza dos valores porque é perigoso lidar com
+energia". Cada número que o driver usa ou escreve, com fonte e pior caso.
+
+ESCRITAS POSSÍVEIS EM MODO MONITOR (auditado por grep no arquivo inteiro)
+  Registradores: 0x653 SNARL, 0x651 WD_CFG, 0x61 FAST_CHARGE_CURRENT,
+  0x42 CHARGING_ENABLE, 0x370 USBIN_CURRENT_LIMIT_CFG, 0x341 CMD_APSD(bit0).
+  NÃO escrevemos: 0x70 FLOAT_VOLTAGE (só na rota não-monitor, atrás de early
+  return) e 0x90 JEITA_EN_CFG (não aparece em nenhuma escrita do arquivo).
+  Também inalcançáveis no monitor: init_seq (guardado por !monitor_only),
+  set_property (desc->set_property = NULL), IRQ de watchdog (não registradas).
+
+PASSO DE CODIFICAÇÃO DA CORRENTE: 50 mA (SMB5)
+  Fonte: o próprio driver usa 50000 para pm8150b e pm7250b (SMB5) e 25000 para
+  pmi8998/pm660 (SMB2), com comentário auto-documentado
+  ("20 * step size 25000 uA = 500000 uA"). Nosso 0x14 (20) = 1,00 A.
+  PIOR CASO se o passo fosse 25 mA: programaríamos 500 mA -> mais conservador.
+  PIOR CASO se fosse 100 mA: 2,0 A -> ainda abaixo dos 4,0 A do pack e dos
+  3,6 A que o Android usa. Nos dois casos seguimos dentro do seguro.
+
+TENSÃO DE FLUTUAÇÃO: 4,400 V (não escrita por nós)
+  Lida do registrador 0x70 = 0x50 com a mesma codificação SMB5
+  (3,6 V + 80 x 10 mV). Pack: 4,45 V de projeto -> margem de 50 mV.
+  Android: 4,45 V. Ou seja: 50 mV MAIS conservador que o Android.
+
+CORRENTE DE CARGA: 1,00 A (0,2C de 4939 mAh)
+  Android: 3,6 A. Pack: 4,0 A. Estamos 3,6x abaixo.
+  Teto por software: 2,0 A (HANOIP_CHARGE_MAX_UA), nunca alcançado por default.
+
+LIMITE DE ENTRADA (ICL): SDP 500 mA / CDP 1,5 A / DCP 1,0 A / teto 1,5 A
+  Android: 3,0 A em DCP. Estamos 3x abaixo.
+  Proteção adicional do hardware: AICL reduz sozinho se o VBUS cair.
+
+PROTEÇÕES DE HARDWARE INTOCADAS: JEITA_EN_CFG = 0x1b (hardlimit + limites
+  quentes de tensão e corrente), BAT_OV habilitado, auto-recharge e terminação
+  por corrente habilitadas. Watchdog desarmado de propósito (o upstream
+  qcom_smbx também desarma no init).
+
+CONTAGEM DE COULOMB — validada por CONSERVAÇÃO DE ENERGIA nos dados reais:
+  Sessão de 60 min (171 amostras): integrando a corrente positiva dá 303 mAh,
+  que em 4939 mAh = 6,1 pontos de SOC.
+  A tela mostrou 10 pontos. Relação 1,63x -> era exatamente o bug (abs() +
+  corrente média inflada), hoje corrigido. Com o código novo a tela deve andar
+  os 6,1 pontos físicos.
+
+INTERPOLAÇÃO OCV: reproduzida a função do kernel; bate exatamente nos pontos
+  da tabela e interpola 4,2369 V -> 82,6%.
+
+RESISTÊNCIA INTERNA: 200 mOhm, derivada de duas fontes independentes
+  (downstream 197 mOhm; campo 202-235 mOhm). Substituiu os 30 mOhm do datasheet
+  que subcompensavam ~6x.
+
+O QUE AINDA NÃO ESTÁ PROVADO (e não é seguro assumir)
+  1. Corrente/registrador de TERMINAÇÃO: endereço não identificado no kernel;
+     a transição para "Full" nunca foi observada numa carga completa.
+  2. Fonte DCP: nunca testada (precisa de carregador de parede). Com SDP o
+     limite é 500 mA e o aparelho com tela ligada fica no zero a zero.
+  3. Se o passo real do FCC for 100 mA, nosso "1 A" seria 2 A — seguro, mas
+     seria bom confirmar num DCP medindo a corrente de entrada.
+
+ESTADO ATUAL: aparelho desplugado, carga DESLIGADA (enable=0x00 confirmado
+antes de sair). Nada está carregando; sem energia em movimento.
+
+---------------------------------------------------------------------
+17. COMPARAÇÃO COM OUTROS PORTS (pesquisa externa, 27/10)
+---------------------------------------------------------------------
+Fontes consultadas:
+  - fork sm7150-mainline/linux, branch `sm7150-qg` (mesmo SoC!):
+    arch/arm64/boot/dts/qcom/sm7150-xiaomi-common.dtsi e
+    drivers/power/supply/qcom_qg.c  (versão ORIGINAL do driver que usamos)
+  - kernel upstream: power_supply_core.c (helpers OCV), qcom_smbx.c, Makefile
+  - DTS do irmão sm7125 (Xiaomi curtana) no upstream
+  - pmaports/postmarketOS: itens #4825 "sm7150 (xiaomi-surya) Unable to charge
+    device battery", #3785 "charging indicator does not appear / 90+ hours
+    estimate", #4169 "Incomplete Fuel gauge implementation"
+    (o GitLab do pmOS e a wiki estão atrás de Anubis; usei os títulos/resumos)
+
+O QUE O PORT DE REFERÊNCIA (MESMO SoC) FAZ
+  DT: battery { compatible = "simple-battery"; voltage-min-design = 3.4 V;
+      voltage-max-design = 4.4 V; } — SEM tabela OCV.
+  Driver: a versão original do qcom_qg, cujo próprio comentário diz
+      "simply calculates the capacity based on the current voltage.
+       This will be rewritten in the future", com SOC linear entre 3.4 e
+      4.4 V, sem suavização, e STATUS = UNKNOWN sempre.
+  Charger: `&pm6150_charger` SEM o compatible de monitor, ou seja usa o
+      qcom_smbx completo (roda a init, programa float a partir de
+      voltage_max_design e FCC 1.95 A); `&pm6150_typec` com PDO fonte 5 V/3 A.
+  Upstream sm7125 (irmão): NÃO tem node de bateria/charger/fuel gauge nenhum.
+
+COMPARAÇÃO DIRETA
+  aspecto            fork sm7150-qg (mesmo SoC)        nosso port
+  curva SOC          linear 3.4-4.4 V                  curva REAL Motorola + IR 200 mOhm
+  suavização         nenhuma                           histerese 2% + coulomb + snap 30
+  status             UNKNOWN (sempre)                  do charger (real)
+  charger            qcom_smbx completo (escreve)      monitor + 3 escritas opt-in
+  Type-C/PD          PDO fonte 3 A                     não configurado
+
+CONFIRMAÇÕES CRUZADAS QUE ISSO NOS DEU
+  1. O float que medimos (0x70 = 0x50) é EXATAMENTE o que o qcom_smbx
+     programaria para voltage_max_design = 4.40 V com a codificação SMB5
+     (3.6 V + 80 x 10 mV). Decodificação confirmada por fonte independente.
+  2. Nenhum port público tem curva OCV no DS para sm7150/sm7125 -> o nosso
+     SOC está À FRENTE da referência (que ainda é linear).
+  3. O STATUS = UNKNOWN da referência explica os relatos de pmOS de
+     "indicador de carga não aparece / estimativa de 90+ horas".
+  4. O que a referência tem e nós não: qcom_smbx completo (init + float +
+     FCC) e Type-C com PDO. É o caminho para o B4/B5 se quisermos paridade.
+
+CONCLUSÃO SOBRE SEGURANÇA
+  Não existe implementação de referência para copiar em SOC; a nossa é mais
+  elaborada. No caminho de energia somos MAIS conservadores que a referência
+  (1 A contra 1.95 A dela e 3.6 A do Android) e não escrevemos float/JEITA.
+
+---------------------------------------------------------------------
+18. O VIÉS DO OCV MUDA DE SINAL CONFORME A FASE (patch 0182)
+---------------------------------------------------------------------
+Medido no aparelho, mesmo pack, mesma resistência de 200 mOhm:
+
+  em CC a 440 mA:   v_terminal 4,3268 V -> ocv_est 4,2548 V -> curva 89,2%
+                    SOC real era ~84%  ->  viés  +5 a +7 pontos (ALTO)
+  em TAPER a 360 mA: v_terminal 4,3133 V -> ocv_est 4,2413 V -> curva 82,8%
+                    SOC real era ~91%  ->  viés  -8 pontos (BAIXO)
+
+Por quê: em CC a célula está polarizada (a tensão sobe muito acima do OCV),
+então subtrair só a parte ôhmica deixa a estimativa alta. Em taper quase não
+há polarização, mas a corrente ainda é 360 mA, então a subtração de 72 mV
+derruba a estimativa abaixo do OCV real.
+
+CONSEQUÊNCIA NO CÓDIGO ANTIGO: o valor reportado ou corria à frente (CC) ou
+CONGELAVA (taper), porque a regra era "só sobe se a estimativa estiver acima".
+
+CORREÇÃO (0182): durante a carga, o valor sobe SÓ pelo orçamento de Coulomb
+(limitado a 100%). A estimativa OCV é usada apenas EM REPOUSO, onde ela é
+precisa (erro < 1 ponto, medido: 4,3385 V -> curva 91,3%, display 91%).
+
+Ou seja: contagem de Coulomb para a dinâmica, OCV para o repouso — que é
+exatamente o princípio do algoritmo do Android, só que sem o modelo completo.
+
+---------------------------------------------------------------------
+19. ESTADO NO FECHAMENTO DO DIA (27/10, ~16:25) e o que falta
+---------------------------------------------------------------------
+KERNEL: 182 patches (0167..0182). DT do U-Boot com a curva real + 200 mOhm.
+MÓDULOS instalados: qcom_qg (0182) e qcom_smbx (0178), ambos com debugfs.
+
+VERIFICADO HOJE, NO APARELHO
+  - curva em repouso: 4,3385 V -> 91,3% pela curva, 91% no display (erro < 1 pt)
+  - com 200 mOhm: 4,3385 V em repouso -> 91% (antes, com 30 mOhm, dava 94%)
+  - carga CC: FSM 0x03, enable 1, FCC 0x14 (1 A), ICL 500 mA, float 0x50 (4,40 V)
+  - conta de energia: 496 mA (entrada) - 128 mA (bateria) = 631 mA de consumo
+  - display PARA de subir quando a bateria entrega corrente (0181+0182) ok
+  - debugfs: qcom_qg + hanoip-charge + hanoip-icl + dump do charger (4/4)
+  - DT em vigor: factory-internal-resistance = 200000 uOhm (6000/9 = ...),
+    primeira leitura da tabela 4446500 uV (curva Motorola)
+  - 182 patches compilam; imagem e módulos com hash em work/kernel-7.3/v4/out
+
+COMANDOS ÚTEIS (tudo opt-in, nada liga sozinho)
+  echo 1|0 > /sys/kernel/debug/hanoip-charge
+  echo <uA> > /sys/kernel/debug/hanoip-icl      (forcar limite de entrada)
+  cat /sys/kernel/debug/qcom_qg                 (cheia, msoc, orcamento, corrente)
+  cat /sys/kernel/debug/c440000.spmi:pmic@0:charger@1000
+  /usr/local/sbin/hanoip-batt-log 900 2000 /root/batt.csv
+  /usr/local/sbin/hanoip-batt-watch 3600 15
+
+FALTA VALIDAR (não fingir que está pronto)
+  1. SUBIDA COM CARGA LÍQUIDA POSITIVA: com a tela ligada e porta de PC o
+     líquido é negativo (consumo 631 mA > 496 mA de entrada) e o display
+     corretamente não sobe. Para ver a subida de ~1% a cada 8-10 min é preciso
+     tela apagada (ou carregador de parede).
+  2. TERMINAÇÃO: status Full e corte por corrente nunca observados completos.
+  3. DCP (carregador de parede): caminho de 1 A nunca exercitado.
+  4. Bateria é ATL; existe variante SUNWODA com o mesmo formato de perfil — o
+     DT usa a curva ATL (esta unidade é ATL pelo perfil do Android).
+
+RISCO ATUAL: carga LIGADA com a tela em uso => líquido negativo, sem ganho.
+O display está honesto (95% parado) e as proteções (JEITA, float 4,40 V,
+BAT_OV) seguem no hardware.
+
+---------------------------------------------------------------------
+20. DOIS BUGS REAIS DA CONTAGEM DE COULOMB (patch 0183, 27/10 ~16:40)
+---------------------------------------------------------------------
+Sintoma que os revelou: com a tela APAGADA e +250 mA entrando, o display
+andou 95% -> 98% -> 100% em poucos minutos. A 250 mA, 1% leva ~14 min.
+
+CAUSA 1 - retificacao do ruido
+  current_now e a ULTIMA amostra do ADC, nao uma media. Com a corrente real
+  oscilando perto de zero (media medida -44 mA, tela ligada em porta de PC),
+  amostras isoladas liam de -223 mA a +297 mA. O codigo fazia
+
+      if (current_ua <= 0) return;      /* so conta o que entra */
+
+  Isto e: descartava TODAS as amostras negativas e somava apenas as
+  positivas -> retificacao de retificador de meia onda. Inventava carga
+  enquanto a bateria entregava corrente.
+  CORRECAO: filtro EMA (8 amostras) na corrente COM SINAL; so conta se o
+  valor filtrado passar de +50 mA.
+
+CAUSA 2 - divisor de 32 bits (a mais grave)
+  add = div_s64(filt * dt * 100000, 3600LL * full)
+  div_s64(dividend, s32 divisor) recebe divisor de 32 BITS. O divisor real
+  e 3600 * capacidade em uAh = 3600 * 4939000 = 17.780.400.000, que nao
+  cabe: era truncado em silencio para 600.530.816. Resultado: cada amostra
+  contava ~27x a carga real.
+  CORRECAO: div64_s64 (64/64). Medido depois: 62 mili-% em 60 s a 192 mA;
+  teoria 71 mili-% (diferenca = primeiro sample + truncamento de segundo).
+  AUDITORIA: os outros div_s64 do driver dividem por 1000 e 1000000 (cabem
+  em s32) e o dividendo e s64 -> corretos.
+
+DUAS TRAVAS A MAIS
+  - teto do orcamento: 2000 -> 1000 mili-% (no maximo 1% por passo; antes
+    podia pular 2% de uma vez, que foi o 98% -> 100%).
+  - o valor PARA EM 99% enquanto carrega (@QG_SOC_CHG_MAX). 100% so quando
+    o proprio charger reportar termino (status FULL), caminho que ja existia.
+    Sentar em 99% para sempre e erro menor que anunciar cheio um pack que
+    ainda absorve 250 mA.
+
+PROVA DE QUE O 100% ERA FALSO
+  Ao recarregar o modulo (que reinicializa a partir da estimativa OCV), o
+  valor caiu de 100% para 92%. Com float 4,40 V, terminal 4,4021 V e ainda
+  +244 mA entrando (FSM TAPER) o pack NAO estava cheio.
+
+LICAO DE METODO
+  Nenhum dos dois bugs aparece lendo o codigo: o primeiro so se revela com a
+  corrente media perto de zero por tempo suficiente (tela apagada), o segundo
+  so comparando a taxa medida com a teoria. Contagem de Coulomb precisa ser
+  conferida contra a fisica (mAh / corrente / tempo), nao contra o proprio
+  codigo.
+
+ESTADO NO MOMENTO (16:40): cap 92%, Charging, +192 mA, FSM TAPER,
+float 0x50 (4,40 V), enable=1, FCC=0x14 (1 A), 35 C, tela apagada.
+Orcamento subindo ~1%/15 min. 183 patches.
+
+---------------------------------------------------------------------
+21. O CARREGADOR DE PAREDE NAO FUNCIONAVA POR CAUSA DO DT (27/10 ~17:15)
+---------------------------------------------------------------------
+SINTOMA: carregador USB-C PD de 100 W plugado -> nada. ONLINE=0,
+APSD_STATUS=0x00, VBUS ausente. No PC carregava normalmente.
+
+CAUSA REAL (nao era o carregador):
+  /sys/class/typec/port0 mostrava
+      power_role   = [source]     <- o telefone se apresentava como FONTE
+      vconn_source = yes          <- estava oferecendo VCONN (Rp na linha CC)
+  e o DT (sm7150-motorola-hanoip.dts, herdado do port de referencia do
+  Xiaomi) dizia:
+      connector { power-role = "source"; ... source-pdos = <...>; }
+  Existe um TCPM DE VERDADE no kernel (drivers/usb/typec/tcpm/qcom). Com
+  "source" ele registra a porta como fonte PD. Um carregador USB-C so liga o
+  VBUS depois de ver um SINK (Rd) - logo, o carregador estava certo e o
+  aparelho errado.
+  No PC "funcionava" porque o ABL ja tinha estabelecido o VBUS como sink
+  antes do kernel subir (o nosso driver e' monitor e preserva o Type-C).
+
+TENTATIVA 1 (errada): power-role = "sink" -> o TCPM FALHA no probe com
+  -EINVAL: sink sem sink-pdos nao registra. Consequencia visivel: nenhuma
+  porta em /sys/class/typec.
+
+CORRECAO FINAL (o padrao que o upstream usa em outros Qualcomm):
+      power-role = "dual";
+      data-role  = "dual";
+      op-sink-microwatt = <5000000>;      /* 5 W = 5 V * 1 A, o nosso teto */
+      source-pdos = <PDO_FIXED(5000, 3000, ...)>;
+      sink-pdos   = <PDO_FIXED(5000, 3000, ...)>;   /* SO 5 V, de proposito */
+  Sem PDO de 9/12 V o VBUS nunca sobe acima de 5 V.
+
+PROVA POR BINARIO (scripts/fdt_diff.py, DT extraido do u-boot antigo que
+estava em gzip dentro do .img ANDROID! header):
+  744 nos, 0 nos novos, 0 removidos, 1 propriedade alterada:
+      connector power-role: "source" -> "sink"   (na 1a tentativa)
+  na versao final: power-role source->dual + sink-pdos + op-sink-microwatt.
+
+RESULTADO MEDIDO DEPOIS DO BOOT COM O DT NOVO:
+  port_type = [dual] source sink
+  power_role = source [sink]      (era [source])
+  vconn_source = no               (era yes)
+  APSD = DCP (carregador)         (era desconhecido)
+  carga: +186 a +250 mA na bateria, 32-33 C, FSM TAPER
+  a tela NAO acendeu sozinha ao plugar (sonda dpms: 0 transicoes), o que
+  reforca a hipotese de que os acordares vinham do TCPM rodando como fonte.
+
+BUG DE SEQUENCIA ENCONTRADO (patch 0185):
+  o driver negocia no instante do enable, o APSD ainda nao terminou, ele cai
+  no padrao SDP (500 mA) e NUNCA re-negocia. Medido: fonte DCP com o limite
+  preso em 550 mA (reg 0x370 = 0x0a). O override manual para 1 A
+  (reg 0x370 = 0x14) mostrou que o limite era a unica diferenca.
+  CORRECAO: o worker de monitor (10 s) compara o tipo do APSD com o ultimo e
+  re-negocia quando muda; e um passe extra 2,5 s depois de ligar a carga.
+
+OUTROS DOIS DETALHES APRENDIDOS
+  - `echo 1 > /sys/kernel/debug/hanoip-charge` da EACCES (o O_TRUNC nao e'
+    aceito nesse arquivo). Use: printf '1\n' | dd of=... bs=2 count=1
+  - os arquivos de debugfs do qcom_smbx so nascem ~8 s depois do probe e o
+    work usa `done &= create(...)`: se um falhar, ele repete e pode deixar o
+    arquivo do dump ausente. Recarregar o modulo resolvia; agora o caminho
+    automatico tambem reconcilia.
+
+---------------------------------------------------------------------
+22. 0185/0186 VALIDADOS NO APARELHO (27/10 ~17:25) — 186 patches
+---------------------------------------------------------------------
+TESTE DO 0185 (reconciliacao do APSD):
+  1) forcei o limite para 500 mA           -> reg 0x370 = 0x0a
+  2) recarreguei o qcom_smbx               -> last_apsd_type = -1
+  3) 10 s depois, SEM intervencao:
+       dmesg: "hanoip: APSD agora diz DCP (carregador), reconciliando..."
+       dmesg: "hanoip: fonte DCP (carregador) -> limite de entrada 1000000 uA"
+       reg 0x370 = 0x14  (= 20 x 50 mA = 1 A)
+
+TESTE DO 0186 (leitura do CURRENT_MAX):
+  antes:  current_max = 600000  (lendo STATUS_2, campo em TABELA no SMB5)
+  depois: current_max = 1000000 (lendo USBIN_CURRENT_LIMIT_CFG)
+          reg 0x370 = 0x14 -> os dois numeros agora concordam.
+
+ESTADO AS 17:25 (carregador de parede 100 W, PD, no cabo):
+  cap 93%, Charging, +161 mA (taper caindo), 31,7 C
+  APSD DCP, FSM 0x04 (taper), float 0x50 (4,40 V), enable 1
+  entrada medida ~357 mA (a bateria so aceita 161 mA porque esta em taper)
+
+TELA ACENDENDO SOZINHA: 0 transicoes de dpms em ~20 min com o carregador de
+parede plugado (sonda /root/dpms-watch.sh via systemd-run, log
+/root/dpms-watch.log). Antes, no PC, o usuario via acender repetidamente.
+Hipotese forte: era o TCPM rodando como FONTE (tentando energizar a porta a
+cada ciclo). Nao e' prova definitiva - uma sessao longa no PC vai dizer.
+
+AINDA ABERTO
+  1. TERMINACAO (status Full) nunca vista ate o fim.
+  2. Carga automatica no boot: hoje opt-in, o bit reseta em power cycle.
+  3. AICL: se a fonte afundar, o SMB5 reduz sozinho e nao lemos esse resultado.
+
+---------------------------------------------------------------------
+23. TERMINACAO OBSERVADA PELA PRIMEIRA VEZ (27/10 ~17:54-18:00)
+---------------------------------------------------------------------
+O item que estava aberto desde o inicio do trabalho com bateria fechou:
+o charger DECLAROU o fim da carga, com o driver reportando honestamente.
+
+  status ............... Full        (enum 4)
+  corrente da bateria .. 0 mA        (o charger cortou)
+  FSM .................. 0x45        (era 0x04 taper)
+  float ................ 0x50 (4,40 V)
+  enable ............... 1
+  temperatura .......... 30,6 C
+  entrada .............. 4,90 V x 205..610 mA (so o consumo do sistema)
+  capacidade ........... 100%
+  duracao .............. 92% -> taper (250->161->125->106 mA) -> Full
+
+SEQUENCIA DA CAPACIDADE (97 -> 99 -> 100) E SUA EXPLICACAO
+  Nos primeiros minutos apos o corte a capacidade lia 97% e depois 99%,
+  subindo 1 ponto por leitura, mesmo com status=Full. Investigado por
+  instrumentacao (nao por suposicao): foi adicionado ao driver um contador
+  do chamador aninhado e o resultado foi
+      rc=0  status=4 (FULL)  -> atalho Full->100 funcionando
+  ou seja, o atalho esta correto: durante a TRANSICAO o fornecedor ainda
+  respondia "not charging" e o caminho de repouso (banda morta + 1 ponto por
+  leitura) levou o valor ate 100. Quando o estado assentou em Full, tudo
+  concordou. O modulo de instrumentacao foi removido e o modulo limpo
+  (sha256 e8dfbc39b1e9dfa9..., igual ao build 186) foi reinstalado.
+
+O QUE ISSO VALIDA DE PONTA A PONTA
+  - carga em porta de PC (SDP, 500 mA) e em carregador de parede (DCP, 1 A)
+  - taper com corrente caindo
+  - corte por terminacao do proprio charger
+  - status Full propagado do charger para o nosso psy
+  - 100% apenas quando o hardware diz que esta cheio (trava em 99 antes)
+
+AINDA ABERTO
+  1. RE-CARGA: apos o corte, quando a tensao cair, o SMB5 retoma sozinho
+     (recharge hysteresis). Nao observado ainda.
+  2. Carga automatica no boot (hoje opt-in; o bit reseta em power cycle).
+  3. AICL: se a fonte afundar, o SMB5 reduz e nao lemos esse resultado.
+
+---------------------------------------------------------------------
+24. VERIFICACAO DO "100%" E A DECISAO DE EXIBICAO (27/10 ~18:05)
+---------------------------------------------------------------------
+PERGUNTA: o aparelho esta mesmo em 100%?
+
+DOIS CALCULOS INDEPENDENTES, MESMO RESULTADO — 94,4%:
+  1) curva OCV Motorola na tensao de repouso medida (4,381 V):
+       4321 mV -> 90%, 4389 mV -> 95%  =>  94,4%
+  2) contagem de Coulomb da sessao:
+       91,5% (curva em 4,342 V as 17:10)
+       + 198 mA medios x 44 min = 145 mAh
+       / 4939 mAh de capacidade aprendida = +2,9%
+       =>  94,4%
+
+DE ONDE VINHA O 100%: exclusivamente de status == FULL (terminacao do
+charger), pelo atalho do driver. Nao era medida.
+
+CAUSA RAIZ (dump do DT do charger do Android, work/android-dump-20261025):
+    qcom,fv-max-uv = 0x43e6d0 = 4,450 V   <- float do Android
+    qcom,iterm-ma  = 0x122    = 290 mA    <- corrente de terminacao
+    qcom,fcc-max-ua= 0x36ee80 = 3,60 A
+    qcom,usb-icl-ua= 0x2dc6c0 = 3,0 A
+  O ABL deixa FLOAT_VOLTAGE_CFG 0x70 = 0x50 = 4,400 V. Na curva Motorola:
+    4,4465 V = 100%   (topo da tabela)
+    4,450  V = 100%   (Android)
+    4,400  V =  96,0% (nosso float, 46,5 mV ABAIXO do topo)
+    4,381  V =  94,4% (repouso depois do relaxamento)
+  Nosso corte tambem foi mais cedo por corrente: ~100 mA contra iterm 290 mA.
+
+DECISAO DO USUARIO (27/10 ~18:05): MANTER o float de 4,40 V e MANTER a
+exibicao de 100% apenas no sentido "o charger terminou, pode tirar da tomada".
+Ou seja:
+  - 100% so existe enquanto status == FULL (trava em 99% antes);
+  - ao desconectar, o valor volta para a curva real (~94-96%) no repouso;
+  - nao vamos a 4,45 V: a celula e' velha (4939 mAh aprendidos contra 6174
+    mAh de projeto) e ficar 50 mV abaixo do float do Android e' escolha
+    consciente deste port.
+
+REGISTRADO NO CODIGO (patch 0187, comentario no qcom_qg): explica o que 100%
+significa aqui, com os numeros, para ninguem "consertar" depois trocando a
+politica por uma estimativa de tensao que inflaria a carga.
+
+---------------------------------------------------------------------
+25. LICAO DE REPRODUTIBILIDADE (build 187, patch so de comentario)
+---------------------------------------------------------------------
+O 0187 muda apenas comentarios. Eu esperava o MESMO hash de .ko do build 186
+(e8dfbc39b1e9dfa9) e isso NAO aconteceu (saiu 65a50ec809289089).
+
+O que a comparacao byte a byte mostrou:
+  .ko 186 e 187 tem o MESMO tamanho (19184 bytes)
+  diferem em EXATAMENTE 20 bytes, nos offsets 80..99
+  esses 20 bytes sao a nota .note.gnu.build-id (logo apos "GNU\0")
+  zerando essa nota, os dois arquivos ficam IDENTICOS
+  objdump -d dos dois: mesmo sha256 (12229f4f...)
+
+CONCLUSAO: o codigo gerado e' identico; o que muda e' o build-id do linker.
+Portanto: comparar hash de .ko NAO e' prova de identidade de codigo neste
+tree. Para provar isso, use objdump/cmp ignorando o build-id, nao o sha256 do
+arquivo. Vale para qualquer "sera que so mudou comentario?" futuro.
+
+---------------------------------------------------------------------
+26. PATCH 0184 — OCV SO EM REPOUSO, UM PONTO POR LEITURA (completando o
+    registro; a frente ficou sem este numero documentado)
+---------------------------------------------------------------------
+SINTOMA MEDIDO: ao desconectar o cabo, o display saltou de 92% para 97% em
+poucos instantes e sem carga nenhuma entrando.
+
+CAUSA: um UNICO sample de corrente de -660 mA (Wi-Fi acordando) entrou na
+correcao I*R com os 200 mOhm do pack:
+    ocv_est = 4,34 V - (-0,660 A * 0,200 ohm) = 4,34 + 0,132 = 4,47 V
+A curva Motorola le 4,47 V como ~97%. A conta esta fisicamente certa, mas
+-660 mA era transiente, nao corrente de repouso: OCV so vale com a celula
+relaxada.
+
+SEGUNDO DEFEITO NO MESMO CAMINHO: o slew permite 1% a cada 2 min, e quando
+ficou ~10 min sem ninguma leitura ele ACUMULOU 5 degraus e liberou todos de
+uma vez (o 92% -> 97% visivel).
+
+CORRECAO (0184):
+  - so usar OCV depois de |i| < 120 mA (QG_REST_MAX_UA) por 30 s
+    (QG_REST_SETTLE_MS); qualquer pico zera o relogio de repouso;
+  - no maximo 1 ponto por leitura, sem estoque acumulado.
+Em carga o rest_jiffies e' zerado; e o caminho de carga continua sendo so
+Coulomb (0182).
+
+EFEITO OBSERVADO DEPOIS: com o aparelho desconectado, o valor voltou de 97%
+para 95% e depois para 94,4% em degraus de 1 ponto, batendo com a curva.
+
+---------------------------------------------------------------------
+27. INDICE DOS PATCHES DA BATERIA/ENERGIA (0167..0187, build 187)
+---------------------------------------------------------------------
+  0167  power: supply: qcom_qg: report a steady state of charge
+  0168  power: supply: qcom_smbx: add a read-only register dump for
+  0169  power: supply: qcom_smbx: opt-in charging for the hanoip
+  0170  power: supply: qcom_qg: never freeze on a bad first sample
+  0171  power: supply: qcom_smbx: negotiate the input current limit
+  0172  power: supply: qcom_smbx: allow forcing the input current
+  0173  power: supply: qcom_qg: cap the charging rise with coulomb
+  0174  power: supply: qcom_qg: limit the charging rise only by
+  0175  power: supply: qcom_qg: smoother release and immediate full
+  0176  power: supply: qcom_qg/qcom_smbx: remove debugfs files on
+  0177  power: supply: qcom_qg: reject implausible voltage samples at
+  0178  power: supply: qcom_smbx: create the debugfs files late, with
+  0179  power: supply: qcom_qg: fall back when a voltage sample is
+  0180  power: supply: qcom_qg: use the last ADC current for the
+  0181  power: supply: qcom_qg: fix the voltage choice and the
+  0182  power: supply: qcom_qg: during charging follow only the
+  0183  power: supply: qcom_qg: filter the current and fix the charge
+  0184  power: supply: qcom_qg: only trust OCV at rest, one point per
+  0185  power: supply: qcom_smbx: reconcile the input limit with APSD
+  0186  power: supply: qcom_smbx: report the programmed input limit
+  0187  power: supply: qcom_qg: document what 100% means on this port
+
+Ler junto com as secoes 17-25. Os patches 0168-0187 nasceram TODOS desta
+sessao de 27/10 e cada um tem justificativa medida no corpo do patch.

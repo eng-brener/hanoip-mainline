@@ -1,0 +1,10 @@
+Types: deb
+URIs: http://kali.download/kali
+Suites: kali-rolling
+Components: main contrib non-free non-free-firmware
+Signed-By: /usr/share/keyrings/kali-archive-keyring.gpg
+Types: deb deb-src
+URIs: https://repo.mobian.org/
+Suites: forky
+Components: main non-free-firmware
+Signed-By: /usr/share/keyrings/mobian-archive-keyring.gpg

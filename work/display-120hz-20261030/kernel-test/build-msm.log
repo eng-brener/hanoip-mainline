@@ -1,0 +1,489 @@
+.git/rebase-apply/patch:176: trailing whitespace.
+	
+warning: 1 line adds whitespace errors.
+.git/rebase-apply/patch:208: trailing whitespace.
+# USB Type-C 
+warning: 1 line adds whitespace errors.
+.git/rebase-apply/patch:658: trailing whitespace.
+				{ 0 },	
+warning: 1 line adds whitespace errors.
+.git/rebase-apply/patch:135: trailing whitespace.
+	 
+.git/rebase-apply/patch:158: trailing whitespace.
+	 
+.git/rebase-apply/patch:174: trailing whitespace.
+	 
+warning: 3 lines add whitespace errors.
+.git/rebase-apply/patch:3820: new blank line at EOF.
++
+.git/rebase-apply/patch:4444: new blank line at EOF.
++
+.git/rebase-apply/patch:7015: new blank line at EOF.
++
+.git/rebase-apply/patch:10910: new blank line at EOF.
++
+.git/rebase-apply/patch:12484: new blank line at EOF.
++
+warning: 5 lines add whitespace errors.
+baseline tree OK (276fbce0ae673c83e456cfe359c33ed3c4e3468b)
+Checking patch drivers/gpu/drm/msm/dsi/dsi_host.c...
+Hunk #1 succeeded at 445 (offset 16 lines).
+Hunk #2 succeeded at 1004 (offset 14 lines).
+Hunk #3 succeeded at 1043 (offset 14 lines).
+Hunk #4 succeeded at 1059 (offset 14 lines).
+Hunk #5 succeeded at 1138 (offset 14 lines).
+Hunk #6 succeeded at 1874 (offset 14 lines).
+Hunk #7 succeeded at 1897 (offset 14 lines).
+Hunk #8 succeeded at 2176 (offset 14 lines).
+Hunk #9 succeeded at 2239 (offset 14 lines).
+Hunk #10 succeeded at 2251 (offset 14 lines).
+Hunk #11 succeeded at 2276 (offset 14 lines).
+Hunk #12 succeeded at 2583 (offset 14 lines).
+Hunk #13 succeeded at 2600 (offset 12 lines).
+Hunk #14 succeeded at 2610 (offset 12 lines).
+Hunk #15 succeeded at 2628 (offset 12 lines).
+Hunk #16 succeeded at 2648 (offset 12 lines).
+Hunk #17 succeeded at 2694 (offset 12 lines).
+Hunk #18 succeeded at 2702 (offset 12 lines).
+Hunk #19 succeeded at 2719 (offset 12 lines).
+Applied patch drivers/gpu/drm/msm/dsi/dsi_host.c cleanly.
+Checking patch drivers/gpu/drm/msm/dsi/dsi_host.c...
+Hunk #1 succeeded at 2159 (offset 13 lines).
+Applied patch drivers/gpu/drm/msm/dsi/dsi_host.c cleanly.
+patched tree e0bc45ad28f73ba4f0858f0a97988e351efa09f5 at 99fb4c420
+make: Entering directory '/src/linux'
+make[1]: Entering directory '/src/obj'
+  SYNC    include/config/auto.conf.cmd
+  CC [M]  sound/usb/qcom/qc_audio_offload.o
+  CC [M]  sound/usb/qcom/mixer_usb_offload.o
+  CC [M]  sound/soc/soc-usb.o
+  CC [M]  drivers/video/backlight/qcom-wled.o
+  CC [M]  sound/soc/soc-core.o
+  CC [M]  sound/soc/soc-dapm.o
+  CC [M]  sound/soc/soc-jack.o
+  CC [M]  sound/soc/soc-utils.o
+  LD [M]  sound/usb/qcom/snd-usb-audio-qmi.o
+  CC [M]  sound/soc/soc-dai.o
+  CC [M]  sound/soc/soc-component.o
+  CC [M]  sound/soc/soc-pcm.o
+  CC [M]  sound/soc/soc-devres.o
+  CC [M]  sound/soc/soc-ops.o
+  CC [M]  drivers/misc/fastrpc.o
+  CC [M]  sound/soc/soc-link.o
+  CC [M]  sound/soc/soc-card.o
+  CC [M]  drivers/gpu/drm/display/drm_hdmi_audio_helper.o
+  CC [M]  sound/soc/soc-compress.o
+  CC [M]  sound/soc/soc-topology.o
+  CC [M]  sound/soc/generic/simple-card-utils.o
+  CC [M]  drivers/gpu/drm/panel/panel-ilitek-ili7807s.o
+  CC [M]  sound/soc/codecs/adau7002.o
+  LD [M]  drivers/gpu/drm/display/drm_display_helper.o
+  CC [M]  sound/soc/generic/audio-graph-card2.o
+  CC [M]  sound/soc/codecs/aw88261.o
+  CC [M]  sound/soc/codecs/aw882xx.o
+  CC [M]  sound/soc/codecs/bt-sco.o
+  CC [M]  drivers/net/wireless/ath/ath10k/mac.o
+  CC [M]  sound/soc/codecs/cs35l41.o
+  CC [M]  drivers/net/wireless/ath/ath10k/debug.o
+  LD [M]  sound/soc/generic/snd-soc-simple-card-utils.o
+  LD [M]  sound/soc/generic/snd-soc-audio-graph-card2.o
+  CC [M]  drivers/usb/misc/qcom_eud.o
+  CC [M]  drivers/net/wireless/ath/ath10k/core.o
+  CC [M]  drivers/gpu/drm/msm/msm_debugfs.o
+  CC [M]  sound/soc/fsl/fsl_ssi.o
+  CC [M]  drivers/input/touchscreen/ilitek-hanoip-spi.o
+  CC [M]  drivers/input/misc/aw8695-haptics.o
+  CC [M]  drivers/net/wireless/ath/ath10k/htc.o
+  CC [M]  sound/soc/codecs/cs35l41-i2c.o
+  CC [M]  drivers/gpu/drm/msm/msm_drv.o
+  CC [M]  sound/soc/fsl/fsl_esai.o
+  CC [M]  drivers/input/misc/pm8xxx-vibrator.o
+  CC [M]  drivers/gpu/drm/msm/msm_fence.o
+  CC [M]  sound/soc/codecs/dmic.o
+  CC [M]  drivers/net/wireless/ath/ath10k/htt.o
+  CC [M]  drivers/gpu/drm/msm/msm_gem.o
+  CC [M]  sound/soc/codecs/max98357a.o
+  LD [M]  sound/soc/fsl/snd-soc-fsl-ssi.o
+  LD [M]  sound/soc/fsl/snd-soc-fsl-esai.o
+  CC [M]  drivers/net/wireless/ath/ath10k/htt_rx.o
+  CC [M]  drivers/media/i2c/hanoip-cam.o
+  CC [M]  drivers/i2c/busses/i2c-qcom-cci.o
+  CC [M]  drivers/gpu/drm/msm/msm_gem_prime.o
+  CC [M]  drivers/media/i2c/s5k4h7.o
+  CC [M]  drivers/net/wireless/ath/ath10k/htt_tx.o
+  CC [M]  sound/soc/codecs/max98927.o
+  CC [M]  drivers/net/wireless/ath/ath10k/txrx.o
+  CC [M]  drivers/gpu/drm/msm/msm_gem_shrinker.o
+  CC [M]  drivers/net/wireless/ath/ath10k/wmi.o
+  CC [M]  drivers/gpu/drm/msm/msm_gem_submit.o
+  CC [M]  sound/soc/codecs/hdmi-codec.o
+  CC [M]  drivers/media/i2c/hanoip-vcm.o
+  CC [M]  drivers/power/supply/qcom_qg.o
+  CC [M]  drivers/gpu/drm/msm/msm_gem_vma.o
+  CC [M]  sound/soc/codecs/rt5663.o
+  CC [M]  drivers/power/supply/qcom_smbx.o
+  CC [M]  drivers/media/i2c/ov8856.o
+  CC [M]  drivers/gpu/drm/msm/msm_gpu.o
+  CC [M]  drivers/gpu/drm/msm/msm_gpu_devfreq.o
+  CC [M]  drivers/thermal/qcom/lmh.o
+  CC [M]  drivers/net/wireless/ath/ath10k/wmi-tlv.o
+  CC [M]  drivers/net/wireless/ath/ath10k/bmi.o
+  CC [M]  drivers/media/i2c/s5k3l6xx.o
+  CC [M]  sound/soc/codecs/rt5682.o
+  CC [M]  drivers/net/wireless/ath/ath10k/hw.o
+  CC [M]  sound/soc/qcom/lpass-cpu.o
+  CC [M]  drivers/gpu/drm/msm/msm_iommu.o
+  CC [M]  drivers/net/wireless/ath/ath10k/p2p.o
+  CC [M]  sound/soc/codecs/rt5682-i2c.o
+  CC [M]  drivers/media/platform/qcom/camss/camss.o
+  CC [M]  sound/soc/qcom/lpass-cdc-dma.o
+  CC [M]  drivers/gpu/drm/msm/msm_perfcntr.o
+  CC [M]  sound/soc/qcom/lpass-hdmi.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-csid.o
+  CC [M]  drivers/media/platform/qcom/iris/iris_firmware.o
+  CC [M]  drivers/gpu/drm/msm/msm_rd.o
+  CC [M]  sound/soc/codecs/rt5682s.o
+  CC [M]  drivers/gpu/drm/msm/msm_ringbuffer.o
+  CC [M]  drivers/media/platform/qcom/venus/core.o
+  CC [M]  drivers/media/platform/qcom/venus/firmware.o
+  CC [M]  sound/soc/qcom/lpass-platform.o
+  CC [M]  drivers/net/wireless/ath/ath10k/swap.o
+  LD [M]  drivers/media/platform/qcom/iris/qcom-iris.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-csid-4-1.o
+  CC [M]  drivers/gpu/drm/msm/msm_submitqueue.o
+  CC [M]  sound/soc/codecs/spdif_receiver.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-csid-4-7.o
+  CC [M]  drivers/net/wireless/ath/ath10k/spectral.o
+  CC [M]  sound/soc/qcom/lpass-apq8016.o
+  CC [M]  sound/soc/codecs/spdif_transmitter.o
+  CC [M]  drivers/gpu/drm/msm/msm_gpu_tracepoints.o
+  LD [M]  drivers/media/platform/qcom/venus/venus-core.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-csid-340.o
+  CC [M]  sound/soc/qcom/lpass-sc7180.o
+  CC [M]  drivers/gpu/drm/msm/msm_atomic.o
+  CC [M]  sound/soc/codecs/tas2562.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-csid-680.o
+  CC [M]  drivers/net/wireless/ath/ath10k/thermal.o
+  CC [M]  drivers/gpu/drm/msm/msm_fb.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-csid-gen2.o
+  CC [M]  drivers/media/v4l2-core/v4l2-subdev.o
+  CC [M]  sound/soc/qcom/lpass-sc7280.o
+  CC [M]  sound/soc/codecs/tfa9872.o
+  CC [M]  drivers/gpu/drm/msm/msm_kms.o
+  CC [M]  sound/soc/codecs/tlv320aic32x4.o
+  CC [M]  drivers/net/wireless/ath/ath10k/leds.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-csid-gen3.o
+  CC [M]  drivers/ufs/core/ufshcd.o
+  CC [M]  sound/soc/qcom/apq8016_sbc.o
+  CC [M]  drivers/ufs/host/ufs-qcom.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-csiphy.o
+  CC [M]  drivers/gpu/drm/msm/msm_fbdev.o
+  CC [M]  sound/soc/qcom/apq8096.o
+  CC [M]  drivers/net/wireless/ath/ath10k/wow.o
+  CC [M]  sound/soc/codecs/tlv320aic32x4-i2c.o
+  CC [M]  drivers/firmware/qcom/qcom_qseecom_fpc.o
+  CC [M]  sound/soc/codecs/tlv320aic3x.o
+  LD [M]  drivers/media/v4l2-core/videodev.o
+  CC [M]  sound/soc/qcom/sc7180.o
+  CC [M]  drivers/gpu/drm/msm/adreno/adreno_device.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-csiphy-2ph-1-0.o
+/src/linux/drivers/firmware/qcom/qcom_qseecom_fpc.c: In function 'qseecom_fpc_probe':
+/src/linux/drivers/firmware/qcom/qcom_qseecom_fpc.c:1015:1: warning: label 'have_buffers' defined but not used [-Wunused-label]
+ 1015 | have_buffers:
+      | ^~~~~~~~~~~~
+  CC [M]  drivers/net/wireless/ath/ath10k/coredump.o
+  CC [M]  drivers/gpu/drm/msm/adreno/adreno_gpu.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.o
+  CC [M]  sound/soc/codecs/tlv320aic3x-i2c.o
+  CC [M]  drivers/net/wireless/ath/ath10k/ce.o
+  CC [M]  sound/soc/qcom/sc7280.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a2xx_catalog.o
+  CC [M]  drivers/net/wireless/ath/ath10k/sdio.o
+  CC [M]  sound/soc/codecs/wcd-clsh-v2.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a2xx_gpu.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-ispif.o
+  CC [M]  drivers/net/wireless/ath/ath10k/qmi.o
+  CC [M]  sound/soc/qcom/sdm845.o
+  CC [M]  drivers/net/wireless/ath/ath10k/snoc.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-tpg.o
+  CC [M]  sound/soc/codecs/wcd-mbhc-v2.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-tpg-gen1.o
+  CC [M]  sound/soc/qcom/sm8250.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a2xx_gpummu.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe-4-1.o
+  LD [M]  drivers/net/wireless/ath/ath10k/ath10k_core.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a3xx_catalog.o
+  CC [M]  sound/soc/codecs/wcd937x.o
+  CC [M]  sound/soc/qcom/common.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a3xx_gpu.o
+  LD [M]  drivers/net/wireless/ath/ath10k/ath10k_sdio.o
+  LD [M]  drivers/net/wireless/ath/ath10k/ath10k_snoc.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a4xx_catalog.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe-4-7.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a4xx_gpu.o
+  CC [M]  sound/soc/qcom/sdw.o
+  CC [M]  sound/soc/codecs/wcd937x-sdw.o
+  CC [M]  drivers/remoteproc/qcom_q6v5_mss.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe-4-8.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a5xx_catalog.o
+  CC [M]  sound/soc/qcom/usb_offload_utils.o
+  CC [M]  drivers/remoteproc/qcom_q6v5_pas.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe-17x.o
+  LD [M]  drivers/ufs/core/ufshcd-core.o
+  CC [M]  sound/soc/codecs/wcd938x.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a5xx_gpu.o
+  CC [M]  sound/soc/qcom/qdsp6/q6dsp-lpass-ports.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a5xx_power.o
+  LD [M]  sound/soc/qcom/snd-soc-lpass-cpu.o
+  LD [M]  sound/soc/qcom/snd-soc-lpass-cdc-dma.o
+  LD [M]  sound/soc/qcom/snd-soc-lpass-hdmi.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe-340.o
+  LD [M]  sound/soc/snd-soc-core.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a5xx_preempt.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe-480.o
+  CC [M]  sound/soc/qcom/qdsp6/q6afe.o
+  LD [M]  sound/soc/qcom/snd-soc-lpass-platform.o
+  LD [M]  sound/soc/qcom/snd-soc-lpass-apq8016.o
+  CC [M]  sound/soc/codecs/wcd938x-sdw.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a6xx_catalog.o
+  CC [M]  sound/soc/codecs/wcd939x.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe-680.o
+  LD [M]  sound/soc/qcom/snd-soc-lpass-sc7180.o
+  LD [M]  sound/soc/qcom/snd-soc-lpass-sc7280.o
+  LD [M]  sound/soc/qcom/snd-soc-apq8016-sbc.o
+  LD [M]  sound/soc/qcom/snd-soc-apq8096.o
+  LD [M]  sound/soc/qcom/snd-soc-sc7180.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe-gen1.o
+  CC [M]  sound/soc/codecs/wcd939x-sdw.o
+  LD [M]  sound/soc/qcom/snd-soc-sc7280.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a6xx_gpu.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe-gen3.o
+  CC [M]  sound/soc/codecs/wm_adsp.o
+  CC [M]  sound/soc/qcom/qdsp6/q6afe-dai.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a6xx_gmu.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-vfe-vbif.o
+  LD [M]  sound/soc/qcom/snd-soc-sdm845.o
+  LD [M]  sound/soc/qcom/snd-soc-sm8250.o
+  LD [M]  sound/soc/qcom/snd-soc-qcom-common.o
+  LD [M]  sound/soc/qcom/snd-soc-qcom-sdw.o
+  LD [M]  sound/soc/qcom/snd-soc-qcom-offload-utils.o
+  CC [M]  drivers/media/platform/qcom/camss/camss-video.o
+  CC [M]  drivers/iio/adc/qcom-spmi-adc5.o
+  CC [M]  sound/soc/qcom/qdsp6/q6afe-clocks.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a6xx_hfi.o
+  CC [M]  sound/soc/codecs/simple-amplifier.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a6xx_preempt.o
+  CC [M]  sound/soc/qcom/qdsp6/q6adm.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a8xx_gpu.o
+  CC [M]  sound/soc/qcom/qdsp6/q6routing.o
+  LD [M]  drivers/media/platform/qcom/camss/qcom-camss.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a8xx_preempt.o
+  CC [M]  sound/soc/codecs/lpass-wsa-macro.o
+  CC [M]  sound/soc/qcom/qdsp6/q6asm-dai.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a5xx_debugfs.o
+  CC [M]  sound/soc/codecs/lpass-va-macro.o
+  CC [M]  sound/soc/codecs/lpass-rx-macro.o
+  CC [M]  drivers/gpu/drm/msm/adreno/a6xx_gpu_state.o
+  CC [M]  drivers/nvmem/sec-qfprom.o
+  CC [M]  drivers/tee/qcomtee/core.o
+  CC [M]  drivers/tee/qcomtee/mem_obj.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.o
+  CC [M]  sound/soc/codecs/lpass-tx-macro.o
+  CC [M]  sound/soc/qcom/qdsp6/q6apm.o
+  LD [M]  drivers/nvmem/nvmem_sec_qfprom.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.o
+  CC [M]  sound/soc/codecs/simple-mux.o
+  CC [M]  sound/soc/qcom/qdsp6/audioreach.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.o
+  CC [M]  sound/soc/qcom/qdsp6/topology.o
+  LD [M]  sound/soc/codecs/snd-soc-adau7002.o
+  LD [M]  sound/soc/codecs/snd-soc-aw88261.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.o
+  LD [M]  drivers/tee/qcomtee/qcomtee.o
+  CC [M]  sound/soc/qcom/qdsp6/q6apm-dai.o
+  LD [M]  sound/soc/codecs/snd-soc-aw882xx.o
+  LD [M]  sound/soc/codecs/snd-soc-bt-sco.o
+  LD [M]  sound/soc/codecs/snd-soc-cs35l41.o
+  LD [M]  sound/soc/codecs/snd-soc-cs35l41-i2c.o
+  LD [M]  sound/soc/codecs/snd-soc-dmic.o
+  LD [M]  sound/soc/codecs/snd-soc-max98357a.o
+  LD [M]  sound/soc/codecs/snd-soc-max98927.o
+  LD [M]  sound/soc/codecs/snd-soc-hdmi-codec.o
+  CC [M]  sound/soc/qcom/qdsp6/q6apm-lpass-dais.o
+  LD [M]  sound/soc/codecs/snd-soc-rt5663.o
+  LD [M]  sound/soc/codecs/snd-soc-rt5682.o
+  LD [M]  sound/soc/codecs/snd-soc-rt5682-i2c.o
+  CC [M]  sound/soc/qcom/qdsp6/q6prm.o
+  LD [M]  sound/soc/codecs/snd-soc-rt5682s.o
+  LD [M]  sound/soc/codecs/snd-soc-spdif-rx.o
+  LD [M]  sound/soc/codecs/snd-soc-spdif-tx.o
+  LD [M]  sound/soc/codecs/snd-soc-tas2562.o
+  LD [M]  sound/soc/codecs/snd-soc-tfa9872.o
+  LD [M]  sound/soc/codecs/snd-soc-tlv320aic32x4.o
+  LD [M]  sound/soc/codecs/snd-soc-tlv320aic32x4-i2c.o
+  LD [M]  sound/soc/codecs/snd-soc-tlv320aic3x.o
+  LD [M]  sound/soc/codecs/snd-soc-tlv320aic3x-i2c.o
+  LD [M]  sound/soc/codecs/snd-soc-wcd-classh.o
+  LD [M]  sound/soc/codecs/snd-soc-wcd-mbhc.o
+  LD [M]  sound/soc/codecs/snd-soc-wcd937x.o
+  LD [M]  sound/soc/codecs/snd-soc-wcd937x-sdw.o
+  LD [M]  sound/soc/codecs/snd-soc-wcd938x.o
+  LD [M]  sound/soc/codecs/snd-soc-wcd938x-sdw.o
+  LD [M]  sound/soc/codecs/snd-soc-wcd939x.o
+  LD [M]  sound/soc/codecs/snd-soc-wcd939x-sdw.o
+  LD [M]  sound/soc/codecs/snd-soc-wm-adsp.o
+  LD [M]  sound/soc/codecs/snd-soc-simple-amplifier.o
+  LD [M]  sound/soc/codecs/snd-soc-lpass-wsa-macro.o
+  LD [M]  sound/soc/codecs/snd-soc-lpass-va-macro.o
+  LD [M]  sound/soc/codecs/snd-soc-lpass-rx-macro.o
+  LD [M]  sound/soc/codecs/snd-soc-lpass-tx-macro.o
+  LD [M]  sound/soc/codecs/snd-soc-simple-mux.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.o
+  CC [M]  sound/soc/qcom/qdsp6/q6usb.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_formats.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.o
+  CC [M]  drivers/soundwire/stream.o
+  LD [M]  sound/soc/qcom/qdsp6/snd-q6dsp-common.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_cdm.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.o
+  CC [M]  drivers/soundwire/qcom.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.o
+  LD [M]  sound/soc/qcom/qdsp6/snd-q6apm.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc_1_2.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp_v13.o
+  LD [M]  drivers/soundwire/soundwire-bus.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dspp.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_merge3d.o
+  LD [M]  drivers/soundwire/soundwire-qcom.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_top.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_wb.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_kms.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_plane.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_rm.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_vbif.o
+  CC [M]  drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.o
+  CC [M]  drivers/gpu/drm/msm/msm_mdss.o
+  CC [M]  drivers/gpu/drm/msm/dsi/dsi_host.o
+  CC [M]  drivers/gpu/drm/msm/dsi/dsi_manager.o
+  LD [M]  drivers/gpu/drm/msm/msm.o
+  MODPOST Module.symvers
+  LD [M]  drivers/video/backlight/qcom-wled.ko
+  LD [M]  drivers/gpu/drm/display/drm_display_helper.ko
+  LD [M]  drivers/gpu/drm/panel/panel-ilitek-ili7807s.ko
+  LD [M]  drivers/gpu/drm/msm/msm.ko
+  LD [M]  drivers/misc/fastrpc.ko
+  LD [M]  drivers/net/wireless/ath/ath10k/ath10k_core.ko
+  LD [M]  drivers/net/wireless/ath/ath10k/ath10k_sdio.ko
+  LD [M]  drivers/net/wireless/ath/ath10k/ath10k_snoc.ko
+  LD [M]  drivers/usb/misc/qcom_eud.ko
+  LD [M]  drivers/input/touchscreen/ilitek-hanoip-spi.ko
+  LD [M]  drivers/input/misc/aw8695-haptics.ko
+  LD [M]  drivers/input/misc/pm8xxx-vibrator.ko
+  LD [M]  drivers/i2c/busses/i2c-qcom-cci.ko
+  LD [M]  drivers/media/i2c/hanoip-cam.ko
+  LD [M]  drivers/media/i2c/s5k4h7.ko
+  LD [M]  drivers/media/i2c/hanoip-vcm.ko
+  LD [M]  drivers/media/i2c/ov8856.ko
+  LD [M]  drivers/media/i2c/s5k3l6xx.ko
+  LD [M]  drivers/media/platform/qcom/camss/qcom-camss.ko
+  LD [M]  drivers/media/platform/qcom/iris/qcom-iris.ko
+  LD [M]  drivers/media/platform/qcom/venus/venus-core.ko
+  LD [M]  drivers/media/v4l2-core/videodev.ko
+  LD [M]  drivers/power/supply/qcom_qg.ko
+  LD [M]  drivers/power/supply/qcom_smbx.ko
+  LD [M]  drivers/thermal/qcom/lmh.ko
+  LD [M]  drivers/ufs/core/ufshcd-core.ko
+  LD [M]  drivers/ufs/host/ufs-qcom.ko
+  LD [M]  drivers/firmware/qcom/qcom_qseecom_fpc.ko
+  LD [M]  drivers/remoteproc/qcom_q6v5_mss.ko
+  LD [M]  drivers/remoteproc/qcom_q6v5_pas.ko
+  LD [M]  drivers/iio/adc/qcom-spmi-adc5.ko
+  LD [M]  drivers/nvmem/nvmem_sec_qfprom.ko
+  LD [M]  drivers/tee/qcomtee/qcomtee.ko
+  LD [M]  drivers/soundwire/soundwire-bus.ko
+  LD [M]  drivers/soundwire/soundwire-qcom.ko
+  LD [M]  sound/usb/qcom/snd-usb-audio-qmi.ko
+  LD [M]  sound/soc/soc-usb.ko
+  LD [M]  sound/soc/snd-soc-core.ko
+  LD [M]  sound/soc/codecs/snd-soc-adau7002.ko
+  LD [M]  sound/soc/codecs/snd-soc-aw88261.ko
+  LD [M]  sound/soc/codecs/snd-soc-aw882xx.ko
+  LD [M]  sound/soc/codecs/snd-soc-bt-sco.ko
+  LD [M]  sound/soc/codecs/snd-soc-cs35l41.ko
+  LD [M]  sound/soc/codecs/snd-soc-cs35l41-i2c.ko
+  LD [M]  sound/soc/codecs/snd-soc-dmic.ko
+  LD [M]  sound/soc/codecs/snd-soc-max98357a.ko
+  LD [M]  sound/soc/codecs/snd-soc-max98927.ko
+  LD [M]  sound/soc/codecs/snd-soc-hdmi-codec.ko
+  LD [M]  sound/soc/codecs/snd-soc-rt5663.ko
+  LD [M]  sound/soc/codecs/snd-soc-rt5682.ko
+  LD [M]  sound/soc/codecs/snd-soc-rt5682-i2c.ko
+  LD [M]  sound/soc/codecs/snd-soc-rt5682s.ko
+  LD [M]  sound/soc/codecs/snd-soc-spdif-rx.ko
+  LD [M]  sound/soc/codecs/snd-soc-spdif-tx.ko
+  LD [M]  sound/soc/codecs/snd-soc-tas2562.ko
+  LD [M]  sound/soc/codecs/snd-soc-tfa9872.ko
+  LD [M]  sound/soc/codecs/snd-soc-tlv320aic32x4.ko
+  LD [M]  sound/soc/codecs/snd-soc-tlv320aic32x4-i2c.ko
+  LD [M]  sound/soc/codecs/snd-soc-tlv320aic3x.ko
+  LD [M]  sound/soc/codecs/snd-soc-tlv320aic3x-i2c.ko
+  LD [M]  sound/soc/codecs/snd-soc-wcd-classh.ko
+  LD [M]  sound/soc/codecs/snd-soc-wcd-mbhc.ko
+  LD [M]  sound/soc/codecs/snd-soc-wcd937x.ko
+  LD [M]  sound/soc/codecs/snd-soc-wcd937x-sdw.ko
+  LD [M]  sound/soc/codecs/snd-soc-wcd938x.ko
+  LD [M]  sound/soc/codecs/snd-soc-wcd938x-sdw.ko
+  LD [M]  sound/soc/codecs/snd-soc-wcd939x.ko
+  LD [M]  sound/soc/codecs/snd-soc-wcd939x-sdw.ko
+  LD [M]  sound/soc/codecs/snd-soc-wm-adsp.ko
+  LD [M]  sound/soc/codecs/snd-soc-simple-amplifier.ko
+  LD [M]  sound/soc/codecs/snd-soc-lpass-wsa-macro.ko
+  LD [M]  sound/soc/codecs/snd-soc-lpass-va-macro.ko
+  LD [M]  sound/soc/codecs/snd-soc-lpass-rx-macro.ko
+  LD [M]  sound/soc/codecs/snd-soc-lpass-tx-macro.ko
+  LD [M]  sound/soc/codecs/snd-soc-simple-mux.ko
+  LD [M]  sound/soc/generic/snd-soc-simple-card-utils.ko
+  LD [M]  sound/soc/generic/snd-soc-audio-graph-card2.ko
+  LD [M]  sound/soc/fsl/snd-soc-fsl-ssi.ko
+  LD [M]  sound/soc/fsl/snd-soc-fsl-esai.ko
+  LD [M]  sound/soc/qcom/snd-soc-lpass-cpu.ko
+  LD [M]  sound/soc/qcom/snd-soc-lpass-cdc-dma.ko
+  LD [M]  sound/soc/qcom/snd-soc-lpass-hdmi.ko
+  LD [M]  sound/soc/qcom/snd-soc-lpass-platform.ko
+  LD [M]  sound/soc/qcom/snd-soc-lpass-apq8016.ko
+  LD [M]  sound/soc/qcom/snd-soc-lpass-sc7180.ko
+  LD [M]  sound/soc/qcom/snd-soc-lpass-sc7280.ko
+  LD [M]  sound/soc/qcom/snd-soc-apq8016-sbc.ko
+  LD [M]  sound/soc/qcom/snd-soc-apq8096.ko
+  LD [M]  sound/soc/qcom/snd-soc-sc7180.ko
+  LD [M]  sound/soc/qcom/snd-soc-sc7280.ko
+  LD [M]  sound/soc/qcom/snd-soc-sdm845.ko
+  LD [M]  sound/soc/qcom/snd-soc-sm8250.ko
+  LD [M]  sound/soc/qcom/snd-soc-qcom-common.ko
+  LD [M]  sound/soc/qcom/snd-soc-qcom-sdw.ko
+  LD [M]  sound/soc/qcom/snd-soc-qcom-offload-utils.ko
+  LD [M]  sound/soc/qcom/qdsp6/snd-q6dsp-common.ko
+  LD [M]  sound/soc/qcom/qdsp6/q6afe.ko
+  LD [M]  sound/soc/qcom/qdsp6/q6afe-dai.ko
+  LD [M]  sound/soc/qcom/qdsp6/q6afe-clocks.ko
+  LD [M]  sound/soc/qcom/qdsp6/q6adm.ko
+  LD [M]  sound/soc/qcom/qdsp6/q6routing.ko
+  LD [M]  sound/soc/qcom/qdsp6/q6asm-dai.ko
+  LD [M]  sound/soc/qcom/qdsp6/snd-q6apm.ko
+  LD [M]  sound/soc/qcom/qdsp6/q6apm-dai.ko
+  LD [M]  sound/soc/qcom/qdsp6/q6apm-lpass-dais.ko
+  LD [M]  sound/soc/qcom/qdsp6/q6prm.ko
+  LD [M]  sound/soc/qcom/qdsp6/q6usb.ko
+make[1]: Leaving directory '/src/obj'
+make: Leaving directory '/src/linux'
+vermagic: 7.3.0-sm7150 SMP preempt mod_unload aarch64
+-rw-r--r-- 1 root root 371333 Oct 30 20:13 /out/msm-dsifix.ko.zst
+e45516eec237ef31dbc9cfdd1d0d2cdf2adc5e192a7bd345cc3a454ddacc8785  /out/msm-dsifix.ko.zst

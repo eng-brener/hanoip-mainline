@@ -1,0 +1,63 @@
+#!/bin/sh
+# hanoip-batt-log — registra telemetria da bateria em CSV.
+#
+# Uso:  hanoip-batt-log [segundos] [intervalo_ms] [arquivo]
+#   hanoip-batt-log 600 1000 /root/batt.csv    # 10 min, 1 amostra/s
+#
+# Campos: epoch_ms,capacity,voltage_now_V,voltage_avg_V,ocv_V,current_mA,
+#         temp_C,status,batt_therm_C
+# Serve para a fase B1 (estabilidade do SOC) e para a fase B3/B4
+# (carregamento), onde a temperatura é o limite de segurança.
+set -eu
+
+DUR=${1:-60}
+IVL_MS=${2:-1000}
+OUT=${3:-/root/batt.csv}
+QG=/sys/class/power_supply/qcom_qg
+
+[ -d "$QG" ] || { echo "sem $QG" >&2; exit 1; }
+
+read_uV() { awk '{printf "%.4f", $1/1000000}' "$QG/$1" 2>/dev/null || echo ""; }
+read_mA() { awk '{printf "%.0f", $1/1000}'   "$QG/$1" 2>/dev/null || echo ""; }
+read_dC() { awk '{printf "%.1f", $1/10}'     "$QG/$1" 2>/dev/null || echo ""; }
+# batt_therm (canal IIO, resistência NTC -> temperatura real da célula)
+read_therm() {
+    for t in /sys/class/iio/device*/in_temp_input; do :; done 2>/dev/null
+    t=$(grep -l . /sys/bus/iio/devices/iio:device*/name 2>/dev/null | while read -r f; do
+            grep -qi "batt" "$f" && echo "$f"; done | head -1)
+    if [ -n "$t" ]; then
+        d=$(dirname "$t")
+        cat "$d/in_temp_input" 2>/dev/null | awk '{printf "%.1f", $1/1000}' || echo ""
+    else
+        echo ""
+    fi
+}
+
+echo "epoch_ms,capacity,voltage_now_V,voltage_avg_V,ocv_V,current_mA,temp_C,status,batt_therm_C" > "$OUT"
+echo "logando ${DUR}s em ${IVL_MS}ms -> $OUT" >&2
+
+i=0
+end=$(( ${DUR} * 1000 / ${IVL_MS} ))
+while [ "$i" -lt "$end" ]; do
+    now=$(date +%s%3N)
+    cap=$(cat "$QG/capacity" 2>/dev/null || echo "")
+    st=$(cat "$QG/status" 2>/dev/null || echo "")
+    printf '%s,%s,%s,%s,%s,%s,%s,%s,%s\n' \
+        "$now" "$cap" \
+        "$(read_uV voltage_now)" "$(read_uV voltage_avg)" "$(read_uV voltage_ocv)" \
+        "$(read_mA current_now)" "$(read_dC temp)" "$st" "$(read_therm)" >> "$OUT"
+    i=$((i+1))
+    sleep "$(awk -v ms="$IVL_MS" 'BEGIN{printf "%.3f", ms/1000}')"
+done
+
+echo "--- resumo ---" >&2
+awk -F, 'NR>1 {
+        if (min=="" || $2<min) min=$2
+        if (max=="" || $2>max) max=$2
+        if (prev!="" && ($2-prev>2 || prev-$2>2)) jumps++
+        prev=$2; n++
+    }
+    END {
+        printf "amostras=%d  capacity min=%s max=%s amplitude=%s  saltos>2%%=%d\n",
+               n, min, max, max-min, jumps+0
+    }' "$OUT" >&2

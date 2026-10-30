@@ -1,0 +1,13 @@
+#!/bin/sh
+# Liga/desliga o uso da digital (chamado pelo app "Digital" via pkexec).
+# Aceita apenas: hanoip-fp-admin unlock|sudo on|off
+set -eu
+dir=/etc/hanoip-fp
+[ $# -eq 2 ] || exit 2
+case "$1" in unlock|sudo) ;; *) exit 2 ;; esac
+case "$2" in
+on)	mkdir -p "$dir"; chmod 0755 "$dir"; : > "$dir/$1-enabled" ;;
+off)	rm -f "$dir/$1-enabled" ;;
+*)	exit 2 ;;
+esac
+logger -t hanoip-fp-admin "digital: $1 $2 (uid ${PKEXEC_UID:-?})"

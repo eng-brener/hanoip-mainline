@@ -1,0 +1,1 @@
+ACTION!="remove", SUBSYSTEM=="misc", KERNEL=="fastrpc-adsp*", ENV{IIO_SENSOR_PROXY_TYPE}="ssc-accel ssc-light ssc-proximity"

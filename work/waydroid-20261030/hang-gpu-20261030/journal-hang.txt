@@ -1,0 +1,236 @@
+out 30 15:16:20 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:20 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:20 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:20 kali init: Sending signal 9 to service 'idmap2d' (pid 131) process group...
+out 30 15:16:20 kali libprocessgroup: Successfully killed process cgroup uid 1000 pid 131 in 0ms
+out 30 15:16:20 kali init: Control message: Processed ctl.stop for 'idmap2d' from pid: 325 (system_server)
+out 30 15:16:20 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:21 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:21 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:21 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:21 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:21 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:21 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:22 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:22 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:22 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:22 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:24 kali sshd-session[79243]: WARNING: connection from 10.0.0.24 port 65337 is not using a post-quantum key exchange algorithm: "ecdh-sha2-nistp256" [preauth]
+out 30 15:16:24 kali sshd-session[79243]: Accepted publickey for root from 10.0.0.24 port 65337 ssh2: ED25519 SHA256:fGv3YbSIucHNwFIr1m/oAmehRhjj+moJ1FjHI+pBHus
+out 30 15:16:24 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:25 kali logd: logdr: UID=0 GID=0 PID=527 b tail=0 logMask=99 pid=0 start=0ns deadline=0ns
+out 30 15:16:26 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:26 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:29 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:29 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:29 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:31 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:32 kali kernel: arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x00000400, fsynr=0x140023, cbfrsynra=0xc40, cb=10
+out 30 15:16:32 kali kernel: arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0xc40
+out 30 15:16:32 kali kernel: arm-smmu 15000000.iommu: FSYNR0 = 00140023 [S1CBNDX=20 PNU PLVL=3]
+out 30 15:16:32 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:32 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:32 kali audit[79911]: USER_AUTH pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:authentication grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:32 kali kernel: audit: type=1100 audit(1793384192.945:5877): pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:authentication grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:32 kali audit[79911]: USER_ACCT pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:accounting grantors=pam_permit acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:32 kali su[79911]: (to kali) root on none
+out 30 15:16:32 kali audit[79911]: CRED_ACQ pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:32 kali kernel: audit: type=1101 audit(1793384192.952:5878): pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:accounting grantors=pam_permit acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:32 kali kernel: audit: type=1103 audit(1793384192.955:5879): pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:32 kali su[79911]: pam_unix(su:session): session opened for user kali(uid=1000) by (uid=0)
+out 30 15:16:32 kali systemd[1]: Started session-c23.scope - Session c23 of User kali.
+out 30 15:16:32 kali kernel: binder_debug: 6 callbacks suppressed
+out 30 15:16:32 kali kernel: binder: 78881:78881 cannot find target node
+out 30 15:16:32 kali kernel: binder: 78881:78881 transaction async to 0:0 failed 93698/29189/-22, code 2 size 92-0 line 3253
+out 30 15:16:33 kali audit[79911]: USER_START pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:session_open grantors=pam_env,pam_env,pam_mail,pam_limits,pam_permit,pam_umask,pam_unix,pam_systemd,pam_gnome_keyring acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:33 kali su[79911]: gkr-pam: couldn't unlock the login keyring.
+out 30 15:16:33 kali kernel: audit: type=1105 audit(1793384193.002:5880): pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:session_open grantors=pam_env,pam_env,pam_mail,pam_limits,pam_permit,pam_umask,pam_unix,pam_systemd,pam_gnome_keyring acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:33 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:33 kali su[79911]: pam_unix(su:session): session closed for user kali
+out 30 15:16:33 kali audit[79911]: USER_END pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:session_close grantors=pam_env,pam_env,pam_mail,pam_limits,pam_permit,pam_umask,pam_unix,pam_systemd,pam_gnome_keyring acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:33 kali audit[79911]: CRED_DISP pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:33 kali kernel: audit: type=1106 audit(1793384193.343:5881): pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:session_close grantors=pam_env,pam_env,pam_mail,pam_limits,pam_permit,pam_umask,pam_unix,pam_systemd,pam_gnome_keyring acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:33 kali kernel: audit: type=1104 audit(1793384193.343:5882): pid=79911 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:33 kali systemd[1]: session-c23.scope: Deactivated successfully.
+out 30 15:16:33 kali gsd-power[62581]: gsd_power_backlight_percentage_to_abs: assertion 'max > min' failed
+out 30 15:16:33 kali gsd-power[62581]: failed to set dim kbd backlight to 30%: GDBus.Error:org.freedesktop.UPower.GeneralError: brightness value must be non-negative
+out 30 15:16:33 kali sshd-session[79255]: Received disconnect from 10.0.0.24 port 65337:11: disconnected by user
+out 30 15:16:33 kali sshd-session[79255]: Disconnected from user root 10.0.0.24 port 65337
+out 30 15:16:34 kali init: service 'idmap2d' requested start, but it is already running (flags: 4)
+out 30 15:16:34 kali init: Control message: Processed ctl.start for 'idmap2d' from pid: 325 (system_server)
+out 30 15:16:34 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:35 kali systemd[1]: fprintd.service: Deactivated successfully.
+out 30 15:16:35 kali audit[1]: SERVICE_STOP pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=fprintd comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+out 30 15:16:35 kali kernel: audit: type=1131 audit(1793384195.585:5883): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=fprintd comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+out 30 15:16:35 kali audit: BPF prog-id=473 op=UNLOAD
+out 30 15:16:35 kali kernel: audit: type=1334 audit(1793384195.591:5884): prog-id=473 op=UNLOAD
+out 30 15:16:36 kali dnsmasq-dhcp[78406]: DHCPDISCOVER(waydroid0) 00:16:3e:f9:d3:03
+out 30 15:16:36 kali dnsmasq-dhcp[78406]: DHCPOFFER(waydroid0) 192.168.240.112 00:16:3e:f9:d3:03
+out 30 15:16:36 kali dnsmasq-dhcp[78406]: DHCPDISCOVER(waydroid0) 00:16:3e:f9:d3:03
+out 30 15:16:36 kali dnsmasq-dhcp[78406]: DHCPOFFER(waydroid0) 192.168.240.112 00:16:3e:f9:d3:03
+out 30 15:16:36 kali dnsmasq-dhcp[78406]: DHCPREQUEST(waydroid0) 192.168.240.112 00:16:3e:f9:d3:03
+out 30 15:16:36 kali dnsmasq-dhcp[78406]: DHCPACK(waydroid0) 192.168.240.112 00:16:3e:f9:d3:03 Motorola-Moto-G60
+out 30 15:16:37 kali NetworkManager[1609]: <info>  [1793384197.6459] dhcp4 (wlan0): state changed new lease, address=10.0.0.44
+out 30 15:16:37 kali dbus-daemon[1183]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service' requested by ':1.10' (uid=0 pid=1609 comm="/usr/sbin/NetworkManager --no-daemon")
+out 30 15:16:37 kali systemd[1]: Starting NetworkManager-dispatcher.service - Network Manager Script Dispatcher Service...
+out 30 15:16:37 kali dbus-daemon[1183]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+out 30 15:16:37 kali systemd[1]: Started NetworkManager-dispatcher.service - Network Manager Script Dispatcher Service.
+out 30 15:16:37 kali audit[1]: SERVICE_START pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+out 30 15:16:37 kali kernel: audit: type=1130 audit(1793384197.763:5885): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+out 30 15:16:38 kali sshd-session[80322]: WARNING: connection from 10.0.0.24 port 65338 is not using a post-quantum key exchange algorithm: "ecdh-sha2-nistp256" [preauth]
+out 30 15:16:38 kali sshd-session[80322]: Accepted publickey for root from 10.0.0.24 port 65338 ssh2: ED25519 SHA256:fGv3YbSIucHNwFIr1m/oAmehRhjj+moJ1FjHI+pBHus
+out 30 15:16:38 kali sshd-session[80327]: Received disconnect from 10.0.0.24 port 65338:11: disconnected by user
+out 30 15:16:38 kali sshd-session[80327]: Disconnected from user root 10.0.0.24 port 65338
+out 30 15:16:39 kali kernel: binder: undelivered transaction 111824, process died.
+out 30 15:16:39 kali kernel: binder: undelivered transaction 111758, process died.
+out 30 15:16:39 kali kernel: binder: undelivered transaction 112156, process died.
+out 30 15:16:39 kali kernel: binder: undelivered transaction 112158, process died.
+out 30 15:16:39 kali kernel: binder: undelivered transaction 112165, process died.
+out 30 15:16:39 kali kernel: binder: undelivered transaction 112168, process died.
+out 30 15:16:39 kali kernel: binder: undelivered transaction 112169, process died.
+out 30 15:16:39 kali kernel: binder: undelivered transaction 112173, process died.
+out 30 15:16:39 kali phoc[62101]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+out 30 15:16:39 kali kernel: binder: 80379:80391 ioctl c0306201 fffee5bb1a78 returned -14
+out 30 15:16:39 kali kernel: binder: undelivered transaction 113287, process died.
+out 30 15:16:40 kali kernel: binder: 80517:80529 ioctl c0306201 fffee5b86a78 returned -14
+out 30 15:16:40 kali init: Service 'bootanim' (pid 246) exited with status 0 oneshot service took 38.583000 seconds in background
+out 30 15:16:40 kali init: Sending signal 9 to service 'bootanim' (pid 246) process group...
+out 30 15:16:40 kali libprocessgroup: Successfully killed process cgroup uid 1003 pid 246 in 0ms
+out 30 15:16:41 kali init: processing action (sys.boot_completed=1) from (/system/etc/init/hw/init.rc:1186)
+out 30 15:16:41 kali init: starting service 'exec 19 (/bin/rm -rf /data/per_boot)'...
+out 30 15:16:41 kali libprocessgroup: Failed to make and chown /sys/fs/cgroup/uid_1000: Read-only file system
+out 30 15:16:41 kali init: createProcessGroup(1000, 1649) failed for service 'exec 19 (/bin/rm -rf /data/per_boot)': Read-only file system
+out 30 15:16:41 kali init: SVC_EXEC service 'exec 19 (/bin/rm -rf /data/per_boot)' pid 1649 (uid 1000 gid 1000+0 context default) started; waiting...
+out 30 15:16:41 kali init: Service 'exec 19 (/bin/rm -rf /data/per_boot)' (pid 1649) exited with status 0 waiting took 0.043000 seconds
+out 30 15:16:41 kali init: Sending signal 9 to service 'exec 19 (/bin/rm -rf /data/per_boot)' (pid 1649) process group...
+out 30 15:16:41 kali libprocessgroup: Successfully killed process cgroup uid 1000 pid 1649 in 0ms
+out 30 15:16:41 kali init: processing action (sys.boot_completed=1 && sys.bootstat.first_boot_completed=0) from (/system/etc/init/bootstat.rc:77)
+out 30 15:16:41 kali init: starting service 'exec 20 (/system/bin/bootstat --record_boot_complete --record_boot_reason --record_time_since_factory_reset -l)'...
+out 30 15:16:41 kali libprocessgroup: Failed to make and chown /sys/fs/cgroup/uid_1000: Read-only file system
+out 30 15:16:41 kali init: createProcessGroup(1000, 1688) failed for service 'exec 20 (/system/bin/bootstat --record_boot_complete --record_boot_reason --record_time_since_factory_reset -l)': Read-only file system
+out 30 15:16:41 kali init: processing action (sys.boot_completed=1) from (/system/etc/init/flags_health_check.rc:7)
+out 30 15:16:41 kali init: processing action (sys.boot_completed=1) from (/system/etc/init/init.waydroid.rc:6)
+out 30 15:16:41 kali init: service 'adbd' requested start, but it is already running (flags: 132)
+out 30 15:16:41 kali init: processing action (sys.boot_completed=1) from (/system/etc/init/logd.rc:34)
+out 30 15:16:41 kali init: starting service 'logd-auditctl'...
+out 30 15:16:41 kali libprocessgroup: Failed to make and chown /sys/fs/cgroup/uid_1036: Read-only file system
+out 30 15:16:41 kali init: createProcessGroup(1036, 1689) failed for service 'logd-auditctl': Read-only file system
+out 30 15:16:41 kali init: processing action (sys.boot_completed=1 && sys.wifitracing.started=0) from (/system/etc/init/wifi.rc:28)
+out 30 15:16:41 kali init: Service 'logd-auditctl' (pid 1689) exited with status 0 oneshot service took 0.014000 seconds in background
+out 30 15:16:41 kali init: Sending signal 9 to service 'logd-auditctl' (pid 1689) process group...
+out 30 15:16:41 kali libprocessgroup: Successfully killed process cgroup uid 1036 pid 1689 in 0ms
+out 30 15:16:41 kali init: processing action (sys.user.0.ce_available=true) from (/system/etc/init/wifi.rc:21)
+out 30 15:16:41 kali init: Service 'exec 20 (/system/bin/bootstat --record_boot_complete --record_boot_reason --record_time_since_factory_reset -l)' (pid 1688) exited with status 0 oneshot service took 0.078000 seconds in background
+out 30 15:16:41 kali init: Sending signal 9 to service 'exec 20 (/system/bin/bootstat --record_boot_complete --record_boot_reason --record_time_since_factory_reset -l)' (pid 1688) process group...
+out 30 15:16:41 kali libprocessgroup: Successfully killed process cgroup uid 1000 pid 1688 in 0ms
+out 30 15:16:41 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:41 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:41 kali phosh[62236]: Could not find application for app-id 'waydroid.android'
+out 30 15:16:41 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:42 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:42 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:42 kali phosh[62236]: Could not find application for app-id 'waydroid.android'
+out 30 15:16:42 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:43 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:43 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:43 kali phosh[62236]: Could not find application for app-id 'waydroid.android'
+out 30 15:16:43 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:44 kali kernel: binder: 78469 RLIMIT_NICE not set
+out 30 15:16:44 kali phosh[62236]: Could not find application for app-id 'waydroid.android'
+out 30 15:16:46 kali kernel: NOHZ tick-stop error: local softirq work is pending, handler #10!!!
+out 30 15:16:47 kali sshd-session[82098]: WARNING: connection from 10.0.0.24 port 65355 is not using a post-quantum key exchange algorithm: "ecdh-sha2-nistp256" [preauth]
+out 30 15:16:47 kali sshd-session[82098]: Accepted publickey for root from 10.0.0.24 port 65355 ssh2: ED25519 SHA256:fGv3YbSIucHNwFIr1m/oAmehRhjj+moJ1FjHI+pBHus
+out 30 15:16:47 kali audit[82174]: USER_AUTH pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:authentication grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:47 kali kernel: audit: type=1100 audit(1793384207.750:5886): pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:authentication grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:47 kali audit[82174]: USER_ACCT pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:accounting grantors=pam_permit acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:47 kali kernel: audit: type=1101 audit(1793384207.766:5887): pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:accounting grantors=pam_permit acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:47 kali su[82174]: (to kali) root on none
+out 30 15:16:47 kali audit[82174]: CRED_ACQ pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:47 kali kernel: audit: type=1103 audit(1793384207.776:5888): pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:47 kali su[82174]: pam_unix(su:session): session opened for user kali(uid=1000) by (uid=0)
+out 30 15:16:47 kali systemd[1]: Started session-c24.scope - Session c24 of User kali.
+out 30 15:16:47 kali systemd[1]: NetworkManager-dispatcher.service: Deactivated successfully.
+out 30 15:16:47 kali audit[1]: SERVICE_STOP pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+out 30 15:16:47 kali kernel: audit: type=1131 audit(1793384207.851:5889): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+out 30 15:16:47 kali su[82174]: gkr-pam: couldn't unlock the login keyring.
+out 30 15:16:47 kali audit[82174]: USER_START pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:session_open grantors=pam_env,pam_env,pam_mail,pam_limits,pam_permit,pam_umask,pam_unix,pam_systemd,pam_gnome_keyring acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:47 kali kernel: audit: type=1105 audit(1793384207.868:5890): pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:session_open grantors=pam_env,pam_env,pam_mail,pam_limits,pam_permit,pam_umask,pam_unix,pam_systemd,pam_gnome_keyring acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:48 kali kernel: msm_dpu ae01000.display-controller: [drm:hangcheck_handler [msm]] *ERROR* 06010800: hangcheck detected gpu lockup rb 0!
+out 30 15:16:48 kali kernel: msm_dpu ae01000.display-controller: [drm:hangcheck_handler [msm]] *ERROR* 06010800:     completed fence: 16131
+out 30 15:16:48 kali kernel: msm_dpu ae01000.display-controller: [drm:hangcheck_handler [msm]] *ERROR* 06010800:     submitted fence: 16139
+out 30 15:16:48 kali kernel: msm_dpu ae01000.display-controller: [drm:recover_worker [msm]] *ERROR* 06010800: hangcheck recover!
+out 30 15:16:48 kali kernel: msm_dpu ae01000.display-controller: [drm:recover_worker [msm]] *ERROR* 06010800: offending task: RenderThread (com.android.launcher3)
+out 30 15:16:48 kali kernel: *** gpu fault: ttbr0=000000013976e000 iova=000000e040080980 dir=WRITE type=TRANSLATION source=CP (0,0,0,0)
+out 30 15:16:49 kali audit[82174]: USER_END pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:session_close grantors=pam_env,pam_env,pam_mail,pam_limits,pam_permit,pam_umask,pam_unix,pam_systemd,pam_gnome_keyring acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:49 kali audit[82174]: CRED_DISP pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:49 kali su[82174]: pam_unix(su:session): session closed for user kali
+out 30 15:16:49 kali systemd[1]: session-c24.scope: Deactivated successfully.
+out 30 15:16:49 kali kernel: audit: type=1106 audit(1793384209.007:5891): pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:session_close grantors=pam_env,pam_env,pam_mail,pam_limits,pam_permit,pam_umask,pam_unix,pam_systemd,pam_gnome_keyring acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:49 kali kernel: audit: type=1104 audit(1793384209.007:5892): pid=82174 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:49 kali kernel: revision: 618 (06010800)
+out 30 15:16:49 kali kernel: rb 0: fence:    16132/16139
+out 30 15:16:49 kali kernel: rptr:     17
+out 30 15:16:49 kali kernel: rb wptr:  467
+out 30 15:16:50 kali kernel: platform 506a000.gmu: [drm:a6xx_sptprac_disable.part.0 [msm]] *ERROR* failed to power off SPTPRAC: 0x28
+out 30 15:16:50 kali sshd-session[82165]: Received disconnect from 10.0.0.24 port 65355:11: disconnected by user
+out 30 15:16:50 kali sshd-session[82165]: Disconnected from user root 10.0.0.24 port 65355
+out 30 15:16:50 kali init: Sending signal 9 to service 'idmap2d' (pid 131) process group...
+out 30 15:16:50 kali libprocessgroup: Successfully killed process cgroup uid 1000 pid 131 in 0ms
+out 30 15:16:50 kali init: Control message: Processed ctl.stop for 'idmap2d' from pid: 325 (system_server)
+out 30 15:16:51 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:51 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:51 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:51 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:51 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:51 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:51 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:51 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:51 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:51 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:55 kali sshd-session[82713]: WARNING: connection from 10.0.0.24 port 65359 is not using a post-quantum key exchange algorithm: "ecdh-sha2-nistp256" [preauth]
+out 30 15:16:55 kali sshd-session[82713]: Accepted publickey for root from 10.0.0.24 port 65359 ssh2: ED25519 SHA256:fGv3YbSIucHNwFIr1m/oAmehRhjj+moJ1FjHI+pBHus
+out 30 15:16:55 kali audit[82724]: USER_AUTH pid=82724 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:authentication grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:55 kali kernel: audit: type=1100 audit(1793384215.435:5893): pid=82724 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:authentication grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:55 kali audit[82724]: USER_ACCT pid=82724 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:accounting grantors=pam_permit acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:55 kali su[82724]: (to kali) root on none
+out 30 15:16:55 kali kernel: audit: type=1101 audit(1793384215.442:5894): pid=82724 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:accounting grantors=pam_permit acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:55 kali audit[82724]: CRED_ACQ pid=82724 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:55 kali kernel: audit: type=1103 audit(1793384215.444:5895): pid=82724 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_rootok acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:55 kali su[82724]: pam_unix(su:session): session opened for user kali(uid=1000) by (uid=0)
+out 30 15:16:55 kali systemd[1]: Started session-c25.scope - Session c25 of User kali.
+out 30 15:16:55 kali su[82724]: gkr-pam: couldn't unlock the login keyring.
+out 30 15:16:55 kali audit[82724]: USER_START pid=82724 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:session_open grantors=pam_env,pam_env,pam_mail,pam_limits,pam_permit,pam_umask,pam_unix,pam_systemd,pam_gnome_keyring acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:55 kali kernel: audit: type=1105 audit(1793384215.481:5896): pid=82724 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:session_open grantors=pam_env,pam_env,pam_mail,pam_limits,pam_permit,pam_umask,pam_unix,pam_systemd,pam_gnome_keyring acct="kali" exe="/usr/bin/su" hostname=? addr=? terminal=? res=success'
+out 30 15:16:56 kali kernel: a6xx_gmu_irq: 1660219 callbacks suppressed
+out 30 15:16:56 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:56 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:56 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:56 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:56 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:56 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:56 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:56 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:56 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:16:56 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:01 kali kernel: a6xx_gmu_irq: 1638258 callbacks suppressed
+out 30 15:17:01 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:01 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:01 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:01 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:01 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:01 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:01 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:01 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:01 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:01 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:06 kali kernel: a6xx_gmu_irq: 1724028 callbacks suppressed
+out 30 15:17:06 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:06 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:06 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:06 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:06 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:06 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:06 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:06 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:06 kali kernel: platform 506a000.gmu: GMU watchdog expired
+out 30 15:17:06 kali kernel: platform 506a000.gmu: GMU watchdog expired

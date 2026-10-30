@@ -1,0 +1,15 @@
+[Unit]
+Description=Hanoip: acerta o relogio do sistema (RTC do PMIC + offset)
+Documentation=file:/usr/local/sbin/hanoip-rtc
+DefaultDependencies=no
+After=sysinit.target
+Before=time-set.target time-sync.target
+ConditionPathExists=/etc/hanoip/rtc-offset
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/hanoip-rtc apply
+RemainAfterExit=yes
+
+[Install]
+WantedBy=time-set.target

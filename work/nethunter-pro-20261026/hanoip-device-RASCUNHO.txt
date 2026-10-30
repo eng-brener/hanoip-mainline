@@ -1,0 +1,37 @@
+# hanoip como device Kali NetHunter Pro (rascunho, 26/10/2026)
+# Fluxo: boot pelo NOSSO U-Boot volátil (`fastboot boot` u-boot + kernel),
+# rootfs no userdata (decidido 26/10; PENDENTE liberação escrita do flash),
+# variante `-D phosh` (decidido 26/10). Super tail fica como está (pmOS).
+
+# 1) Acrescentar a devices/qcom/configs/sm7150.toml:
+#
+# [[device]]
+# vendor = "motorola"
+# model = "hanoip"
+#
+# (bootimg v0 + DTB anexado: o DTB é ignorado, vale o DT embutido no U-Boot;
+#  reempacotar com pack-boot.py se o ABL/U-Boot recusar o cabeçalho v0.)
+
+# 2) Pacote hanoip-support (equivale ao que o pmOS faz hoje via OpenRC/udev):
+#    - Unidades systemd (a partir dos /etc/init.d + /etc/local.d do pmOS):
+#      rede USB NCM+SSH, hanoip-firmware (/lib/firmware <- /mnt/ro/*),
+#      hanoip-gpu-tune / hanoip-perf-tune, hanoip-brightness,
+#      hanoip-ssc + hexagonrpcd, iio-sensor-proxy, PipeWire/WirePlumber user,
+#      feedbackd, flashlighthelper (se Plasma; com Phosh, rever).
+#    - Regras udev de segurança (obrigatórias, o Kali traz automount/forense):
+#      60-hanoip-blockdev-ro (sd* RO), 61-hanoip-udisks-ignore,
+#      IIO_SENSOR_PROXY_TYPE no fastrpc-adsp.
+#    - UCM + WirePlumber S16LE + tema feedbackd motorola,hanoip.json.
+#    - REMOVER do rootfs: zz-qcom-bootimg, qcom-backup-boot (regravam boot!),
+#      droid-juicer ativo, make-dynpart-mappings (revisar), growpart/resize2fs.
+#    - Conferir: nada com systemd-repart, nada montando super/userdata RW.
+#
+# 3) Kernel: .deb do 7.3 v3 (build.sh em work/kernel-7.3/v3/, validando agora)
+#    com DTB sm7150-motorola-hanoip.dtb + hanoip_mmi_unit_info.
+#
+# 4) initramfs: mobile-root (deles) + hook init-premount nosso (trava sd*
+#    em RO exceto userdata, monta userdata, exporta mobile.root).
+#    zz-qcom-bootimg, qcom-backup-boot, droid-juicer, dynpart: FORA.
+#
+# 5) Build do rootfs: debos precisa de Linux com KVM (não há no Mac).
+#    Pendente: ambiente de build.

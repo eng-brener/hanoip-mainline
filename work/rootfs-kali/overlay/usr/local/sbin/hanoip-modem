@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+log() { printf "hanoip-modem: %s\n" "$*" > /dev/kmsg 2>/dev/null || true; }
+for rp in /sys/class/remoteproc/remoteproc*; do
+    [ "$(cat "$rp/name" 2>/dev/null)" = "modem" ] || continue
+    [ "$(cat "$rp/state")" = "offline" ] || break
+    echo start > "$rp/state" || { log "start failed"; exit 1; }
+    i=0
+    while [ "$(cat "$rp/state")" != "running" ] && [ "$i" -lt 30 ]; do i=$((i+1)); sleep 1; done
+    log "modem state=$(cat "$rp/state") after ${i}s"
+done

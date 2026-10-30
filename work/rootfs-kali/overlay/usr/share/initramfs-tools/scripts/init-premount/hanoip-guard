@@ -1,0 +1,100 @@
+#!/bin/sh
+# hanoip-guard: init-premount hook (initramfs-tools) for Kali on the hanoip.
+# Locks every block device read-only EXCEPT the rootfs device (userdata),
+# so nothing but the root filesystem can ever be written. Runs before
+# mobile-root (alphabetical order in /scripts/init-premount).
+set -e
+
+PREREQS=""
+case $1 in
+    prereqs) echo "${PREREQS}"; exit 0;;
+esac
+
+. /scripts/functions
+
+# Messages go to the kernel log too, so they show up on the serial console.
+klog() { printf 'hanoip-guard: %s\n' "$*" > /dev/kmsg 2>/dev/null || true; }
+
+
+# --- find the rootfs device: mobile.root= from cmdline, else partlabel ---
+ROOTSPEC=""
+for x in $(cat /proc/cmdline); do
+    case $x in
+        mobile.root=*) ROOTSPEC=${x#mobile.root=} ;;
+    esac
+done
+
+ROOTDEV=""
+if [ -n "$ROOTSPEC" ]; then
+    case "$ROOTSPEC" in
+        /dev/*)
+            [ -e "$ROOTSPEC" ] && ROOTDEV=$(readlink -f "$ROOTSPEC")
+            ;;
+        *)
+            # PARTLABEL=x / PARTUUID=x forms
+            p=${ROOTSPEC#*=}
+            [ -e "/dev/disk/by-partlabel/$p" ] && ROOTDEV=$(readlink -f "/dev/disk/by-partlabel/$p")
+            [ -z "$ROOTDEV" ] && [ -e "/dev/disk/by-partuuid/$p" ] && \
+                ROOTDEV=$(readlink -f "/dev/disk/by-partuuid/$p")
+            ;;
+    esac
+fi
+
+if [ -z "$ROOTDEV" ]; then
+    for l in /dev/disk/by-partlabel/userdata /dev/disk/by-partlabel/userdata_a; do
+        [ -e "$l" ] && { ROOTDEV=$(readlink -f "$l"); break; }
+    done
+fi
+
+if [ -z "$ROOTDEV" ]; then
+    # Never lock blind: without knowing the root, locking all disks would
+    # make the boot fail. Let mobile-root report the real problem instead.
+    klog "hanoip-guard: root device unknown, not touching any disk"
+    exit 0
+fi
+
+ROOTNAME=${ROOTDEV##*/}
+ROOTDISK=$(basename "$(dirname "$(readlink -f /sys/class/block/$ROOTNAME)")")
+
+klog "hanoip-guard: rootfs device is $ROOTDEV"
+
+locked=0
+for d in /sys/class/block/*; do
+    n=${d##*/}
+    case "$n" in
+        sd*|mmcblk*|vd*|nvme*) ;;
+        *) continue ;;
+    esac
+    if [ ! -e "$d/ro" ]; then continue; fi
+    # Skip the root device itself, its whole disk, and its partitions.
+    if [ "$n" = "$ROOTNAME" ] || [ "$n" = "$ROOTDISK" ]; then continue; fi
+    case "$ROOTDEV" in
+        *"/$n") continue ;;
+    esac
+
+    if [ "$(cat "$d/ro")" != 1 ]; then
+        blockdev --setro "/dev/$n" 2>/dev/null && locked=$((locked+1))
+    fi
+done
+
+# Verify: everything except the root device must now report ro=1.
+bad=""
+for d in /sys/class/block/*; do
+    n=${d##*/}
+    case "$n" in
+        sd*|mmcblk*|vd*|nvme*) ;;
+        *) continue ;;
+    esac
+    if [ "$n" = "$ROOTNAME" ] || [ "$n" = "$ROOTDISK" ]; then continue; fi
+    case "$ROOTDEV" in
+        *"/$n") continue ;;
+    esac
+    if [ -e "$d/ro" ] && [ "$(cat "$d/ro")" != 1 ]; then bad="$bad $n"; fi
+done
+
+if [ -n "$bad" ]; then
+    klog "hanoip-guard: still writable:$bad"
+    exit 1
+fi
+
+klog "hanoip-guard: all disks read-only except $ROOTNAME ($locked locked)"

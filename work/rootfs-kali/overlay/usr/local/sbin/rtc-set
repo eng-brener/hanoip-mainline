@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+"""rtc-set — grava a hora do sistema no RTC (equivalente a `hwclock -w`).
+
+Existe porque o Kali do aparelho não tem /usr/sbin/hwclock (no Debian ele vive
+no pacote util-linux-extra) e /sys/class/rtc/rtc0/since_epoch é somente leitura.
+
+Usa o ioctl RTC_SET_TIME direto em /dev/rtc0:
+    _IOW('p', 0x0a, struct rtc_time(36 bytes)) = 0x4024700a
+Grava em UTC, como o kernel espera.
+
+Uso: rtc-set            grava a hora atual
+     rtc-set --show     só mostra RTC x sistema
+"""
+import fcntl
+import os
+import struct
+import sys
+import time
+
+RTC_SET_TIME = 0x4024700A
+DEV = "/dev/rtc0"
+
+
+def ler_rtc():
+    with open("/sys/class/rtc/rtc0/since_epoch") as f:
+        return int(f.read().strip())
+
+
+def mostrar():
+    r = ler_rtc()
+    s = int(time.time())
+    print(f"  RTC    : {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(r))} UTC (epoch {r})")
+    print(f"  sistema: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(s))} UTC (epoch {s})")
+    print(f"  diferenca: {s - r} s")
+
+
+def gravar():
+    t = time.gmtime()
+    buf = struct.pack(
+        "9i",
+        t.tm_sec, t.tm_min, t.tm_hour, t.tm_mday, t.tm_mon,
+        t.tm_year + 1900, t.tm_wday, t.tm_yday, 0,
+    )
+    fd = os.open(DEV, os.O_RDONLY)
+    try:
+        fcntl.ioctl(fd, RTC_SET_TIME, buf)
+    finally:
+        os.close(fd)
+
+
+if __name__ == "__main__":
+    if "--show" in sys.argv:
+        mostrar()
+        sys.exit(0)
+    antes = ler_rtc()
+    try:
+        gravar()
+    except OSError as e:
+        print(f"  FALHOU: {e} (errno {e.errno})")
+        sys.exit(1)
+    time.sleep(1)
+    depois = ler_rtc()
+    print(f"  RTC antes: {antes}  depois: {depois}  (esperado ~{int(time.time())})")
+    ok = abs(depois - int(time.time())) <= 2
+    print("  resultado:", "OK — RTC acertado" if ok else "NAO acertou")
+    sys.exit(0 if ok else 1)

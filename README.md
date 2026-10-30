@@ -16,7 +16,7 @@ postmarketOS e Plasma Mobile rodando de verdade.
 | Item | Estado |
 |---|---|
 | Kernel | **Linux 7.3** (upstream v7.3 + 160 patches) — `work/kernel-7.3/v2/` |
-| Retorno padrão (GOLD 26/10) | kernel #6 7.3, boot em ~40 s — `work/GOLD-20261026-1500/` |
+| Retorno padrão (GOLD 26/10 ~17h) | U-Boot v2026.10 + kernel #6 7.3 — `work/GOLD-20261026-1712/` |
 | Sistema | postmarketOS v26.06 + Plasma Mobile, rootfs ext4 no fim do `super` |
 | Display | DSI 1080×2460 @ 60 Hz com DSC, painel Tianma ILI7807S, brilho (WLED) |
 | GPU | Adreno 618 com Freedreno/Mesa, KWin com OpenGL; Vulkan 1.3 (Turnip) |
@@ -170,7 +170,7 @@ Par de testes com áudio e periféricos (mesmos passos, U-Boot
 `work/perif-20261026/v5/u-boot-hanoip-pmos-perif-v5.img` e kernel
 `work/perif-20261026/v6-qrtr/kernel-hanoip-pmos-7.3-qrtr.img`).
 
-Para a GOLD atual, use uma **cópia** das imagens de `work/GOLD-20261026-1500/`
+Para a GOLD atual, use uma **cópia** das imagens de `work/GOLD-20261026-1712/`
 (a pasta é somente leitura e o helper grava um log ao lado da imagem). O
 Plasma sobe em ~40 s (sem o hash integral da super no boot). SSH:
 `ssh root@172.16.42.1` (só por chave).
@@ -190,8 +190,10 @@ metadados LP e o ext4 no offset, monta o rootfs por `/dev/loop7` e faz
   config, módulo extra e `./build.sh` (Docker) que reconstrói tudo do zero
   conferindo a árvore; ver `README.txt`. O v2 (160 patches) fica em
   `work/kernel-7.3/v2/`.
-- `work/GOLD-20261026-1500/` — GOLD atual (kernel #6 7.3, boot rápido),
+- `work/GOLD-20261026-1712/` — GOLD atual (U-Boot v2026.10 + kernel #6 7.3),
   somente leitura, com `GOLD.txt` e `SHA256SUMS`. GOLDs anteriores em `work/GOLD-*`.
+- `work/uboot-builds-20261026/` — build reproduzível do U-Boot (v2026.10 +
+  delta hanoip, diff-record em `patches/`).
 - `work/sensors-20261026/orient-fix/` — imagens v3/v4 de boot rápido,
   parser do registry e notas do diagnóstico de orientação.
 - `work/audio-20261026/` — áudio do alto-falante: patches do driver

@@ -1,0 +1,63 @@
+#!/bin/sh
+# hanoip-console: bring up a CDC ACM USB gadget as early as possible in the
+# initramfs, so `console=ttyGS0` gives us a serial console/shell on this
+# phone. Without it the Kali initramfs is blind (no serial, no display yet).
+# Runs at init-top, before hanoip-guard and mobile-root.
+set -e
+
+PREREQS=""
+case $1 in
+    prereqs) echo "${PREREQS}"; exit 0;;
+esac
+
+. /scripts/functions
+
+# Messages go to the kernel log too, so they show up on the serial console.
+klog() { printf 'hanoip-console: %s\n' "$*" > /dev/kmsg 2>/dev/null || true; }
+
+
+mountpoint -q /sys/kernel/config 2>/dev/null || \
+    mount -t configfs none /sys/kernel/config 2>/dev/null || true
+
+G=/sys/kernel/config/usb_gadget/hanoip-console
+[ -d "$G" ] || mkdir -p "$G" 2>/dev/null || {
+    klog "hanoip-console: cannot create configfs gadget"
+    exit 0
+}
+
+mkdir -p "$G/strings/0x409" 2>/dev/null
+echo 0x1d6b > "$G/idVendor" 2>/dev/null
+echo 0x0104 > "$G/idProduct" 2>/dev/null
+echo 0x0100 > "$G/bcdDevice" 2>/dev/null
+echo 0x0200 > "$G/bcdUSB" 2>/dev/null
+echo hanoip-initramfs > "$G/strings/0x409/serialnumber" 2>/dev/null
+echo Motorola > "$G/strings/0x409/manufacturer" 2>/dev/null
+echo "hanoip initramfs console" > "$G/strings/0x409/product" 2>/dev/null
+
+mkdir -p "$G/configs/c.1/strings/0x409" 2>/dev/null
+echo "ACM console" > "$G/configs/c.1/strings/0x409/configuration" 2>/dev/null
+echo 500 > "$G/configs/c.1/MaxPower" 2>/dev/null
+
+mkdir -p "$G/functions/acm.usb0" 2>/dev/null
+[ -e "$G/configs/c.1/acm.usb0" ] || \
+    ln -s "$G/functions/acm.usb0" "$G/configs/c.1/acm.usb0" 2>/dev/null || true
+
+i=0
+while [ ! -e /sys/class/udc ] || [ -z "$(ls /sys/class/udc 2>/dev/null)" ]; do
+    i=$((i+1)); [ "$i" -gt 20 ] && break
+    sleep 1
+done
+
+for udc in /sys/class/udc/*; do
+    [ -e "$udc" ] || continue
+    echo "${udc##*/}" > "$G/UDC" 2>/dev/null && \
+        klog "hanoip-console: gadget bound to ${udc##*/}" && break
+done
+
+# Banner as soon as the ACM tty shows up (do not block the boot).
+(
+    i=0
+    while [ ! -c /dev/ttyGS0 ] && [ "$i" -lt 30 ]; do i=$((i+1)); sleep 1; done
+    [ -c /dev/ttyGS0 ] && printf '\n\nHANOIP: initramfs console ready (ttyGS0)\n' \
+        > /dev/ttyGS0 2>/dev/null
+) &

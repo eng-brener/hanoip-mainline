@@ -1,0 +1,3 @@
+REPRODUCED: command prepare ignores resume/rate/clock errors and reaches MMIO stubs; clock failure followed by restore disables an unacquired clock vote
+REPRODUCED: failure of either clk_set_parent is logged but function returns success when set_rate succeeds
+REPRODUCED: host destroy leaves final non-devm mode allocated

@@ -1,0 +1,26 @@
+#!/bin/sh
+# hanoip-batt-watch — registra transicoes de estado da carga (para pegar a
+# terminacao) e uma amostra periodica. Somente leitura.
+# uso: hanoip-batt-watch [segundos] [intervalo_s]
+DUR=${1:-7200}; IVL=${2:-10}
+Q=/sys/class/power_supply/qcom_qg
+C=/sys/class/power_supply/hanoip-pm6150-monitor-charger
+OUT=/root/batt-terminacao.log
+prev=""
+echo "# inicio $(date +%H:%M:%S) dur=${DUR}s ivl=${IVL}s" > $OUT
+end=$(( $(date +%s) + DUR ))
+while [ "$(date +%s)" -lt "$end" ]; do
+    st=$(cat $Q/status 2>/dev/null); cap=$(cat $Q/capacity 2>/dev/null)
+    ib=$(awk "{printf \"%.0f\", \$1/1000}" $Q/current_now 2>/dev/null)
+    iu=$(awk "{printf \"%.0f\", \$1/1000}" $C/current_now 2>/dev/null)
+    t=$(awk "{printf \"%.1f\", \$1/10}" $Q/temp 2>/dev/null)
+    cur="$st|$cap"
+    if [ "$cur" != "$prev" ]; then
+        echo "$(date +%H:%M:%S) MUDA status=$st cap=$cap% i_batt=${ib}mA i_usb=${iu}mA T=${t}C" >> $OUT
+        prev="$cur"
+    else
+        echo "$(date +%H:%M:%S) ... status=$st cap=$cap% i_batt=${ib}mA i_usb=${iu}mA T=${t}C" >> $OUT
+    fi
+    sleep $IVL
+done
+echo "# fim $(date +%H:%M:%S)" >> $OUT

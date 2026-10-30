@@ -1,0 +1,635 @@
+From e0a3edf6264d21e1b04b6f13fd9c0587f483f5a5 Mon Sep 17 00:00:00 2001
+From: hanoip <hanoip@localhost>
+Date: Thu, 29 Oct 2026 19:28:14 +0000
+Subject: [PATCH 195/195] wip: qseecom-fpc (etapa A)
+
+---
+ drivers/firmware/qcom/Kconfig            |  12 +
+ drivers/firmware/qcom/Makefile           |   1 +
+ drivers/firmware/qcom/qcom_qseecom_fpc.c | 352 +++++++++++++++++++++++
+ drivers/firmware/qcom/qcom_scm.c         | 141 +++++++++
+ include/linux/firmware/qcom/qcom_scm.h   |   6 +
+ include/uapi/misc/qseecom-fpc.h          |  50 ++++
+ 6 files changed, 562 insertions(+)
+ create mode 100644 drivers/firmware/qcom/qcom_qseecom_fpc.c
+ create mode 100644 include/uapi/misc/qseecom-fpc.h
+
+diff --git a/drivers/firmware/qcom/Kconfig b/drivers/firmware/qcom/Kconfig
+index c7f8413ab..9c74c9fde 100644
+--- a/drivers/firmware/qcom/Kconfig
++++ b/drivers/firmware/qcom/Kconfig
+@@ -95,3 +95,15 @@ config QCOM_QSEECOM_UEFISECAPP
+ 	  platforms.
+ 
+ endmenu
++
++config QCOM_QSEECOM_FPC
++	tristate "Legacy QSEECOM transport for HLOS-loaded TAs (FPC)"
++	depends on QCOM_SCM
++	help
++	  Exposes /dev/qseecom-fpc, a minimal transport for Qualcomm TAs that the
++	  non-secure world has to load itself (QSEOS_APP_START_COMMAND) and that
++	  use the legacy 64-byte control block plus one out-of-band data region.
++
++	  Required by the FPC fingerprint TA on the Motorola hanoip. It is not a
++	  general-purpose QSEECOM replacement: no listeners, no RPMB, no keymaster
++	  and no disk encryption support.
+diff --git a/drivers/firmware/qcom/Makefile b/drivers/firmware/qcom/Makefile
+index 88ce74d74..fb4586b8d 100644
+--- a/drivers/firmware/qcom/Makefile
++++ b/drivers/firmware/qcom/Makefile
+@@ -11,3 +11,4 @@ obj-$(CONFIG_QCOM_QSEECOM)	+= qcom_qseecom.o
+ obj-$(CONFIG_QCOM_QSEECOM_UEFISECAPP) += qcom_qseecom_uefisecapp.o
+ obj-$(CONFIG_QCOM_PAS)		+= qcom_pas.o
+ obj-$(CONFIG_QCOM_PAS_TEE)	+= qcom_pas_tee.o
++obj-$(CONFIG_QCOM_QSEECOM_FPC)	+= qcom_qseecom_fpc.o
+diff --git a/drivers/firmware/qcom/qcom_qseecom_fpc.c b/drivers/firmware/qcom/qcom_qseecom_fpc.c
+new file mode 100644
+index 000000000..e1bdbadb3
+--- /dev/null
++++ b/drivers/firmware/qcom/qcom_qseecom_fpc.c
+@@ -0,0 +1,352 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * qseecom-fpc - minimal legacy QSEECOM transport for TAs loaded by HLOS.
++ *
++ * Why this exists: the mainline QSEECOM support (drivers/firmware/qcom/
++ * qcom_qseecom.c) only talks to apps that the firmware bootloader already
++ * loaded (qcom.tz.uefisecapp) on machines listed in an allowlist. The FPC
++ * fingerprint TA on the Motorola hanoip (fpctzapp) is *not* preloaded: Android
++ * loads it at boot with QSEOS_APP_START_COMMAND and then talks to it with
++ * 64-byte control blocks plus one out-of-band data region described by a
++ * physical address patched into the control block.
++ *
++ * This driver exposes exactly that: load an image, then send/receive. It knows
++ * nothing about fingerprints and never parses TA payloads.
++ *
++ * Layout of the data region as seen by the TA (documented in
++ * docs/kernel/PROTOCOLO-FPC-TA-20261029.md):
++ *   external region starts with {u32 module_id, u32 command_id}; the rest is
++ *   per module. The control block is {u32 region_len, u32 region_phys} plus
++ *   zeros; the response block's first word is the TEE status.
++ *
++ * Buffers are allocated with dma_alloc_coherent() so the secure world always
++ * sees the same bytes the CPU wrote (the legacy downstream driver needed
++ * explicit cache maintenance; coherent memory makes that unnecessary).
++ *
++ * Deliberately NOT implemented here: listeners (RPMB/ssd/gpfs), keymaster,
++ * disk encryption, app whitelisting. Those are separate services and the FPC
++ * TA does not use them for its command path.
++ */
++
++#include <linux/dma-mapping.h>
++#include <linux/firmware/qcom/qcom_scm.h>
++#include <linux/fs.h>
++#include <linux/miscdevice.h>
++#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
++#include <linux/uaccess.h>
++
++#include <uapi/misc/qseecom-fpc.h>
++
++#define QSEECOM_FPC_NAME	"qseecom-fpc"
++#define QSEECOM_FPC_APP		"fpctzapp"
++
++struct qseecom_fpc {
++	struct device *dev;
++	struct miscdevice misc;
++	struct mutex lock;	/* serialises the single open file */
++	void *ctrl;		/* 64 B request + 64 B response, coherent */
++	dma_addr_t ctrl_phys;
++	void *frame;		/* out-of-band data region */
++	dma_addr_t frame_phys;
++	size_t frame_len;
++	u32 app_id;
++	bool app_loaded;
++	bool open;
++};
++
++static int qseecom_fpc_load(struct qseecom_fpc *q, void __user *uarg)
++{
++	struct qseecom_fpc_load arg;
++	void *image;
++	dma_addr_t image_phys;
++	int ret;
++
++	if (copy_from_user(&arg, uarg, sizeof(arg)))
++		return -EFAULT;
++
++	if (!arg.image || arg.image_len < arg.mdt_len || !arg.mdt_len)
++		return -EINVAL;
++	if (arg.image_len > QSEECOM_FPC_MAX_IMAGE)
++		return -EINVAL;
++	if (q->app_loaded)
++		return -EBUSY;
++
++	image = dma_alloc_coherent(q->dev, arg.image_len, &image_phys,
++				   GFP_KERNEL);
++	if (!image)
++		return -ENOMEM;
++
++	ret = copy_from_user(image, u64_to_user_ptr(arg.image), arg.image_len);
++	if (ret) {
++		ret = -EFAULT;
++		goto out_free;
++	}
++
++	/*
++	 * The legacy SCM call takes (mdt_len, img_len, phys) with the MDT
++	 * header at the *end* of the buffer, so the HLOS-side prep is:
++	 *   [segments b00..bNN][.mdt]
++	 */
++	ret = qcom_scm_qseecom_app_start(image_phys, arg.mdt_len,
++					 arg.image_len);
++	if (ret)
++		goto out_free;
++
++	ret = qcom_scm_qseecom_app_get_id(QSEECOM_FPC_APP, &q->app_id);
++	if (ret)
++		goto out_free;
++
++	q->app_loaded = true;
++	arg.app_id = q->app_id;
++
++	if (copy_to_user(uarg, &arg, sizeof(arg)))
++		ret = -EFAULT;
++
++out_free:
++	/* The secure world copies the image in; the HLOS buffer is not needed. */
++	dma_free_coherent(q->dev, arg.image_len, image, image_phys);
++	return ret;
++}
++
++static int qseecom_fpc_send(struct qseecom_fpc *q, void __user *uarg)
++{
++	struct qseecom_fpc_send arg;
++	u8 *ctrl = q->ctrl;
++	u64 ta_result = 0;
++	int ret;
++
++	if (copy_from_user(&arg, uarg, sizeof(arg)))
++		return -EFAULT;
++
++	if (!arg.req || !arg.rsp)
++		return -EINVAL;
++	if (!arg.frame || !arg.frame_len || arg.frame_len > q->frame_len)
++		return -EINVAL;
++	if (!q->app_loaded)
++		return -ENODEV;
++
++	if (copy_from_user(q->frame, u64_to_user_ptr(arg.frame), arg.frame_len))
++		return -EFAULT;
++
++	/*
++	 * Control block: length of the external region, then its physical
++	 * address (what the downstream kernel used to patch in via
++	 * QSEECom_ion_fd_info{cmd_id = 4}).
++	 */
++	memset(ctrl, 0, QSEECOM_FPC_CTRL_LEN + QSEECOM_FPC_RSP_LEN);
++	*(u32 *)(ctrl + 0) = arg.frame_len;
++	*(u32 *)(ctrl + 4) = lower_32_bits(q->frame_phys);
++
++	ret = qcom_scm_qseecom_app_send_phys(q->app_id, q->ctrl_phys,
++					     QSEECOM_FPC_CTRL_LEN,
++					     q->ctrl_phys + QSEECOM_FPC_CTRL_LEN,
++					     QSEECOM_FPC_RSP_LEN,
++					     &ta_result);
++	if (ret)
++		return ret;
++
++	arg.ta_result = ta_result;
++
++	arg.status = *(s32 *)(ctrl + QSEECOM_FPC_CTRL_LEN);
++
++	if (copy_to_user(u64_to_user_ptr(arg.rsp), ctrl + QSEECOM_FPC_CTRL_LEN,
++			 QSEECOM_FPC_RSP_LEN))
++		return -EFAULT;
++	if (copy_to_user(u64_to_user_ptr(arg.req), ctrl, QSEECOM_FPC_CTRL_LEN))
++		return -EFAULT;
++	if (copy_to_user(u64_to_user_ptr(arg.frame), q->frame, arg.frame_len))
++		return -EFAULT;
++
++	return 0;
++}
++
++static long qseecom_fpc_ioctl(struct file *file, unsigned int cmd,
++			      unsigned long arg)
++{
++	struct qseecom_fpc *q = file->private_data;
++	void __user *uarg = (void __user *)arg;
++	struct qseecom_fpc_info info;
++	int ret = 0;
++
++	mutex_lock(&q->lock);
++	switch (cmd) {
++	case QSEECOM_FPC_LOAD_APP:
++		ret = qseecom_fpc_load(q, uarg);
++		break;
++	case QSEECOM_FPC_SEND:
++		ret = qseecom_fpc_send(q, uarg);
++		break;
++	case QSEECOM_FPC_UNLOAD_APP:
++		if (!q->app_loaded) {
++			ret = -ENODEV;
++			break;
++		}
++		/* Best effort: a failed shutdown must not wedge the device. */
++		qcom_scm_qseecom_app_shutdown(q->app_id);
++		q->app_loaded = false;
++		q->app_id = 0;
++		break;
++	case QSEECOM_FPC_INFO:
++		info.app_id = q->app_id;
++		info.app_loaded = q->app_loaded;
++		info.frame_len = q->frame_len;
++		info.reserved = 0;
++		if (copy_to_user(uarg, &info, sizeof(info)))
++			ret = -EFAULT;
++		break;
++	default:
++		ret = -ENOTTY;
++	}
++	mutex_unlock(&q->lock);
++
++	return ret;
++}
++
++static int qseecom_fpc_open(struct inode *inode, struct file *file)
++{
++	struct qseecom_fpc *q = container_of(file->private_data,
++					     struct qseecom_fpc, misc);
++
++	mutex_lock(&q->lock);
++	if (q->open) {
++		mutex_unlock(&q->lock);
++		return -EBUSY;
++	}
++	q->open = true;
++	mutex_unlock(&q->lock);
++
++	file->private_data = q;
++	return 0;
++}
++
++static int qseecom_fpc_release(struct inode *inode, struct file *file)
++{
++	struct qseecom_fpc *q = file->private_data;
++
++	mutex_lock(&q->lock);
++	q->open = false;
++	mutex_unlock(&q->lock);
++	return 0;
++}
++
++static const struct file_operations qseecom_fpc_fops = {
++	.owner = THIS_MODULE,
++	.open = qseecom_fpc_open,
++	.release = qseecom_fpc_release,
++	.unlocked_ioctl = qseecom_fpc_ioctl,
++	.compat_ioctl = qseecom_fpc_ioctl,
++};
++
++static int qseecom_fpc_probe(struct platform_device *pdev)
++{
++	struct qseecom_fpc *q;
++	int ret;
++
++	q = devm_kzalloc(&pdev->dev, sizeof(*q), GFP_KERNEL);
++	if (!q)
++		return -ENOMEM;
++
++	q->dev = &pdev->dev;
++	mutex_init(&q->lock);
++
++	ret = dma_set_mask_and_coherent(q->dev, DMA_BIT_MASK(36));
++	if (ret) {
++		dev_err(q->dev, "no usable DMA mask: %d\n", ret);
++		return ret;
++	}
++
++	q->ctrl = dma_alloc_coherent(q->dev,
++				     QSEECOM_FPC_CTRL_LEN + QSEECOM_FPC_RSP_LEN,
++				     &q->ctrl_phys, GFP_KERNEL);
++	if (!q->ctrl)
++		return -ENOMEM;
++
++	q->frame_len = QSEECOM_FPC_MAX_FRAME;
++	q->frame = dma_alloc_coherent(q->dev, q->frame_len, &q->frame_phys,
++				      GFP_KERNEL);
++	if (!q->frame) {
++		ret = -ENOMEM;
++		goto err_ctrl;
++	}
++
++	q->misc.minor = MISC_DYNAMIC_MINOR;
++	q->misc.name = QSEECOM_FPC_NAME;
++	q->misc.fops = &qseecom_fpc_fops;
++	q->misc.parent = q->dev;
++	ret = misc_register(&q->misc);
++	if (ret)
++		goto err_frame;
++
++	platform_set_drvdata(pdev, q);
++
++	dev_info(q->dev, "ready: frame %zu B at %pad, control at %pad\n",
++		 q->frame_len, &q->frame_phys, &q->ctrl_phys);
++	return 0;
++
++err_frame:
++	dma_free_coherent(q->dev, q->frame_len, q->frame, q->frame_phys);
++err_ctrl:
++	dma_free_coherent(q->dev, QSEECOM_FPC_CTRL_LEN + QSEECOM_FPC_RSP_LEN,
++			  q->ctrl, q->ctrl_phys);
++	return ret;
++}
++
++static void qseecom_fpc_remove(struct platform_device *pdev)
++{
++	struct qseecom_fpc *q = platform_get_drvdata(pdev);
++
++	misc_deregister(&q->misc);
++	if (q->app_loaded)
++		qcom_scm_qseecom_app_shutdown(q->app_id);
++	dma_free_coherent(q->dev, q->frame_len, q->frame, q->frame_phys);
++	dma_free_coherent(q->dev, QSEECOM_FPC_CTRL_LEN + QSEECOM_FPC_RSP_LEN,
++			  q->ctrl, q->ctrl_phys);
++}
++
++static struct platform_driver qseecom_fpc_driver = {
++	.probe = qseecom_fpc_probe,
++	.remove = qseecom_fpc_remove,
++	.driver = {
++		.name = QSEECOM_FPC_NAME,
++	},
++};
++
++static struct platform_device *qseecom_fpc_pdev;
++
++static int __init qseecom_fpc_init(void)
++{
++	int ret;
++
++	/*
++	 * No device tree node on purpose: everything comes from the SCM
++	 * interface and coherent allocations, so the driver works on any
++	 * board with a usable QSEECOM/TZ call path.
++	 */
++	qseecom_fpc_pdev = platform_device_register_simple(QSEECOM_FPC_NAME, -1,
++							   NULL, 0);
++	if (IS_ERR(qseecom_fpc_pdev))
++		return PTR_ERR(qseecom_fpc_pdev);
++
++	ret = platform_driver_register(&qseecom_fpc_driver);
++	if (ret) {
++		platform_device_unregister(qseecom_fpc_pdev);
++		return ret;
++	}
++
++	return 0;
++}
++
++static void __exit qseecom_fpc_exit(void)
++{
++	platform_driver_unregister(&qseecom_fpc_driver);
++	platform_device_unregister(qseecom_fpc_pdev);
++}
++
++module_init(qseecom_fpc_init);
++module_exit(qseecom_fpc_exit);
++
++MODULE_DESCRIPTION("Legacy QSEECOM transport for HLOS-loaded TAs (FPC)");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index 3eaa4c9cc..9f753425a 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -117,6 +117,8 @@ enum qcom_scm_qseecom_tz_svc {
+ enum qcom_scm_qseecom_tz_cmd_app {
+ 	QSEECOM_TZ_CMD_APP_SEND			= 1,
+ 	QSEECOM_TZ_CMD_APP_LOOKUP		= 3,
++	QSEECOM_TZ_CMD_APP_START		= 1, /* svc APP_MGR, owner QSEE_OS */
++	QSEECOM_TZ_CMD_APP_SHUTDOWN		= 2, /* svc APP_MGR, owner QSEE_OS */
+ };
+ 
+ enum qcom_scm_qseecom_tz_cmd_info {
+@@ -2299,6 +2301,145 @@ EXPORT_SYMBOL_GPL(qcom_scm_qseecom_app_send);
+  * We do not yet support re-entrant calls via the qseecom interface. To prevent
+  + any potential issues with this, only allow validated machines for now.
+  */
++/*
++ * Legacy QSEECOM app management and a physical-address variant of app_send.
++ *
++ * The upstream helpers above assume the buffers live in the QSEECOM shared
++ * memory pool (qcom_tzmem / shm bridge) and that the app was already loaded by
++ * firmware. The Android-era QSEECOM ABI used by this device is older: the TA is
++ * loaded from the non-secure world with QSEOS_APP_START_COMMAND and the data
++ * region is described by a plain physical address.
++ *
++ * Call descriptors, from include/soc/qcom/qseecomi.h (Qualcomm's TZ syscall
++ * encoding, SMC_ID = (owner << 24) | (svc << 8) | fn):
++ *
++ *   TZ_OS_APP_START_ID  = owner QSEE_OS(50), svc APP_MGR(1), fn 1
++ *                         args (mdt_len, img_len, phys), all TZ type VAL
++ *   TZ_OS_APP_SHUTDOWN_ID = same owner/svc, fn 2, args (app_id), VAL
++ *   TZ_APP_QSAPP_SEND_DATA_ID = owner TZ_APPS(48), svc 0, fn 1,
++ *                         args (app_id, req, req_len, rsp, rsp_len),
++ *                         types (VAL, BUF_RW, VAL, BUF_RW, VAL)
++ */
++
++/**
++ * qcom_scm_qseecom_app_start() - Load a QSEE app image into the secure world.
++ * @image:    physical address of the image; the MDT header sits at the end
++ *            of the buffer (segments first, then .mdt)
++ * @mdt_len:  size of the MDT header
++ * @img_len:  total size of segments + MDT header
++ *
++ * Returns: 0 on success, negative error code otherwise. A rejected image
++ * (bad signature, app not permitted) surfaces as -EIO.
++ */
++int qcom_scm_qseecom_app_start(phys_addr_t image, size_t mdt_len,
++			       size_t img_len)
++{
++	struct qcom_scm_qseecom_resp res = {};
++	struct qcom_scm_desc desc = {};
++	int status;
++
++	desc.owner = QSEECOM_TZ_OWNER_QSEE_OS;
++	desc.svc = QSEECOM_TZ_SVC_APP_MGR;
++	desc.cmd = QSEECOM_TZ_CMD_APP_START;
++	desc.arginfo = QCOM_SCM_ARGS(3, QCOM_SCM_VAL, QCOM_SCM_VAL,
++				     QCOM_SCM_VAL);
++	desc.args[0] = mdt_len;
++	desc.args[1] = img_len;
++	desc.args[2] = image;
++
++	status = qcom_scm_qseecom_call(&desc, &res);
++	if (status)
++		return status;
++
++	if (res.result != QSEECOM_RESULT_SUCCESS)
++		return -EIO;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(qcom_scm_qseecom_app_start);
++
++/**
++ * qcom_scm_qseecom_app_shutdown() - Unload a QSEE app image.
++ * @app_id: ID returned when the app was loaded.
++ *
++ * Returns: 0 on success, negative error code otherwise.
++ */
++int qcom_scm_qseecom_app_shutdown(u32 app_id)
++{
++	struct qcom_scm_qseecom_resp res = {};
++	struct qcom_scm_desc desc = {};
++	int status;
++
++	desc.owner = QSEECOM_TZ_OWNER_QSEE_OS;
++	desc.svc = QSEECOM_TZ_SVC_APP_MGR;
++	desc.cmd = QSEECOM_TZ_CMD_APP_SHUTDOWN;
++	desc.arginfo = QCOM_SCM_ARGS(1, QCOM_SCM_VAL);
++	desc.args[0] = app_id;
++
++	status = qcom_scm_qseecom_call(&desc, &res);
++	if (status)
++		return status;
++
++	if (res.result != QSEECOM_RESULT_SUCCESS)
++		return -EIO;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(qcom_scm_qseecom_app_shutdown);
++
++/**
++ * qcom_scm_qseecom_app_send_phys() - Send to/receive from a QSEE app using
++ * physical addresses.
++ * @app_id:   ID of the target app.
++ * @req:      physical address of the request buffer.
++ * @req_size: size of the request buffer (64 B in the legacy ABI).
++ * @rsp:      physical address of the response buffer.
++ * @rsp_size: size of the response buffer (64 B in the legacy ABI).
++ * @ta_result: out, the value the TA returned (module-specific).
++ *
++ * Same SCM call as qcom_scm_qseecom_app_send(), but the caller owns the
++ * memory: it must be physically contiguous and TZ-visible (coherent DMA
++ * allocations are). This is what the legacy ABI needs, because the TA is
++ * handed the address of a separate "external region" through the request.
++ *
++ * Returns: 0 when the SCM call itself succeeded; the TA's return value goes to
++ * @ta_result and may be a private error code or a count.
++ */
++int qcom_scm_qseecom_app_send_phys(u32 app_id, phys_addr_t req, size_t req_size,
++				   phys_addr_t rsp, size_t rsp_size,
++				   u64 *ta_result)
++{
++	struct qcom_scm_qseecom_resp res = {};
++	struct qcom_scm_desc desc = {};
++	int status;
++
++	desc.owner = QSEECOM_TZ_OWNER_TZ_APPS;
++	desc.svc = QSEECOM_TZ_SVC_APP_ID_PLACEHOLDER;
++	desc.cmd = QSEECOM_TZ_CMD_APP_SEND;
++	desc.arginfo = QCOM_SCM_ARGS(5, QCOM_SCM_VAL, QCOM_SCM_RW,
++				     QCOM_SCM_VAL, QCOM_SCM_RW, QCOM_SCM_VAL);
++	desc.args[0] = app_id;
++	desc.args[1] = req;
++	desc.args[2] = req_size;
++	desc.args[3] = rsp;
++	desc.args[4] = rsp_size;
++
++	status = qcom_scm_qseecom_call(&desc, &res);
++	if (status)
++		return status;
++
++	/*
++	 * The TA's own return value is not a QSEECOM status here: modules use it
++	 * for counts (e.g. "bytes still to transfer") and for their private
++	 * error codes. Hand it to the caller unmodified.
++	 */
++	if (ta_result)
++		*ta_result = res.result;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(qcom_scm_qseecom_app_send_phys);
++
+ static const struct of_device_id qcom_scm_qseecom_allowlist[] __maybe_unused = {
+ 	{ .compatible = "asus,vivobook-s15" },
+ 	{ .compatible = "asus,vivobook-s15-x1p4" },
+diff --git a/include/linux/firmware/qcom/qcom_scm.h b/include/linux/firmware/qcom/qcom_scm.h
+index 5747bd191..2631c01e5 100644
+--- a/include/linux/firmware/qcom/qcom_scm.h
++++ b/include/linux/firmware/qcom/qcom_scm.h
+@@ -172,6 +172,12 @@ int qcom_scm_shm_bridge_delete(u64 handle);
+ int qcom_scm_qseecom_app_get_id(const char *app_name, u32 *app_id);
+ int qcom_scm_qseecom_app_send(u32 app_id, void *req, size_t req_size,
+ 			      void *rsp, size_t rsp_size);
++int qcom_scm_qseecom_app_start(phys_addr_t image, size_t mdt_len,
++			       size_t img_len);
++int qcom_scm_qseecom_app_shutdown(u32 app_id);
++int qcom_scm_qseecom_app_send_phys(u32 app_id, phys_addr_t req, size_t req_size,
++				   phys_addr_t rsp, size_t rsp_size,
++				   u64 *ta_result);
+ 
+ #else /* CONFIG_QCOM_QSEECOM */
+ 
+diff --git a/include/uapi/misc/qseecom-fpc.h b/include/uapi/misc/qseecom-fpc.h
+new file mode 100644
+index 000000000..b501638bc
+--- /dev/null
++++ b/include/uapi/misc/qseecom-fpc.h
+@@ -0,0 +1,50 @@
++/* SPDX-License-Identifier: GPL-2.0-only WITH Linux-syscall-note */
++/*
++ * Minimal legacy QSEECOM transport, for TAs that must be loaded by the
++ * non-secure world (here: Motorola's fpctzapp on the Moto G60).
++ *
++ * The ABI is deliberately small: load an app image from a buffer, then send
++ * 64-byte control blocks plus one out-of-band data region ("frame").
++ */
++#ifndef _UAPI_MISC_QSEECOM_FPC_H
++#define _UAPI_MISC_QSEECOM_FPC_H
++
++#include <linux/types.h>
++#include <linux/ioctl.h>
++
++#define QSEECOM_FPC_MAX_IMAGE	(8U * 1024 * 1024)
++#define QSEECOM_FPC_MAX_FRAME	(2U * 1024 * 1024)
++#define QSEECOM_FPC_CTRL_LEN	64
++#define QSEECOM_FPC_RSP_LEN	64
++
++struct qseecom_fpc_load {
++	__u64 image;		/* user pointer: segments followed by the .mdt */
++	__u32 image_len;	/* total bytes in @image */
++	__u32 mdt_len;		/* bytes of .mdt at the end of @image */
++	__u32 app_id;		/* out: TEE app id */
++	__u32 reserved;
++};
++
++struct qseecom_fpc_send {
++	__u64 req;		/* user pointer: 64-byte control block (in) */
++	__u64 rsp;		/* user pointer: 64-byte response block (out) */
++	__u64 frame;		/* user pointer: external data region */
++	__u32 frame_len;	/* bytes in @frame (the TA sees this size) */
++	__s32 status;		/* out: first word of the response block */
++	__s32 reserved;
++	__s64 ta_result;	/* out: value returned by the TA (module-specific) */
++};
++
++struct qseecom_fpc_info {
++	__u32 app_id;
++	__u32 app_loaded;
++	__u32 frame_len;	/* size of the internal frame buffer */
++	__u32 reserved;
++};
++
++#define QSEECOM_FPC_LOAD_APP	_IOWR('q', 1, struct qseecom_fpc_load)
++#define QSEECOM_FPC_UNLOAD_APP	_IO('q', 2)
++#define QSEECOM_FPC_SEND	_IOWR('q', 3, struct qseecom_fpc_send)
++#define QSEECOM_FPC_INFO	_IOR('q', 4, struct qseecom_fpc_info)
++
++#endif /* _UAPI_MISC_QSEECOM_FPC_H */

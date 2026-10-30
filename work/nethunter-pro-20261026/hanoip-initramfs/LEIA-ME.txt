@@ -1,0 +1,18 @@
+# Hook hanoip-guard (init-premount do Kali no hanoip)
+
+Instalação no rootfs (na receita/debos, pacote hanoip-support):
+- `hanoip-guard` -> /usr/share/initramfs-tools/scripts/init-premount/hanoip-guard
+- `hooks/hanoip-guard` -> /usr/share/initramfs-tools/hooks/hanoip-guard
+- rodar `update-initramfs -u` na build.
+
+Integração com o boot:
+- cmdline do boot.img (nosso pack-boot.py) leva
+  `mobile.root=/dev/disk/by-partlabel/userdata` (+ o resto da cmdline atual:
+  earlycon, consoles, clk_ignore_unused, panic_on_oops=1...).
+- Ordem no initrd: hanoip-guard (trava tudo RO exceto userdata, checa
+  super RO, falha se a super não estiver RO) -> mobile-root (lê
+  mobile.root= e escreve ROOT= em /conf/param.conf) -> script local monta.
+- O DT continua vindo do U-Boot (DTB anexado ignorado).
+
+Fora do escopo deste hook (proibido aqui): flash, repart, droid-juicer,
+dynpart mappings, zz-qcom-bootimg.

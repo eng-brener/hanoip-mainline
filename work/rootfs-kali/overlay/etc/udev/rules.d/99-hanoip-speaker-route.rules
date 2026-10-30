@@ -1,0 +1,5 @@
+# Speaker path: MultiMedia1 (hw:G60,0) -> SECONDARY_MI2S_RX -> aw882xx.
+# The ADSP routing mixer starts off; turn it on when the card appears so
+# PipeWire output reaches the amplifier. Runs after alsactl restore (90-*).
+ACTION=="add", SUBSYSTEM=="sound", KERNEL=="controlC*", ATTRS{id}=="G60", \
+  RUN+="/usr/libexec/hanoip-speaker-route"

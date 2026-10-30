@@ -1,0 +1,24 @@
+#!/bin/sh
+# initramfs-tools hook: firmware the kernel needs BEFORE the root fs is up.
+# The display/GPU (msm_dpu, adreno) probe during early boot and load their
+# firmware from the initramfs, so these must be inside the initrd.
+set -e
+PREREQ=""
+prereqs() { echo "${PREREQ}"; }
+case "$1" in prereqs) prereqs; exit 0;; esac
+. /usr/share/initramfs-tools/hook-functions
+
+# a615_zap.* must also be here: the Adreno driver asks for the zap shader
+# during msm_dpu probe, before the root fs (and /mnt/ro/modem_a) exist.
+for fw in qcom/a630_sqe.fw qcom/a630_gmu.bin \
+          qcom/sm7150/motorola/hanoip/a615_zap.mdt \
+          qcom/sm7150/motorola/hanoip/a615_zap.b00 \
+          qcom/sm7150/motorola/hanoip/a615_zap.b01 \
+          qcom/sm7150/motorola/hanoip/a615_zap.b02 \
+          ath10k/WCN3990/hw1.0/firmware-5.bin; do
+    src="/lib/firmware/$fw"
+    [ -f "$src" ] || continue
+    mkdir -p "${DESTDIR}/lib/firmware/$(dirname "$fw")"
+    cp -p "$src" "${DESTDIR}/lib/firmware/$fw"
+    echo "hanoip-firmware: $fw"
+done

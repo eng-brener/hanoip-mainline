@@ -1,0 +1,25 @@
+== servicos/scripts hanoip:
+/mnt/kali-ro/etc/systemd/system/hanoip-efs.service
+/mnt/kali-ro/etc/systemd/system/hanoip-firmware.service
+/mnt/kali-ro/etc/systemd/system/hanoip-mmi.service
+/mnt/kali-ro/etc/systemd/system/hanoip-modem.service
+/mnt/kali-ro/etc/systemd/system/hanoip-perf-tune.service
+/mnt/kali-ro/etc/systemd/system/hanoip-ssc.service
+/mnt/kali-ro/etc/systemd/system/hanoip-udev-trigger.service
+/mnt/kali-ro/etc/systemd/system/hanoip-usbnet.service
+/mnt/kali-ro/usr/local/sbin/hanoip-efs
+/mnt/kali-ro/usr/local/sbin/hanoip-firmware
+/mnt/kali-ro/usr/local/sbin/hanoip-mmi
+/mnt/kali-ro/usr/local/sbin/hanoip-modem
+/mnt/kali-ro/usr/local/sbin/hanoip-perf-tune
+/mnt/kali-ro/usr/local/sbin/hanoip-ssc
+/mnt/kali-ro/usr/local/sbin/hanoip-usbnet
+== configs:
+/mnt/kali-ro/etc/modprobe.d/hanoip-speaker.conf
+/mnt/kali-ro/etc/udev/rules.d/99-hanoip-blockdev-ro.rules
+/mnt/kali-ro/etc/udev/rules.d/99-hanoip-speaker-route.rules
+/mnt/kali-ro/etc/udev/rules.d/99-hanoip-ssc.rules
+/mnt/kali-ro/usr/share/alsa/ucm2/conf.d/sm8250/Motorola Moto G60.conf
+/mnt/kali-ro/usr/share/wireplumber/wireplumber.conf.d/51-hanoip-speaker.conf
+== tamanho /opt/ssc:
+82.3M	/mnt/kali-ro/opt/ssc

@@ -1,0 +1,16 @@
+[Unit]
+Description=Trigger udev for devices created before udevd (hanoip)
+DefaultDependencies=no
+After=systemd-udevd.service systemd-udevd-control.socket systemd-udevd-kernel.socket
+Before=sysinit.target getty.target
+Wants=systemd-udevd.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/udevadm trigger --action=add --subsystem-match=tty
+ExecStart=/bin/udevadm trigger --action=add --subsystem-match=block
+ExecStart=/bin/udevadm settle --timeout=15
+
+[Install]
+WantedBy=sysinit.target

@@ -1,0 +1,245 @@
+AUDITORIA COMPLETA DE LOGS — Kali no hanoip, boot de 27/10/2026 10:30
+Fontes: dmesg (781 linhas, lido integralmente), journal do boot (2499 linhas),
+        estado vivo do sistema. Kernel 7.3.0-sm7150 #2.
+
+RESUMO: nenhum Oops, BUG, WARNING de kernel, hung task, OOM ou timeout de I/O.
+Taint = 4096 (TAINT_OOT_MODULE) só pelo nosso hanoip_mmi_unit_info.
+"systemctl is-system-running" = running, zero units falhando.
+
+=====================================================================
+1. KERNEL — tudo o que é erro/aviso no dmesg, um por um
+=====================================================================
+
+1.1 psci: [Firmware Bug]: failed to set PC mode: -3            (0.0 s)
+    PSCI OSI, o firmware não aceita setar PC mode. O CPUidle funciona por OSI
+    ("CPUidle PSCI: Initialized CPU PM domain topology using OSI mode") e os
+    estados locais são usados (cpu-sleep-0-0/1 com milhares de usos).
+    Inofensivo. Não é regressão nossa.
+
+1.2 DMI: not present or invalid                                 (0.05 s)
+    Normal em ARM sem UEFI.
+
+1.3 simplefb: cannot reserve video memory at 0x9c000000         (0.44 s)
+    Esperado: a splash está em mem-reserved já mapeada; o msm assume o
+    framebuffer depois ("HANOIP: mapped firmware framebuffer ... before
+    stream switch") e o fb0 sobe (msmdrmfb, 1080x2460x32).
+
+1.4 remoteproc0: adsp.mdt failed with error -2 (2x)             (1.5 s)
+    O probe inicial do ADSP acontece ANTES do hanoip-firmware criar os links
+    de /lib/firmware. Depois o remoteproc sobe de verdade:
+      "Booting fw image qcom/sm7150/motorola/hanoip/adsp.mdt, size 8860"
+      "remote processor adsp is now up"
+    Ordem esperada, não é falha.
+
+1.5 qcom,fastrpc ...: no reserved DMA memory for FASTRPC        (7.8 s)
+    O nó fastrpc não tem carveout de DMA reserved. Os sensores funcionam por
+    esta via (libssc), mas é um ponto de atenção se algum dia a câmera for
+    portada (a HAL usa fastrpc com buffers ION/DMA).
+
+1.6 sm7150-tlmm: hanoip GPIO4 direction read: tile=0 ctl=0x4000  (0.8 s)
+    Printf de debug nosso no driver de pinctrl (sobrou da investigação do
+    leitor de digital). Só ruído — remover no próximo build do kernel.
+
+1.7 EM: "OPP:576000 is inefficient", "OPP:300000 is inefficient" (0.8 s)
+    energy_model: cpu0 cpu_cap=382 old capacity=488
+    Tabelas de OPP têm pontos fora da curva de energia e a capacidade do DT
+    (488) difere da medida (382). O scheduler escolhe OPPs eficientes, então
+    é cosmético; dá para melhorar ajustando capacity-dmips-mhz no DT.
+
+1.8 cfg80211: loaded regulatory.db is malformed or signature
+    is missing/invalid                                        (5.8 s)
+    REAL e tinha conserto fácil: /lib/firmware/regulatory.db apontava para a
+    variante ASSINADA PELA DEBIAN (regulatory.db-debian), mas o nosso kernel
+    só confia nas chaves upstream (sforshee/wens). Resultado: domínio
+    regulatório cai para o padrão do EEPROM (US).
+    CORRIGIDO: alternatives apontados para regulatory.db-upstream e
+    /lib/firmware/regulatory.db.p7s-upstream (vale no próximo boot).
+
+1.9 ath10k_snoc: chan info: invalid frequency 0 (idx 41) (2x)   (13.6 s)
+    Quirk conhecido do WCN3990: uma entrada de canal vem zerada no EEPROM.
+    Não impede associação (wlan0 ativo, 10.0.0.44, 5 GHz).
+
+1.10 dwc3: request ... was not queued to ep1in                  (7.5 s)
+    Acontece ao desmontar o gadget de console do initramfs
+    ("hanoip-usbnet: unbound hanoip-console") para subir o NCM. Ruído de
+    teardown do dwc3, sem perda de função (usb0 172.16.42.1/24 up).
+
+1.11 systemd: bpf-restrict-fs: Failed to load BPF object         (3.6 s)
+    Recurso novo do systemd 262 (BPFRestrictFileSystems) que exige BPF LSM no
+    kernel. Nosso kernel não tem CONFIG_BPF_LSM. Cosmético; pode ser silenciado
+    com BPFRestrictFileSystems=no se incomodar.
+
+1.12 EXT4-fs (sdb24): 4 orphan inodes deleted / recovery complete (2.8 s)
+    Jornal do ext4 reproduzido com sucesso no boot — prova de que o
+    filesystem está sadio e que o reparo de hoje funcionou.
+
+1.13 systemd-journald: system.journal corrupted or uncleanly shut
+     down, renaming and replacing                        (4.4 s e 26.8 s)
+    Sequelas do desligamento sujo anterior; o journal rotacionou e seguiu.
+    Não volta a acontecer com o hanoip-reboot (sync + remount RO).
+
+1.14 graphical.target: Wants dependency dropin ... has different name (4.1 s)
+    Nosso symlink display-manager.service -> greetd.service não bate com o
+    nome que o graphical.target.wants espera. Cosmético.
+
+1.15 tmp.mount: /tmp not empty + x-systemd.graceful-option=usrquota
+     not available                                        (4.2 s)
+    Nosso kernel não tem CONFIG_TMPFS_QUOTA. Cosmético.
+
+1.16 gcc-sm7150 / sc7180-gpucc: sync_state() pending due to 506a000.gmu (18 s)
+    O driver da GMU do GPU (módulo carregado depois) segura o sync_state do
+    clock controller. Combinado com clk_ignore_unused é inofensivo.
+
+1.17 q6afe_probe:2011/2027 DBG e q6afe_i2s_port_prepare:... DBG
+    Printfs de debug do driver de áudio do downstream (nível err). Só ruído;
+    limpar quando mexermos em áudio de novo.
+
+1.18 "MultiMedia1: ASoC: no backend DAIs enabled ... missing routing/UCM"
+    Aparece ANTES de a rota ser aplicada (udev + WirePlumber). Depois o áudio
+    toca normal. É a assinatura de "UCM ainda não aplicado", não um defeito.
+
+1.19 UFS / storage: nenhum erro. Seis LUNs SAMSUNG KM5V8001DM-B622,
+     sdb = 118 GiB com 24 partições, sem NOP OUT timeout, sem fault de SMMU.
+     (o iommus do UFS continua obrigatório)
+
+1.20 Display: nenhum erro de kernel, nenhuma falha de SMMU, nenhum fault de
+     DSI no dmesg. O DRM registra: dpu revision 0x50020000, msm 1.13.0,
+     card0 + renderD128, fb0 1080x2460x32, painel conectado, modo 1080x2460.
+
+=====================================================================
+2. JOURNAL — problemas reais e o que fazer
+=====================================================================
+
+2.1 phoc: "connector DSI-1: Atomic commit failed: Device or resource busy"
+    11 vezes neste boot, em 3 surtos: 10:30:43-46 (startup, seguido de
+    "Timeout (3000ms) expired with 1 configures pending"), 10:33:15-29
+    (quando phosh-mobile-settings abriu) e 1 em 10:33:29.
+    Não há erro de kernel correspondente: o driver retorna EBUSY porque o
+    commit anterior ainda não completou (pageflip pendente). É a mesma classe
+    do "startup FIFO" que perseguimos no pmOS — agora em forma de corrida de
+    commit atômico. A tela funciona (o usuário confirmou imagem), mas isso pode
+    causar lentidão/engasgo ao abrir janelas. Vale investigar depois.
+    10:34:46 "connector DSI-1: Turning off" = blank por inatividade (normal),
+    estado atual enabled=disabled/dpms=Off é só a tela apagada.
+
+2.2 /etc com dono uid 502!                                      CORRIGIDO
+    systemd-tmpfiles reclamava "Detected unsafe path transition /etc (owned by
+    502) → /etc/ssh (owned by 0)" e passava a recusar operações sob /etc.
+    Havia 2320 entradas com uid 502 (22 em /etc, o resto em /opt/ssc e alguns
+    em /usr/lib, /usr/share, /etc/udev, /etc/init.d, /boot/config-...).
+    Corrigido com chown --from (e -h para symlinks): 0 restantes, /etc agora
+    0:0 755. Nenhum usuário tem uid 502, então não houve risco de escrita
+    indevida — era sujeira de empacotamento do rootfs.
+
+2.3 bootmac-bluetooth: "Set Public Address for hci0 failed with status 0x0b
+    (Rejected)"                                                  JÁ MASCARADO
+    Agora sabemos o motivo exato: o controlador WCN3990 RECUSA trocar o BD
+    address em runtime (HCI 0x0b). O endereço D8:CF:BF:3C:EE:74 vem do
+    firmware/NVM e é estável entre boots. Mascarar foi a decisão correta.
+
+2.4 feedbackd: "Failed to setup brightness ... white:status/brightness:
+    Permission denied" (7 tentativas)
+    O LED é 664 root:feedbackd e o kali JÁ está no grupo feedbackd; testado
+    agora como kali: escrita OK. Foi corrida de ~1 s no boot (feedbackd abriu
+    antes da regra 72-feedbackd.rules aplicar o grupo). Efeito: o brilho do LED
+    de notificação pode não ser controlado nessa sessão. Baixa prioridade.
+
+2.5 callaudiod: 18x "Error in PulseAudio context: Connection terminated" e
+    "No suitable card found, stopping here..."
+    É o daemon de áudio de CHAMADAS (D-Bus org.mobian_project.CallAudio),
+    ativado pela sessão. Não temos voz sobre o modem ainda, então ele desiste.
+    Não quebra nada; quando implementarmos chamadas ele volta a ser útil.
+
+2.6 neard: "Could not get Bluetooth default adapter ... org.bluez.Manager
+    doesn't exist"
+    O neard ainda usa a API antiga do BlueZ 5. Leitura de tags não depende
+    disso (nfctool/netlink funciona; tag2 detectado).
+
+2.7 gsd-power: "assertion 'max > min' failed" e "failed to set dim kbd
+    backlight"
+    É o backlight do TECLADO (não existe no aparelho). O backlight da tela
+    está bom: /sys/class/backlight/backlight max=4095, gravável como root.
+    Cosmético.
+
+2.8 sshd: "connection ... is not using a post-quantum key exchange"
+    Aviso do OpenSSH novo sobre o KEX do cliente (Mac). Só informativo; a
+    chave ED25519 do root foi aceita.
+
+2.9 greetd/gkr-pam: "couldn't unlock the login keyring"
+    Autologin sem senha de keyring. Cosmético (o keyring fica fechado).
+
+=====================================================================
+3. ESTADO VIVO MEDIDO
+=====================================================================
+  memória      3635732 kB total, 1339652 kB disponível (sem swap)
+  zram0        existe, disksize=0  → swap/zram DESLIGADOS
+  disco        5,4G/9,8G (58%)
+  térmicas     31-41 C em todas as zonas (qcom_qg 31 C, cpu0 41 C)
+  bateria      qcom_qg 85%, "Not charging", current 0 mA, 4,239 V, 31,5 C
+               charger online=1, tcpm-source-psy online=0
+  cpuidle      WFI 55422, cpu-sleep-0-0 9700, cpu-sleep-0-1 23048 (usa idle)
+  cpufreq      cpu0 1248 MHz, cpu6 1555 MHz, schedutil
+  GPU          devfreq 355 MHz, simple_ondemand
+  display      DSI-1 connected, modo 1080x2460; agora blanked (idle)
+  input        event0..event5 (touch, pwrkey, resin, vibra, jack, gpio-keys)
+  rede         wlan0 10.0.0.44 (5 GHz), usb0 172.16.42.1/24, sshd ativo
+  NFC          neard ativo (sem BT adapter), tags por netlink OK
+
+=====================================================================
+4. PENDÊNCIAS QUE ESTA AUDITORIA EXPÔS
+=====================================================================
+A. CARREGAMENTO DA BATERIA: USB conectado, charger online=1, mas status
+   "Not charging" e corrente 0. O driver SMB é só monitor (mesma limitação do
+   pmOS). Sem isso o aparelho descarrega no cabo. É o item mais importante.
+B. zram desligado num aparelho de 3,5 GB — habilitar zram melhora muito o uso
+   com navegador/apps pesados.
+C. Corrida do atomic commit no DSI (2.1) — causa engasgos ao abrir janelas.
+D. Ruídos para limpar no kernel: pinctrl GPIO4, q6afe DBG.
+E. Cosméticos do systemd: display-manager dropin, BPF LSM, tmpfs quota.
+
+=====================================================================
+5. RESOLUÇÃO DAS PENDÊNCIAS 2 E 3 (27/10, depois da auditoria)
+=====================================================================
+
+5.1 PENDÊNCIA 2 — zram: RESOLVIDO
+    O pacote systemd-zram-generator já estava instalado, mas não havia
+    configuração e o unit dev-zram0.swap estava MASCARADO (symlink para
+    /dev/null criado em 26/10 durante o bring-up).
+    Feito:
+      /etc/systemd/zram-generator.conf   -> zram-size = min(ram/2, 4096),
+                                            zstd, swap-priority = 100
+      /etc/sysctl.d/99-hanoip-zram.conf  -> vm.swappiness = 100,
+                                            vm.page-cluster = 0
+      rm /etc/systemd/system/dev-zram0.swap (máscara)
+    Resultado:
+      /dev/zram0  1,7 GiB  zstd  prioridade 100  [SWAP]  ativo
+      Teste de pressão: alocados 2,5 GB -> sem OOM, phosh e sshd vivos,
+      zram com 807 MB de dados comprimidos em 70,5 MB (~11:1).
+      MemAvailable antes 1,5 GB -> depois 2,4 GB (o kernel usou o zram como
+      cache de anon, comportamento esperado com swappiness=100).
+    Fontes versionadas em work/nethunter-pro-20261026/hanoip-support/
+    (zram-generator.conf e 99-hanoip-zram.conf).
+
+5.2 PENDÊNCIA 3 — "Atomic commit failed" no DSI-1: NÃO É BUG DE REGIME
+    Primeira medição (tela apagada/parada) mostrou 0 IRQ em 4 s, o que
+    sugeria vblank quebrado. A hipótese estava ERRADA: o DPU arma o vsync por
+    flip, então tela parada = nenhuma interrupção, o que é normal.
+
+    Medição com a tela em uso (usuário deslizando por 15 s):
+      msm_mdss: 4615 -> 5532 = 917 IRQs em 15 s = ~61 Hz  (vsync perfeito)
+      atomic commit failures nesse intervalo: 0
+      dsi_isr permanece em 66 (é a linha de ERRO do DSI: nunca disparou,
+      ou seja, nenhuma falha de DSI no hardware)
+
+    Ou seja: em regime a tela roda a 60 Hz com commits bem-sucedidos. As 11
+    falhas do boot acontecem em duas janelas curtas:
+      - 10:30:43-46   modeset inicial (seguido de "Timeout (3000ms) expired
+                      with 1 configures pending") — mesma classe do "startup
+                      FIFO" já conhecido do pmOS nesta placa/painel;
+      - 10:33:15-29   abertura de janela (phosh-mobile-settings), quando o
+                      wlroots dispara um commit enquanto o anterior está
+                      pendente -> o kernel devolve EBUSY.
+    O wlroots reenvia e a UI continua. Custo real: engasgo ocasional ao abrir
+    janela nos primeiros segundos. NÃO justifica mexer no kernel agora.
+    Se um dia incomodar: candidatos são o caminho nonblocking do wlroots
+    (backend/drm/atomic.c) e a latência do nosso DSI em VIDEO_BURST+DSC.

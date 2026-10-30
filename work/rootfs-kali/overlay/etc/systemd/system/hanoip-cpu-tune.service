@@ -1,0 +1,12 @@
+[Unit]
+Description=Hanoip: ajustes de CPU (idle TEO + thermal IPA)
+After=local-fs.target
+Before=iio-sensor-proxy.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/hanoip-cpu-tune
+
+[Install]
+WantedBy=multi-user.target

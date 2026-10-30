@@ -1,0 +1,5 @@
+# hanoip: keep every block device read-only except the root (userdata).
+# NEVER lock the whole disk: mount -w then fails with EPERM, which broke the
+# Kali initramfs root mount on 2026-10-27 (udev locked /dev/sdb itself).
+ACTION!="remove", SUBSYSTEM=="block", KERNEL=="sd*[0-9]", ENV{ID_PART_ENTRY_NAME}!="userdata", ENV{UDISKS_IGNORE}="1", ENV{UDISKS_AUTO}="0", RUN+="/sbin/blockdev --setro /dev/%k"
+ACTION!="remove", SUBSYSTEM=="block", KERNEL=="loop*", ENV{UDISKS_IGNORE}="1", ENV{UDISKS_AUTO}="0"

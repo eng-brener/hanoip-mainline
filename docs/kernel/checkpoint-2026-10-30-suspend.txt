@@ -1,0 +1,121 @@
+Checkpoint 30/10/2026 — suspend (s2idle) e travamento por carga
+===============================================================
+
+ATUALIZAÇÃO 17:40 — ler antes do resto deste arquivo
+----------------------------------------------------
+1) A conclusão "s2idle não retorna" ficou INCOMPLETA. Em 28/10 o suspend
+   funcionou por 31 s com o ADSP/remoteproc parado pelo hook
+   /usr/lib/systemd/system-sleep/hanoip-adsp, voltando com ADSP running e
+   usb0 restaurado (item 16 de `onde paramos.md`;
+   work/cpu-20261028/SUSPEND-RTC-BOOT.md). Hipótese correta: sem esse hook,
+   ou se ele não rodar, o suspend trava. NÃO foi verificado se o hook existe
+   neste rootfs nem se rodou às 17:06:18 — a checagem foi interrompida.
+2) O segundo travamento (~17:31-17:32) NÃO foi suspend: `suspend_stats/success`
+   estava 0. Sintomas: ping em 172.16.42.1 respondia, SSH oscilava entre
+   "banner exchange timed out" e conectar, load average 9,4-9,5 em 8 CPUs, e
+   mais de 1775 linhas `spmi spmi-0: disallowed SPMI write to sid=0,
+   addr=0x6046` desde ~71 s de boot. Hipótese principal, NÃO comprovada: laço
+   de escrita/retry nesse registrador SPMI saturando a CPU; o dono das
+   escritas não foi identificado.
+   **Pista do usuário:** o travamento ocorreu logo após abrir o Firefox.
+   Suspeitos reordenados, nenhum comprovado: hang do GPU/msm com recuperação
+   em laço (o projeto já viu 800 MHz/55 °C com WebGL e tem investigação aberta
+   de GPU no Waydroid), thrash de swap em zram (1,8 GB) ou compositor preso em
+   commits. O laço SPMI existe desde ~71 s de boot, antes do Firefox, o que
+   enfraquece a ligação causal.
+   Roteiro de coleta para a próxima reprodução: `dmesg -w` filtrando
+   gpu/hangcheck/gmu, `/proc/meminfo` e estatísticas de zram a cada 5 s,
+   `ps` ordenado por CPU e o log do phoc.
+3) Nenhum dos dois eventos tem relação com 120 Hz nem com as correções DSI:
+   ambos ocorreram com a tela em 60 Hz e sem suspend completar.
+
+Próximos passos (em ordem)
+--------------------------
+- Identificar o autor das escritas em sid=0/0x6046 e se há laço de retry.
+  É o candidato de correção mais valioso no momento.
+- Verificar presença e execução do hook hanoip-adsp; reinstalar a partir de
+  work/cpu-20261028/ se faltar, antes de qualquer novo teste de suspend.
+- Só então retomar soak de suspend (3-4 ciclos) com recuperação conhecida.
+- Mitigação opcional (não aplicada, exige autorização por ser escrita em
+  dconf): desligar apenas a suspensão automática com
+  `gsettings set org.gnome.settings-daemon.plugins.power
+  sleep-inactive-battery-type 'nothing'`, mantendo o apagamento de tela.
+
+Relato do usuário
+-----------------
+Com a tela desligada por muito tempo, o aparelho "suspende por completo"; é
+preciso apertar o power várias vezes e esperar 30–40 s para voltar.
+
+Configuração vigente (somente leitura)
+--------------------------------------
+- org.gnome.desktop.session idle-delay = 300  -> tela apaga após 5 min.
+- gsd-power sleep-inactive-battery-type = 'suspend'
+  sleep-inactive-battery-timeout = 900       -> pede suspend após 15 min.
+- /sys/power/mem_sleep: apenas s2idle ([s2idle]).
+- /sys/power/state: freeze mem.
+- Não existe deep.
+
+Evidência no journal (boot -1)
+------------------------------
+  17:06:18 systemd-sleep[23865]: Performing sleep operation 'suspend'...
+  17:06:18 kernel: PM: suspend entry (s2idle)
+  ... fim do journal; nenhum "PM: suspend exit", "PM: resume" ou
+      "Restarting tasks".
+  Boot seguinte: 17:09:24 (cerca de 3 min depois).
+
+No boot atual, /sys/power/suspend_stats: success=0 e todos fail=0, ou seja,
+nenhuma suspensão chegou a completar.
+
+Interpretação
+-------------
+O pedido de suspend entra em s2idle e não retorna. Os vários toques no power
+e a espera de 30–40 s correspondem, com alta probabilidade, a um reboot
+forçado, não a um resume. Suspend/resume nunca foi validado neste projeto
+(histórico: pendente desde os primeiros checkpoints de display/energia).
+
+Não atribuir ao experimento de 120 Hz
+-------------------------------------
+- Neste boot o suspend nem ocorreu.
+- O experimento de 120 Hz usa o mesmo kernel listener7 e o msm do rootfs
+  também apresentaria o problema: é do caminho s2idle da plataforma.
+- Não há evidência que ligue o travamento ao modo de 119,976 Hz nem às
+  correções DSI.
+
+Mitigação segura proposta (NÃO aplicada — aguardando autorização)
+-----------------------------------------------------------------
+    su kali -c "gsettings set org.gnome.settings-daemon.plugins.power \
+        sleep-inactive-battery-type 'nothing'"
+
+Mantém o apagamento de tela após 5 min e impede a tentativa de s2idle.
+Reversível:
+    su kali -c "gsettings set org.gnome.settings-daemon.plugins.power \
+        sleep-inactive-battery-type 'suspend'"
+
+É escrita em /home/kali (dconf), portanto exige autorização explícita do
+usuário para essa operação específica. Validação proposta após aplicar:
+deixar a tela apagada por mais de 20 min e confirmar que acorda no toque e
+que /sys/power/suspend_stats continua success=0 (nenhuma tentativa).
+
+Correção real (trabalho separado, não iniciado)
+-----------------------------------------------
+Fazer suspend funcionar exige, no mínimo:
+- fontes de wakeup e interrupção de power IRQ funcionais;
+- system suspend na plataforma (PSCI/U-Boot/DT) — hoje só s2idle existe;
+- suspender e retomar DSI, painel, LCDB e reguladores;
+- retomar o touch, sabendo que a IRAM do controlador é perdida quando o
+  painel desliga (o driver recarrega no panel_enabled);
+- recuperação conhecida, porque o sintoma atual é não voltar.
+
+Isso não deve ser tentado sem plano e sem uma forma segura de retorno; o
+aparelho só volta hoje por reboot. Nada foi alterado no aparelho.
+
+Outros pontos ainda abertos (registrados para depois)
+-----------------------------------------------------
+- Phoc salva o último modo e o reaplica no login; 119,976 Hz salvo deu tela
+  preta com "Timeout (3000ms)". Regra: voltar a 60 Hz antes de encerrar.
+- Apagar/acender pelo compositor derruba a sessão gráfica; A/B com o msm
+  original ainda não foi feito.
+- 120 Hz sem medição óptica independente, sem uso prolongado, sem térmica
+  sustentada e sem teste de bateria.
+- O módulo de 120 Hz e as correções DSI vivem apenas no initramfs da imagem
+  volátil work/PRE-GOLD-20261030-1730-120HZ/.

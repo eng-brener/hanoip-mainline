@@ -1,0 +1,36 @@
+Definindo a fila de processamento para PAUSADO...
+[0:01:17.552834917] [4193]  INFO Camera camera_manager.cpp:340 libcamera v0.7.2
+[0:01:17.586585281] [4197]  WARN CameraSensor camera_sensor_legacy.cpp:355 'ov02b10 13-003d': Recommended V4L2 control 0x009a0922 not supported
+[0:01:17.586617885] [4197] ERROR V4L2 v4l2_subdevice.cpp:1192 'ov02b10 13-003d': Unable to get rectangle 2 on pad 0/0: ioctl inapropriado para dispositivo
+[0:01:17.586638146] [4197]  WARN CameraSensor camera_sensor_legacy.cpp:402 'ov02b10 13-003d': The PixelArraySize property has been defaulted to 1600x1200
+[0:01:17.586642833] [4197] ERROR V4L2 v4l2_subdevice.cpp:1192 'ov02b10 13-003d': Unable to get rectangle 1 on pad 0/0: ioctl inapropriado para dispositivo
+[0:01:17.586646635] [4197]  WARN CameraSensor camera_sensor_legacy.cpp:413 'ov02b10 13-003d': The PixelArrayActiveAreas property has been defaulted to (0, 0)/1600x1200
+[0:01:17.586651583] [4197] ERROR V4L2 v4l2_subdevice.cpp:1192 'ov02b10 13-003d': Unable to get rectangle 0 on pad 0/0: ioctl inapropriado para dispositivo
+[0:01:17.586655229] [4197]  WARN CameraSensor camera_sensor_legacy.cpp:421 'ov02b10 13-003d': Failed to retrieve the sensor crop rectangle
+[0:01:17.586658250] [4197]  WARN CameraSensor camera_sensor_legacy.cpp:427 'ov02b10 13-003d': The sensor kernel driver needs to be fixed
+[0:01:17.586660906] [4197]  WARN CameraSensor camera_sensor_legacy.cpp:429 'ov02b10 13-003d': See Documentation/sensor_driver_requirements.rst in the libcamera sources for more information
+[0:01:17.586804031] [4197]  WARN CameraSensorProperties camera_sensor_properties.cpp:548 No static properties available for 'ov02b10'
+[0:01:17.586810698] [4197]  WARN CameraSensorProperties camera_sensor_properties.cpp:550 Please consider updating the camera sensor properties database
+[0:01:17.586814239] [4197]  WARN CameraSensor camera_sensor_legacy.cpp:595 'ov02b10 13-003d': Failed to retrieve the camera location
+[0:01:17.586817729] [4197]  WARN CameraSensor camera_sensor_legacy.cpp:617 'ov02b10 13-003d': Rotation control not available, default to 0 degrees
+[0:01:17.586831687] [4197]  WARN CameraSensor camera_sensor_legacy.cpp:502 'ov02b10 13-003d': No sensor delays found in static properties. Assuming unverified defaults.
+[0:01:17.621781114] [4197]  WARN IPAProxy ipa_proxy.cpp:196 Configuration file 'ov02b10.yaml' not found for IPA module 'simple', falling back to '/usr/share/libcamera/ipa/simple/uncalibrated.yaml'
+[0:01:17.621823667] [4197] ERROR V4L2 v4l2_subdevice.cpp:1192 'ov02b10 13-003d': Unable to get rectangle 0 on pad 0/0: ioctl inapropriado para dispositivo
+[0:01:17.621837521] [4197]  WARN CameraSensor camera_sensor_legacy.cpp:881 'ov02b10 13-003d': The analogue crop rectangle has been defaulted to the active area size
+[0:01:17.621865906] [4197]  WARN IPASoft soft_simple.cpp:104 IPASoft: Failed to create camera sensor helper for ov02b10
+[0:01:17.622078771] [4197]  INFO Debayer debayer_egl.cpp:93 Unsupported input format R10_CSI2P
+[0:01:17.622092364] [4197]  INFO Debayer debayer_egl.cpp:93 Unsupported input format R10_CSI2P
+[0:01:17.622112781] [4197]  INFO Camera camera_manager.cpp:223 Adding camera '/base/soc@0/cci@ac4a000/i2c-bus@1/camera@3d' for pipeline handler simple
+A fila de processamento está executando e não necessita de PREPARAÇÃO...
+A fila de processamento foi PREPARADA...
+Definindo a fila de processamento para REPRODUZINDO...
+New clock: GstSystemClock
+ERRO: do elemento /GstPipeline:pipeline0/GstLibcameraSrc:libcamerasrc0: Internal data stream error.
+Informação adicional de depuração:
+../src/gstreamer/gstlibcamerasrc.cpp(903): gst_libcamera_src_task_enter (): /GstPipeline:pipeline0/GstLibcameraSrc:libcamerasrc0:
+streaming stopped, reason not-negotiated (-4)
+Detalhes:
+details, flow-return=(int)-4;
+Execution ended after 0:00:00.000412500
+Definindo a fila de processamento para NULO...
+Liberando a fila de processamento...

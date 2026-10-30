@@ -1,0 +1,164 @@
+RESUMO CONSOLIDADO — SUBSISTEMA DE BATERIA DO hANOIP (27/10/2026)
+=================================================================
+Tudo o que descobrimos e medimos hoje, em um só lugar. Documentos detalhados
+citados no fim. Estado: carga DESLIGADA (modo manual, a pedido do usuário).
+
+---------------------------------------------------------------------
+1. PORCENTAGEM (SOC) — corrigida e validada
+---------------------------------------------------------------------
+SINTOMA: a porcentagem subia e descia sozinha.
+
+CAUSAS (duas, somadas):
+ a) o DT não tinha `ocv-capacity-table`, então o qcom_qg caía num mapa LINEAR
+    3,2 V..4,45 V = ~12,5 mV por 1%. Ruído de ADC (25 mV) = 2%; queda por
+    carga (79 mV medidos) = ~6%;
+ b) a suavização era um "caminhante" de 1% a cada 20 s que só andava numa
+    direção conforme o status: perseguia o ruído sem nunca estabilizar
+    (medido: 93% -> 92% -> 91% em 26 s com corrente 0 e tensão parada).
+    O kernel NÃO cria tabela OCV padrão (conferido em power_supply_core.c):
+    sem DT, `power_supply_batinfo_ocv2cap()` devolve -EINVAL.
+
+CORREÇÃO:
+ a) DT com a curva REAL do nosso pack, extraída do perfil que o Android usa
+    neste aparelho (S88731AA1-mc50-ATL-4V45-6000mah, LUT pc-temp-v1, 25 C):
+      100% 4.447 V | 90% 4.321 V | 85% 4.273 V | 50% 3.890 V | 10% 3.711 V
+    21 pontos, gerados por scripts/battery_curve_from_android.py.
+ b) driver (patch 0167 + 0170): banda morta de 2%; deriva 1% a cada 2 min nas
+    duas direções; adoção imediata se o desvio for > 10 pontos (valor inicial
+    ruim não fica mais preso); direção pelo STATUS do charger, não por
+    current_now; clamp 0..100.
+
+VALIDAÇÃO:
+ - 15 min ocioso, 1 Hz, 452 amostras: amplitude 1 ponto, ZERO saltos > 2%.
+ - carga de CPU (6 busy loops): -708 mA, tensão 4,234 -> 4,155 V (79 mV, ~6%
+   no mapa antigo) e a capacidade ficou cravada.
+ - durante a carga real: 79% -> 81% (coerente com ~440 mA por 15 min).
+
+LIMITE CONHECIDO: estimador só de OCV superestima logo após carregar (tensão
+de superfície): medimos 86% quando o real era ~81%. Converge quando a tensão
+relaxa (deriva de 1%/2 min). O Android resolve isso com contagem de Coulomb
+(qpnp-qg completo). Registrado como diferença estrutural, não como bug.
+
+---------------------------------------------------------------------
+2. DESCOBERTA DE ARQUITETURA (custou horas): A DT VEM DO U-BOOT
+---------------------------------------------------------------------
+A device tree efetiva no sm7150 é EMBUTIDA no U-Boot (CONFIG_OF_EMBED).
+O `dtb` que vai dentro do boot.img do kernel NÃO é usado (o do Kali tem
+93049 bytes e nem contém o node da bateria, mas /proc/device-tree/battery
+existe). Portanto:
+  - mudanças de DT vão em uboot-sm7150/dts/upstream/src/arm64/qcom/ e exigem
+    rebuild do U-Boot (work/uboot-builds-20261026/build.sh DT_NAME);
+  - criamos scripts/fdt_diff.py para provar que uma variante muda só o
+    esperado (a variante -batt difere da perif em 3 propriedades, 744 nós).
+
+---------------------------------------------------------------------
+3. POR QUE NÃO CARREGAVA (laudo B0, só leitura)
+---------------------------------------------------------------------
+Dump read-only via debugfs (patch 0168) em /sys/kernel/debug/<device>:
+
+  0x0042 CHARGING_ENABLE_CMD   = 0x00   <<< O ÚNICO BLOQUEIO
+  0x0006 STATUS_1              = 0x47   (FSM em DISABLE_CHARGE)
+  0x0070 FLOAT_VOLTAGE_CFG     = 0x50   (4.400 V, correto)
+  0x0051 CHGR_CFG2             = 0x2c   (I_TERM=1, AUTO_RECHG=1)
+  0x0090 JEITA_EN_CFG          = 0x1b   (HARDLIMIT + limites quentes)
+  0x0007 STATUS_2              = 0x08   (BAT_OV=0)
+  0x000d STATUS_7              = 0x00   (sem falha térmica)
+  0x0307/0x0308 APSD           = 0x11/0x01 (concluída, fonte = SDP)
+  0x0310 INT_RT_STS            = 0x10   (VBUS presente)
+  0x0340 USBIN_CMD_IL          = 0x00   (não suspenso)
+  0x0061 FAST_CHARGE_CURRENT   = 0x28   (2.0 A, default do bootloader)
+  0x0651 WD_CFG = 0x62 / 0x0653 SNARL = 0x8c  (watchdog armado; o "bite"
+                                               desliga a carga)
+  ICL = 500 mA · POWER_PATH = 0x95 (usa USBIN, entrada válida)
+
+Conclusão: entrada, tipo de fonte, float, JEITA, terminação e recharga já
+estavam corretos. Faltava só o bit de habilitação — que ninguém escrevia
+porque o driver roda em monitor_only (o probe retorna antes das escritas).
+
+---------------------------------------------------------------------
+4. CARGA LIGADA E VALIDADA (B3)
+---------------------------------------------------------------------
+Controle manual em /sys/kernel/debug/hanoip-charge (patch 0169), DESLIGADO
+por padrão. Ao ligar faz 3 escritas, nesta ordem:
+  1. SNARL 0x8c -> 0x00 e WD_CFG 0x62 -> 0x00  (desarma o watchdog)
+  2. FAST_CHARGE_CURRENT 0x28 -> 0x14          (2,0 A -> 1,0 A)
+  3. CHARGING_ENABLE_CMD 0x00 -> 0x01          (o switch)
+Float 4,400 V, JEITA, ICL e terminação: INTOCADOS.
+
+SESSÃO DE 15 MIN (porta USB de PC, SDP):
+  entrada 497 mA estável (no limite) | bateria +439..+444 mA
+  79% -> 81% | temperatura 32,6..33,7 C (sem aquecimento) | dmesg limpo
+DESLIGAMENTO testado: enable=0x00, i_batt=0, FSM=0x47, "charging disabled".
+
+---------------------------------------------------------------------
+5. COMPARAÇÃO COM O ANDROID (o que o aparelho faz de fábrica)
+---------------------------------------------------------------------
+  parâmetro           Android                 nós hoje
+  float / FV máx      4,450 V                 4,400 V (já vinha assim)
+  CC-CV               4,440 V                 —
+  fast-charge (FCC)   3,6 A (perfil: 4,0 A)   2,0 A default / 1,0 A no teste
+  iterm               290 mA (charger)        I_TERM=1 (valor não dumpado)
+  ICL em SDP          500 mA                  500 mA (igual)
+  ICL em DCP          3,0 A                   500 mA (APSD não roda)
+  temperatura         15 C .. 45 C            JEITA hardlimit ativo
+  capacidade aprendida 4.939.000 uAh          igual (nosso qg lê do SDAM)
+  perfil do pack      ATL e SUNWODA 6000 mAh, beta NTC 3440, ID 100 kΩ
+Ou seja: o que a ABL deixou é um subconjunto conservador do Android, e o
+nosso envelope de teste fica abaixo disso.
+
+---------------------------------------------------------------------
+6. ÍCONE DA BATERIA X APP POWERSUPPLY (não é bug)
+---------------------------------------------------------------------
+  sysfs (app "powersupply"): status = Charging
+  UPower (ícone do Phosh):   state  = discharging
+O UPower refina o status pelo SINAL da corrente. Com a entrada em 500 mA
+(SDP) e a TELA LIGADA, o aparelho consome ~500-620 mA: a bateria cobre a
+diferença e a corrente fica negativa (-18 a -127 mA medidos) → "discharging".
+Com a tela apagada: +439..+444 mA → UPower mostra carregando.
+Os dois "estão certos": o charger carrega, mas a bateria entrega líquido.
+
+---------------------------------------------------------------------
+7. PRÓXIMOS PASSOS (em ordem)
+---------------------------------------------------------------------
+  B4  — negociação de entrada (APSD + ICL): SDP 500 mA / CDP 1,5 A /
+        DCP 1 A e depois 1,5 A com temperatura vigiada. É o que faz o
+        aparelho carregar com a tela ligada e viabiliza uso diário.
+        (o teto do registrador USBIN_CURRENT_LIMIT_CFG está em 750 mA e
+        também precisa subir)
+  B3b — observar a TERMINAÇÃO num ciclo completo (o usuário escolheu modo
+        manual justamente por isso): FSM -> TERMINATE, status -> Full,
+        corrente de terminação, capacity chegando a 100% e parando.
+  Depois: decidir se a carga liga sozinha no boot (serviço systemd) ou
+        continua manual.
+  Pendências menores: dumpar o registrador de terminação; dumpar os limites
+        térmicos (JEITA/MMI zones); melhorar a temperatura com o NTC
+        (beta 3440); avaliar contagem de Coulomb (a QGauge só roda o
+        algoritmo dela se alguém o alimentar — hoje não roda).
+
+---------------------------------------------------------------------
+8. COMO USAR / REVERTER
+---------------------------------------------------------------------
+  Ligar carga:    echo 1 > /sys/kernel/debug/hanoip-charge
+                  (limite por módulo: charge_current_ua, default 1.000.000)
+  Desligar:       echo 0 > /sys/kernel/debug/hanoip-charge
+  Ver registros:  cat /sys/kernel/debug/c440000.spmi:pmic@0:charger@1000
+  Log de energia: /usr/local/sbin/hanoip-batt-log 900 2000 /root/batt.csv
+  Boot com tudo:  u-boot-sm7150-motorola-hanoip-pmos-perif-batt.img
+                  + kernel-hanoip-kali-phosh-v2.img
+                  + módulos do kernel v4 (qcom_qg, qcom_smbx)
+  Reverter SOC:   usar o U-Boot perif normal (sem a curva) e o módulo
+                  qcom_qg.ko.zst.ANTERIOR
+  Reverter carga: echo 0 (ou simplesmente não escrever nada — default off)
+
+---------------------------------------------------------------------
+9. DOCUMENTOS DETALHADOS
+---------------------------------------------------------------------
+  docs/PLANO-BATERIA-ENERGIA.md                    plano completo B0..B8
+  docs/kernel/checkpoint-2026-10-27-bateria-soc.txt       SOC: causa/fix
+  docs/kernel/checkpoint-2026-10-27-bateria-b0-registradores.txt  laudo
+  docs/kernel/checkpoint-2026-10-27-bateria-carga-ligada.txt      carga
+  docs/kernel/checkpoint-2026-10-27-bateria-vs-android.txt        comparação
+  work/bateria-soc-20261027/                       artefatos (u-boot, módulos,
+                                                   dts, LEIA-ME, protocolo)
+  scripts/fdt_diff.py · scripts/battery_curve_from_android.py
+  work/kernel-7.3/v4/                              patches 0167..0170 + README

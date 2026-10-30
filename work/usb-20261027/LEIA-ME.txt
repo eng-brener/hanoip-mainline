@@ -1,0 +1,82 @@
+USB / MODOS — PACOTE PRONTO (27/10/2026, NADA TESTADO)
+=====================================================
+Montado a pedido do usuário: "não vamos testar nada hoje, mesmo, só deixa
+pronto". Portanto: artefatos prontos, aparelho intocado, nenhum reboot feito.
+
+
+O QUE MUDOU NO DT (e por que)
+-----------------------------
+uboot-sm7150/dts/upstream/src/arm64/qcom/sm7150-motorola-hanoip.dts:
+    &usb_1_dwc3 { dr_mode = "peripheral"; }      ->  "otg" + usb-role-switch;
+Espelha o sm7150-google-sunfish.dts (MESMO SoC, MESMO PMIC pm6150, OTG
+funcionando). O TCPM decide o papel pelas linhas CC e, quando vira source,
+o proprio driver dele habilita o boost (regulator_enable do vdd-vbus, que no
+nosso DT e' pm6150_vbus, 500 mA..3 A). Não há trabalho de driver pendente.
+
+PROVA POR BINÁRIO (scripts/fdt_diff.py):
+    A: ANTES-otg/uboot.dtb   (744 nós)   B: otg/uboot-OTG.dtb  (744 nós)
+    nós novos=0  removidos=0  props alteradas=1  só em B=1
+      + /soc@0/usb@a6f8800/usb@a600000 usb-role-switch = (vazio)
+      ~ /soc@0/usb@a6f8800/usb@a600000 dr_mode: "peripheral" -> "otg"
+
+OBS.: o fdt_diff tinha um defeito de exibição (valor de 4 bytes era impresso
+como inteiro; "otg" tem 4 bytes e saía como 1869899520). Corrigido no mesmo
+dia: agora valor terminado em NUL e imprimível é mostrado como string.
+
+
+CONTEÚDO DESTA PASTA
+--------------------
+  ANTES-otg/   imagem que ESTÁ RODANDO AGORA (power-role sink, sem OTG)
+               u-boot img  e07ff366...  uboot.dtb 22cbe176...
+  otg/         imagem NOVA, pronta para testar (OTG ligado)
+               u-boot-hanoip-pmos-perif-batt-OTG.img  8d777c9c...
+               uboot-OTG.dtb                          0503d416...
+               u-boot-OTG.bin                         573fd112...
+
+  ATENÇÃO: a imagem em ANTES-otg e' a única que tem a correção do Type-C
+  (power-role sink) VALIDADA em uso hoje. A de otg/ contém tudo isso + OTG,
+  mas nunca foi bootada.
+
+COMO BOOTAR QUANDO FOR TESTAR (volátil, nada é gravado)
+-------------------------------------------------------
+  # 1) aparelho no bootloader (fastboot), cabo no PC
+  fastboot devices                      # deve mostrar ZF523QJBSG
+  fastboot boot work/usb-20261027/otg/u-boot-hanoip-pmos-perif-batt-OTG.img
+  sleep 20
+  # 2) o fastboot do U-Boot não reporta serial (???????????? e' normal)
+  fastboot boot work/nethunter-pro-20261026/artifacts/kernel-hanoip-kali-phosh-v2.img
+  # 3) kernel e modulos NAO mudaram nesta frente (dr_mode é só DT)
+
+O QUE CONFERIR NESSE BOOT (leitura, sem escrever em energia)
+------------------------------------------------------------
+  a) continua carregando igual (não regrediu):
+       cat /sys/class/typec/port0/power_role          -> deve conter [sink]
+       cat /sys/class/power_supply/hanoip-pm6150-monitor-charger/online  -> 1
+       APSD deve dizer SDP (no PC) ou DCP (na parede)
+  b) o que é NOVO:
+       tr -d '\0' < /proc/device-tree/soc@0/usb@a6f8800/usb@a600000/dr_mode
+                                                       -> otg
+       ls /sys/class/usb_role/                         -> deve existir agora
+       grep -l vbus /sys/class/regulator/*/name        -> regulador do boost
+       cat /sys/class/udc/a600000.dwc3/state           -> configured (no PC)
+  c) OTG (só com periférico):
+       plugar pendrive USB-C -> dmesg no celular deve mostrar xHCI/novo bloco;
+       conferir 5 V na porta e temperatura < 42 C.
+  Se o UDC desaparecer e nao voltar ao tirar o pendrive, use o script de
+  recuperação (abaixo) em vez de rebootar.
+
+RECUPERAÇÃO (preparada, NÃO instalada)
+--------------------------------------
+  work/nethunter-pro-20261026/hanoip-support/hanoip-usb-fix
+    hanoip-usb-fix status   -> papel Type-C, UDC, gadgets, entrada
+    hanoip-usb-fix fix      -> desvincula e revincula o UDC
+  Instalar quando formos testar:
+    scp ... root@<ip>:/usr/local/sbin/hanoip-usb-fix && chmod +x
+
+PENDÊNCIAS DEPOIS DESTE TESTE
+-----------------------------
+  - Fase 0 completa: hanoip-usb-mode (charge/net/serial/storage/hid/uvc/combo)
+    + serviço + persistência + app no Phosh (ao vivo, sem reboot).
+  - Fase 3: MTP sobre FunctionFS (decidir read-only antes).
+  - Formalizar a par de boot padrão com hash: o DT vive na imagem de U-Boot,
+    então o baseline agora depende do arquivo otg/ (ou de um sucessor).

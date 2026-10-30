@@ -1,0 +1,96 @@
+[    4.533872] kali kernel: panel-ilitek-ili7807s ae94000.dsi.0: hanoip: experimental 120 Hz candidate enabled
+[    8.509045] kali kernel: hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only, follows panel power
+[    8.549064] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[    8.729133] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[    8.753452] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[    8.760553] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[    8.801082] kali kernel: hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[    8.822065] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+[  212.826250] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  212.883477] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  213.096340] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  213.272220] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  213.293230] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  213.294928] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  213.340228] kali kernel: hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  213.361252] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+[  224.017063] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  229.979194] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  230.194821] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  230.369876] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  230.386549] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  230.388329] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  230.435349] kali kernel: hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  230.456065] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+[  425.841457] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  426.200222] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  426.419312] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  426.601337] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  426.618089] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  426.619650] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  426.669179] kali kernel: hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  426.690335] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+[  427.609515] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  427.797241] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  428.020589] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  428.181446] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  428.198319] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  428.200367] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  428.245641] kali kernel: hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  428.266067] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+[  428.777508] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  428.968297] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  429.185883] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  429.354434] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  429.370371] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  429.372405] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  429.417566] kali kernel: hanoip-ilitek-spi spi6.0: FW response f9 00 00 00 00 00 00 00 00
+[  429.419590] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reload after panel power-on failed: -74
+[  429.889203] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  430.113286] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  430.329101] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  430.499271] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  430.516255] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  430.518378] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  430.563435] kali kernel: hanoip-ilitek-spi spi6.0: FW response f9 00 00 00 00 00 00 00 00
+[  430.565522] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reload after panel power-on failed: -74
+[  430.981990] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  431.457378] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  431.674113] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  431.844101] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  431.862090] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  431.865103] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  431.912204] kali kernel: hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  431.933101] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+[  432.145396] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  432.475090] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  432.686282] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  432.857398] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  432.873411] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  432.875486] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  432.921359] kali kernel: hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  432.942499] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+[  433.401572] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  433.603843] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  433.821772] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  434.023057] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  434.024470] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  434.025675] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  434.058500] kali kernel: hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  434.079338] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+[  437.801893] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  438.310375] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  438.529244] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  438.700633] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  438.717344] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  438.719444] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  438.764431] kali kernel: hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  438.785228] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+[  582.973586] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  585.147217] kali kernel: qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+[  585.363061] kali kernel: hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[  585.543100] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[  585.560082] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[  585.562208] kali kernel: hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[  585.610263] kali kernel: hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[  585.631252] kali kernel: hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on

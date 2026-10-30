@@ -1,0 +1,50 @@
+B3 — PRIMEIRO TESTE DE CARGA (protocolo de bancada)
+===================================================
+27/10/2026. Combinado com o usuário: curva da Motorola + habilitação de carga
+em um único reboot. Aparelho plugado em porta USB de PC (SDP, 500 mA).
+
+O QUE MUDOU NESTE BOOT
+  U-Boot: work/uboot-builds-20261026/out/sm7150-motorola-hanoip-pmos-perif-batt/
+          (curva SOC real da Motorola, 21 pontos; 4.447 V no topo)
+  Kernel: módulos do v4 (patch 0167 qg + 0168 dump + 0169 controle de carga)
+          Image do kernel NÃO muda.
+  Carga: DESLIGADA por padrão. Só liga com um write explícito.
+
+ESTADO ESPERADO ANTES DE LIGAR
+  - /proc/device-tree/battery/ocv-capacity-table-0 começa em 4446500 (Motorola)
+  - /sys/kernel/debug/<charger>/ mostra "charging enable = 0"
+  - /sys/kernel/debug/hanoip-charge existe (modo 0200)
+  - capacity ~82% (a curva nova lê ~2 pontos abaixo da genérica)
+
+SEQÜÊNCIA
+  1. Ligar:   echo 1 > /sys/kernel/debug/hanoip-charge
+     (limite de corrente da bateria = charge_current_ua, default 1.000 mA)
+  2. Em 60 s conferir:
+       dump -> charging enable = 1
+       dump -> BATTERY_CHARGER_STATUS_1 muda de DISABLE_CHARGE (0x07) para
+               TRICKLE(0)/PRE(1)/FAST(2)
+       qcom_qg/status -> Charging
+       qcom_qg/current_now -> positivo (convenção do driver: + = carregando)
+       upower -> state: charging
+  3. Log de 15 min:  /usr/local/sbin/hanoip-batt-log 900 1000 /root/batt-chg.csv
+  4. Conferir a cada ~3 min: temperatura e corrente.
+  5. Desligar: echo 0 > /sys/kernel/debug/hanoip-charge
+     conferir que volta a "Not charging" e corrente ~0.
+
+CRITÉRIOS DE ABORTO (executar na hora: echo 0 > .../hanoip-charge)
+  - temperatura da bateria > 43 C
+  - temperatura do conector/charger > 50 C
+  - corrente de entrada acima do limite (500 mA em SDP)
+  - qualquer erro novo no dmesg (regmap, OV, wdog)
+  - cheiro/calor anormal no aparelho
+
+O QUE ESTE TESTE **NÃO** FAZ
+  - não altera float (fica 4.400 V), JEITA, ICL nem terminação
+  - não liga OTG/boost/PD
+  - não escreve em partição nenhuma
+
+REGISTRAR
+  - valores do dump antes/depois
+  - CSV do batt-log
+  - dmesg
+  - conclusão: corrente real, temperatura, se a FSM saiu de DISABLE_CHARGE

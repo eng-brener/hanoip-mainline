@@ -1,0 +1,70 @@
+PRE-GOLD 2026-10-28 17:07 -03 — Kali/Phosh + ÁUDIO COMPLETO + kernel v5 (#29)
+=============================================================================
+Designada pelo usuário em 28/10/2026 ("essa vai ser a nova pre gold").
+É o par que estava rodando nesse momento. Substitui PRE-GOLD-20261028-1133
+como par de retorno. Nada aqui foi gravado em partição: boot volátil.
+
+1. O QUE ESTE PAR ENTREGA (medido)
+----------------------------------
+  Tudo do PRE-GOLD-20261028-1133 (8 CPUs, cluster idle S0/S1/S2 + TEO + EAS,
+  GPU FD618/Turnip, Venus decode, bateria/carga, USB OTG), mais áudio:
+  - alto-falante (AW882xx), earpiece, fone L+R (WCD937x), confirmados de
+    ouvido pelo usuário;
+  - microfones: principal (amic3), secundário (amic1) e do headset (amic2),
+    com gravação reproduzida e reconhecida pelo usuário;
+  - detecção do fone (MBHC) com o master SoundWire TX suspenso (wake IRQ);
+  - PipeWire + UCM: troca automática Speaker/Headphones e Internal Mic/
+    Headset Mic ao plugar/tirar o fone;
+  - SoundWire RX com runtime PM ativo: 12/12 ciclos autosuspend -> play.
+  Neste kernel (#29) o usuário confirmou tela normal e o tom tocado pelo
+  PipeWire no alto-falante. Fone/earpiece foram validados no #24 com os
+  mesmos módulos; o código do Image #29 é idêntico ao do #24 (ver 2).
+  Medições e causas: docs/kernel/REAVALIACAO-AUDIO-20261028.md.
+
+2. CONTEÚDO
+-----------
+  uboot/u-boot-sm7150-motorola-hanoip-audio-etapa14.img  (+ u-boot.bin,
+      uboot.dtb). DT embutido = clusteridle-venus + áudio etapa0/1/5/12/13/14
+      (fontes em dt/). Em relação ao PRE-GOLD-1133 o DT só ganha nós e
+      propriedades de áudio.
+  kernel/kernel-hanoip-kali-phosh-v5.img
+      = boot.img Kali do PRE-GOLD-1133 com SÓ a seção kernel trocada pelo
+        Image.gz do work/kernel-7.3/v5 (ramdisk, DTB e cabeçalho idênticos).
+        /proc/version: 7.3.0-sm7150 #29 SMP PREEMPT Wed Oct 28 19:58:52 UTC 2026
+        Image descomprimido x #24: mesmo tamanho, 32 bytes diferentes, todos
+        de carimbo de build (número, data/hora, build-id GNU).
+  kernel/Image.gz, kernel.dtb, modules-7.3.0-sm7150.tar.gz, version.txt,
+      config-7.3.0-sm7150 = saída do build reproduzível v5 (189 patches,
+      árvore 2df2c4d6; config = /proc/config.gz do kernel em uso).
+  modules/kernel/...  os dois módulos corrigidos, como estão instalados em
+      /lib/modules/7.3.0-sm7150/ no rootfs:
+        sound/soc/codecs/snd-soc-wcd937x-sdw.ko.zst   5de8447b...  (0188)
+        drivers/soundwire/soundwire-qcom.ko.zst       1f75b80e...  (0189)
+      Código e dados idênticos aos do modules-7.3.0-sm7150.tar.gz deste par.
+      O resto do /lib/modules do aparelho é o do #24 (mesma vermagic).
+      Originais em /root/*.ko.zst.orig no aparelho.
+  ucm2/  = UCM EXATAMENTE como está no aparelho (/usr/share/alsa/ucm2/):
+      Motorola/hanoip/HiFi.conf          4b16f5a1...
+      conf.d/sm8250/Motorola Moto G60.conf 7449d14b...  (sem BootSequence;
+      a versão com ganhos é proposta NÃO testada em
+      work/audio-20261028/ucm2/...conf.bootsequence-NAO-TESTADO)
+  patches/0188, 0189  = commits de áudio sobre o kernel #24.
+  scripts/fdt_diff.py, build-uboot.sh (cópia do PRE-GOLD-1133).
+
+3. BOOT
+-------
+  fastboot boot uboot/u-boot-sm7150-motorola-hanoip-audio-etapa14.img
+  (esperar o fastboot do U-Boot, serial "????????????")
+  fastboot boot kernel/kernel-hanoip-kali-phosh-v5.img
+  Boote a partir de uma CÓPIA se alguma ferramenta escrever ao lado da
+  imagem (esta pasta é somente leitura).
+  Desligar com segurança: /usr/local/sbin/hanoip-reboot --poweroff, depois
+  Power + Volume- até o fastboot da Motorola.
+
+4. NÃO VALIDADO / PENDENTE
+--------------------------
+  - botões do headset; suspend do sistema inteiro com áudio;
+  - "SWR bus clsh detected" na re-inicialização do RX e
+    "wcd937x_codec: clk already disabled" no log (sem efeito observado);
+  - BootSequence de ganhos do UCM;
+  - fone/earpiece não retestados de ouvido especificamente no #29.

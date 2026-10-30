@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Danila Tikhonov <danila@jiaxyga.com>
+Date: Sat, 2 Mar 2024 21:30:51 +0300
+Subject: [PATCH 062/166] dts: xiaomi-surya: add
+ charge-full-design-microamp-hours
+
+Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
+---
+ arch/arm64/boot/dts/qcom/sm7150-xiaomi-surya.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/sm7150-xiaomi-surya.dtsi b/arch/arm64/boot/dts/qcom/sm7150-xiaomi-surya.dtsi
+index f0be66e3695e..65aee9597133 100644
+--- a/arch/arm64/boot/dts/qcom/sm7150-xiaomi-surya.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm7150-xiaomi-surya.dtsi
+@@ -104,6 +104,10 @@ codec {
+ 	};
+ };
+ 
++&battery {
++	charge-full-design-microamp-hours = <5160000>;
++};
++
+ &cci0_i2c0 {
+ 	/* Sony IMX682 Main @ 50 */
+ };

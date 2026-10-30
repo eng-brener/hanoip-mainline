@@ -41,3 +41,8 @@ model = "toco"
 [[device]]
 vendor = "xiaomi"
 model = "tucana"
+
+# hanoip: entrada nossa (não existe no upstream)
+[[device]]
+vendor = "motorola"
+model = "hanoip"

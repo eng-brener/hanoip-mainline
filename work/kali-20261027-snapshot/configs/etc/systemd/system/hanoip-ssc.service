@@ -1,0 +1,12 @@
+[Unit]
+Description=Hanoip ADSP sensors via FastRPC (hexagonrpcd + libssc)
+After=local-fs.target
+Before=iio-sensor-proxy.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/hanoip-ssc
+
+[Install]
+WantedBy=multi-user.target

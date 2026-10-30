@@ -1,0 +1,17 @@
+[Unit]
+Description=Hanoip: escolhe o modo da porta USB no boot
+Documentation=file:/usr/local/share/doc/hanoip/usb-modes.txt
+After=sys-kernel-config.mount network-pre.target
+# nao brigar com o servico antigo pelo UDC
+Conflicts=hanoip-usbnet.service
+Before=hanoip-usbnet.service
+ConditionPathExists=/etc/hanoip/usb-mode.conf
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/hanoip-usb-mode apply-saved
+TimeoutStartSec=45
+
+[Install]
+WantedBy=multi-user.target

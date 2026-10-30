@@ -1,0 +1,19 @@
+Package: u-boot-menu*
+Pin: release o=Mobian
+Pin-Priority: 700
+
+Package: alsa-ucm-conf
+Pin: release o=Mobian
+Pin-Priority: 700
+
+Package: libqrtr1
+Pin: release o=Mobian
+Pin-Priority: 700
+
+Package: protection-domain-mapper
+Pin: release o=Mobian
+Pin-Priority: 700
+
+Package: qrtr-tools
+Pin: release o=Mobian
+Pin-Priority: 700

@@ -1,0 +1,13 @@
+[Unit]
+Description=Hanoip ABL identity (mmi_unit_info) for the modem
+After=hanoip-firmware.service
+Before=hanoip-modem.service
+Requires=hanoip-firmware.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/hanoip-mmi
+
+[Install]
+WantedBy=sysinit.target

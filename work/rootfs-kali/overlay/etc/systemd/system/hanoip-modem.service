@@ -1,0 +1,13 @@
+[Unit]
+Description=Hanoip modem (WLAN firmware host)
+After=hanoip-mmi.service qrtr-ns.service pd-mapper.service rmtfs.service tqftpserv.service
+Wants=hanoip-mmi.service qrtr-ns.service pd-mapper.service rmtfs.service tqftpserv.service
+Before=NetworkManager.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/hanoip-modem
+
+[Install]
+WantedBy=multi-user.target

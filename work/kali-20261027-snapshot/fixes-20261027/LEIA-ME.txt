@@ -1,0 +1,42 @@
+CORREÇÃO PÓS-SNAPSHOT (27/10/2026) — APLICAR DEPOIS DE RESTAURAR
+
+O rootfs.tar.zst deste snapshot foi tirado às 09:45, ANTES da correção.
+Ele contém a regra udev DEFEITUOSA:
+
+  /etc/udev/rules.d/99-hanoip-blockdev-ro.rules com KERNEL=="sd*"
+
+que travava o disco inteiro (/dev/sdb ro=1) e fazia o initramfs falhar com
+"mount: mounting /dev/sdb24 on /root failed: Permission denied"
+(ver work/nethunter-pro-20261027-fix-mount/LEIA-ME.txt).
+
+Depois de restaurar o rootfs:
+
+  install -m 644 99-hanoip-blockdev-ro.rules \
+          /mnt/kali/etc/udev/rules.d/99-hanoip-blockdev-ro.rules
+  chroot /mnt/kali update-initramfs -u -k 7.3.0-sm7150
+  install -m 755 ../nethunter-pro-20261026/hanoip-support/hanoip-reboot \
+          /mnt/kali/usr/local/sbin/hanoip-reboot
+
+Ou, mais simples: usar o boot.img novo
+work/nethunter-pro-20261026/artifacts/kernel-hanoip-kali-phosh-v2.img,
+que já traz o initrd corrigido (regra nova + a615_zap.*).
+
+TAMBÉM DEPOIS DE RESTAURAR (27/10, tarde):
+
+  install -m 755 hanoip-ssc.sh      /mnt/kali/usr/local/sbin/hanoip-ssc
+  install -m 644 hanoip-ssc.service /mnt/kali/etc/systemd/system/hanoip-ssc.service
+  chroot /mnt/kali systemctl enable hanoip-ssc   # já habilitado no snapshot
+  # desativa o bootmac do Mobian (timeout no hanoip; BT já sobe com MAC estável)
+  chroot /mnt/kali systemctl mask bootmac-bluetooth
+
+O hanoip-ssc do snapshot tenta subir o hexagonrpcd UMA vez e falha no boot a
+frio; o daqui tem retry (até 6 tentativas) e espera o ADSP "running".
+
+ZRAM (27/10, depois da auditoria):
+
+  install -m 644 zram-generator.conf  /mnt/kali/etc/systemd/zram-generator.conf
+  install -m 644 99-hanoip-zram.conf  /mnt/kali/etc/sysctl.d/99-hanoip-zram.conf
+  rm -f /mnt/kali/etc/systemd/system/dev-zram0.swap   # máscara criada em 26/10
+  chroot /mnt/kali systemctl daemon-reload
+
+Sem isso o aparelho fica com 3,5 GB de RAM e nenhum swap.

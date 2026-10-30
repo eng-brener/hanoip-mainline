@@ -1,0 +1,60 @@
+CANDIDATO A PRE-GOLD — ÁUDIO COMPLETO — 28/10/2026 (noite)
+==========================================================
+NÃO é GOLD nem PRE-GOLD designado: só o usuário promove. É o par que estava
+rodando quando o áudio inteiro foi validado. Base: PRE-GOLD-20261028-1133
+(cluster-idle + Venus + kernel v3-teo #24), que continua sendo o par de
+retorno até o usuário decidir.
+
+1. O QUE FOI VALIDADO (pelo usuário, de ouvido, e por medição)
+--------------------------------------------------------------
+  - alto-falante (AW882xx), earpiece, fone esquerdo e direito;
+  - microfone principal (amic3), secundário (amic1) e do headset (amic2);
+  - detecção do fone (MBHC): "Headphone Jack"/"Mic Jack" com o master
+    SoundWire TX suspenso (wake IRQ);
+  - PipeWire + UCM: troca automática Speaker <-> Headphones e
+    Internal Mic <-> Headset Mic ao plugar/tirar o fone; tom tocado pelo
+    PipeWire saiu nos dois lados do fone;
+  - SoundWire RX com runtime PM ativo: 12/12 ciclos autosuspend -> play OK
+    (antes: 2/8).
+  Detalhes e medições: docs/kernel/REAVALIACAO-AUDIO-20261028.md.
+
+2. CONTEÚDO
+-----------
+  uboot/u-boot-sm7150-motorola-hanoip-audio-etapa14.img  (DT embutido)
+      = clusteridle-venus + áudio etapa0/1/5/12/13/14. Ver dt/.
+  kernel/kernel-hanoip-kali-phosh-v3-teo.img
+      = o MESMO do PRE-GOLD-20261028-1133 (#24). As duas correções são
+        módulos (=m); o código do Image não muda.
+  modules/kernel/...  os dois módulos corrigidos, como estão instalados em
+      /lib/modules/7.3.0-sm7150/ no rootfs do Kali:
+        sound/soc/codecs/snd-soc-wcd937x-sdw.ko.zst   (patch 0188)
+        drivers/soundwire/soundwire-qcom.ko.zst       (patch 0189)
+      Originais no aparelho: /root/wcd937x-sdw.ko.zst.orig e
+      /root/soundwire-qcom.ko.zst.orig.
+  patches/0188, 0189  = os dois commits por cima do kernel #24
+      (fonte completo reproduzível: work/kernel-7.3/v5/, árvore 2df2c4d6).
+  ucm2/  = UCM instalado em /usr/share/alsa/ucm2/ (backup dos anteriores em
+      /root/ucm-backup/ no aparelho).
+
+3. BOOT (volátil, nada é gravado em partição)
+---------------------------------------------
+  fastboot boot uboot/u-boot-sm7150-motorola-hanoip-audio-etapa14.img
+  (esperar o fastboot do U-Boot, serial "????????????")
+  fastboot boot kernel/kernel-hanoip-kali-phosh-v3-teo.img
+  Os módulos e o UCM precisam estar instalados no rootfs (já estão).
+  Bootar este U-Boot com os módulos ORIGINAIS: o áudio sobe, mas o fone
+  esquerdo e o earpiece ficam mudos (bug do 0188) e o SoundWire RX cai após
+  o autosuspend (sem o 0189 a propriedade qcom,clock-stop-not-supported é
+  ignorada).
+
+4. NÃO VALIDADO / PENDENTE
+--------------------------
+  - botões do headset (MBHC detecta o plug; Button Press nunca testado);
+  - suspend do sistema inteiro com áudio;
+  - mensagens restantes no log, sem efeito funcional observado:
+    "SWR bus clsh detected" na re-inicialização do RX e
+    "wcd937x_codec: clk already disabled" (desbalanço de contador);
+  - chamada de voz (depende do modem/SIM; o roteamento de voz não existe).
+
+SUPERADO (28/10 17:07): o usuário designou work/PRE-GOLD-20261028-1707 (mesmo
+U-Boot e módulos, kernel v5 #29). Este diretório fica só como histórico.

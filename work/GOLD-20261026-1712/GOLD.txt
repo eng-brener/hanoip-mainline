@@ -1,0 +1,26 @@
+VERSÃO GOLD (Plasma + U-Boot v2026.10) — Moto G60 hanoip mainline
+Promovida pelo usuário em 26/10/2026 ~17:12 -03.
+Substitui como retorno padrão a GOLD-20261026-1500, que fica preservada.
+
+Mudança: U-Boot refeito sobre o oficial v2026.10 (era v2026.01 do fork
+tauchgang). Delta hanoip re-aplicado: abl_identity, board_preboot_os
+(WDT+UFS+USB para o kernel), FDT embutido, fastboot/UFS multi-LUN,
+GENI/RPMH/UFS quirks, LCDB no pm6150l.dtsi, 22 DTs, sm7150.dtsi do fork.
+Todo o DWC3 descartado (já está no upstream). clock/pinctrl-sm7150
+idênticos. Receita e diff-record em work/uboot-builds-20261026/patches/
+(LEIA-ME.txt + hanoip-vs-upstream-v2026.10.diff); árvore nova em
+uboot-sm7150-v2026.10/ (fora do git).
+Kernel/ramdisk/rootfs IDÊNTICOS aos da GOLD-20261026-1500 (kernel 7.3 #6,
+boot sem hash, SSH em ~40 s).
+
+Validado em boot volátil antes de promover: fastboot do U-Boot OK, kernel,
+SSH ~40 s, DSI irqs=0, wlan0 com IP, hanoip-ssc started,
+PMOS_FULL_RO_RAM_READY.
+
+Boot (SÓ volátil, nunca flash):
+  fastboot boot u-boot-hanoip-pmos-perif-v2026.10.img
+  fastboot boot kernel-hanoip-pmos-full-sensors-ro-v4-base-fast.img   (cópia!)
+
+Peças (somente leitura): U-Boot v2026.10, kernel #6 + ramdisk sem hash.
+Regras: nunca modificar esta pasta; só `fastboot boot`; nenhuma escrita em
+partição; senha Wi-Fi e PIN ficam só no telefone.

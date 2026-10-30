@@ -1,0 +1,14 @@
+[Unit]
+Description=Hanoip modem EFS in RAM for rmtfs
+DefaultDependencies=no
+After=local-fs.target
+Before=rmtfs.service qrtr-ns.service
+Wants=local-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/hanoip-efs
+
+[Install]
+WantedBy=sysinit.target

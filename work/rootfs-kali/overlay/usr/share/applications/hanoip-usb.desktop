@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Porta USB
+Comment=Escolher o que a porta USB do aparelho faz (rede, pendrive, teclado...)
+Exec=/usr/local/bin/hanoip-usb-app
+Icon=drive-harddisk-usb
+Terminal=false
+Categories=Settings;
+Keywords=usb;otg;rede;storage;hid;

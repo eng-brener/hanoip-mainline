@@ -1,0 +1,57 @@
+#!/bin/sh
+# hanoip-rtc — acerta o relógio no boot usando o offset do RTC do PMIC.
+#
+# PROBLEMA: o RTC do pm6150 conta desde a fabricação e o driver (rtc-pm8xxx)
+# soma "raw + offset", mas o offset vem de uma célula nvmem que este DT não
+# declara. Resultado: no boot o kernel faz "setting system clock to 1974-08-15"
+# (19.066 dias atrás). E gravar o RTC pelo driver FALHA: o ioctl RTC_SET_TIME
+# devolve ERANGE para qualquer valor (não é o valor: vem do caminho SPMI, não do
+# regmap), então nem `hwclock -w` nem "allow-set-time" resolvem.
+#
+# SOLUÇÃO: o contador do RTC ANDA certo (medido: +3 s em 3 s), só está deslocado
+# por uma constante. Guardamos essa constante em /etc/hanoip/rtc-offset e, no
+# boot, acertamos o relógio do sistema com raw + offset. NTP corrige depois, se
+# houver rede; sem rede, o relógio já começa plausível em vez de 1974.
+#
+# Uso:
+#   hanoip-rtc save    calcula e grava o offset (com o relógio já correto)
+#   hanoip-rtc apply   aplica raw + offset no relógio do sistema (boot)
+#   hanoip-rtc show    mostra os três valores
+
+CONF=/etc/hanoip/rtc-offset
+RAW=/sys/class/rtc/rtc0/since_epoch
+
+raw() { cat "$RAW" 2>/dev/null; }
+
+case "${1:-show}" in
+save)
+    r=$(raw) || exit 1
+    now=$(date +%s)
+    off=$(( now - r ))
+    mkdir -p "$(dirname "$CONF")"
+    printf 'RTC_OFFSET=%s\n# gravado em %s (raw=%s, sistema=%s)\n' \
+        "$off" "$(date '+%F %T')" "$r" "$now" > "$CONF"
+    echo "  offset gravado: $off s em $CONF"
+    ;;
+apply)
+    [ -f "$CONF" ] || { echo "  sem $CONF; rode 'hanoip-rtc save' com o relogio certo"; exit 1; }
+    . "$CONF"
+    r=$(raw) || exit 1
+    alvo=$(( r + RTC_OFFSET ))
+    # só corrige se o desvio for grande (>60 s): nao briga com o NTP
+    agora=$(date +%s)
+    dif=$(( alvo - agora ))
+    [ "${dif#-}" -lt 60 ] && { echo "  relogio ja coerente (dif ${dif}s); nada a fazer"; exit 0; }
+    date -s "@$alvo" >/dev/null 2>&1 && echo "  relogio acertado: $(date '+%F %T') (via RTC+offset)" \
+        || echo "  falhou ao acertar (precisa de root)"
+    ;;
+show)
+    r=$(raw); . "$CONF" 2>/dev/null || RTC_OFFSET=0
+    echo "  RTC cru   : $(date -u -d "@$r" '+%F %T' 2>/dev/null) UTC (epoch $r)"
+    echo "  offset    : ${RTC_OFFSET:-<nao gravado>} s"
+    echo "  corrigido : $(date -u -d "@$(( r + ${RTC_OFFSET:-0} ))" '+%F %T' 2>/dev/null) UTC"
+    echo "  sistema   : $(date -u '+%F %T') UTC"
+    ;;
+*)
+    echo "uso: $0 save|apply|show" >&2; exit 2 ;;
+esac

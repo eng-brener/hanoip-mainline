@@ -115,6 +115,10 @@ uboot-sm7150/
 work/kernel-7.3/v*/out/
 # Credencial local do Kali: NUNCA commitar (AGENTS.md).
 work/nethunter-pro-20261026/serial-login.py
-# O snapshot de 120 Hz precisa da imagem testada e do U-Boot no git.
-!work/PRE-GOLD-20261030-1730-120HZ/kernel/*.img
+# Snapshot de 120 Hz: só o U-Boot entra; a imagem do kernel fica local
+# (o GitHub bloqueia o push por um falso positivo de scanner dentro do .img).
+work/PRE-GOLD-20261030-1730-120HZ/kernel/*.img
 !work/PRE-GOLD-20261030-1730-120HZ/uboot/*.img
+
+# Clone externo do libcamera (reproduzivel pelo patch ao lado)
+work/cameras-20261028/libcamera-mono-src/

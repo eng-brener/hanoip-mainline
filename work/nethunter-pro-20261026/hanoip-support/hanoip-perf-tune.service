@@ -1,0 +1,12 @@
+[Unit]
+Description=Hanoip GPU/UFS devfreq floors and CPU governor
+After=local-fs.target
+Before=display-manager.service greetd.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/hanoip-perf-tune
+
+[Install]
+WantedBy=multi-user.target

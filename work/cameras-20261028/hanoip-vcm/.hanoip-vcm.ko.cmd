@@ -1,0 +1,1 @@
+savedcmd_hanoip-vcm.ko := aarch64-linux-gnu-ld -r -EL  -maarch64elf -z noexecstack --no-warn-rwx-segments --build-id=sha1 --force-group-allocation  -T /src/obj/scripts/module.lds -o hanoip-vcm.ko hanoip-vcm.o hanoip-vcm.mod.o .module-common.o

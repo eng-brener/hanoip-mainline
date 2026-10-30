@@ -1,0 +1,144 @@
+BATERIA — SOC estável (27/10/2026)
+==================================
+
+Problema: a porcentagem da bateria "subia e descia sozinha toda hora".
+
+Causa (medida, não suposta)
+---------------------------
+1. O DT NÃO tinha `ocv-capacity-table`, então o qcom_qg caía no mapa LINEAR
+   3,2 V – 4,45 V: ~12,5 mV por 1%. Qualquer ruído de ADC (25 mV = 2%) ou
+   queda por carga (79 mV medidos = ~6%) mexia na porcentagem.
+2. A suavização era um "caminhante" de 1% a cada 20 s que só andava numa
+   direção, conforme o status: perseguia o ruído sem nunca estabilizar.
+   Medido: 93% -> 92% -> 91% em 26 s com corrente 0 mA e tensão parada.
+
+Descoberta importante de arquitetura
+------------------------------------
+A device tree que vale no aparelho vem EMBUTIDA NO U-BOOT
+(CONFIG_OF_EMBED) — ver work/uboot-builds-20261026/README.txt. Patchar o DT
+na árvore do kernel NÃO tem efeito no boot do sm7150. Por isso a curva foi
+para o U-Boot e a correção do driver entrou como módulo.
+
+O que está nesta pasta
+----------------------
+u-boot-sm7150-motorola-hanoip-pmos-perif-batt.img
+    U-Boot com a variante de DT "perif + curva da bateria".
+    Diff comprovado contra a variante sem a curva (scripts/fdt_diff.py):
+      744 nós nos dois, única diferença = 3 propriedades em /battery
+      (+ ocv-capacity-table-0 com 21 pontos, + ocv-capacity-celsius=25,
+       + factory-internal-resistance-micro-ohms=30000).
+qcom_qg.ko.zst.NOVO
+    Driver com (a) amostras médias em vez do último ADC, (b) banda morta de
+    2%, (c) deriva de 1% a cada 2 min nas duas direções, (d) nunca cai
+    enquanto carrega, (e) clamp 0..100.
+    vermagic idêntico ao kernel em uso; CONFIG_MODVERSIONS off.
+qcom_qg.ko.zst.ANTERIOR
+    O módulo de antes (para voltar).
+sm7150-motorola-hanoip-pmos-perif-batt.dts
+    Fonte da variante de DT (uboot-sm7150/dts/upstream/src/arm64/qcom/).
+
+Curva aplicada (Li-ion, topo 4,44 V — design do pack ATL 6000 mAh)
+------------------------------------------------------------------
+4.440V=100%  4.360V=95%  4.300V=90%  4.240V=85%  4.190V=80%  4.140V=75%
+4.100V=70%   4.060V=65%  4.020V=60%  3.990V=55%  3.960V=50%  3.930V=45%
+3.900V=40%   3.870V=35%  3.840V=30%  3.810V=25%  3.780V=20%  3.740V=15%
+3.700V=10%   3.640V=5%   3.400V=0%
+APROXIMADA: não calibrada contra descarga completa (a carga está desligada
+neste port). Calibração = fase B5 de docs/PLANO-BATERIA-ENERGIA.md.
+
+Como aplicar
+------------
+1. Boot (volátil):
+     fastboot boot u-boot-sm7150-motorola-hanoip-pmos-perif-batt.img
+     fastboot boot kernel-hanoip-kali-phosh-v2.img     (Image do v3, sem mudança)
+2. Módulo:
+     M=/lib/modules/7.3.0-sm7150/kernel/drivers/power/supply
+     cp -a $M/qcom_qg.ko.zst /root/qcom_qg.ko.zst.ANTES
+     install -m 644 qcom_qg.ko.zst $M/qcom_qg.ko.zst
+     depmod -a 7.3.0-sm7150 && modprobe -r qcom_qg && modprobe qcom_qg
+3. Verificação:
+     /usr/local/sbin/hanoip-batt-log 900 1000 /root/batt-idle.csv
+     (o script resume amplitude e saltos > 2%)
+
+Como reverter
+-------------
+- U-Boot: bootar o de sempre (work/GOLD-20261026-1712/...perif-v2026.10.img).
+- Módulo: devolver qcom_qg.ko.zst.ANTERIOR ao lugar, depmod, recarregar.
+
+Resultado medido
+----------------
+- DT em vigor: /proc/device-tree/battery com a tabela (21 pontos) ✔
+- SOC com curva: 84% para OCV 4,2369 V (curva: 85% em 4,240 V).
+- Teste de carga: 6 busy loops, corrente -708 mA, tensão média 4,234 -> 4,155 V
+  (79 mV, ~6 pontos no mapa antigo) → capacidade ficou em 84% o tempo todo.
+- 15 min de log contínuo (1 Hz) para amplitude/saltos: ver resultado abaixo.
+
+Nada aqui escreve no PMIC: o caminho de energia continua somente leitura
+(0 regmap_write no driver do charger, SDAM read-only). Mexer no SOC é
+reporte apenas — a segurança da carga (fase B3) é assunto separado.
+
+RESULTADO FINAL DO TESTE (15 min, 1 Hz, 452 amostras)
+-----------------------------------------------------
+  capacity min 83% / max 84%  ->  amplitude 1 ponto
+  saltos > 2%                  ->  0
+  incluindo 40 s de 6 busy loops (-708 mA; tensão 4,234 -> 4,155 V)
+
+Registradores da QGauge (medido): só os do "último ADC" atualizam;
+voltage_avg/voltage_ocv/current_avg ficam congelados porque o algoritmo
+periódico da QGauge não roda (é o Android quem o alimenta). O patch usa os
+médios, o que na prática deixa a estimativa presa perto da tensão de repouso
+— estável, mas por motivo frágil. Ajuste planejado para a fase B3/B5 (usar
+current_now na compensação IR + EMA por tempo no driver).
+UPower/energy-rate está correto (lê current_now): 0 W ocioso, 1,9-2,1 W sob
+carga. Não precisa de correção.
+
+ATUALIZACAO 27/10 (tarde): curva REAL da Motorola + controle de carga
+---------------------------------------------------------------------
+A tabela generica foi SUBSTITUIDA pela curva do proprio aparelho, extraida do
+perfil de bateria que o Android usa (S88731AA1-mc50-ATL-4V45-6000mah, LUT
+pc-temp-v1, coluna 25 C) com scripts/battery_curve_from_android.py.
+  100% 4.447 V | 90% 4.321 V | 85% 4.273 V | 50% 3.890 V | 10% 3.711 V
+  (0% ajustado para 3.400 V; o modelo do Android usa 3.000 V como corte)
+Conferencia independente: Android mediu 3.836 V a 54% carregando a 500 mA;
+a curva da 3.90 V em 54% (~50 mV = queda IR). Ver
+docs/kernel/checkpoint-2026-10-27-bateria-vs-android.txt.
+
+O modulo do kernel agora tambem traz:
+  /sys/kernel/debug/<device>   dump READ-ONLY dos registradores do charger
+  /sys/kernel/debug/hanoip-charge   CONTROLE DE CARGA (write "1"/"0"),
+                                    DESLIGADO por padrao; ao ligar faz 3
+                                    escritas: desarma o watchdog, programa
+                                    charge_current_ua (default 1 A,
+                                    limitado a 0.3-2 A) e seta o bit de
+                                    enable. Float/JEITA/ICL/terminacao
+                                    ficam como a ABL deixou.
+Protocolo de teste: PROTOCOLO-TESTE-CARGA.txt nesta pasta.
+
+FECHAMENTO DA SESSÃO (27/10, fim do dia) — CARGA DESLIGADA
+----------------------------------------------------------
+A carga está DESLIGADA (enable=0x00, FSM volta a DISABLE_CHARGE, i_batt=0).
+Modo manual, decisão do usuário, até observarmos a terminação.
+
+Descobertas do dia (resumo completo em RESUMO-BATERIA.txt nesta pasta e em
+docs/kernel/checkpoint-2026-10-27-bateria-RESUMO.txt):
+
+ 1. A porcentagem oscilava porque não havia tabela OCV no DT (mapa linear de
+    12,5 mV por 1%) e o caminhante de 1%/20 s perseguia o ruído.
+    -> curva REAL da Motorola (do perfil Android do próprio aparelho) +
+       histerese de 2% + deriva de 1%/2min + snap em desvio > 10.
+    -> validado: amplitude de 1 ponto em 15 min, zero saltos.
+ 2. A DT efetiva vem EMBUTIDA NO U-BOOT (CONFIG_OF_EMBED), não do boot.img.
+    Por isso a curva foi para a variante -batt do U-Boot.
+ 3. O charger só não carregava porque CHARGING_ENABLE_CMD (0x42) bit0 = 0:
+    entrada, APSD, float 4.400 V, JEITA, terminação e recharga já estavam
+    corretos. Watchdog armado (bite desliga carga) e fast-charge default 2 A.
+ 4. Carga habilitada com 3 escritas, validada 15 min: +440 mA, 32,6-33,7 C,
+    79% -> 81%; desligamento testado e limpo.
+ 5. Com entrada de 500 mA (porta de PC) e tela ligada, o aparelho consome
+    mais do que recebe: a corrente da bateria fica negativa e o UPower (ícone)
+    mostra "descarregando", enquanto o sysfs (app powersupply) mostra
+    "Charging". Ambos corretos; resolve-se com B4 (APSD/ICL).
+ 6. Comparação com o Android: float 4.45 V, FCC 3.6 A, iterm 290 mA, ICL 3 A
+    em DCP, 15-45 C. Nosso estado é um subconjunto conservador.
+
+Próximo passo recomendado: B4 (APSD + ICL) para carregar com a tela ligada.

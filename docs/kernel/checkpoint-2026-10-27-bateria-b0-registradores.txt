@@ -1,0 +1,93 @@
+Checkpoint 2026-10-27 — B0: laudo read-only do carregador (por que não carrega)
+==============================================================================
+
+Método: dump SOMENTE LEITURA dos registradores do PM6150 smb5 via nó de
+debugfs adicionado ao driver monitor (kernel v4, patch 0168, modo 0444; não
+existe caminho de escrita novo). Nada foi escrito no PMIC.
+
+  /sys/kernel/debug/c440000.spmi:pmic@0:charger@1000
+
+CABEÇALHO
+  base=0x1000  gen=SMB5  monitor_only=1
+
+REGISTRADORES (valores reais)
+  0x0006 BATTERY_CHARGER_STATUS_1   0x47   -> bits[2:0]=7 = DISABLE_CHARGE
+  0x0007 BATTERY_CHARGER_STATUS_2   0x08   -> BIT(1)=0 (sem BAT_OV)
+  0x000a BATTERY_CHARGER_STATUS_4   0x00
+  0x000d BATTERY_CHARGER_STATUS_7   0x00   -> sem falha térmica (é este o
+                                             registrador que o SMB5 usa para
+                                             TOO_HOT/TOO_COLD/HOT/COLD soft)
+  0x0042 CHARGING_ENABLE_CMD        0x00   -> BIT(0)=0  <<< O BLOQUEIO
+  0x0051 CHGR_CFG2                  0x2c   -> I_TERM=1, AUTO_RECHG=1,
+                                             CHG_EN_SRC=0 (enable por software),
+                                             CHARGER_INHIBIT=0
+  0x0060 PRE_CHARGE_CURRENT_CFG     0x04   -> 4 x 50 mA   = 200 mA
+  0x0061 FAST_CHARGE_CURRENT_CFG    0x28   -> 40 x 50 mA  = 2,0 A
+  0x0070 FLOAT_VOLTAGE_CFG          0x50   -> 3,6 V + 80 x 10 mV = 4,400 V
+  0x007d FG_UPDATE_CFG_2_SEL        0xf2
+  0x0090 JEITA_EN_CFG               0x1b   -> HARDLIMIT=1, HOT_SL_FCV=1,
+                                             HOT_SL_CCC=1, COLD_SL_CCC=1
+  0x0307 APSD_STATUS                0x11   -> ENUMERATION_DONE + DTC_DONE
+  0x0308 APSD_RESULT_STATUS         0x01   -> SDP (porta USB padrão)
+  0x0310 INT_RT_STS                 0x10   -> USBIN_PLUGIN (VBUS presente)
+  0x0340 USBIN_CMD_IL               0x00   -> USBIN NÃO suspenso
+  0x0358 TYPE_C_CFG                 0xc0   -> APSD_START_ON_CC + WAIT_FOR_APSD
+  0x0370 USBIN_CURRENT_LIMIT_CFG    0x1e   -> 30 x 25 mA = 750 mA (teto)
+  0x0380 USBIN_AICL_OPTIONS_CFG     0xd4   -> AICL ativo
+  0x0643 BARK_BITE_WDOG_PET         0x00
+  0x0651 WD_CFG                     0x62   -> BARK_INT_EN + BITE_INT_EN +
+                                             WDOG_TIMER_EN_ON_PLUGIN
+  0x0653 SNARL_BARK_BITE_WD_CFG     0x8c   -> BITE desabilita a carga
+
+DERIVADOS
+  limite de entrada (ICL) = 500.000 uA  (SDP)
+  POWER_PATH_STATUS       = 0x95  -> usa USBIN, entrada válida, sem suspend
+  USBIN suspenso          = 0
+  charging enable         = 0     <<<
+
+CONCLUSÃO
+  O caminho de entrada está SAUDÁVEL e a maior parte do envelope já está
+  correta (float 4,40 V, JEITA com hardlimit, terminação e recharga ligadas,
+  sem OV, sem falha térmica, APSD concluída como SDP, power path em USBIN).
+
+  O ÚNICO bloqueio é o bit de habilitação: CHARGING_ENABLE_CMD (0x42) bit 0.
+  Ninguém o escreve porque o driver do hanoip roda em monitor_only (o probe
+  retorna antes de qualquer escrita) — foi decisão de projeto, não defeito.
+
+  Isto invalida as hipóteses H2 (USBIN suspenso), H3 (ICL/AICL parados),
+  H5 (CHGR_CFG2 impedindo), H6 (watchdog expirado, está armado e não disparou)
+  e H7 (Type-C/APSD não renegociado). H1 era o caso.
+
+DOIS DETALHES OPERACIONAIS QUE O B3 PRECISA TRATAR
+  1. Watchdog armado com "bite desliga a carga" (WD_CFG=0x62, SNARL=0x8c).
+     Se habilitarmos a carga sem alimentar o cão (escrever 0x643 bit0, como o
+     upstream faz no IRQ de bark), o próprio PMIC desliga a carga após o
+     timeout. NÃO é risco de segurança — é "não vai carregar".
+  2. FAST_CHARGE_CURRENT_CFG já vem em 2,0 A (default do bootloader). Para os
+     primeiros testes devemos baixar (1,0 A) e só subir depois, com térmica.
+
+ENVELOPE PROPOSTO PARA O B3 (precisa de aprovação do usuário)
+  - Ligar: CHARGING_ENABLE_CMD bit0 = 1 (é o único "on").
+  - FLOAT: manter 4,400 V (design do pack 4,44 V; conservador).
+  - Fast-charge: começar em 1,0 A (0x14); máximo 2,0 A e só com bateria
+    abaixo de 40 C.
+  - Pré-carga: manter 200 mA.
+  - ICL: 500 mA em SDP (porta do Mac); habilitar detecção DCP e permitir até
+    1,5 A apenas com carregador de parede.
+  - JEITA: manter como está (hardlimit + limites quentes). NÃO desligar.
+  - Watchdog: registrar o IRQ de bark e alimentar; alternativa segura é
+    desarmar o timer antes de ligar.
+  - Off-switch: escrever 0 no bit de enable (e/ou `modprobe -r`), testado
+    ANTES de ligar.
+  - Protocolo: bancada, medidor USB, sessões de 15 min, abortar se bateria
+    > 43 C ou conector > 50 C; primeira série só com cabo em porta SDP.
+
+O QUE FALTA PARA FECHAR O B3
+  Implementar no driver: (a) opção `enable_charge=0/1` por parâmetro de
+  módulo, (b) escrita do bit de enable, (c) pet do watchdog (IRQ bark ou
+  timer), (d) limite de corrente configurável. Tudo com o caminho default
+  DESLIGADO.
+
+ARTEFATOS
+  este checkpoint; patch 0168 (dump read-only) no kernel v4;
+  driver monitor com o dump em /sys/kernel/debug/<nome do device>.

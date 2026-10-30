@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * ÁUDIO — ETAPA 5: reset do codec no LPI pino 6 (o pino certo).
+ *
+ * Por que mudou (investigação do vendor + outros ports):
+ *   - no stock do hanoip o pinctrl LPI tem 32 gpios num único nó, com offsets
+ *     lineares; o dtsi do mainline mapeia só 0x62b52000 + 0xe000 (14 pinos) e
+ *     anota que 0x62b40000 + 0x12000 (18 páginas) é o espaço do SSC.
+ *     Portanto: gpio0..17 do vendor = bloco SSC; gpio18..31 = bloco AP, e o
+ *     pino AP n corresponde ao vendor gpio (n + 18).
+ *   - o stock usa "msm_cdc_pinctrl@24" = vendor gpio24 = AP pino 6.
+ *   - o port do MESMO SoC (sm7150-xiaomi-sweet.dts) usa exatamente
+ *     reset-gpios = <&lpass_tlmm 6 GPIO_ACTIVE_LOW>.
+ * Conclusão: o pino já existe no driver mainline (0..13). Não precisa estender
+ * pinctrl, não precisa mux 2 (que causou RCU stall) e NÃO precisa kernel novo.
+ *
+ * Esta variante roda com o kernel do PRE-GOLD.
+ */
+#include "sm7150-motorola-hanoip-audio-etapa1.dts"
+
+&lpass_tlmm {
+	wcd_reset_active: wcd-reset-active-state {
+		pins = "gpio6";
+		function = "gpio";
+		drive-strength = <16>;
+	};
+};
+
+&wcd9370 {
+	reset-gpios = <&lpass_tlmm 6 GPIO_ACTIVE_LOW>;
+	pinctrl-0 = <&wcd_reset_active>;
+	pinctrl-names = "default";
+
+	qcom,mbhc-buttons-vthreshold-microvolt = <75000 150000 237000 500000
+						  500000 500000 500000 500000>;
+};

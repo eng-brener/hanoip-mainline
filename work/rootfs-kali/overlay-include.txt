@@ -1,0 +1,59 @@
+# Arquivos do projeto que a receita reaplica sobre um Kali recém-construído.
+# Um caminho (ou padrão de shell) por linha; diretórios entram inteiros.
+# NÃO incluir segredos: conexões Wi-Fi, chaves de host SSH, shadow,
+# authorized_keys, /var/lib/fpc-gk.
+/usr/local/sbin
+/usr/local/bin
+/usr/local/libexec
+/usr/local/share/applications
+/usr/libexec/hanoip-speaker-route
+/usr/lib/systemd/system-sleep/hanoip-adsp
+/usr/lib/systemd/user/mobi.phosh.OSK.service
+/usr/share/applications/hanoip-usb.desktop
+/usr/share/applications/sm.puri.OSK0.desktop
+/usr/share/alsa/ucm2/conf.d/sm8250/Motorola Moto G60.conf
+/usr/share/alsa/ucm2/Motorola/hanoip
+/usr/share/wireplumber/wireplumber.conf.d/51-hanoip-speaker.conf
+/usr/share/initramfs-tools/hooks/hanoip-console
+/usr/share/initramfs-tools/hooks/hanoip-firmware
+/usr/share/initramfs-tools/hooks/hanoip-guard
+/usr/share/initramfs-tools/scripts/init-premount/hanoip-guard
+/usr/share/initramfs-tools/scripts/init-top/hanoip-console
+/usr/share/polkit-1/actions/org.hanoip.fingerprint.policy
+/usr/share/polkit-1/actions/org.hanoip.usbmode.policy
+/etc/hanoip
+/etc/hanoip-fp
+/etc/libcamera/ipa/simple
+/etc/modprobe.d/hanoip-speaker.conf
+/etc/modprobe.d/qcom-qseecom-fpc.conf
+/etc/modprobe.d/zram.conf
+/etc/modules-load.d/qcom-qseecom-fpc.conf
+/etc/initramfs-tools/modules
+/etc/polkit-1/rules.d/50-hanoip-fprint.rules
+/etc/sysctl.d/60-hanoip-perf.conf
+/etc/sysctl.d/99-hanoip-zram.conf
+/etc/systemd/journald.conf.d/hanoip.conf
+/etc/systemd/zram-generator.conf
+/etc/systemd/system/hanoip-*.service
+/etc/systemd/system/fprintd.service.d
+/etc/systemd/system/rmtfs.service.d
+/etc/systemd/system/display-manager.service
+/etc/udev/rules.d/10-zram-tmp-dirs.rules
+/etc/udev/rules.d/99-hanoip-blockdev-ro.rules
+/etc/udev/rules.d/99-hanoip-speaker-route.rules
+/etc/udev/rules.d/99-hanoip-ssc.rules
+/etc/greetd/config.toml
+/etc/pam.d/sudo
+/etc/ssh/sshd_config.d/99-hanoip-nopam.conf
+/etc/ssh/sshd_config.d/no_password_authentication.conf
+/etc/apt/sources.list.d/kali.sources
+/etc/apt/sources.list.d/mobian.sources
+/etc/apt/preferences.d/00-kali-priority
+/etc/apt/preferences.d/10-mobian-priority
+/etc/default/locale
+/etc/locale.gen
+/etc/timezone
+/etc/skel/.local/share/squeekboard
+/etc/fstab
+/etc/hosts
+/etc/environment

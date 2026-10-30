@@ -1,0 +1,1706 @@
+[    4.355870] systemd[1]: Listening on systemd-resolved-monitor.socket - Resolve Monitor Varlink Socket.
+[    4.356066] systemd[1]: Listening on systemd-resolved-varlink.socket - Resolve Service Varlink Socket.
+[    4.357244] systemd[1]: Listening on systemd-sysinstall.socket - System Install Tool.
+[    4.357334] systemd[1]: systemd-sysupdate-notify-pcrlock.socket - Recompute TPM PCR Policy on Completed System Update skipped, unmet condition check ConditionSecurity=measured-uki
+[    4.357457] systemd[1]: Listening on systemd-udevd-kernel.socket - udev Kernel Socket.
+[    4.357706] systemd[1]: Listening on systemd-udevd-varlink.socket - udev Varlink Socket.
+[    4.357907] systemd[1]: Listening on systemd-userdbd.socket - User Database Manager Socket.
+[    4.359983] systemd[1]: Mounting dev-hugepages.mount - Huge Pages File System...
+[    4.361635] systemd[1]: Mounting dev-mqueue.mount - POSIX Message Queue File System...
+[    4.363328] systemd[1]: Mounting sys-kernel-debug.mount - Kernel Debug File System...
+[    4.365082] systemd[1]: Mounting sys-kernel-tracing.mount - Kernel Trace File System...
+[    4.365277] systemd[1]: auth-rpcgss-module.service - Kernel Module supporting RPCSEC_GSS skipped, unmet condition check ConditionPathExists=/etc/krb5.keytab
+[    4.367304] systemd[1]: Starting keyboard-setup.service - Set the console keyboard layout...
+[    4.369694] systemd[1]: Starting kmod-static-nodes.service - Create List of Static Device Nodes...
+[    4.369879] systemd[1]: modprobe@configfs.service - Load Kernel Module configfs skipped, unmet condition check ConditionKernelModuleLoaded=!configfs
+[    4.369949] systemd[1]: modprobe@drm.service - Load Kernel Module drm skipped, unmet condition check ConditionKernelModuleLoaded=!drm
+[    4.369998] systemd[1]: modprobe@efi_pstore.service - Load Kernel Module efi_pstore skipped, unmet condition check ConditionKernelModuleLoaded=!efi_pstore
+[    4.372222] systemd[1]: Starting modprobe@fuse.service - Load Kernel Module fuse...
+[    4.372525] systemd[1]: systemd-hibernate-clear.service - Clear Stale Hibernate Storage Info skipped, unmet condition check ConditionPathExists=/sys/firmware/efi/efivars/HibernateLocation-8cf2644b-4b0b-428f-9387-6d876050dc67
+[    4.383843] systemd[1]: Starting systemd-journald.service - Journal Service...
+[    4.386553] systemd[1]: Starting systemd-modules-load.service - Load Kernel Modules...
+[    4.388492] systemd[1]: Starting systemd-network-generator.service - Generate Network Units from Kernel Command Line...
+[    4.388640] systemd[1]: systemd-pcrmachine.service - TPM PCR Machine ID Measurement skipped, unmet condition check ConditionSecurity=measured-os
+[    4.388688] systemd[1]: systemd-pcrosseparator.service - TPM PCR OS Separator skipped, unmet condition check ConditionSecurity=measured-os
+[    4.395574] systemd[1]: Starting systemd-remount-fs.service - Remount Root and Kernel File Systems...
+[    4.396034] systemd[1]: systemd-tpm2-setup-early.service - Early TPM SRK Setup skipped, unmet condition check ConditionSecurity=measured-os
+[    4.396259] systemd[1]: systemd-pcrnvdone.service - TPM PCR NvPCR Initialization Separator skipped, unmet condition check ConditionPathExists=/etc/initrd-release
+[    4.396311] systemd[1]: Reached target cryptsetup.target - Local Encrypted Volumes.
+[    4.396397] systemd[1]: systemd-pcrproduct.service - TPM NvPCR Product ID Measurement skipped, unmet condition check ConditionSecurity=measured-os
+[    4.401190] fuse: init (API version 7.46)
+[    4.405013] systemd[1]: Starting systemd-udev-load-credentials.service - Load udev Rules from Credentials...
+[    4.412888] systemd[1]: Mounted dev-hugepages.mount - Huge Pages File System.
+[    4.414914] systemd[1]: Mounted dev-mqueue.mount - POSIX Message Queue File System.
+[    4.415314] systemd[1]: Mounted sys-kernel-debug.mount - Kernel Debug File System.
+[    4.415840] systemd[1]: Mounted sys-kernel-tracing.mount - Kernel Trace File System.
+[    4.416473] systemd[1]: Finished kmod-static-nodes.service - Create List of Static Device Nodes.
+[    4.420717] systemd[1]: modprobe@fuse.service: Deactivated successfully.
+[    4.421165] systemd[1]: Finished modprobe@fuse.service - Load Kernel Module fuse.
+[    4.423898] systemd[1]: Mounting sys-fs-fuse-connections.mount - FUSE Control File System...
+[    4.425655] systemd[1]: Starting systemd-tmpfiles-setup-dev-early.service - Create Static Device Nodes in /dev gracefully...
+[    4.426352] systemd[1]: Finished systemd-remount-fs.service - Remount Root and Kernel File Systems.
+[    4.427307] systemd[1]: Finished systemd-udev-load-credentials.service - Load udev Rules from Credentials.
+[    4.428869] systemd[1]: systemd-hwdb-update.service - Rebuild Hardware Database skipped, unmet condition check ConditionNeedsUpdate=/etc
+[    4.430564] systemd[1]: Starting systemd-pstore.service - Platform Persistent Storage Archival...
+[    4.432129] systemd[1]: Starting systemd-random-seed.service - Load/Save OS Random Seed...
+[    4.432255] systemd[1]: systemd-tpm2-setup.service - TPM SRK Setup skipped, unmet condition check ConditionSecurity=measured-os
+[    4.433090] systemd[1]: Finished systemd-network-generator.service - Generate Network Units from Kernel Command Line.
+[    4.446131] systemd[1]: Finished systemd-modules-load.service - Load Kernel Modules.
+[    4.448002] systemd-journald[592]: Collecting audit messages is enabled.
+[    4.448127] systemd[1]: Starting systemd-sysctl.service - Apply Kernel Variables...
+[    4.458078] systemd[1]: Finished systemd-random-seed.service - Load/Save OS Random Seed.
+[    4.458230] audit: type=1130 audit(1793222214.508:2): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-random-seed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    4.458423] systemd[1]: first-boot-complete.target - First Boot Complete skipped, unmet condition check ConditionFirstBoot=yes
+[    4.463280] systemd[1]: Mounted sys-fs-fuse-connections.mount - FUSE Control File System.
+[    4.467994] systemd[1]: Finished systemd-pstore.service - Platform Persistent Storage Archival.
+[    4.468120] audit: type=1130 audit(1793222214.518:3): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-pstore comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    4.482011] systemd[1]: Started systemd-journald.service - Journal Service.
+[    4.482310] audit: type=1130 audit(1793222214.532:4): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-journald comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    4.485917] audit: type=1130 audit(1793222214.536:5): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-sysctl comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    4.486747] audit: type=1130 audit(1793222214.537:6): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-tmpfiles-setup-dev-early comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    4.507906] audit: type=1334 audit(1793222214.558:7): prog-id=20 op=LOAD
+[    4.512221] audit: type=1130 audit(1793222214.562:8): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=keyboard-setup comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    4.520339] systemd-journald[592]: Received client request to flush runtime journal.
+[    4.521577] systemd-journald[592]: File /var/log/journal/92990d4ee90946dc87e74fa3427af1fc/system.journal corrupted or uncleanly shut down, renaming and replacing: Device or resource busy
+[    4.535388] audit: type=1334 audit(1793222214.585:9): prog-id=21 op=LOAD
+[    4.535565] audit: type=1334 audit(1793222214.585:10): prog-id=22 op=LOAD
+[    4.953481] zram0: detected capacity change from 0 to 3635200
+[    5.093014] Adding 1817596k swap on /dev/zram0.  Priority:100 extents:1 across:1817596k SSDsc
+[    5.270340] kauditd_printk_skb: 11 callbacks suppressed
+[    5.270349] audit: type=1130 audit(1793222215.320:22): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=hanoip-udev-trigger comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    5.595375] audit: type=1130 audit(1793222215.645:23): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-userdb-load-credentials comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    5.601548] audit: type=1130 audit(1793222215.651:24): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=console-setup comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    5.604292] audit: type=1130 audit(1793222215.654:25): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=rpc-statd-notify comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    5.611057] audit: type=1130 audit(1793222215.661:26): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=fake-hwclock comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    5.613457] audit: type=1130 audit(1793222215.663:27): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-tmpfiles-setup comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    5.617556] EXT4-fs (sde18): mounted filesystem 05065aea-3c02-4d07-acf3-e1175076772f ro without journal. Quota mode: none.
+[    5.618598] hanoip-firmware: modem_a mounted read-only at /mnt/ro/modem_a
+[    5.642156] EXT4-fs (sde20): mounted filesystem 4ecae6c8-93eb-416b-8940-d60c57cd2f1b ro without journal. Quota mode: none.
+[    5.643226] hanoip-firmware: bluetooth_a mounted read-only at /mnt/ro/bluetooth_a
+[    5.655854] hanoip-efs: modem_fs1 <- /dev/sdb14
+[    5.665939] audit: type=1130 audit(1793222215.716:28): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-binfmt comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    5.711706] hanoip-efs: modem_fs2 <- /dev/sdb15
+[    5.959847] hanoip-efs: modem_fsg <- /dev/sde17
+[    6.000267] hanoip-efs: modem_fsc <- /dev/sdb16
+[    6.004581] hanoip-efs: done
+[    6.006735] audit: type=1130 audit(1793222216.056:29): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=hanoip-efs comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    6.325483] hanoip-firmware: done
+[    6.328649] audit: type=1130 audit(1793222216.378:30): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=hanoip-firmware comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[    6.333107] audit: type=1334 audit(1793222216.383:31): prog-id=27 op=LOAD
+[    6.476965] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[    6.490081] Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+[    6.490377] Loaded X.509 cert 'wens: 61c038651aabdcf94bd0ac7ff06c7248db18c600'
+[    6.514670] RPC: Registered named UNIX socket transport module.
+[    6.514677] RPC: Registered udp transport module.
+[    6.514679] RPC: Registered tcp transport module.
+[    6.514680] RPC: Registered tcp-with-tls transport module.
+[    6.514682] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    6.810570] cpuidle: using governor teo
+[    6.812898] hanoip-perf-tune: gpu min=355000000
+[    6.817942] hanoip-perf-tune: gpu poll=16
+[    6.832536] hanoip-perf-tune: ufs min=200000000
+[    6.839789] hanoip-perf-tune: cpu governors: schedutil
+[    6.841033] thermal thermal_zone1: power_allocator: sustainable_power will be estimated
+[    6.843505] dwc3 a600000.usb: request 0000000072016a6e was not queued to ep1in
+[    6.844303] hanoip-usbnet: unbound hanoip-console
+[    6.851346] thermal thermal_zone10: power_allocator: sustainable_power will be estimated
+[    6.863509] thermal thermal_zone11: power_allocator: sustainable_power will be estimated
+[    6.863661] configfs-gadget.hanoip-net gadget.0: HOST MAC 02:68:61:6e:6f:02
+[    6.863668] configfs-gadget.hanoip-net gadget.0: MAC 02:68:61:6e:6f:01
+[    6.871580] remoteproc remoteproc0: powering up adsp
+[    6.872894] remoteproc remoteproc0: Booting fw image qcom/sm7150/motorola/hanoip/adsp.mdt, size 8860
+[    6.878228] thermal thermal_zone12: power_allocator: sustainable_power will be estimated
+[    6.888064] hanoip_mmi_unit_info: loading out-of-tree module taints kernel.
+[    6.889433] mmi_unit_info (SMEM 134) for modem: version = 0x03, device = 'hanoip', radio_str = 'LATAM', system_rev = 0xc000, carrier = 'retbr'
+[    6.897310] hanoip-mmi: loaded (device=hanoip carrier set: yes)
+[    6.922965] thermal thermal_zone2: power_allocator: sustainable_power will be estimated
+[    6.974036] thermal thermal_zone3: power_allocator: sustainable_power will be estimated
+[    6.985341] hanoip-usbnet: dnsmasq on usb0
+[    6.987551] remoteproc remoteproc1: powering up modem
+[    6.988324] remoteproc remoteproc1: Booting fw image qcom/sm7150/motorola/hanoip/modem.mdt, size 9100
+[    6.990190] thermal thermal_zone4: power_allocator: sustainable_power will be estimated
+[    7.012947] thermal thermal_zone5: power_allocator: sustainable_power will be estimated
+[    7.037763] thermal thermal_zone6: power_allocator: sustainable_power will be estimated
+[    7.056106] thermal thermal_zone7: power_allocator: sustainable_power will be estimated
+[    7.071735] thermal thermal_zone8: power_allocator: sustainable_power will be estimated
+[    7.081851] thermal thermal_zone9: power_allocator: sustainable_power will be estimated
+[    7.139589] nfc: nfc_init: NFC Core ver 0.1
+[    7.139804] NET: Registered PF_NFC protocol family
+[    7.407439] remoteproc remoteproc0: remote processor adsp is now up
+[    7.425081] qcom,fastrpc 62400000.remoteproc:glink-edge.fastrpcglink-apps-dsp.-1.-1: no reserved DMA memory for FASTRPC
+[    7.456284] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@3: Adding to iommu group 13
+[    7.458293] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@4: Adding to iommu group 14
+[    7.467680] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@5: Adding to iommu group 15
+[    7.502002] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@6: Adding to iommu group 16
+[    7.518119] qcomtee: QTEE version 0.0.0
+[    7.524633] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@7: Adding to iommu group 17
+[    7.526546] platform 62400000.remoteproc:glink-edge:fastrpc:compute-cb@8: Adding to iommu group 18
+[    7.718408] ipa 1e40000.ipa: IPA driver initialized
+[    7.744916] mc: Linux media interface: v0.10
+[    7.819497] videodev: Linux video capture interface: v2.00
+[    7.836719] aw882xx 2-0034: AW882xx (0x1852), 144-byte register image, start attenuation 6 dB
+[    7.843835] input: Hanoip Ilitek ILI7807 SPI as /devices/platform/soc@0/ac0000.geniqup/a80000.spi/spi_master/spi6/spi6.0/input/input3
+[    7.850378] hanoip-ilitek-spi spi6.0: ILI7807 ready: 1080x2460, 10 slots, IRAM only, follows panel power
+[    7.866358] qcom-venus aa00000.video-codec: non legacy binding
+[    7.871073] hanoip-ilitek-spi spi6.0: Ilitek PID 0x78071c03
+[    7.901593] ipa 1e40000.ipa: IPA driver setup completed successfully
+[    7.919215] ipa 1e40000.ipa: received modem running event
+[    7.919237] remoteproc remoteproc1: remote processor modem is now up
+[    7.921268] usbcore: registered new interface driver snd-usb-audio
+[    7.927296] hanoip-modem: modem state=running after 0s
+[    7.935818] input: pm8xxx_vib_ffmemless as /devices/platform/soc@0/c440000.spmi/spmi-0/0-01/c440000.spmi:pmic@1:vibrator@5300/input/input4
+[    7.983770] qcom-venus aa00000.video-codec: VenusLow : error reading F/W version
+[    8.063353] hanoip-ilitek-spi spi6.0: IRAM block 1: 81920 bytes verified at 0x0
+[    8.087653] hanoip-ilitek-spi spi6.0: IRAM block 2: 8192 bytes verified at 0x20870
+[    8.088718] hanoip-ilitek-spi spi6.0: IRAM block 3: 512 bytes verified at 0x20670
+[    8.124810] Bluetooth: Core ver 2.22
+[    8.124915] NET: Registered PF_BLUETOOTH protocol family
+[    8.124920] Bluetooth: HCI device and connection manager initialized
+[    8.124937] Bluetooth: HCI socket layer initialized
+[    8.124945] Bluetooth: L2CAP socket layer initialized
+[    8.124961] Bluetooth: SCO socket layer initialized
+[    8.135678] hanoip-ilitek-spi spi6.0: FW response 21 10 00 0a 00 10 00 02 00
+[    8.156669] hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+[    8.189829] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:3
+[    8.200277] Bluetooth: HCI UART driver ver 2.3
+[    8.200291] Bluetooth: HCI UART protocol H4 registered
+[    8.205264] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:4
+[    8.206382] Bluetooth: HCI UART protocol LL registered
+[    8.208445] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:7
+[    8.210107] Bluetooth: HCI UART protocol Broadcom registered
+[    8.210134] Bluetooth: HCI UART protocol QCA registered
+[    8.215736] qcom,apr 62400000.remoteproc:glink-edge.apr_audio_svc.-1.-1: Adding APR/GPR dev: aprsvc:service:4:8
+[    8.215998] Bluetooth: HCI UART protocol Marvell registered
+[    8.229764] Bluetooth: hci0: setting up wcn399x
+[    8.289241] q6afe_probe:2011 DBG
+[    8.289438] q6afe_probe:2027 DBG
+[    8.306988] platform 62400000.remoteproc:glink-edge:apr:service@7:dais: Adding to iommu group 19
+[    8.354073] va_macro 62f20000.codec: qcom,dmic-sample-rate dt entry missing
+[    8.354222] q6afe_set_lpass_clock: clk_id=780, attri=1, clk_root=0, freq=19200000
+[    8.356334] rx_macro 62ee0000.codec: Driver needs fixing: Unsorted reg_defaults, sorting the copy
+[    8.356502] q6afe_set_lpass_clock: clk_id=782, attri=1, clk_root=0, freq=19200000
+[    8.358278] q6afe_set_lpass_clock: clk_id=783, attri=1, clk_root=0, freq=19200000
+[    8.359114] q6afe_set_lpass_clock: clk_id=781, attri=1, clk_root=0, freq=19200000
+[    8.360094] qcom-soundwire 62ed0000.soundwire: din-ports (5) mismatch with controller (6)
+[    8.360103] qcom-soundwire 62ed0000.soundwire: dout-ports (0) mismatch with controller (1)
+[    8.361738] Bluetooth: hci0: QCA Product ID   :0x0000000a
+[    8.361747] Bluetooth: hci0: QCA SOC Version  :0x40020140
+[    8.361749] Bluetooth: hci0: QCA ROM Version  :0x00000201
+[    8.361750] Bluetooth: hci0: QCA Patch Version:0x00000001
+[    8.362595] qcom-soundwire 62ef0000.soundwire: din-ports (0) mismatch with controller (1)
+[    8.362619] qcom-soundwire 62ef0000.soundwire: dout-ports (5) mismatch with controller (6)
+[    8.367962] wcd937x_codec audio-codec-0: bound sdw:2:0:0217:010a:00:4 (ops wcd_sdw_component_ops [snd_soc_wcd_common])
+[    8.367980] wcd937x_codec audio-codec-0: bound sdw:3:0:0217:010a:00:3 (ops wcd_sdw_component_ops [snd_soc_wcd_common])
+[    8.372192] Bluetooth: hci0: QCA controller version 0x01400201
+[    8.372213] Bluetooth: hci0: QCA Downloading qca/crbtfw21.tlv
+[    8.429447] input: Motorola Moto G60 Headset Jack as /devices/platform/sound/sound/card0/input5
+[    8.584226] ipa 1e40000.ipa: unexpected init_completed response
+[    9.157408] ath10k_snoc 18800000.wifi: qmi chip_id 0x140 chip_family 0x4002 board_id 0xff soc_id 0x40090000
+[    9.157444] ath10k_snoc 18800000.wifi: qmi fw_version 0x322903b3 fw_build_timestamp 2023-05-18 11:09 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.2-00947-QCAHLSWMTPLZ-1.558119.4.586249.3
+[    9.367642] Bluetooth: hci0: QCA Downloading qca/crnv21.bin
+[    9.825117] Bluetooth: hci0: QCA setup on UART is completed
+[   11.729088] ath10k_snoc 18800000.wifi: wcn3990 hw1.0 target 0x00000008 chip_id 0x00000000 sub 0000:0000
+[   11.729123] ath10k_snoc 18800000.wifi: kconfig debug 1 debugfs 1 tracing 0 dfs 0 testmode 0
+[   11.729142] ath10k_snoc 18800000.wifi: firmware ver  api 5 features wowlan,mgmt-tx-by-reference,non-bmi crc32 b3d4b790
+[   11.755049] ath10k_snoc 18800000.wifi: htt-ver 3.89 wmi-op 4 htt-op 3 cal file max-sta 32 raw 0 hwcrypto 1
+[   11.838048] ath: EEPROM regdomain: 0x0
+[   11.838071] ath: EEPROM indicates default country code should be used
+[   11.838079] ath: doing EEPROM country->regdmn map search
+[   11.838088] ath: country maps to regdmn code: 0x3a
+[   11.838097] ath: Country alpha2 being used: US
+[   11.838105] ath: Regpair used: 0x3a
+[   12.242666] q6afe_set_lpass_clock: clk_id=781, attri=1, clk_root=0, freq=0
+[   12.243081] q6afe_set_lpass_clock: clk_id=783, attri=1, clk_root=0, freq=0
+[   12.243289] q6afe_set_lpass_clock: clk_id=782, attri=1, clk_root=0, freq=0
+[   12.367694] q6afe_set_lpass_clock: clk_id=780, attri=1, clk_root=0, freq=0
+[   12.367959] qcom-q6afe aprsvc:service:4:4: AFE_CMD_REMOTE_LPASS_CORE_HW_DEVOTE_REQUEST clk_state=0
+[   18.403926] gcc-sm7150 100000.clock-controller: sync_state() pending due to 506a000.gmu
+[   18.403958] sc7180-gpucc 5090000.clock-controller: sync_state() pending due to 506a000.gmu
+[   18.403982] qnoc-sm7150 1380000.interconnect: sync_state() pending due to ace0000.camss
+[   18.403995] qnoc-sm7150 1740000.interconnect: sync_state() pending due to ace0000.camss
+[   18.404008] qnoc-sm7150 1500000.interconnect: sync_state() pending due to ace0000.camss
+[   18.404020] qnoc-sm7150 9680000.interconnect: sync_state() pending due to ace0000.camss
+[   18.404032] gcc-sm7150 100000.clock-controller: sync_state() pending due to ace0000.camss
+[   18.404045] camcc-sm7150 ad00000.clock-controller: sync_state() pending due to ace0000.camss
+[   18.404124] camcc-sm7150 ad00000.clock-controller: sync_state() pending due to 13-003d
+[   97.745337] kauditd_printk_skb: 28 callbacks suppressed
+[   97.745348] audit: type=1130 audit(1793222398.969:52): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-logind comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   97.748653] audit: type=1130 audit(1793222398.971:53): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=dbus comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   97.748672] audit: type=1130 audit(1793222398.972:54): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=polkit comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   97.760286] audit: type=1130 audit(1793222398.984:55): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=hanoip-cpu-tune comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   97.765219] audit: type=1130 audit(1793222398.989:56): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=hanoip-modem comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   97.779113] audit: type=1130 audit(1793222399.003:57): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=rtkit-daemon comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=failed'
+[   97.789063] audit: type=1130 audit(1793222399.013:58): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=accounts-daemon comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=failed'
+[   97.793821] audit: type=1130 audit(1793222399.018:59): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=neard comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=failed'
+[   97.817024] audit: type=1334 audit(1793222399.041:60): prog-id=30 op=UNLOAD
+[   97.843836] hanoip-ssc: hexagonrpcd up (pid 1574, try 1)
+[   97.845976] audit: type=1130 audit(1793222399.070:61): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=hanoip-ssc comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   98.227030] Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+[   98.227044] Bluetooth: BNEP filters: protocol multicast
+[   98.227066] Bluetooth: BNEP socket layer initialized
+[   98.234599] Bluetooth: MGMT ver 1.23
+[   98.254768] Bluetooth: hci0: setting up wcn399x
+[   98.376261] Bluetooth: hci0: QCA Product ID   :0x0000000a
+[   98.376283] Bluetooth: hci0: QCA SOC Version  :0x40020140
+[   98.376288] Bluetooth: hci0: QCA ROM Version  :0x00000201
+[   98.376293] Bluetooth: hci0: QCA Patch Version:0x00000001
+[   98.387137] Bluetooth: hci0: QCA controller version 0x01400201
+[   98.387156] Bluetooth: hci0: QCA Downloading qca/crbtfw21.tlv
+[   99.446841] Bluetooth: hci0: QCA Downloading qca/crnv21.bin
+[   99.811107] Bluetooth: hci0: QCA setup on UART is completed
+[  100.980112] hanoip-usbnet: up: usb0 172.16.42.1/24
+[  101.492716] ath10k_snoc 18800000.wifi: chan info: invalid frequency 0 (idx 41 out of bounds)
+[  102.383881] q6afe_i2s_port_prepare:1593 num_sd_lines=0x1 cfg->sd_line_mask=0x1
+[  102.383890] q6afe_i2s_port_prepare:1702 DBG num_sd_lines=0x1 mono_stereo=0x1 channel_mode=0x1
+[  102.408346] q6afe_set_lpass_clock: clk_id=780, attri=1, clk_root=0, freq=19200000
+[  102.409549] q6afe_set_lpass_clock: clk_id=781, attri=1, clk_root=0, freq=19200000
+[  102.411263] q6afe_set_lpass_clock: clk_id=782, attri=1, clk_root=0, freq=19200000
+[  102.411495] q6afe_set_lpass_clock: clk_id=783, attri=1, clk_root=0, freq=19200000
+[  102.472915] q6afe_i2s_port_prepare:1593 num_sd_lines=0x1 cfg->sd_line_mask=0x1
+[  102.472928] q6afe_i2s_port_prepare:1702 DBG num_sd_lines=0x1 mono_stereo=0x1 channel_mode=0x1
+[  102.537348] q6afe_i2s_port_prepare:1593 num_sd_lines=0x1 cfg->sd_line_mask=0x1
+[  102.537367] q6afe_i2s_port_prepare:1702 DBG num_sd_lines=0x1 mono_stereo=0x1 channel_mode=0x1
+[  102.600277] q6afe_i2s_port_prepare:1593 num_sd_lines=0x1 cfg->sd_line_mask=0x1
+[  102.600297] q6afe_i2s_port_prepare:1702 DBG num_sd_lines=0x1 mono_stereo=0x1 channel_mode=0x1
+[  102.660142] q6afe_i2s_port_prepare:1593 num_sd_lines=0x1 cfg->sd_line_mask=0x1
+[  102.660164] q6afe_i2s_port_prepare:1702 DBG num_sd_lines=0x1 mono_stereo=0x1 channel_mode=0x1
+[  102.726108] q6afe_i2s_port_prepare:1593 num_sd_lines=0x1 cfg->sd_line_mask=0x1
+[  102.726129] q6afe_i2s_port_prepare:1702 DBG num_sd_lines=0x1 mono_stereo=0x1 channel_mode=0x1
+[  102.791871] q6afe_i2s_port_prepare:1593 num_sd_lines=0x1 cfg->sd_line_mask=0x1
+[  102.791902] q6afe_i2s_port_prepare:1702 DBG num_sd_lines=0x1 mono_stereo=0x1 channel_mode=0x1
+[  102.857075] q6afe_i2s_port_prepare:1593 num_sd_lines=0x1 cfg->sd_line_mask=0x1
+[  102.857106] q6afe_i2s_port_prepare:1702 DBG num_sd_lines=0x1 mono_stereo=0x1 channel_mode=0x1
+[  102.921186] q6afe_i2s_port_prepare:1593 num_sd_lines=0x1 cfg->sd_line_mask=0x1
+[  102.921217] q6afe_i2s_port_prepare:1702 DBG num_sd_lines=0x1 mono_stereo=0x1 channel_mode=0x1
+[  102.987102] q6afe_i2s_port_prepare:1593 num_sd_lines=0x1 cfg->sd_line_mask=0x1
+[  102.987133] q6afe_i2s_port_prepare:1702 DBG num_sd_lines=0x1 mono_stereo=0x1 channel_mode=0x1
+[  103.175202] kauditd_printk_skb: 35 callbacks suppressed
+[  103.175215] audit: type=1131 audit(1793222404.399:95): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-rfkill comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  103.283764] Bluetooth: RFCOMM TTY layer initialized
+[  103.283779] Bluetooth: RFCOMM socket layer initialized
+[  103.283792] Bluetooth: RFCOMM ver 1.11
+[  104.119663] audit: type=1334 audit(1793222405.343:96): prog-id=41 op=LOAD
+[  104.120122] audit: type=1334 audit(1793222405.344:97): prog-id=42 op=LOAD
+[  104.449942] audit: type=1130 audit(1793222405.673:98): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=upower comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  104.611861] audit: type=1334 audit(1793222405.836:99): prog-id=43 op=LOAD
+[  104.612534] audit: type=1334 audit(1793222405.836:100): prog-id=44 op=LOAD
+[  104.613187] audit: type=1334 audit(1793222405.837:101): prog-id=45 op=LOAD
+[  104.673191] ath10k_snoc 18800000.wifi: chan info: invalid frequency 0 (idx 41 out of bounds)
+[  104.763779] audit: type=1130 audit(1793222405.987:102): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=power-profiles-daemon comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  104.871829] wlan0: authenticate with 24:cf:24:58:48:51 (local address=02:00:5a:44:49:e9)
+[  104.871841] wlan0: send auth to 24:cf:24:58:48:51 (try 1/3)
+[  104.878690] wlan0: authenticate with 24:cf:24:58:48:51 (local address=02:00:5a:44:49:e9)
+[  104.878714] wlan0: send auth to 24:cf:24:58:48:51 (try 1/3)
+[  104.881578] wlan0: authenticated
+[  104.882678] wlan0: associate with 24:cf:24:58:48:51 (try 1/3)
+[  104.885798] wlan0: RX AssocResp from 24:cf:24:58:48:51 (capab=0x11 status=30 aid=4)
+[  104.886062] wlan0: 24:cf:24:58:48:51 rejected association temporarily; comeback duration 1000 TU (1024 ms)
+[  105.901160] audit: type=1130 audit(1793222407.125:103): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=udisks2 comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  105.950024] wlan0: associate with 24:cf:24:58:48:51 (try 2/3)
+[  106.000412] wlan0: RX AssocResp from 24:cf:24:58:48:51 (capab=0x11 status=0 aid=4)
+[  106.072259] wlan0: associated
+[  106.287636] q6afe_set_lpass_clock: clk_id=783, attri=1, clk_root=0, freq=0
+[  106.288008] q6afe_set_lpass_clock: clk_id=782, attri=1, clk_root=0, freq=0
+[  106.550235] q6afe_set_lpass_clock: clk_id=781, attri=1, clk_root=0, freq=0
+[  106.572128] audit: type=1334 audit(1793222407.793:104): prog-id=46 op=LOAD
+[  106.675694] q6afe_set_lpass_clock: clk_id=780, attri=1, clk_root=0, freq=0
+[  106.676071] qcom-q6afe aprsvc:service:4:4: AFE_CMD_REMOTE_LPASS_CORE_HW_DEVOTE_REQUEST clk_state=0
+[  110.523819] hanoip-gpu-floor: min_freq=355000000 (tela-ligada) DRIFT: estava 710000000
+[  112.563854] hanoip-gpu-floor: min_freq=355000000 (tela-ligada) DRIFT: estava 710000000
+[  113.586034] hanoip-gpu-floor: min_freq=355000000 (tela-ligada) DRIFT: estava 710000000
+[  115.631455] hanoip-gpu-floor: min_freq=355000000 (tela-ligada) DRIFT: estava 710000000
+[  117.673326] hanoip-gpu-floor: min_freq=355000000 (tela-ligada) DRIFT: estava 710000000
+[  118.462938] kauditd_printk_skb: 8 callbacks suppressed
+[  118.462958] audit: type=1131 audit(1793222419.687:108): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  138.396524] audit: type=1131 audit(1793222439.620:109): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-hostnamed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  138.421865] audit: type=1334 audit(1793222439.646:110): prog-id=35 op=UNLOAD
+[  141.750571] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.750754] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.750875] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.750994] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.751108] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.751305] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.751366] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.751414] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.751533] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.751649] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.751759] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.751868] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.751979] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.752092] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.752225] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.752335] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.752443] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.752497] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.752599] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.752709] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.752819] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.752927] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.753040] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.753147] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.753274] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.753382] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.753489] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.753597] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.753714] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.753823] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.753936] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  141.754049] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.732686] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.732857] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.733041] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.733102] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.733156] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.733277] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.733391] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.733500] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.733651] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.733767] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.733877] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.734006] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.734120] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.734227] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.734334] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.734447] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.734562] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.734675] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.734788] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.734839] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.734961] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.735077] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.735190] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.735297] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.735405] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.735512] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.735620] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.735727] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.735835] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.735886] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.736007] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.736118] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.736228] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.736339] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.736451] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.736558] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.736665] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.736716] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  142.736826] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.717370] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.717549] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.717666] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.717857] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.717981] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.718102] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.718220] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.718333] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.718443] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.718557] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.718669] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.718826] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.718944] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.719059] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.719170] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.719279] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.719333] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.719462] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.719576] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.719684] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.719843] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.719997] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.720123] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.720234] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.720350] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.720465] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.720577] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.720688] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.720823] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.720935] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.721042] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.721159] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.721267] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.721374] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.721483] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.721591] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  143.721741] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  144.704697] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  144.704868] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  144.704988] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  144.705103] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  144.705216] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  144.705330] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  144.705516] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  145.692060] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  145.692213] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  145.692328] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  145.692443] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  145.692557] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  145.692670] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  145.692855] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.681789] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.681956] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.682073] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.682190] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.682309] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.682424] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.682574] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.683889] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.683964] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684017] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684156] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684216] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684267] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684314] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684464] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684525] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684576] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684626] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684755] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684816] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684865] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.684995] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.685052] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.685101] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.685151] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.685199] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.685247] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.685357] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  146.685494] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.673579] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.673748] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.673864] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.673978] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.674093] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.674207] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.674321] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.674434] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.675666] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.675721] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.675771] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.675819] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.675867] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.675998] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676056] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676107] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676233] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676291] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676415] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676501] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676556] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676606] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676739] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676797] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676849] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  147.676956] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.665909] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.666095] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.666219] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.666335] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.666448] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.666656] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.666718] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.666830] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.666946] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.667058] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.667170] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.667286] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.667393] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.667501] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.667650] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.667766] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.667882] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.667991] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.668107] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.668218] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.668332] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.668444] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.668577] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.668689] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.668828] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.668948] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.669061] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.669174] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.669286] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.669401] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  148.669535] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.658130] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.658295] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.658417] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.658537] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.658766] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.658830] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.658944] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.659058] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.659173] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.659286] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.659396] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.659505] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.659638] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.659696] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.659801] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.659912] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.660026] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.660135] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.660243] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.660366] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.660477] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.660624] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.660742] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.660857] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.660969] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.661076] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.661185] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.661237] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.661344] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.661456] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.661572] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.661711] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.661830] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.661943] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.662056] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.662172] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.662287] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.662403] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  149.662520] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.652759] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.652947] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.653070] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.653199] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.653315] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.653443] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.653662] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.653800] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.653922] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.654054] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.654179] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.654293] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.654403] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.654537] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.654659] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.654778] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.654897] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.655010] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.655120] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.655235] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.655347] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.655482] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.655614] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.655740] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.655854] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.655964] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.656079] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.656186] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.656293] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.656405] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  150.656535] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.646726] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.646906] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.647029] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.647145] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.647343] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.647467] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.647583] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.647693] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.647824] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.647951] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.648068] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.648181] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.648316] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.648430] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.648542] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.648594] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.648696] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.648826] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.648943] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.649055] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.649165] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.649300] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.649411] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.649535] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.649657] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.649774] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.649889] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.650006] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.650122] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.650259] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.650373] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.650487] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.650600] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.650714] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.650827] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.650947] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.651060] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  151.651174] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.642616] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.642785] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.642901] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.643015] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.643129] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.643243] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.643357] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.643472] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.643693] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.643812] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.643933] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.644045] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.644155] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.644264] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.644374] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.644487] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.644636] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.644752] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.644872] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.644986] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.645101] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.645216] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.645331] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.645449] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.645588] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.645644] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.645747] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.645858] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.645968] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.646081] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.646216] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.646333] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  152.646463] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.637856] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.638016] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.638132] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.638246] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.638359] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.638533] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.638596] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.638645] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.638766] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.638880] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.638997] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.639111] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.639224] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.639337] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.639471] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.639602] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.639734] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.639845] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.639955] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.640070] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.640185] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.640294] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.640410] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.640563] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.640678] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.640791] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.640907] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.641021] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.641134] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.641247] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.641361] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.641514] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.641637] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.641766] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.641877] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.641986] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.642104] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.642218] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.642333] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  153.642473] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.634251] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.634429] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.634550] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.634664] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.634779] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.634966] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.635030] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.635146] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.635266] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.635378] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.635491] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.635605] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.635716] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.635828] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.635961] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.636094] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.636205] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.636332] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.636444] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.636571] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.636690] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.636805] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.636941] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.637057] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.637172] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.637285] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.637399] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.637516] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.637629] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.637748] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.637882] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.637997] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.638112] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.638226] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.638341] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.638454] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.638569] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.638681] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  154.638794] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.630855] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.630921] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.631026] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.631120] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.631213] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.631307] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.631400] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.631493] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.631586] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.631663] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.631793] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.631902] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.632012] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.632117] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.632247] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.632350] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.632456] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.632561] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.632664] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.632780] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.632886] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.632991] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633095] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633201] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633306] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633367] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633427] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633532] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633592] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633647] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633701] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633773] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633877] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633936] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.633991] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634046] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634100] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634155] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634257] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634315] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634381] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634438] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634555] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634615] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634710] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634838] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634899] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.634992] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.635090] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.635148] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.635242] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.635339] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.635397] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.635491] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.635588] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.635643] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.635750] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  155.685002] ov02b10 13-003d: supply dvdd not found, using dummy regulator
+[  155.698883] qcom-camss ace0000.camss: supply vdda-phy not found, using dummy regulator
+[  155.699014] qcom-camss ace0000.camss: supply vdda-pll not found, using dummy regulator
+[  155.699225] qcom-camss ace0000.camss: supply vdda-phy not found, using dummy regulator
+[  155.699253] qcom-camss ace0000.camss: supply vdda-pll not found, using dummy regulator
+[  155.699385] qcom-camss ace0000.camss: supply vdda-phy not found, using dummy regulator
+[  155.699423] qcom-camss ace0000.camss: supply vdda-pll not found, using dummy regulator
+[  155.699638] qcom-camss ace0000.camss: supply vdda-phy not found, using dummy regulator
+[  155.699664] qcom-camss ace0000.camss: supply vdda-pll not found, using dummy regulator
+[  155.699781] vfe physical memory is vfe0
+[  155.700202] vfe physical memory is vfe1
+[  155.700358] vfe physical memory is vfe_lite
+[  155.864663] csiphy_link_setup called
+[  155.864681] qcom-camss ace0000.camss: csid_link_setup: Enabled CSID virtual channels mask 0x1
+[  156.174794] hanoip-gpu-floor: min_freq=355000000 (tela-ligada) DRIFT: estava 710000000
+[  156.628569] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.628779] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.629739] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.629801] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.629856] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.629909] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.629957] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.630048] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.630100] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.630237] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.630370] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.630490] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.630618] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.630746] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.630878] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.631035] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.631173] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.631327] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.631444] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.631574] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.631685] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.631798] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.631909] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.632041] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.632166] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.632275] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.632385] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.632498] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.632615] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.632738] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.632847] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  156.632956] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.626073] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.626238] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.626356] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.626469] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.626653] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.626775] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.626897] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.627015] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.627134] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.627253] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.627378] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.627495] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.627635] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.627772] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.627885] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.628002] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.628110] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.628220] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.628356] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.628469] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.628601] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.628732] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.628852] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.628965] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.629079] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.629194] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.629308] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.629421] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.629535] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.629668] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.629789] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.629907] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.630020] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.630134] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.630248] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.630359] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.630472] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  157.630604] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.624035] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.624243] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.624361] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.624664] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.624792] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.624910] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625027] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625140] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625252] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625362] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625497] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625704] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625764] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625814] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625904] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625953] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.625998] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.626082] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.626212] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.626328] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.626445] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.626611] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.626666] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.626778] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.626892] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.627008] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.627124] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.627241] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.627358] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.627494] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.627625] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.627757] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.627876] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.627990] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.628103] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.628216] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.628330] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  158.628448] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.622198] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.622391] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.622511] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.622727] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.622783] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.623035] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.623109] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.623157] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.623275] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.623388] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.623501] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.623643] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.623761] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.623878] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.623996] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.624106] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.624220] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.624328] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.624436] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.624566] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.624706] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.624821] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.624931] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.625040] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.625150] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.625258] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.625365] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.625475] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.625527] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.625656] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.625768] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.625880] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.625987] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.626095] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.626203] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.626332] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.626456] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  159.626570] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.620545] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.620743] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.620860] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.620975] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.621290] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.621351] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.621461] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.621577] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.621692] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.621802] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.621915] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.622050] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.622180] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.622293] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.622406] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.622518] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.622628] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.622753] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.622872] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.622987] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.623127] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.623243] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.623360] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.623474] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.623587] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.623701] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.623814] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.623928] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.624069] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.624182] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.624292] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.624400] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.624508] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.624616] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.624742] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.624856] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  160.624966] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.619010] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.619205] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.619322] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.619437] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.619552] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.619904] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.619966] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.620018] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.620067] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.620177] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.620290] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.620400] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.620514] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.620644] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.620698] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.620801] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.620918] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.621035] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.621146] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.621260] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.621388] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.621500] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.621631] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.621686] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.621800] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.621921] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.622039] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.622148] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.622271] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.622385] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.622501] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.622649] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.622759] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.622867] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.622974] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.623082] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.623191] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.623312] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.623427] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  161.623539] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.261328] hanoip-gpu-floor: min_freq=355000000 (tela-ligada) DRIFT: estava 710000000
+[  162.617808] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.618241] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.618333] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.618477] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.618531] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.618617] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.618666] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.618774] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.618862] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.618910] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.618995] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619083] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619132] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619218] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619306] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619354] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619450] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619538] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619587] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619672] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619759] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619808] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619894] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.619982] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620031] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620117] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620204] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620253] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620339] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620437] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620487] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620572] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620704] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620822] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.620938] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.621064] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.621180] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.621292] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.621449] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.621569] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.621687] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.621801] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.621914] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.622028] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.622140] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.622255] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  162.622391] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.263752] video_prepare_streaming called
+[  163.264767] csiphy_reset id 3 with base 000000006090bacb and offset 2048
+[  163.272706] qcom-camss ace0000.camss: CSIPHY 3PH HW Version = 0x00000000
+[  163.273254] Writing reset_bits=3f9f to vfe->base=00000000a8931ed8 with id 0
+[  163.273272] vfe irq handled!
+[  163.273319] qcom-camss ace0000.camss: VFE:0 HW Version = 1.3.0
+[  163.273416] csid_reset called
+[  163.273427] CSID got IRQ
+[  163.273461] qcom-camss ace0000.camss: CSID:0 HW Version = 2.0.0
+[  163.273510] qcom-camss ace0000.camss: validating link "msm_csid0":1 -> "msm_vfe0_rdi0":0
+[  163.273520] qcom-camss ace0000.camss: validating stream "msm_csid0":1:0 -> "msm_vfe0_rdi0":0:0
+[  163.273536] qcom-camss ace0000.camss: validating link "msm_csiphy3":1 -> "msm_csid0":0
+[  163.273545] qcom-camss ace0000.camss: validating stream "msm_csiphy3":1:0 -> "msm_csid0":0:0
+[  163.273559] qcom-camss ace0000.camss: validating link "ov02b10 13-003d":0 -> "msm_csiphy3":0
+[  163.273567] qcom-camss ace0000.camss: validating stream "ov02b10 13-003d":0:0 -> "msm_csiphy3":0:0
+[  163.273585] qcom-camss ace0000.camss: msm_vfe0_video0: format is (1600x1200 pBAA little-endian (0x41414270)/1p field:1), trying (1600x1200 pBAA little-endian (0x41414270)/1p field:1)
+[  163.273609] vfe_reserve_wm ret=0
+[  163.415885] vfe irq handled!
+[  163.448651] vfe irq handled!
+[  163.481065] vfe irq handled!
+[  163.481468] vfe irq handled!
+[  163.515254] vfe irq handled!
+[  163.548543] vfe irq handled!
+[  163.555277] Writing reset_bits=3f9f to vfe->base=00000000a8931ed8 with id 0
+[  163.555523] vfe irq handled!
+[  163.588652] video_prepare_streaming called
+[  163.589558] csiphy_reset id 3 with base 000000006090bacb and offset 2048
+[  163.597764] qcom-camss ace0000.camss: CSIPHY 3PH HW Version = 0x40010000
+[  163.598197] Writing reset_bits=3f9f to vfe->base=00000000a8931ed8 with id 0
+[  163.598214] vfe irq handled!
+[  163.598261] qcom-camss ace0000.camss: VFE:0 HW Version = 1.3.0
+[  163.600227] csid_reset called
+[  163.600243] CSID got IRQ
+[  163.600327] qcom-camss ace0000.camss: CSID:0 HW Version = 2.0.0
+[  163.600397] qcom-camss ace0000.camss: validating link "msm_csid0":1 -> "msm_vfe0_rdi0":0
+[  163.600406] qcom-camss ace0000.camss: validating stream "msm_csid0":1:0 -> "msm_vfe0_rdi0":0:0
+[  163.600425] qcom-camss ace0000.camss: validating link "msm_csiphy3":1 -> "msm_csid0":0
+[  163.600434] qcom-camss ace0000.camss: validating stream "msm_csiphy3":1:0 -> "msm_csid0":0:0
+[  163.600447] qcom-camss ace0000.camss: validating link "ov02b10 13-003d":0 -> "msm_csiphy3":0
+[  163.600454] qcom-camss ace0000.camss: validating stream "ov02b10 13-003d":0:0 -> "msm_csiphy3":0:0
+[  163.600472] qcom-camss ace0000.camss: msm_vfe0_video0: format is (1600x1200 pBAA little-endian (0x41414270)/1p field:1), trying (1600x1200 pBAA little-endian (0x41414270)/1p field:1)
+[  163.600497] vfe_reserve_wm ret=0
+[  163.616640] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.616780] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.616871] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.616968] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617070] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617169] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617267] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617404] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617497] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617551] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617641] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617732] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617787] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617880] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.617984] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618083] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618135] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618225] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618328] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618380] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618481] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618586] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618699] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618767] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618879] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.618990] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.619055] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.619161] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.619269] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.619389] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.619491] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.619593] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.619700] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.619808] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.619873] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.619975] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.620076] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.620180] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.620294] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.620401] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.620506] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.620570] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.620680] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.620783] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.620845] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.620940] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.621047] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.621170] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.621285] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  163.723385] i2c-qcom-cci ac4a000.cci: master 1 queue 0 timeout
+[  163.747365] video_prepare_streaming called
+[  163.747897] csiphy_reset id 3 with base 000000006090bacb and offset 2048
+[  163.755151] qcom-camss ace0000.camss: CSIPHY 3PH HW Version = 0x40010000
+[  163.755387] Writing reset_bits=3f9f to vfe->base=00000000a8931ed8 with id 0
+[  163.755401] vfe irq handled!
+[  163.755444] qcom-camss ace0000.camss: VFE:0 HW Version = 1.3.0
+[  163.755493] csid_reset called
+[  163.755503] CSID got IRQ
+[  163.755530] qcom-camss ace0000.camss: CSID:0 HW Version = 2.0.0
+[  163.755552] qcom-camss ace0000.camss: validating link "msm_csid0":1 -> "msm_vfe0_rdi0":0
+[  163.755556] qcom-camss ace0000.camss: validating stream "msm_csid0":1:0 -> "msm_vfe0_rdi0":0:0
+[  163.755563] qcom-camss ace0000.camss: validating link "msm_csiphy3":1 -> "msm_csid0":0
+[  163.755566] qcom-camss ace0000.camss: validating stream "msm_csiphy3":1:0 -> "msm_csid0":0:0
+[  163.755572] qcom-camss ace0000.camss: validating link "ov02b10 13-003d":0 -> "msm_csiphy3":0
+[  163.755574] qcom-camss ace0000.camss: validating stream "ov02b10 13-003d":0:0 -> "msm_csiphy3":0:0
+[  163.755582] qcom-camss ace0000.camss: msm_vfe0_video0: format is (1600x1200 pBAA little-endian (0x41414270)/1p field:1), trying (1600x1200 pBAA little-endian (0x41414270)/1p field:1)
+[  163.755627] ------------[ cut here ]------------
+[  163.755629] WARNING: drivers/media/v4l2-core/v4l2-subdev.c:484 at call_s_stream+0xf4/0x108 [videodev], CPU#7: v4l2-ctl/4613
+[  163.755673] Modules linked in: qcom_camss(O) ov02b10(O) videobuf2_dma_sg v4l2_fwnode v4l2_async rfcomm algif_hash algif_skcipher bnep q6asm_dai q6routing q6afe_clocks q6afe_dai q6adm q6asm venus_enc venus_dec snd_q6dsp_common videobuf2_dma_contig q6afe q6core videobuf2_memops joydev rpmsg_ctrl hci_uart qrtr_smd btqca rpmsg_char qcom_pd_mapper btbcm bluetooth ecdh_generic ecc ledtrig_pattern snd_soc_sm8250 snd_soc_qcom_offload_utils leds_qcom_lpg led_class_multicolor snd_soc_qcom_sdw qcom_pbs snd_soc_qcom_common soc_usb pm8xxx_vibrator snd_usb_audio ff_memless snd_hwdep snd_usbmidi_lib qcom_spmi_temp_alarm snd_ump nxp_nci_i2c venus_core snd_rawmidi nxp_nci v4l2_mem2mem videobuf2_v4l2 nci snd_soc_aw882xx ilitek_hanoip_spi videodev videobuf2_common qcom_rng snd_soc_lpass_va_macro mc snd_soc_wcd937x snd_soc_lpass_tx_macro snd_soc_lpass_rx_macro snd_soc_wcd937x_sdw soundwire_qcom snd_soc_lpass_macro_common regmap_sdw snd_soc_wcd_common ipa snd_soc_wcd_classh ath10k_snoc snd_soc_spdif_tx snd_soc_wcd_mbhc snd_soc_core
+[  163.755764]  snd_compress ath10k_core mac80211 snd_pcm soundwire_bus snd_timer ath libarc4 snd qcomtee soundcore nfc evdev hanoip_mmi_unit_info(O) fastrpc sunrpc cfg80211 rfkill binfmt_misc fuse zstd crypto_acompress panel_ilitek_ili7807s qcom_wled nvmem_qcom_spmi_sdam qcom_qg msm qcom_spmi_adc5 qcom_smbx ubwc_config drm_gpuvm drm_exec gpu_sched drm_display_helper qcom_stats ufs_qcom icc_bwmon i2c_qcom_cci ufshcd_pltfrm ufshcd_core cec qcom_q6v5_pas qcom_pil_info qcom_common drm_client_lib qcom_glink_smem qcom_q6v5 qcom_sysmon mdt_loader
+[  163.755832] CPU: 7 UID: 0 PID: 4613 Comm: v4l2-ctl Tainted: G           O        7.3.0-sm7150 #29 PREEMPT 
+[  163.755838] Tainted: [O]=OOT_MODULE
+[  163.755840] Hardware name: Motorola Moto G60 (DT)
+[  163.755842] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  163.755847] pc : call_s_stream+0xf4/0x108 [videodev]
+[  163.755876] lr : video_start_streaming+0xc8/0x160 [qcom_camss]
+[  163.755900] sp : ffff800087d53af0
+[  163.755902] x29: ffff800087d53af0 x28: ffffd86823099ef8 x27: 0000000040045612
+[  163.755908] x26: 0000000000000000 x25: ffff0000ca0f0b78 x24: 0000000000000000
+[  163.755914] x23: ffffd8682309afd0 x22: ffff0000ca0f0568 x21: 0000000000000001
+[  163.755919] x20: 0000000000000000 x19: ffff0000ca0f0180 x18: ffff800087a6b080
+[  163.755923] x17: 3a303a2264333030 x16: ffffd868364e4800 x15: 7830303631282067
+[  163.755928] x14: 6e69797274202c29 x13: 6169646e652d656c x12: 7474696c20414142
+[  163.755933] x11: 29313a646c656966 x10: ffffd86837b0bd68 x9 : ffffd868234b6fb0
+[  163.755938] x8 : 3fffffffffffefff x7 : ffffd86837b0bd68 x6 : fffffffffffff000
+[  163.755943] x5 : ffff0000ca0f0a18 x4 : 000000000fffffff x3 : ffffd86823064008
+[  163.755948] x2 : 0000000000000001 x1 : 0000000000000001 x0 : ffff0000ca0f0180
+[  163.755954] Call trace:
+[  163.755956]  call_s_stream+0xf4/0x108 [videodev] (P)
+[  163.755987]  video_start_streaming+0xc8/0x160 [qcom_camss]
+[  163.756007]  vb2_start_streaming+0x74/0x188 [videobuf2_common]
+[  163.756018]  vb2_core_streamon+0x108/0x1d8 [videobuf2_common]
+[  163.756026]  vb2_ioctl_streamon+0x54/0xa0 [videobuf2_v4l2]
+[  163.756034]  v4l_streamon+0x2c/0x40 [videodev]
+[  163.756063]  __video_do_ioctl+0x2e8/0x3d0 [videodev]
+[  163.756091]  video_usercopy+0x2e8/0x820 [videodev]
+[  163.756117]  video_ioctl2+0x20/0x70 [videodev]
+[  163.756143]  v4l2_ioctl+0x48/0x70 [videodev]
+[  163.756170]  __arm64_sys_ioctl+0xb8/0x118
+[  163.756177]  invoke_syscall+0x5c/0x120
+[  163.756183]  el0_svc_common.constprop.0+0xc8/0xf0
+[  163.756189]  do_el0_svc+0x24/0x38
+[  163.756193]  el0_svc+0x24/0x70
+[  163.756199]  el0t_64_sync_handler+0xa0/0xe8
+[  163.756203]  el0t_64_sync+0x15c/0x160
+[  163.756207] ---[ end trace 0000000000000000 ]---
+[  163.756240] ------------[ cut here ]------------
+[  163.756243] WARNING: drivers/media/v4l2-core/v4l2-subdev.c:484 at call_s_stream+0xf4/0x108 [videodev], CPU#7: v4l2-ctl/4613
+[  163.756272] Modules linked in: qcom_camss(O) ov02b10(O) videobuf2_dma_sg v4l2_fwnode v4l2_async rfcomm algif_hash algif_skcipher bnep q6asm_dai q6routing q6afe_clocks q6afe_dai q6adm q6asm venus_enc venus_dec snd_q6dsp_common videobuf2_dma_contig q6afe q6core videobuf2_memops joydev rpmsg_ctrl hci_uart qrtr_smd btqca rpmsg_char qcom_pd_mapper btbcm bluetooth ecdh_generic ecc ledtrig_pattern snd_soc_sm8250 snd_soc_qcom_offload_utils leds_qcom_lpg led_class_multicolor snd_soc_qcom_sdw qcom_pbs snd_soc_qcom_common soc_usb pm8xxx_vibrator snd_usb_audio ff_memless snd_hwdep snd_usbmidi_lib qcom_spmi_temp_alarm snd_ump nxp_nci_i2c venus_core snd_rawmidi nxp_nci v4l2_mem2mem videobuf2_v4l2 nci snd_soc_aw882xx ilitek_hanoip_spi videodev videobuf2_common qcom_rng snd_soc_lpass_va_macro mc snd_soc_wcd937x snd_soc_lpass_tx_macro snd_soc_lpass_rx_macro snd_soc_wcd937x_sdw soundwire_qcom snd_soc_lpass_macro_common regmap_sdw snd_soc_wcd_common ipa snd_soc_wcd_classh ath10k_snoc snd_soc_spdif_tx snd_soc_wcd_mbhc snd_soc_core
+[  163.756349]  snd_compress ath10k_core mac80211 snd_pcm soundwire_bus snd_timer ath libarc4 snd qcomtee soundcore nfc evdev hanoip_mmi_unit_info(O) fastrpc sunrpc cfg80211 rfkill binfmt_misc fuse zstd crypto_acompress panel_ilitek_ili7807s qcom_wled nvmem_qcom_spmi_sdam qcom_qg msm qcom_spmi_adc5 qcom_smbx ubwc_config drm_gpuvm drm_exec gpu_sched drm_display_helper qcom_stats ufs_qcom icc_bwmon i2c_qcom_cci ufshcd_pltfrm ufshcd_core cec qcom_q6v5_pas qcom_pil_info qcom_common drm_client_lib qcom_glink_smem qcom_q6v5 qcom_sysmon mdt_loader
+[  163.756401] CPU: 7 UID: 0 PID: 4613 Comm: v4l2-ctl Tainted: G        W  O        7.3.0-sm7150 #29 PREEMPT 
+[  163.756407] Tainted: [W]=WARN, [O]=OOT_MODULE
+[  163.756408] Hardware name: Motorola Moto G60 (DT)
+[  163.756410] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  163.756413] pc : call_s_stream+0xf4/0x108 [videodev]
+[  163.756440] lr : video_start_streaming+0xc8/0x160 [qcom_camss]
+[  163.756461] sp : ffff800087d53af0
+[  163.756462] x29: ffff800087d53af0 x28: ffffd86823099ef8 x27: 0000000040045612
+[  163.756468] x26: 0000000000000000 x25: ffff0000ca0f0b78 x24: 0000000000000000
+[  163.756472] x23: ffffd8682309afd0 x22: ffff0000ca0f0568 x21: 0000000000000001
+[  163.756477] x20: 0000000000000000 x19: ffff00008b81e090 x18: ffff800087a6b080
+[  163.756482] x17: 3a303a2264333030 x16: ffffd868364e4800 x15: 7830303631282067
+[  163.756487] x14: 6e69797274202c29 x13: 6169646e652d656c x12: 7474696c20414142
+[  163.756491] x11: 29313a646c656966 x10: ffffd86837b0bd68 x9 : ffffd868234b6fb0
+[  163.756496] x8 : 3fffffffffffefff x7 : ffffd86837b0bd68 x6 : fffffffffffff000
+[  163.756501] x5 : ffff0000ca0f0300 x4 : 000000000fffffff x3 : ffffd86823064008
+[  163.756506] x2 : 0000000000000001 x1 : 0000000000000001 x0 : ffff00008b81e090
+[  163.756510] Call trace:
+[  163.756512]  call_s_stream+0xf4/0x108 [videodev] (P)
+[  163.756540]  video_start_streaming+0xc8/0x160 [qcom_camss]
+[  163.756560]  vb2_start_streaming+0x74/0x188 [videobuf2_common]
+[  163.756569]  vb2_core_streamon+0x108/0x1d8 [videobuf2_common]
+[  163.756577]  vb2_ioctl_streamon+0x54/0xa0 [videobuf2_v4l2]
+[  163.756584]  v4l_streamon+0x2c/0x40 [videodev]
+[  163.756611]  __video_do_ioctl+0x2e8/0x3d0 [videodev]
+[  163.756637]  video_usercopy+0x2e8/0x820 [videodev]
+[  163.756662]  video_ioctl2+0x20/0x70 [videodev]
+[  163.756688]  v4l2_ioctl+0x48/0x70 [videodev]
+[  163.756714]  __arm64_sys_ioctl+0xb8/0x118
+[  163.756719]  invoke_syscall+0x5c/0x120
+[  163.756724]  el0_svc_common.constprop.0+0xc8/0xf0
+[  163.756729]  do_el0_svc+0x24/0x38
+[  163.756733]  el0_svc+0x24/0x70
+[  163.756738]  el0t_64_sync_handler+0xa0/0xe8
+[  163.756741]  el0t_64_sync+0x15c/0x160
+[  163.756744] ---[ end trace 0000000000000000 ]---
+[  163.756763] ------------[ cut here ]------------
+[  163.756765] WARNING: drivers/media/v4l2-core/v4l2-subdev.c:484 at call_s_stream+0xf4/0x108 [videodev], CPU#7: v4l2-ctl/4613
+[  163.756793] Modules linked in: qcom_camss(O) ov02b10(O) videobuf2_dma_sg v4l2_fwnode v4l2_async rfcomm algif_hash algif_skcipher bnep q6asm_dai q6routing q6afe_clocks q6afe_dai q6adm q6asm venus_enc venus_dec snd_q6dsp_common videobuf2_dma_contig q6afe q6core videobuf2_memops joydev rpmsg_ctrl hci_uart qrtr_smd btqca rpmsg_char qcom_pd_mapper btbcm bluetooth ecdh_generic ecc ledtrig_pattern snd_soc_sm8250 snd_soc_qcom_offload_utils leds_qcom_lpg led_class_multicolor snd_soc_qcom_sdw qcom_pbs snd_soc_qcom_common soc_usb pm8xxx_vibrator snd_usb_audio ff_memless snd_hwdep snd_usbmidi_lib qcom_spmi_temp_alarm snd_ump nxp_nci_i2c venus_core snd_rawmidi nxp_nci v4l2_mem2mem videobuf2_v4l2 nci snd_soc_aw882xx ilitek_hanoip_spi videodev videobuf2_common qcom_rng snd_soc_lpass_va_macro mc snd_soc_wcd937x snd_soc_lpass_tx_macro snd_soc_lpass_rx_macro snd_soc_wcd937x_sdw soundwire_qcom snd_soc_lpass_macro_common regmap_sdw snd_soc_wcd_common ipa snd_soc_wcd_classh ath10k_snoc snd_soc_spdif_tx snd_soc_wcd_mbhc snd_soc_core
+[  163.756874]  snd_compress ath10k_core mac80211 snd_pcm soundwire_bus snd_timer ath libarc4 snd qcomtee soundcore nfc evdev hanoip_mmi_unit_info(O) fastrpc sunrpc cfg80211 rfkill binfmt_misc fuse zstd crypto_acompress panel_ilitek_ili7807s qcom_wled nvmem_qcom_spmi_sdam qcom_qg msm qcom_spmi_adc5 qcom_smbx ubwc_config drm_gpuvm drm_exec gpu_sched drm_display_helper qcom_stats ufs_qcom icc_bwmon i2c_qcom_cci ufshcd_pltfrm ufshcd_core cec qcom_q6v5_pas qcom_pil_info qcom_common drm_client_lib qcom_glink_smem qcom_q6v5 qcom_sysmon mdt_loader
+[  163.756919] CPU: 7 UID: 0 PID: 4613 Comm: v4l2-ctl Tainted: G        W  O        7.3.0-sm7150 #29 PREEMPT 
+[  163.756924] Tainted: [W]=WARN, [O]=OOT_MODULE
+[  163.756925] Hardware name: Motorola Moto G60 (DT)
+[  163.756926] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  163.756931] pc : call_s_stream+0xf4/0x108 [videodev]
+[  163.756958] lr : video_start_streaming+0xc8/0x160 [qcom_camss]
+[  163.756977] sp : ffff800087d53af0
+[  163.756978] x29: ffff800087d53af0 x28: ffffd86823099ef8 x27: 0000000040045612
+[  163.756983] x26: 0000000000000000 x25: ffff0000ca0f0b78 x24: 0000000000000000
+[  163.756987] x23: ffffd8682309afd0 x22: ffff0000ca0f0568 x21: 0000000000000001
+[  163.756992] x20: 0000000000000000 x19: ffff00009f19d960 x18: ffff800087a6b080
+[  163.756997] x17: 3a303a2264333030 x16: ffffd868364e4800 x15: 7830303631282067
+[  163.757002] x14: 6e69797274202c29 x13: 6169646e652d656c x12: 7474696c20414142
+[  163.757007] x11: 29313a646c656966 x10: ffffd86837b0bd68 x9 : ffffd868234b6fb0
+[  163.757011] x8 : 3fffffffffffefff x7 : ffffd86837b0bd68 x6 : fffffffffffff000
+[  163.757022] x5 : ffff00008b81e210 x4 : 000000000fffffff x3 : ffffd86823064008
+[  163.757025] x2 : 0000000000000001 x1 : 0000000000000001 x0 : ffff00009f19d960
+[  163.757028] Call trace:
+[  163.757029]  call_s_stream+0xf4/0x108 [videodev] (P)
+[  163.757056]  video_start_streaming+0xc8/0x160 [qcom_camss]
+[  163.757076]  vb2_start_streaming+0x74/0x188 [videobuf2_common]
+[  163.757085]  vb2_core_streamon+0x108/0x1d8 [videobuf2_common]
+[  163.757093]  vb2_ioctl_streamon+0x54/0xa0 [videobuf2_v4l2]
+[  163.757100]  v4l_streamon+0x2c/0x40 [videodev]
+[  163.757127]  __video_do_ioctl+0x2e8/0x3d0 [videodev]
+[  163.757153]  video_usercopy+0x2e8/0x820 [videodev]
+[  163.757179]  video_ioctl2+0x20/0x70 [videodev]
+[  163.757205]  v4l2_ioctl+0x48/0x70 [videodev]
+[  163.757230]  __arm64_sys_ioctl+0xb8/0x118
+[  163.757234]  invoke_syscall+0x5c/0x120
+[  163.757239]  el0_svc_common.constprop.0+0xc8/0xf0
+[  163.757243]  do_el0_svc+0x24/0x38
+[  163.757248]  el0_svc+0x24/0x70
+[  163.757253]  el0t_64_sync_handler+0xa0/0xe8
+[  163.757257]  el0t_64_sync+0x15c/0x160
+[  163.757260] ---[ end trace 0000000000000000 ]---
+[  163.884289] i2c-qcom-cci ac4a000.cci: master 1 queue 0 timeout
+[  164.615839] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.616027] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.616147] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.616263] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.616446] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.616508] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.616622] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.616741] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.616856] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.616966] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.617078] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.617192] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.617301] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.617438] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.617560] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.617689] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.617802] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.617915] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.617967] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.618081] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.618211] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.618324] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.618437] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.618632] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.618686] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.618792] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.618921] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.619039] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.619156] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.619271] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.619415] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.619529] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.619639] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.619748] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.619857] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.619967] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.620078] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.620186] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  164.620294] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.614980] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.615177] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.615236] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.615350] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.615467] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.615664] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.615803] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.615919] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.616032] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.616165] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.616276] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.616392] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.616528] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.616655] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.616771] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.616880] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.616991] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.617103] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.617216] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.617353] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.617467] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.617604] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.617718] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.617836] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.617947] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.618057] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.618166] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.618276] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.618384] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.618538] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.618648] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.618780] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.618893] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.619006] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.619119] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.619233] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.619346] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  165.619460] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.614121] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.614308] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.614428] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.614543] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.614661] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.614831] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.614953] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.615071] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.615189] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.615305] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.615419] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.615528] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.615642] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.615772] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.615900] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.616016] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.616070] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.616195] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.616331] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.616458] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.616630] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.616748] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.616897] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.617012] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.617137] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.617249] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.617358] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.617475] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.617586] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.617696] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.617835] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.617950] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.618077] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.618192] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.618322] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.618435] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.618553] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.618663] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  166.618794] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.613473] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.613654] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.613774] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.613889] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.614005] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.614121] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.614249] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.614364] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.614485] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.614606] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.614723] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.614860] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.614971] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.615085] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.615217] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.615344] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.615455] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.615569] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.615680] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.615795] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.615912] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.616026] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.616177] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.616231] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.616349] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.616464] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.616581] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.616696] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.616817] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.616931] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.617044] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.617177] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.617292] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.617419] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.617526] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.617636] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.617745] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.617855] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.617967] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.618079] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  167.776416] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+[  168.348999] hanoip-gpu-floor: min_freq=180000000 (tela-apagada)
+[  168.613143] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.613324] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.613445] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.613562] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.613712] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.613868] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.613928] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.614041] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.614158] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.614277] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.614394] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.614513] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.614649] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.614769] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.614883] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.615001] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.615122] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.615239] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.615356] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.615469] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.615607] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.615729] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.615844] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.615959] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.616072] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.616186] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.616304] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.616421] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.616537] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.616669] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.616786] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.616903] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.617020] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.617136] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.617253] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.617367] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.617482] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  168.617622] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.612728] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.612925] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.613043] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.613238] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.613299] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.613413] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.613531] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.613647] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.613757] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.613866] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.613983] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.614140] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.614195] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.614312] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.614441] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.614561] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.614676] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.614789] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.614902] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.615020] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.615152] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.615272] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.615390] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.615506] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.615620] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.615734] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.615849] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.615962] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.616076] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.616211] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.616332] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.616442] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.616550] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.616659] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.616769] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.616898] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  169.617011] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.612076] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.612278] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.612399] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.612515] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.612631] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.612871] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.613010] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.613143] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.613267] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.613384] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.613501] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.613627] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.613764] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.613878] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.613993] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.614104] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.614219] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.614335] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.614455] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.614566] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.614697] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.614809] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.614925] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.615036] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.615146] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.615259] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.615399] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.615509] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.615618] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.615756] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.615873] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.615991] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.616118] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.616231] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.616340] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.616450] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.616559] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  170.616670] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.612695] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.612901] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.613021] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.613138] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.613255] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.613512] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.613576] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.613686] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.613801] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.613915] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.614029] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.614138] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.614252] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.614391] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.614506] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.614622] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.614739] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.614849] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.614960] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.615070] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.615183] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.615297] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.615429] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.615539] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.615647] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.615756] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.615867] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.615981] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.616091] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  171.616235] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  172.611243] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  172.611409] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  172.611529] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  172.611644] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  172.611758] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  172.611874] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  172.612068] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  173.610905] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  173.611086] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  173.611204] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  173.611319] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  173.611434] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  173.611550] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  174.609052] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  174.609236] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  174.609357] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  174.609473] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  174.609593] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  174.613744] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.607297] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.607511] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.607632] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.607749] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.607865] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.608095] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.608155] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.608269] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.608384] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.608494] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.608604] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.608763] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.608877] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.609009] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.609119] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.609230] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.609341] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.609453] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.609562] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.609674] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.609786] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.609895] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.610025] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.610135] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.610244] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.610360] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.610471] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.610583] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.610697] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.610808] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.610916] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.611046] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.611099] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.611203] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.611315] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.611423] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.611535] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.611644] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.611754] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  175.611866] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.605393] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.605515] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.605569] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.605660] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.605749] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.605799] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.605885] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.605977] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.606025] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.606110] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.606198] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.607088] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.607892] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.607937] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.608175] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.608309] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.608362] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.608460] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.608813] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.608932] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.609025] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.609145] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.609198] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.609299] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.609390] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.609443] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.609539] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.609628] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.609965] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046
+[  176.610078] spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046

@@ -1,0 +1,101 @@
+#!/bin/sh
+# hanoip-usb-fix — inspeciona e recupera o subsistema USB gadget do hanoip.
+#
+# Uso:
+#   hanoip-usb-fix status   (padrao) mostra papel Type-C, UDC, gadget, VBUS
+#   hanoip-usb-fix fix      desvincula e revincula o UDC (recupera gadget)
+#
+# Nao escreve em particao nenhuma e nao mexe em registrador do charger:
+# so configfs (/sys/kernel/config) e leitura de sysfs.
+#
+# Existe porque, a partir do momento em que a porta vira OTG (dr_mode="otg"),
+# o UDC pode DESAPARECER quando o papel e' host. Sem uma ferramenta, qualquer
+# erro de papel virava "mais um reboot"; com ela, vira um comando.
+#
+# Ainda NAO foi instalado no aparelho (preparado em 27/10/2026).
+
+set -u
+G=/sys/kernel/config/usb_gadget
+U=/sys/class/udc
+C=/sys/class/power_supply/hanoip-pm6150-monitor-charger
+
+status() {
+	echo "== Type-C =="
+	if [ -d /sys/class/typec/port0 ]; then
+		echo "  port_type  = $(cat /sys/class/typec/port0/port_type 2>/dev/null)"
+		echo "  power_role = $(cat /sys/class/typec/port0/power_role 2>/dev/null)"
+		echo "  data_role  = $(cat /sys/class/typec/port0/data_role 2>/dev/null)"
+		echo "  vconn_src  = $(cat /sys/class/typec/port0/vconn_source 2>/dev/null)"
+	else
+		echo "  (sem /sys/class/typec/port0: TCPM nao registrou)"
+	fi
+
+	echo "== UDC =="
+	if [ -z "$(ls "$U" 2>/dev/null)" ]; then
+		echo "  nenhum UDC (papel HOST?): nao ha gadget possivel agora"
+	else
+		for d in "$U"/*; do
+			[ -e "$d" ] || continue
+			echo "  $(basename "$d"): state=$(cat "$d/state" 2>/dev/null) speed=$(cat "$d/current_speed" 2>/dev/null)"
+		done
+	fi
+
+	echo "== gadgets configfs =="
+	if [ -z "$(ls "$G" 2>/dev/null)" ]; then
+		echo "  nenhum"
+	else
+		for g in "$G"/*; do
+			[ -d "$g" ] || continue
+			echo "  $(basename "$g"): UDC='$(cat "$g/UDC" 2>/dev/null)'"
+			ls "$g/functions" 2>/dev/null | sed 's/^/    fn: /'
+		done
+	fi
+
+	echo "== entrada (charger) =="
+	if [ -d "$C" ]; then
+		echo "  online=$(cat "$C/online" 2>/dev/null) icl=$(cat "$C/current_max" 2>/dev/null) vin=$(cat "$C/voltage_now" 2>/dev/null)"
+	else
+		echo "  (psy do charger ausente)"
+	fi
+}
+
+fix() {
+	dev=$(ls "$U" 2>/dev/null | head -1)
+	if [ -z "$dev" ]; then
+		echo "UDC ausente: o papel atual e' host (ou nenhum controlador em modo device)."
+		echo "Nada a religar. Se um periferico estiver plugado, remova-o."
+		return 0
+	fi
+
+	for g in "$G"/*; do
+		[ -d "$g" ] || continue
+		cur=$(cat "$g/UDC" 2>/dev/null)
+		[ -n "$cur" ] || continue
+		echo "desvinculando $(basename "$g") de $cur"
+		printf '' > "$g/UDC" 2>/dev/null || echo "  falhou ao desvincular"
+	done
+
+	sleep 1
+
+	for g in "$G"/*; do
+		[ -d "$g" ] || continue
+		[ -n "$(ls "$g/functions" 2>/dev/null)" ] || continue
+		if [ -z "$(cat "$g/UDC" 2>/dev/null)" ]; then
+			echo "religando $(basename "$g") em $dev"
+			echo "$dev" > "$g/UDC" 2>/dev/null || echo "  falhou ao religar"
+		fi
+	done
+
+	sleep 1
+	echo "== depois =="
+	for d in "$U"/*; do
+		[ -e "$d" ] || continue
+		echo "  $(basename "$d"): state=$(cat "$d/state" 2>/dev/null) speed=$(cat "$d/current_speed" 2>/dev/null)"
+	done
+}
+
+case "${1:-status}" in
+	status) status ;;
+	fix)    fix ;;
+	*)      echo "uso: $0 [status|fix]" >&2; exit 2 ;;
+esac

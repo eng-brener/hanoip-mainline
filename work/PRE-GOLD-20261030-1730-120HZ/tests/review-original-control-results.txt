@@ -1,0 +1,10 @@
+SOURCE /test/linux/drivers/gpu/drm/msm/dsi/dsi_host.c: badf944989869515b4af5c0548272d385c8a1c607f5d704646b7866d22b3bb0a
+SOURCE /test/linux/drivers/input/touchscreen/ilitek-hanoip-spi.c: 61f3746a27cafaaf882f74f0ce98d816bbd97c4b5286a12cd433bdf8a36c7bcf
+REPRODUCED lane_invalid_index: /tmp/panel-review-t6zq1z_1/lane_invalid_index.c:109:12: runtime error: load of address 0xaaaab2830f58 with insufficient space for an object of type 'const int'
+REPRODUCED dsc_zero_slice: /tmp/panel-review-t6zq1z_1/dsc_zero_slice.c:52:16: runtime error: division by zero
+PASS dsc_valid_and_invalid_dimensions: 3 geometry checks
+PASS mode_allocation_failure: old mode lost on failed allocation
+PASS dsi_runtime_pm_failures: clock failure leaks PM vote; failed runtime resume still reaches timing/MMIO path and returns success
+PASS touch_packets: 8192 X/Y-coordinate values, invalid checksum/type and SPI error; no partial input events
+PASS touch_firmware_validation: valid image; 106 truncated/oversized lengths, 100 metadata mutations, 3 block corruptions
+PASS: handoff, independent rails, error propagation, rollback, voltage bounds/headroom, concurrent callbacks

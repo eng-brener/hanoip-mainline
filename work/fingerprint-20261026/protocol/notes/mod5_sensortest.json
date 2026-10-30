@@ -1,0 +1,474 @@
+{
+  "artifact": "mod5_sensortest",
+  "generated": "2026-10-29",
+  "method": "static offline disassembly only (llvm-objdump + ELF readers); no target executed, no device contacted",
+  "inputs": {
+    "ta": "work/fingerprint-20261026/fpctzapp-reconstructed.elf (ELF32 ARM, Thumb, VMA==file offset 0, single PT_LOAD#2 text 0x114138)",
+    "ta_symbols": "work/fingerprint-20261026/ta-dynamic-symbols.json (section_index==2; symbol value has thumb bit set, cleared here)",
+    "hal": "work/fingerprint-20261026/android-live-readonly/programs/fingerprint-service-fpc (ELF64 AArch64, stripped, dynsym copy in hal-protocol/fingerprint-service-fpc-symbols.json)",
+    "factory_util": "/tmp/fpcanal/vendor/bin/fpc_tee_test (ELF64 AArch64, from work/android-dump-20261026-final/files/vendor-odm.tar; embedded copies of the same HAL functions at different addresses)"
+  },
+
+  "module": {
+    "id": 5,
+    "name_guess": "sensortest",
+    "confidence": "OBSERVED (id) / INFERRED (name)",
+    "descriptor_table": {
+      "vma": "0x116000",
+      "evidence": "fpc_ta_route_command 0x1d4 ldr r2,[pc,#0x6c] @0x244 -> 0x115e20; add r2,pc (pc=0x1e0) -> 0x116000; loop 0x1de..0x1ec walks an array of descriptor pointers, desc+0x0 = init, desc+0x4 = exit, desc+0x8 = handler, desc+0xc = module id"
+    },
+    "descriptor": {
+      "vma": "0x1160c0",
+      "init": "0x0",
+      "exit": "0x0",
+      "handler": "0x4325 (=0x4324, thumb)",
+      "module_id": "0x5"
+    },
+    "handler": "0x4324",
+    "handler_end": "last instruction ~0x44ba+4; the shared epilogue is 0x4408..0x441a and the cmd3 'is supported' arms occupy 0x448e..0x44be",
+    "naming_note": "The TA does not export a symbol for 0x4324 (no entry in ta-dynamic-symbols.json); the name 'sensortest' comes from the HAL (fpc_tee_sensortest_*) and from the host-side TAG string 'FPC_TA_SENSORTEST_*' found in the HAL/utility rodata. The TA-side name is UNKNOWN."
+  },
+
+  "handler_prologue": [
+    {"addr": "0x4338", "insn": "mov r6,r2", "means": "r6 = cmd_id (3rd arg from fpc_ta_route_command 0x230: r2 = [buf+4])"},
+    {"addr": "0x432e/0x4334", "insn": "movw r5,#0xc0a1 ; movt r5,#0xe8a1", "means": "r5 = 0xe8a1c0a1 = 'invalid/null arg' error value (also r4 default)"},
+    {"addr": "0x433c", "insn": "cmp.w r9,#0 ; beq 0x4412", "means": "buf == NULL -> return 0xe8a1c0a1"},
+    {"addr": "0x4344", "insn": "cmp r1,#0x34 ; blo 0x4412", "means": "len < 0x34 (52) -> return 0xe8a1c0a1; this is the ONLY length check, shared by every command"},
+    {"addr": "0x434a", "insn": "bl 0x11208", "means": "fpc_sensor_communication_start(); its return is returned as-is if non-zero"},
+    {"addr": "0x4356", "insn": "bl 0x248", "means": "fpc_common_get_handle() -> r8"},
+    {"addr": "0x435c", "insn": "add.w r4,r5,#0x2d", "means": "r4 = 0xe8a1c0ce = 'unsupported/unknown command' (used by the cmd-5 hole and cmd>6)"},
+    {"addr": "0x4360", "insn": "bl 0xc94", "means": "fpc_sensor_get_handle() -> r0 stays as the 1st arg of every test function"},
+    {"addr": "0x4364", "insn": "cmp r6,#6 ; bhi 0x4408", "means": "valid cmd range is 0..6 only"},
+    {"addr": "0x436a", "insn": "tbb [pc,r6]", "means": "table at 0x436e"},
+    {"addr": "0x4408", "insn": "bl 0x1127c (fpc_sensor_communication_stop)", "means": "single shared epilogue; returns r4 (or the stop error if negative)"}
+  ],
+
+  "dispatch_table": {
+    "vma": "0x436e",
+    "bytes": [4, 9, 14, 19, 39, 77, 72],
+    "rule": "handler = 0x436e + 2*byte (tbb base = instruction address of the tbb + 4 = 0x436e)",
+    "entries": {
+      "0": "0x4376",
+      "1": "0x4380",
+      "2": "0x438a",
+      "3": "0x4394",
+      "4": "0x43bc",
+      "5": "0x4408",
+      "6": "0x43fe"
+    }
+  },
+
+  "frame": {
+    "note": "Offsets observed from BOTH sides: the TA writes/reads these absolute offsets in the buffer it receives as arg0, and the HAL writes the same offsets (str/stp on the shared-buffer data pointer). The first 8 bytes are not touched by the HAL: they come from the TAC layer (module_id, cmd_id).",
+    "fields": [
+      {"offset": "0x00", "size": 4, "dir": "in", "name": "module_id", "value": 5, "evidence": "HAL 0x1ff8c/0x1ffa8 str d0 (d0 = {5,cmd}); TA never reads it because fpc_ta_route_command already matched it"},
+      {"offset": "0x04", "size": 4, "dir": "in", "name": "cmd_id", "value": "0..6", "evidence": "fpc_ta_route_command 0x230 ldr r2,[r12,#4] -> 3rd arg -> TA 0x4338 r6"},
+      {"offset": "0x08", "size": 4, "dir": "in/out", "name": "arg0 (test id for cmd3/cmd4; requested size in / returned size out for cmd7)", "evidence": "TA 0x4394 ldr.w r5,[r9,#8]; 0x43bc ldr.w r4,[r9,#8]; HAL 0x1ffac str w10,[x9,#8]; 0x20240 str w27,[x19,#8]; 0x2058c str w8,[x23,#8]"},
+      {"offset": "0x0c", "size": 28, "dir": "in/out", "name": "test parameter block (cmd4 only)", "evidence": "HAL 0x20244..0x20250 copies 28 bytes caller-struct -> buf+0xc..0x27 and 0x2025c..0x20268 copies back; TA cmd4 handlers read u32s at +0x0c,+0x10,+0x14,+0x18,+0x1c,+0x20 and take pointers to +0x24/+0x28/+0x2c"},
+      {"offset": "0x28", "size": 4, "dir": "out", "name": "result/quality (cmd4)", "evidence": "TA 0x43d0 str r2(=0),[buf+0x28]; HAL 0x2026c reads it into arg5"},
+      {"offset": "0x2c", "size": 4, "dir": "in/out", "name": "status / IRQ-pin value (cmd0 out, cmd1 in+out, cmd2 out, cmd4 out)", "evidence": "TA 0x4376/0x4380/0x438a pass buf+0x2c as 2nd arg; 0x43d8 presets 1 for cmd4; HAL 0x20134/0x201bc/0x20274 read it"},
+      {"offset": "0x30", "size": 4, "dir": "out", "name": "test-log size in bytes (cmd4)", "evidence": "TA 0x4480 bl 0x1c868 (fpc_test_get_log_size) ; str.w r0,[r9,#0x30]; HAL 0x2027c reads it into arg7 (zeroed at entry 0x20054)"},
+      {"offset": "0x34", "size": 0, "dir": "-", "name": "minimum accepted total length", "evidence": "TA 0x4344 cmp r1,#0x34; the HAL's get_log allocates exactly *len + 0x34 (0x20564)"}
+    ],
+    "unknown": "How the TAC fills the 2nd argument (length) that the router passes to the handler is a TAC-layer detail (fpc_tac_transfer 0x22df0 loads [shared+0x10] into the QSEECom descriptor at 0x22e38); not decoded here."
+  },
+
+  "error_values": {
+    "0xe8a1c0a1": {"meaning": "invalid argument / buffer too short", "evidence": "0x432e,0x4334,0x4340,0x4346"},
+    "0xe8a1c0ce": {"meaning": "unsupported cmd (cmd==5 or cmd>6) — reported through the normal epilogue", "evidence": "0x435c,0x4366,0x4408"},
+    "0xfffffff1": {"meaning": "cmd4 with test id outside 1..9", "evidence": "0x441c mvn r4,#0xe (-15)"},
+    "0x00000000": {"meaning": "cmd3 with test id > 12 -> 'not supported'", "evidence": "0x448a movs r4,#0"}
+  },
+
+  "commands": [
+    {
+      "cmd": 0,
+      "handler": "0x4376",
+      "name_guess": "SELF_TEST_INIT",
+      "name_confidence": "INFERRED (HAL string 'FPC_TA_SENSORTEST_SELF_TEST_INIT failed! Status = %d' @0xa404; TA function called = fpc_test_self_test_init)",
+      "evidence": [
+        "0x4376 add.w r1,r9,#0x2c",
+        "0x437a bl 0x1cb30 (fpc_test_self_test_init, size 184)",
+        "0x43d0/0x43d8 not involved; cmd0 goes straight to 0x4406 mov r4,r0"
+      ],
+      "request": [
+        {"offset": "0x00", "field": "module_id=5"},
+        {"offset": "0x04", "field": "cmd=0"}
+      ],
+      "response": [
+        {"offset": "0x2c", "field": "u32 status = content of sensor register 0x1C after fpc_access_send_cmd(0xF8), or 1 on the 'send_cmd failed' path", "evidence": "TA 0x1cb96 ldrb r0,[r7,#-13] ; 0x1cbaa str r0,[r4]; error path 0x1cba8 movs r0,#1"}
+      ],
+      "return": "TA return code = fpc_access_* status (0 or negative driver error)",
+      "min_len": 52,
+      "observed_details": "fpc_test_self_test_init(dev, u32 *status): access = [dev+0xf0]; fpc_access_send_cmd(access, 0xF8) @0x1cb52; fpc_access_read_register(access,0x18) @0x1cb6c; fpc_access_read_register(access,0x1C) @0x1cb8a; *status = reg[0x1C]"
+    },
+    {
+      "cmd": 1,
+      "handler": "0x4380",
+      "name_guess": "SELF_TEST_RUN",
+      "name_confidence": "INFERRED (TA function = fpc_test_run_self_test; HAL logs 'IRQ TEST READ INITIAL/AFTER/END' around it)",
+      "evidence": ["0x4380 add.w r1,r9,#0x2c", "0x4384 bl 0x1c8fc (fpc_test_run_self_test, size 564)"],
+      "request": [
+        {"offset": "0x2c", "field": "u32 in: current IRQ-pin/status value (the HAL forwards what it read from cmd0/cmd4; see HAL 0x20390-0x20394)"}
+      ],
+      "response": [
+        {"offset": "0x2c", "field": "u32 status: 0 = pass; 5, 6 or 0x10 = failure codes (observed literals)", "evidence": "0x1c98e str r2(=5),[r4]; 0x1c9ac str r0(=0x10); 0x1ca58 str r12(=6); success 0x1cae8 movs r5,#0; str r5,[r4]"}
+      ],
+      "return": "TA return code = last fpc_access_* status",
+      "min_len": 52,
+      "observed_details": "fpc_test_run_self_test(dev, u32 *status): send_cmd 0xF8 @0x1c924, read reg 0x1C @0x1c946 and reg 0x18 @0x1c960; if reg[0x18]!=0 -> send_cmd 0xC0 @0x1c9b8, poll reg 0x18 up to 100 times @0x1cac6; on success *status=0"
+    },
+    {
+      "cmd": 2,
+      "handler": "0x438a",
+      "name_guess": "SELF_TEST_CLEANUP",
+      "name_confidence": "INFERRED (HAL string 'FPC_TA_SENSORTEST_SELF_TEST_CLEANUP failed' @0xb343/@0x2132; TA fn = fpc_test_self_test_cleanup)",
+      "evidence": ["0x438a add.w r1,r9,#0x2c", "0x438e bl 0x1cbe8 (fpc_test_self_test_cleanup, size 108)"],
+      "request": [{"offset": "0x2c", "field": "u32 in: value carried from cmd0/cmd1"}],
+      "response": [{"offset": "0x2c", "field": "u32 out (HAL 0x201bc reads it back after the transfer)"}],
+      "return": "TA return code = cleanup status",
+      "min_len": 52
+    },
+    {
+      "cmd": 3,
+      "handler": "0x4394",
+      "name_guess": "IS_TEST_SUPPORTED / test capability query",
+      "name_confidence": "OBSERVED behaviour (HAL fpc_tee_sensortest_is_test_supported sends {5,3} with test id at +8 and takes the TA return code as the answer) — name from HAL symbol",
+      "evidence": [
+        "0x4394 ldr.w r5,[r9,#8]  (test id)",
+        "0x439c cmp r5,#0xc ; bhi 0x448a (id>12 -> return 0)",
+        "0x43a2 movs r4,#1  (default answer = 1)",
+        "0x43a4 tbb [pc,r5] with table at 0x43a8 (13 entries)",
+        "HAL 0x1ff4c fpc_tee_sensortest_is_test_supported: d0=@0xe0c0={5,3}; str w10,[x9,#8]; *out = transfer return"
+      ],
+      "request": [
+        {"offset": "0x08", "field": "u32 test id (0..12); note the HAL rewrites id 1 -> 7 before sending (HAL 0x1ff94-0x1ffa0)"}
+      ],
+      "response": [
+        {"note": "no buffer field is written; the answer is the TA return code itself (0 = unsupported, 1 = supported). HAL stores the return code into *supported."}
+      ],
+      "return": "1 (supported) / 0 (unsupported) / negative on driver error",
+      "min_len": 52,
+      "test_ids": {
+        "table_vma": "0x43a8",
+        "bytes": [48, 115, 118, 121, 124, 128, 131, 134, 48, 137, 7, 7, 7],
+        "entries": [
+          {"id": 0, "target": "0x4408", "function": "(none) - returns the preset 1", "observed": "id 0 = Self Test is always reported supported"},
+          {"id": 1, "target": "0x448e", "function": "fpc_test_is_checkerboard_test_supported (0x1ba8e)"},
+          {"id": 2, "target": "0x4494", "function": "fpc_test_is_image_quality_test_supported (0x1b7a4)"},
+          {"id": 3, "target": "0x449a", "function": "fpc_test_is_reset_pixel_test_supported (0x1b990)"},
+          {"id": 4, "target": "0x44a0", "function": "fpc_test_is_afd_test_supported(0) (0x1add0, called with r1=0)"},
+          {"id": 5, "target": "0x44a8", "function": "fpc_test_is_afd_cal_test_supported (0x1ba54)"},
+          {"id": 6, "target": "0x44ae", "function": "fpc_test_is_module_quality_test_supported (0x1b988)"},
+          {"id": 7, "target": "0x44b4", "function": "fpc_test_is_defective_pixels_test_supported (0x1ba0c)"},
+          {"id": 8, "target": "0x4408", "function": "(none) - returns the preset 1", "observed": "id 8 = OTP Validation has no is_supported function but is reported supported"},
+          {"id": 9, "target": "0x44ba", "function": "fpc_test_is_txpulse_checkerboard_test_supported (0x1c6e0)"},
+          {"id": 10, "target": "0x43b6", "function": "fpc_test_is_check_esd_supported (0x1ba62)"},
+          {"id": 11, "target": "0x43b6", "function": "fpc_test_is_check_esd_supported (0x1ba62)"},
+          {"id": 12, "target": "0x43b6", "function": "fpc_test_is_check_esd_supported (0x1ba62)"}
+        ]
+      }
+    },
+    {
+      "cmd": 4,
+      "handler": "0x43bc",
+      "name_guess": "RUN_TEST",
+      "name_confidence": "OBSERVED (dispatch on the u32 at +8 into 9 test implementations; HAL uses {5,4} for every run-test call and receives the log size at +0x30)",
+      "evidence": [
+        "0x43bc ldr.w r4,[r9,#8]  (test type)",
+        "0x43c0 bl fpc_common_get_handle -> r5 ; 0x43ce ldr r1,[r5,#8] (2nd arg of every test fn)",
+        "0x43c6 bl fpc_sensor_get_handle -> r0 (1st arg of every test fn)",
+        "0x43cc/0x43d0 str r2(=0),[buf+0x28]!  ; 0x43d6/0x43d8 str r2(=1),[buf+0x2c]!",
+        "0x43dc subs r2,r4,#1 ; cmp r2,#8 ; bhi 0x441c (r4 = -15)",
+        "0x43e2 tbb [pc,r2] with table at 0x43e6 (9 entries) -> test type is 1-based",
+        "0x4480 bl 0x1c868 (fpc_test_get_log_size) ; 0x4484 str.w r0,[r9,#0x30]",
+        "HAL 0x2022c d1=@0xe1d0={5,4}; 0x20240 str w27,[x19,#8]; 0x20244..0x20250 params -> +0xc; 0x2026c/0x20274/0x2027c <- +0x28/+0x2c/+0x30"
+      ],
+      "request": [
+        {"offset": "0x08", "field": "u32 test type 1..9"},
+        {"offset": "0x0c", "field": "u32[7] parameter block, meaning per test type (see test_ids)"},
+        {"offset": "0x2c", "field": "in: initial status (HAL leaves whatever it last had; the TA immediately overwrites it with 1)"}
+      ],
+      "response": [
+        {"offset": "0x0c..0x27", "field": "parameter block, updated in place by the test functions"},
+        {"offset": "0x28", "field": "u32 result/quality (preset 0; written by the test fn, e.g. image_quality stores quality here)"},
+        {"offset": "0x2c", "field": "u32 status (preset 1; written by the test fn)"},
+        {"offset": "0x30", "field": "u32 log size in bytes (fpc_test_get_log_size)"}
+      ],
+      "return": "TA return code = status of the selected test function (or -15 for an invalid test type)",
+      "min_len": 52,
+      "observed_details": "Handler-level register plumbing (r0 = sensor handle, r1 = *(fpc_common_get_handle()+8) which the TA also uses as the 'test/capture context', r2 = &buf[0x2c], r3 = &buf[0x28] for image_quality only). fpc_test_run_module_quality_test is the widest: it receives 6 u32s from +0x0c..+0x20 plus pointers &buf[0x24], &buf[0x28], &buf[0x2c] (0x4446..0x4462).",
+      "test_ids": {
+        "table_vma": "0x43e6",
+        "bytes": [5, 30, 35, 39, 44, 48, 65, 69, 73],
+        "entries": [
+          {"id": 1, "target": "0x43f0", "function": "fpc_test_run_checkerboard_test (0x1baa4, size 2176)", "args": "(sensor, ctx, &buf[0x2c])", "observed": "reads image data buffers via fpc_image_data_get_pixels_buffer(ctx,12) and (ctx,14) @0x1bacc/0x1bad8"},
+          {"id": 2, "target": "0x4422", "function": "fpc_test_run_image_quality_test (0x1c324, size 200)", "args": "(sensor, ctx, &buf[0x2c], &buf[0x28])", "observed": "entry writes *buf+0x28 = 0 and *buf+0x2c = 1 (0x1c350/0x1c354) then fpc_sensor_driver_get_coverage(driver,&sp+8,&sp+4) @0x1c360"},
+          {"id": 3, "target": "0x442c", "function": "fpc_test_run_reset_pixel_test (0x1c3ec, size 408)", "args": "(sensor, ctx, &buf[0x2c])"},
+          {"id": 4, "target": "0x4434", "function": "fpc_test_run_afd_test (0x1ae1c, size 1220)", "args": "(sensor, 0, &buf[0x2c])", "observed": "0x4434 movs r1,#0"},
+          {"id": 5, "target": "0x443e", "function": "fpc_test_afd_cal_test (0x1b2e0, size 136)", "args": "(sensor, &buf[0x2c])"},
+          {"id": 6, "target": "0x4446", "function": "fpc_test_run_module_quality_test (0x1b804, size 388)", "args": "(sensor, ctx, u32@0x0c, u32@0x10, +stack: u32@0x14,0x18,0x1c,0x20, &buf[0x28], &buf[0x2c], &buf[0x24])"},
+          {"id": 7, "target": "0x4468", "function": "fpc_test_defective_pixels_test (0x1c584, size 348)", "args": "(sensor, &buf[0x2c])"},
+          {"id": 8, "target": "0x4470", "function": "fpc_test_otp_validation (0x1c870, size 140)", "args": "(sensor, &buf[0x2c])", "observed": "0x1c87c str r3(=1),[r5] then fpc_otp_get_sensor_info"},
+          {"id": 9, "target": "0x4478", "function": "fpc_test_txpulse_checkerboard_test (0x1c780, size 232)", "args": "(sensor, &buf[0x2c])"}
+        ]
+      }
+    },
+    {
+      "cmd": 5,
+      "handler": "0x4408 (shared epilogue, no code of its own)",
+      "name_guess": "NOT IMPLEMENTED / unused slot",
+      "name_confidence": "OBSERVED hole: tbb entry 5 points at the epilogue with r4 still = 0xe8a1c0ce; the HAL never sends cmd 5 (no constant {5,5} exists in the HAL rodata)",
+      "evidence": ["table byte 0x4d at 0x4373 -> 0x436e+0x9a = 0x4408", "0x435c r4 = 0xe8a1c0ce"],
+      "request": [],
+      "response": [{"note": "nothing is written; the call returns 0xe8a1c0ce"}],
+      "return": "0xe8a1c0ce",
+      "min_len": 52
+    },
+    {
+      "cmd": 6,
+      "handler": "0x43fe",
+      "name_guess": "CAPTURE_UNCALIBRATED_IMAGE",
+      "name_confidence": "OBSERVED (HAL fpc_tee_sensortest_capture_uncalibrated sends {5,6}; TA calls fpc_device_capture_uncalibrated_image)",
+      "evidence": [
+        "0x43fe ldr.w r1,[r8,#8]  (r8 = fpc_common_get_handle, so r1 = ctx)",
+        "0x4402 bl 0x108e0 (fpc_device_capture_uncalibrated_image)",
+        "HAL 0x204b4: d0=@0xe150={5,6}; str d0,[x9]; tail-call fpc_tac_transfer (0x20508)"
+      ],
+      "request": [
+        {"offset": "0x00", "field": "module_id=5"},
+        {"offset": "0x04", "field": "cmd=6"},
+        {"note": "no other field is read; the HAL sends only the 8-byte header"}
+      ],
+      "response": [
+        {"note": "NO image data, no offset, no size, no width/height/format field is written into the frame. The TA returns only a status. See 'capture_uncalibrated_path' below."}
+      ],
+      "return": "TA return code = fpc_device_capture_uncalibrated_image() status (0 or negative)",
+      "min_len": 52,
+      "capture_uncalibrated_path": {
+        "observed": [
+          "0x108e0 fpc_device_capture_uncalibrated_image(dev, ctx): ctx==NULL -> return 0xf4a0c098 (0x10924)",
+          "0x108ec r0 = [dev+0xec] (sensor driver); 0x108fc bl fpc_sensor_driver_capture_image(driver, 0x10, 0, ctx, 0)",
+          "0x17a30 fpc_sensor_driver_capture_image: 5th (stack) arg is the sink; 0x17a4e str r3,[sp] ; 0x17a52 bl sensor_driver_capture_image -> image goes to the ctx object, not to the TAC buffer",
+          "0x10908 on success: fpc_sensor_deep_sleep(dev) -> fpc_sensor_driver_set_mode(driver, 3) (0x10964/0x10968)"
+        ],
+        "inferred": "The uncalibrated image lives in the TA-side 'test/capture context' (the pointer stored at fpc_common_get_handle()+8, i.e. the same object handed to every cmd4 test function as 2nd argument). It is consumed inside the TA (test log / module-quality analysis) and is never marshalled back through module 5.",
+        "host_side": "HAL do_capture (0x1ba90) calls it only when the byte at [ctx+0x249] != 0 (0x1bac0/0x1bac4); the TA status is then translated into a host callback status (callback ptr at [ctx+0x258], arg [ctx+0x250], 0x1bb20/0x1bb88) — a status, not an image. The 'normal' path [ctx+0x248]!=0 uses fpc_tee_capture_image (0x2163c), which is a different module.",
+        "unknown": "Exact image width/height/format used for the uncalibrated capture (would require decoding sensor_driver_capture_image 0x16764 + fpc_sensor_driver_get_default_capture_config 0x17a70). Nothing in module 5's frame carries it."
+      }
+    },
+    {
+      "cmd": 7,
+      "handler": null,
+      "name_guess": "GET_LOG",
+      "name_confidence": "OBSERVED on the host side (HAL fpc_tee_sensortest_get_log sends {5,7}); NOT DISPATCHED by this TA build",
+      "evidence": [
+        "HAL 0x2050c: d0=@0xe0f8={5,7} ; alloc(*len+0x34) ; buf+8 = *len ; transfer ; *len = buf+8 ; memcpy(dst, buf+0xc, size)",
+        "TA: 0x4364 cmp r6,#6 / 0x4366 bhi 0x4408 -> cmd 7 falls into the 0xe8a1c0ce error path",
+        "TA: fpc_test_get_log_size (0x1c868) has exactly one caller (0x4480, inside cmd4); fpc_test_get_log (0x1c86c -> fpc_sensortest_ctl_get_log 0x1b508) has ZERO callers in the whole TA text",
+        "the utility fpc_tee_test contains no copy of get_log (its rodata has 'fpc_tee_sensortest_run_test', '..._run_test_command', '..._self_test', '..._capture_uncalibrated', '..._test_command' but no '..._get_log')"
+      ],
+      "mismatch": "This is a real protocol mismatch: the host API exists and is wired (fpc_sensortest.do_get_log -> 0x1b95c), but this TA build accepts module 5 commands 0..6 only. Consequence (INFERRED): fpc_tee_sensortest_get_log() returns 0xe8a1c0ce on this device/TA and the log content is unreachable through module 5; only the log SIZE is obtainable (cmd4, +0x30).",
+      "request": [
+        {"offset": "0x08", "field": "u32 requested buffer size (HAL: *len)"}
+      ],
+      "response_designed_by_host": [
+        {"offset": "0x08", "field": "u32 returned log size"},
+        {"offset": "0x0c", "field": "log bytes (HAL memcpy from +0xc)"}
+      ],
+      "return": "0xe8a1c0ce with this TA",
+      "min_len": 52,
+      "unknown": "Whether a newer/other TA build implements cmd 7 with exactly this layout (size at +8, data at +0xc). The layout is only what the host expects."
+    }
+  ],
+
+  "host_enum_test_ids": {
+    "source": "HAL .data.rel.ro table fpc_sensortest_tests @0x27940, 13 entries x 48 bytes {u32 id, pad, char* name @+8, char* description @+0x10, char* stamp @+0x18}, names recovered from .rela.dyn; consumed by HAL get_sensor_tests 0x1b098..0x1b1d8 (loop bound 0x270/0x30 = 13, calls fpc_tee_sensortest_is_test_supported per entry)",
+    "status": "OBSERVED",
+    "entries": [
+      {"id": 0, "name": "Self Test", "description": "Tests the sensor response and interrupt signal"},
+      {"id": 1, "name": "Checkerboard Test", "description": "Takes an sensor internal image and analyze to find dead pixels"},
+      {"id": 2, "name": "Image Quality Test", "description": "Takes an image with square pattern stamp and analyze to find coating issues"},
+      {"id": 3, "name": "Image Reset Pixel Test", "description": "Takes an sensor internal image and analyze to find faulty pixels"},
+      {"id": 4, "name": "AFD Calibration Test", "description": "Tests the calibration of AFD"},
+      {"id": 5, "name": "AFD Cal Test", "description": "Validates analog finger detection function of sensor module."},
+      {"id": 6, "name": "Module Quality Test", "description": "Takes an image with zebra pattern stamp and determine the SNR (signal to noise ratio) value", "stamp": "Zebra pattern stamp"},
+      {"id": 7, "name": "Defective Pixels Test", "description": "Verifies that the number of pixel errors or dead pixels are within limits"},
+      {"id": 8, "name": "OTP Validation Test", "description": "Checks the OTP memory for manufacturing defects and the wafer contains relevant information"},
+      {"id": 9, "name": "TXPulse Checkerboard Test", "description": "Takes an sensor internal image and analyze to find dead pixels (TXPULSE)"},
+      {"id": 10, "name": "ESD Check Pre Test", "description": "Read all of the RW registers and store those"},
+      {"id": 11, "name": "ESD Check Test", "description": "Verifies latch up or bit-shift of sensor internal status and must run ESD Check Pre first"},
+      {"id": 12, "name": "ESD Check Post Test", "description": "If ESD test fail and resume by reset the sensor and download the registers dumped before"},
+      {"id": 13, "name": "(reserved, empty entry in the table)"}
+    ],
+    "no_enum_name_used": "The enum member names (FPC_SENSORTEST_TEST_ID_*) are not present in any binary here; only these display names. 'enroll_no_sensor' and 'authentication_no_sensor' are NOT in this table — they are not module-5 tests (see factory_util)."
+  },
+
+  "hal_client": {
+    "module": "work/fingerprint-20261026/android-live-readonly/programs/fingerprint-service-fpc",
+    "const_map": {
+      "0xe1a8": "{5,0} SELF_TEST_INIT  (used 0x20118)",
+      "0xe1e8": "{5,1} SELF_TEST_RUN   (used 0x20378)",
+      "0xe170": "{5,2} SELF_TEST_CLEANUP (used 0x2019c)",
+      "0xe0c0": "{5,3} IS_TEST_SUPPORTED (used 0x1ff90)",
+      "0xe1d0": "{5,4} RUN_TEST         (used 0x2022c)",
+      "0xe150": "{5,6} CAPTURE_UNCALIBRATED (used 0x204ec)",
+      "0xe0f8": "{5,7} GET_LOG          (used 0x20578)"
+    },
+    "functions": [
+      {
+        "name": "fpc_tee_sensortest_is_test_supported",
+        "range": "0x1ff4c..0x1ffd8",
+        "signature": "int (void *ctx, uint32_t test_id, uint32_t *supported)",
+        "body": ["0x1ff90 d0 = {5,3}", "0x1ff94-0x1ffa0 test_id==1 -> 7", "0x1ffa8 str d0,[buf]", "0x1ffac str w10,[buf+8]", "0x1ffb0 *supported = 0", "0x1ffb8 transfer", "0x1ffbc if ret<0 return ret", "0x1ffc0 *supported = ret", "return 0"]
+      },
+      {
+        "name": "fpc_tee_sensortest_run_test",
+        "range": "0x1ffd8..0x204b4",
+        "signature": "int (void *ctx, uint32_t test_id, uint32_t delay_ms, void *params_inout /*28 bytes used*/, uint32_t *out_result, uint32_t *inout_status, uint32_t *out_log_size)",
+        "arg_load": "0x20000 x24=x3(params), 0x20018 x23=x4, 0x20038 x20=x5, 0x20034 x22=x6; 0x20054 *x6 = 0",
+        "flow": [
+          "0x20040 log '%s test: %d' (tag 'fpc_tac', func 'fpc_tee_sensortest_run_test')",
+          "0x20044-0x2004c w27 = (test_id == 1) ? 7 : test_id   <-- id 1 is rewritten to 7",
+          "0x20050-0x20058 if (w27 == 6) fpc_tee_check_finger_lost(ctx)   [0x215c4]",
+          "0x20064 if (delay_ms != 0) { r = fpc_tee_wait_finger_down(ctx) [0x21588]; if (r) return r; } 0x200a0 usleep(delay_ms*1000)",
+          "0x200ac if (w27 == 7 || w27 == 1) -> 0x201ec: if (!fpc_tee_check_finger_lost(ctx)) return -11 (FPC_ERROR_SENSORFINGER_NOT_STABLE? -11)",
+          "0x200bc if (w27 == 0) -> SELF TEST sequence at 0x200c0",
+          "else -> general RUN_TEST sequence at 0x201f8"
+        ],
+        "self_test_sequence_id0": [
+          "0x200e4 *out_result = 0",
+          "0x200f8..0x2012c buf = 0x40 zeroed ; buf[0..8] = {5,0} ; buf+0x2c = 0 ; buf+0x30 = 0 ; transfer [0x20130]",
+          "0x20134 saved = buf+0x2c ; 0x2013c if (transfer error) log 'FPC_TA_SENSORTEST_SELF_TEST_INIT failed! Status = %d' (0xa404) and return 7",
+          "0x202f0 r = fpc_tee_status_irq(ctx) [0x21470]: r<0 -> log 'IRQ TEST READ INITIAL -> FPC_ERROR_SENSOR' (0xd6e4) -> return 7 ; r==0 -> log 'IRQ TEST READ INITIAL -> FPC_SELFTEST_IRQ_FAIL pin = %d should be 0' (0xd99d), *inout_status = 6, go to cleanup ; r>0 -> continue",
+          "0x20350..0x2039c buf = {5,1}, buf+0x30 = 0, buf+0x2c = *inout_status ; transfer [0x2039c]",
+          "0x203a0 *inout_status = buf+0x2c ; if (buf+0x2c | transfer_status) log 'Selftest failed status = %d result = %d' (0xd711) -> cleanup",
+          "0x203dc r = fpc_tee_status_irq(ctx): r<0 -> log 'IRQ TEST READ AFTER -> FPC_ERROR_SENSOR' (0xd176) -> return 7 ; r==0 -> repeat 0x20350 ; r>0 -> fpc_tee_sensortest_test_command(ctx, 2, &buf+0x2c) i.e. cmd2 cleanup [0x203f8]; on error log 'FPC_TA_SENSORTEST_SELF_TEST_CLEANUP failed' (0xb343) -> return 7",
+          "0x20464 r = fpc_tee_status_irq(ctx): r<0 -> log 'IRQ TEST READ END -> FPC_ERROR_SENSOR' (0xc3a) ; r>0 -> log 'IRQ TEST READ END -> FPC_SELFTEST_IRQ_FAIL pin = %d should be 0' (0xae39), *inout_status = 6, retry cleanup ; r==0 -> readHardwareID(ctx) [0x20690] -> return 0",
+          "0x20168 cleanup block: buf = {5,2}, buf+0x2c = carried value, buf+0x30 = 0, transfer; error -> log 'FPC_TA_SENSORTEST_SELF_TEST_CLEANUP failed, ignoring' (0xa1cb) ; *inout_status = buf+0x2c"
+        ],
+        "run_test_sequence": [
+          "0x201f8 log '%s test: %d' (0xa0e00) with func 'fpc_tee_sensortest_run_test_command' (0xd9e4)",
+          "0x20218..0x20238 buf zeroed 0x40 ; buf+0x30 = 0",
+          "0x2022c ldr d1,@0xe1d0 ; 0x2023c str d1,[buf]   -> buf[0..8] = {5,4}",
+          "0x20240 str w27,[buf+0x8]   (test id, after the 1->7 rewrite)",
+          "0x20244..0x20250 28 bytes params -> buf+0xc..0x27",
+          "0x20258 fpc_tac_transfer(ctx->tac, shared)   (0x22df0)",
+          "0x2025c..0x20268 params copied back",
+          "0x2026c *out_result  = buf+0x28",
+          "0x20274 *inout_status= buf+0x2c",
+          "0x2027c *out_log_size= buf+0x30",
+          "return w0 = transfer/TA status (0x20290 jumps straight to the epilogue, so w0 is the transfer result)"
+        ]
+      },
+      {
+        "name": "fpc_tee_sensortest_capture_uncalibrated",
+        "range": "0x204b4..0x2050c",
+        "signature": "int (void *ctx)",
+        "body": ["0x204c0-0x204e0 log with func 'fpc_tee_sensortest_capture_uncalibrated' (0x9f17)", "0x204ec d0 = {5,6}", "0x204fc str d0,[shared data]", "0x20500 ldp x0,x1,[ctx->tac]", "0x20508 b fpc_tac_transfer  (tail call; the transfer result is the return value)", "no other field is touched: no size, no id, no output pointer"]
+      },
+      {
+        "name": "fpc_tee_sensortest_get_log",
+        "range": "0x2050c..0x20608",
+        "signature": "int (void *ctx, size_t *len_inout, void *dst)",
+        "body": [
+          "0x2054c fpc_tee_engineering_enabled(ctx->tac) [0x1e560]; if 0 -> return -15 (0x205c0)",
+          "0x20564 fpc_tac_alloc_shared(handle, *len + 0x34) [0x22c2c]; NULL -> return -9",
+          "0x20578 d0 = {5,7} ; str d0,[buf] ; 0x2058c str w8(*len),[buf+8]",
+          "0x20594 fpc_tac_transfer ; non-zero -> free and return it (0x2059c/0x205e8)",
+          "0x205a0 if (dst == NULL) -> *len = 0, return -10",
+          "0x205a8/0x205b0 if (*len < [buf+8]) -> *len = 0, return -10",
+          "0x205d0 memcpy(dst, buf+0xc, [buf+8]) ; 0x205dc/0x205e4 *len = [buf+8] ; return 0",
+          "0x205e8 fpc_tac_free_shared [0x22d64]"
+        ]
+      },
+      {
+        "name": "fpc_tee_sensortest_test_command",
+        "range": "0x20608..0x20690",
+        "signature": "int (void *ctx, uint32_t cmd, uint32_t *value_inout)",
+        "body": ["0x20664 stp w9(=5), w20(cmd), [buf]", "0x2066c str w9(*value),[buf+0x2c]", "0x20670 transfer", "0x20678/0x20680 *value = buf+0x2c", "returns the transfer status", "used only with cmd 2 (cleanup) at 0x203f8"]
+      },
+      {
+        "name": "do_capture (fpc_hal_ext_sensortest 'capture' implementation)",
+        "range": "0x1ba90..0x1bc3c",
+        "body": ["0x1bac0 if [ctx+0x249] -> fpc_tee_sensortest_capture_uncalibrated ([ctx+0x268]->[+0x78]) at 0x1bad0", "0x1bad8..0x1bb30 map the status through a 12-entry table at 0xe075 and call the host callback [ctx+0x258]([ctx+0x250], status)", "0x1bb34 else if [ctx+0x248] -> fpc_tee_capture_image(handle,1) loop (0x1bb4c) then same status callback", "0x1bbbc else fpc_tee_capture_image(handle,0) once"]
+      },
+      {
+        "name": "get_sensor_tests (fpc_hal_ext_sensortest 'get_sensor_tests')",
+        "range": "0x1b098..0x1b26c",
+        "body": ["iterates the 13 descriptors at fpc_sensortest_tests (0x27940) stride 0x30", "per entry: fpc_tee_sensortest_is_test_supported(id) ; if supported copies name(+8) and description(+0x10) (and the stamp +0x18 for entry 6) into the caller array (0x1010-byte records, max 16)"]
+      }
+    ],
+    "quirks": [
+      {"what": "test id 1 is rewritten to 7 before any TA command (is_test_supported 0x1ff94-0x1ffa0, run_test 0x20044-0x2004c, utility copy 0x89c8-0x89d0)", "consequence": "INFERRED: a host 'Checkerboard Test' request (id 1) is executed by the TA as test type 7, i.e. fpc_test_defective_pixels_test. Conversely TA type 1 (fpc_test_run_checkerboard_test) is unreachable from these host APIs. The reason for the rewrite is not visible in the code (UNKNOWN); the branch 'if (w27 == 1)' at 0x200b4 is dead code because of it.", "evidence": "1a95011b csel w27,w8(7),w21(id),eq"},
+      {"what": "max test id accepted by the TA for cmd4 is 9 and by cmd3 is 12", "consequence": "host ids 10..12 (ESD) can be queried but not run through cmd4; there is no ESD run path in this TA dispatch"},
+      {"what": "cmd4 always presets +0x28 = 0 and +0x2c = 1", "consequence": "a handler that fails early still reports status 1 unless it overwrites +0x2c"},
+      {"what": "fpc_tee_sensortest_run_test returns the transfer status only on the general path; the id==0 self-test path returns 0/-11/7 explicitly", "consequence": "the numeric return semantics differ per test id"}
+    ]
+  },
+
+  "factory_util": {
+    "path": "/tmp/fpcanal/vendor/bin/fpc_tee_test (ELF64 AArch64, stripped)",
+    "note": "The utility statically embeds its own copies of the same HAL functions. Addresses inside fpc_tee_test are different from the HAL .so but the code is instruction-for-instruction equivalent for run_test/capture/test_command (same constants, same 1->7 rewrite).",
+    "embedded_copies": {
+      "fpc_tee_sensortest_run_test": "0x895c (1244 bytes, == HAL 0x1ffd8)",
+      "fpc_tee_sensortest_capture_uncalibrated": "0x8e38 (88 bytes, == HAL 0x204b4)",
+      "fpc_tee_sensortest_test_command": "0x8e90 (== HAL 0x20608)",
+      "fpc_tee_sensortest_get_log": "absent (no copy, no '('fpc_tee_sensortest_get_log') string)",
+      "fpc_tac_transfer": "0xb0e0"
+    },
+    "cli": {
+      "main": "0x5048",
+      "getopt_long": "0x51fc (short opts string at 0x20de = 'sbqcpueEadACrRD')",
+      "long_opts": "0xd5c0, 12 entries of 32 bytes {name, has_arg@+8, flag@+0x10, val@+0x18} (relocated pointers read from .rela.dyn)",
+      "jump_table": "0x18c0, indexed by option char + 1, target = 0x5184 + 4*byte",
+      "usage_text": "'%s usage:' at 0x21a5",
+      "unknown_options": "-h, -V, -r, -R and anything else land on the default arm 0x54c8 -> \"Non handled option '%c'. Close down\" (0x33fe)"
+    },
+    "usage_strings": [
+      {"vma": "0x1c21", "text": "-s, --sensor_test                          Runs sensor test"},
+      {"vma": "0x1c5d", "text": "-b, --checkerboard_test                    Runs checkerboard_test"},
+      {"vma": "0x1c9f", "text": "-q, --imagequality_test                    Runs imagequality_test"},
+      {"vma": "0x1ce1", "text": "-p, --resetpixel_test                      Runs resetpixel_test"},
+      {"vma": "0x1d21", "text": "-u, --capture_uncalibrated                 Runs capture_uncalibrated"},
+      {"vma": "0x1d66", "text": "-C, --afd_calibration_test                 Runs afd_calibration_test"},
+      {"vma": "0x1dab", "text": "-E, --enroll_no_sensor_test                Runs enroll_no_sensor_test"},
+      {"vma": "0x1df1", "text": "-A, --authentication_no_sensor_test        Runs authentication_no_sensor_test"},
+      {"vma": "0x1e3f", "text": "-D, --defective_pixels_test                Runs defective_pixels_test"},
+      {"vma": "0x21af", "text": "-e, --enroll_test                          Runs enroll_test"},
+      {"vma": "0x21eb", "text": "-a, --authentication_test                  Runs authentication_test"},
+      {"vma": "0x222f", "text": "-d, --db_blob_test                         Runs db_blob_test"}
+    ],
+    "option_to_action": [
+      {"opt": "-s", "long": "--sensor_test", "code_block": "0x546c", "banner": "Starting sensor_test (0x20ee)", "call": "0x895c (run_test)", "test_id": 0, "delay_ms": 0},
+      {"opt": "-b", "long": "--checkerboard_test", "code_block": "0x53f4", "banner": "Starting checkerboard_test (0x1f3a)", "call": "0x895c (run_test)", "test_id": 1, "ta_sees": 7, "delay_ms": 0},
+      {"opt": "-q", "long": "--imagequality_test", "code_block": "0x5184", "banner": "Starting imagequality_test (0x24be)", "call": "0x895c (run_test)", "test_id": 2, "delay_ms": 500, "note": "also prints 'Put rubber stamp against sensor...' (0x1a8c)"},
+      {"opt": "-p", "long": "--resetpixel_test", "code_block": "0x5398", "banner": "Starting resetpixel_test (0x3537)", "call": "0x895c (run_test)", "test_id": 3, "delay_ms": 0},
+      {"opt": "-u", "long": "--capture_uncalibrated", "code_block": "0x5538", "banner": "Starting capture_uncalibrated (0x2018)", "call": "0x8e38 (capture_uncalibrated, cmd 6)", "test_id": null, "note": "prints printf('%s: %d', 'capture_uncalibrated', status) at 0x5550..0x5564 and then 'End of test.'"},
+      {"opt": "-C", "long": "--afd_calibration_test", "code_block": "0x52e0", "banner": "Starting afd_calibration_test (0x2b91)", "call": "0x895c (run_test)", "test_id": 4, "delay_ms": 0},
+      {"opt": "-D", "long": "--defective_pixels_test", "code_block": "0x533c", "banner": "Starting defective_pixels_test (0x2a9a)", "call": "0x895c (run_test)", "test_id": 7, "delay_ms": 0},
+      {"opt": "-e", "long": "--enroll_test", "code_block": "0x52b8", "banner": "Starting enroll_test (0x2342)", "call": "0x55d8 + 0x5a10 (enroll flow)", "test_id": null},
+      {"opt": "-E", "long": "--enroll_no_sensor_test", "code_block": "0x5258", "banner": "Starting enroll_no_sensor test (0x37ea)", "call": "0x55d8 + 0x5a10", "test_id": null},
+      {"opt": "-a", "long": "--authentication_test", "code_block": "0x527c", "banner": "Starting authentication_test (0x351a)", "call": "0x55d8 + 0x5a10", "test_id": null},
+      {"opt": "-A", "long": "--authentication_no_sensor_test", "code_block": "0x5220", "banner": "Starting authentication_no_sensor test (0x1bfa)", "call": "0x55d8 + 0x5a10", "test_id": null},
+      {"opt": "-d", "long": "--db_blob_test", "code_block": "0x5450", "banner": "Starting db blob test (0x3809)", "call": "0x5e30 (db blob test)", "test_id": null}
+    ],
+    "notes": [
+      "run_test is always called with delay_ms = 0 except -q (500 ms) — 0x51c0 mov w2,#0x1f4.",
+      "The 28-byte parameter block passed to run_test is zero-initialised by the utility for every option (e.g. 0x518c-0x51a8, 0x52ec-0x5314), i.e. the factory tool uses default test settings.",
+      "After each sensortest call the utility prints printf('%s: %d', <test name>, status_from_buf+0x2c) (format 0x3013, e.g. 0x531c/0x5324) — the value printed is the TA's +0x2c field, not the return code.",
+      "No image file is written anywhere by this tool: there is no .pgm/.raw/.bmp/.png string and the -u block only prints the status. File outputs that do exist are the template DB ('/data/system/test.db', '%s Successfully wrote template database %s'), db blobs, and KPI CSVs written as '%s/oddc_%s%s_%04d%02d%02d%02d%02d%02d_%s_#%s#.csv' under '/data/fpc/diag_logs' (0x2d3f, 0x38d8, 0x38ad). 'img.id' (0x25f8) is a CSV column label (fprintf arg at 0x8254), not a file name.",
+      "enroll_no_sensor / authentication_no_sensor are not module-5 commands: 0x55d8 opens a directory (0x5638 opendir) and the injected-image path uses fpc_tee_debug_inject ('fpc_tee_debug_inject' referenced at 0x7410) with the enroll/verify directories ('/data/system/enroll/', '/data/system/verify/'). Fully reversing 0x55d8/0x5a10 was out of scope (it is the enrol/identify flow, not module 5)."
+    ]
+  },
+
+  "unknowns": [
+    "TA-side names for module 5 and for its commands (no symbols; the names used here are guesses from HAL/utility strings).",
+    "Why the host rewrites test id 1 -> 7 (looks like a compatibility shim for an older TA numbering); consequence is that host 'Checkerboard Test' runs the TA's defective-pixel test.",
+    "Whether any TA build dispatches cmd 7 (GET_LOG); this one does not, and the log content is therefore unreachable.",
+    "TAC-layer meaning of the length passed to the handler (fpc_tac_transfer 0x22df0 puts [shared+0x10] into the QSEECom descriptor; the QSEECom 0x40/0x40 sizes are constant for every transfer).",
+    "Semantics of the 28-byte cmd4 parameter block per test type (only the field consumption was measured, not their meaning).",
+    "Image geometry/format of the uncalibrated capture (lives behind sensor_driver_capture_image 0x16764 / fpc_sensor_driver_get_default_capture_config 0x17a70; nothing in module 5 carries it).",
+    "Semantic of the 32-bit error literals 0xe8a1c0a1 / 0xe8a1c0ce (TA-internal error base, no name strings found)."
+  ]
+}

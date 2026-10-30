@@ -1,0 +1,29 @@
+  UNIT                      LOAD   ACTIVE SUB    DESCRIPTION
+● bootmac-bluetooth.service loaded failed failed Set Bluetooth Mac Address
+
+Legend: LOAD   → Reflects whether the unit definition was properly loaded.
+        ACTIVE → The high-level unit activation state, i.e. generalization of SUB.
+        SUB    → The low-level unit activation state, values depend on unit type.
+
+1 loaded units listed.
+---
+● kali
+    State: degraded
+    Units: 1188 loaded (incl. loaded aliases)
+     Jobs: 0 queued
+   Failed: 1 units
+    Since: Wed 1974-08-14 13:09:55 -03; 52 years 2 months ago
+  systemd: 262-1
+  Tainted: unmerged-bin
+   CGroup: /
+           ├─init.scope
+           │ └─1 /sbin/init
+           ├─system.slice
+           │ ├─ModemManager.service
+           │ │ ├─1497 /usr/sbin/ModemManager --test-quick-suspend-resume
+           │ │ └─1712 /usr/libexec/qmi-proxy
+           │ ├─NetworkManager.service
+           │ │ └─1561 /usr/sbin/NetworkManager --no-daemon
+           │ ├─accounts-daemon.service
+           │ │ └─1170 /usr/libexec/accounts-daemon
+           │ ├─bluetooth.service

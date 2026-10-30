@@ -1,0 +1,69 @@
+#!/bin/sh
+# teste-termico — carga sustentada em 8 nucleos com amostragem (L1 / G4).
+# Aborta sozinho se qualquer zona passar de 100 C.
+# Log: /root/thermal-test.log
+LOG=/root/thermal-test.log
+DUR=${1:-600}      # segundos de carga (padrao 10 min)
+IVL=${2:-10}       # intervalo de amostragem
+
+: > "$LOG"
+echo "# inicio $(date +%F' '%H:%M:%S)  duracao ${DUR}s  amostragem ${IVL}s" >> "$LOG"
+echo "# hora load cpu0_mC cpu6_mC cpu7_mC cpu0_MHz cpu6_MHz cool0 cool6" >> "$LOG"
+
+zona() {   # zona <nome-do-type>  -> caminho da zona
+    for z in /sys/class/thermal/thermal_zone*; do
+        [ "$(cat "$z/type" 2>/dev/null)" = "$1" ] && { echo "$z"; return; }
+    done
+    echo /dev/null
+}
+
+A55=$(zona cpu0-thermal)
+A76=$(zona cpu6-thermal)
+A76B=$(zona cpu7-thermal)
+
+max_temp() {
+    m=0
+    for z in /sys/class/thermal/thermal_zone*; do
+        t=$(cat "$z/temp" 2>/dev/null)
+        [ -n "$t" ] || continue
+        [ "$t" -gt "$m" ] && m=$t
+    done
+    echo "$m"
+}
+
+# 8 cargas
+i=0
+while [ $i -lt 8 ]; do
+    sh -c "end=\$(( \$(date +%s) + $DUR )); while [ \$(date +%s) -lt \$end ]; do :; done" &
+    i=$((i+1))
+done
+
+fim=$(( $(date +%s) + DUR ))
+pico=0
+while [ "$(date +%s)" -lt "$fim" ]; do
+    t=$(max_temp)
+    [ "$t" -gt "$pico" ] && pico=$t
+    printf '%s %s %s %s %s %s %s %s %s\n' \
+        "$(date +%H:%M:%S)" \
+        "$(cut -d' ' -f1 /proc/loadavg)" \
+        "$(cat "$A55/temp" 2>/dev/null)" \
+        "$(cat "$A76/temp" 2>/dev/null)" \
+        "$(cat "$A76B/temp" 2>/dev/null)" \
+        "$(awk '{printf "%.0f", $1/1000}' /sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq 2>/dev/null)" \
+        "$(awk '{printf "%.0f", $1/1000}' /sys/devices/system/cpu/cpufreq/policy6/scaling_cur_freq 2>/dev/null)" \
+        "$(cat /sys/class/thermal/cooling_device0/cur_state 2>/dev/null)" \
+        "$(cat /sys/class/thermal/cooling_device1/cur_state 2>/dev/null)" >> "$LOG"
+
+    if [ "$t" -ge 100000 ]; then
+        echo "# ABORTADO: zona a ${t}mC (>=100 C) em $(date +%H:%M:%S)" >> "$LOG"
+        break
+    fi
+    sleep "$IVL"
+done
+
+# encerra as cargas
+pkill -f "while \[ \$(date +%s) -lt" 2>/dev/null
+for p in $(jobs -p 2>/dev/null); do kill "$p" 2>/dev/null; done
+sleep 2
+echo "# fim $(date +%F' '%H:%M:%S)  pico de temperatura: ${pico}mC" >> "$LOG"
+echo "pico=${pico}" > /run/thermal-test.peak

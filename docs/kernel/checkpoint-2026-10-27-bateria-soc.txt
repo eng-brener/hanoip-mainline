@@ -1,0 +1,84 @@
+Checkpoint 2026-10-27 — SOC da bateria estabilizado (hanoip/Kali)
+==================================================================
+
+SINTOMA
+  A porcentagem da bateria variava sozinha (subia e descia sem carga/descarga
+  correspondente). Medido no aparelho: 93% -> 92% -> 91% em 26 s com
+  current_now = 0 e tensão praticamente constante (4,2316 V).
+
+CAUSAS (ambas no driver, nenhuma relacionada ao caminho de energia)
+  1. Sem `ocv-capacity-table` no DT, qcom_qg usava mapa LINEAR
+     3,2 V..4,45 V = ~12,5 mV por 1%. Ruído de ADC (25 mV) = 2%;
+     queda por carga (79 mV medidos) = ~6%.
+  2. `qcom_qg_smooth_capacity()` era um caminhante de 1% a cada 20 s que só
+     andava numa direção, conforme o status de carga: perseguia o ruído
+     continuamente.
+
+ARQUITETURA (importante para o futuro)
+  A device tree em uso vem EMBUTIDA no U-Boot (CONFIG_OF_EMBED, ver
+  work/uboot-builds-20261026/README.txt). Alterar o DT na árvore do kernel
+  NÃO chega ao aparelho. A DT do dtb dentro do boot.img do kernel também não
+  é usada: o boot.img do Kali carrega um dtb de 93049 bytes sem node de
+  bateria, enquanto /proc/device-tree/battery existe (vem do U-Boot).
+
+CORREÇÃO
+  a) DT (no U-Boot): variante `...-pmos-perif-batt.dts` com
+     ocv-capacity-table-0 (21 pontos, Li-ion 4,44 V), ocv-capacity-celsius=25
+     e factory-internal-resistance-micro-ohms=30000.
+     Prova de minimalidade com scripts/fdt_diff.py: 744 nós nos dois DTs,
+     diferença = só as 3 propriedades em /battery.
+  b) Driver (módulo, kernel v4 patch 0167): amostras médias
+     (QG_S2_NORMAL_AVG_V/I) em vez de QG_LAST_ADC, banda morta de 2%,
+     deriva 1% por 2 min nas duas direções, sem queda enquanto carrega,
+     clamp 0..100.
+
+VALIDAÇÃO
+  - DT em vigor: /proc/device-tree/battery/ocv-capacity-table-0 presente.
+  - capacity 84% para OCV 4,2369 V (curva: 85% em 4,240 V; mapa linear
+    antigo diria 82%).
+  - Carga de CPU (6 busy loops): -708 mA, tensão média 4,234 -> 4,155 V
+    (79 mV). Capacidade ficou em 84% durante todo o teste.
+  - Sistema saudável no boot com o U-Boot novo: running, 0 units falhando,
+    ssc/iio ativos, wlan0 com IP, display connected+enabled, 0 erro de
+    GPU/DSI.
+
+SEGURANÇA
+  Nada disso escreve no PMIC: o driver do charger tem 0 regmap_write e o SDAM
+  da QGauge é read-only no DT. Carregamento continua desligado (fase B3 do
+  docs/PLANO-BATERIA-ENERGIA.md). O SOC não é usado para decisão de segurança.
+
+ARTEFATOS
+  work/bateria-soc-20261027/  (u-boot, módulos novo/anterior, .dts, LEIA-ME)
+  work/kernel-7.3/v4/         (patch 0167 + README)
+  scripts/fdt_diff.py         (comparação de DTs compiladas)
+  /usr/local/sbin/hanoip-batt-log  (CSV V/I/T 1 s + resumo)
+
+COMPORTAMENTO DOS REGISTRADORES DA QGAUGE (medido 27/10, importante)
+--------------------------------------------------------------------
+Os registradores do "último ADC" atualizam a cada leitura; os avançados
+(_avg e _ocv) ficam congelados porque o algoritmo periódico da QGauge não
+roda (o Android é quem o alimenta; no nosso port ninguém o programa).
+
+                            ocioso            sob carga (4-6 busy loops)
+  voltage_now (0xc0)        4.2220-4.2232 V   4.170-4.176 V     atualiza
+  voltage_avg (0x80)        4.225763 V        4.206300 V        ~congelado
+  voltage_ocv (SDAM 0x4c)   4.236858 V        4.236858 V        congelado
+  current_now (0xc2)        0                -311..-336 mA      atualiza
+  current_avg (0x82)        0                -115356 uA         congelado
+
+Consequências:
+ - O patch 0167 usa os registradores MÉDIOS para a estimativa, então a
+   compensação de queda IR recebe corrente 0/parada. Na prática isso deixa a
+   estimativa presa perto da tensão de repouso, o que é estável (foi o que
+   medimos), mas por um motivo frágil.
+ - Ajuste previsto para quando o carregamento existir (fase B3/B5): usar
+   current_now na compensação IR e aplicar um filtro por tempo no driver
+   (EMA com peso por dt), em vez de confiar nos registradores _avg/_ocv.
+ - UPower/energy-rate NÃO precisa de correção: ele lê current_now, que
+   funciona (0 W ocioso, 1,9-2,1 W sob carga, verificado).
+
+CRITÉRIO DE ACEITE — ATENDIDO
+-----------------------------
+Log de 15 min a 1 Hz (452 amostras): capacity min 83% / max 84%,
+AMPLITUDE = 1 ponto, SALTOS > 2% = 0. Inclui 40 s de carga de CPU intensa
+(-708 mA, tensão 4,234 -> 4,155 V) sem nenhum salto.

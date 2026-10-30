@@ -1,0 +1,272 @@
+#!/bin/sh
+# hanoip-usb-mode — escolhe o que a porta USB do hanoip faz.
+#
+# Uso:
+#   hanoip-usb-mode status              mostra o estado atual (sem mudar nada)
+#   hanoip-usb-mode charge              so' carrega (sem gadget)
+#   hanoip-usb-mode serial              console ACM (/dev/ttyACM* no host)
+#   hanoip-usb-mode net                 rede NCM (usb0, 172.16.42.1/24 + DHCP)
+#   hanoip-usb-mode combo               rede + console (padrao historico)
+#   hanoip-usb-mode storage [ro]        pendrive a partir de ARQUIVO-IMAGEM
+#   hanoip-usb-mode hid                 teclado HID (/dev/hidg0)
+#   hanoip-usb-mode uvc                 webcam UVC (experimental)
+#
+#   hanoip-usb-mode save <modo>         grava o modo para o proximo boot
+#
+# REGRAS DE SEGURANCA (nao mexer sem conversa):
+#   - storage SO' com arquivo-imagem (STORAGE_FILE). NUNCA particao real:
+#     um host poderia escrever e destruir o Kali que vive em userdata.
+#   - host e gadget sao excludentes: em modo host nao existe UDC.
+#   - este script nao toca em charger, VBUS, float, JEITA nem FCC.
+#
+# Trocar de modo derruba o USB por 1-3 s (o UDC e' desvinculado). Se estiver
+# conectado por SSH USB, use WiFi para comandar.
+
+set -u
+
+GADGET=hanoip
+G=/sys/kernel/config/usb_gadget/$GADGET
+CONF=/etc/hanoip/usb-mode.conf
+RUN_STATE=/run/hanoip-usb-mode.state
+STORAGE_FILE=${STORAGE_FILE:-/var/lib/hanoip/usbstore.img}
+STORAGE_DEFAULT_RO=0
+NET_IP=172.16.42.1
+NET_HOST_IP=172.16.42.2
+DNSMASQ_PID=/run/hanoip-dnsmasq.pid
+
+log()  { printf 'hanoip-usb-mode: %s\n' "$*" >&2; printf 'hanoip-usb-mode: %s\n' "$*" > /dev/kmsg 2>/dev/null || true; }
+die()  { log "ERRO: $*"; exit 1; }
+have() { command -v "$1" >/dev/null 2>&1; }
+udc()  { ls /sys/class/udc 2>/dev/null | head -1; }
+
+# ---------------------------------------------------------------- status
+show_status() {
+	mode=$(sed -n 's/^MODE=//p' "$CONF" 2>/dev/null | head -1)
+	echo "modo configurado : ${mode:-<nenhum>}"
+	if [ -d /sys/class/typec/port0 ]; then
+		echo "Type-C           : $(cat /sys/class/typec/port0/power_role 2>/dev/null) / $(cat /sys/class/typec/port0/data_role 2>/dev/null)"
+	fi
+	d=$(udc)
+	if [ -z "$d" ]; then
+		echo "UDC              : ausente (papel HOST ou controlador sem modo device)"
+	else
+		echo "UDC              : $d state=$(cat /sys/class/udc/$d/state 2>/dev/null) speed=$(cat /sys/class/udc/$d/current_speed 2>/dev/null)"
+	fi
+	if [ -d "$G" ]; then
+		echo "gadget           : $GADGET bound=$(cat "$G/UDC" 2>/dev/null)"
+		echo "funcoes          : $(ls "$G/functions" 2>/dev/null | tr '\n' ' ')"
+	else
+		echo "gadget           : $GADGET nao criado (o modo ainda nao foi aplicado)"
+	fi
+	# outros gadgets existentes (ex.: os antigos hanoip-console/hanoip-net)
+	for g in /sys/kernel/config/usb_gadget/*; do
+		[ -d "$g" ] || continue
+		[ "${g##*/}" = "$GADGET" ] && continue
+		echo "outro gadget     : ${g##*/} bound=$(cat "$g/UDC" 2>/dev/null) funcoes=$(ls "$g/functions" 2>/dev/null | tr '\n' ' ')"
+	done
+	echo "usb0             : $(ip -br addr show usb0 2>/dev/null | awk '{print $2, $3}')"
+	for f in /sys/class/regulator/*/name; do
+		n=$(cat "$f" 2>/dev/null)
+		case "$n" in *vbus*) echo "boost de VBUS    : $(cat "$(dirname "$f")/state" 2>/dev/null)";; esac
+	done
+	if [ -f "$RUN_STATE" ]; then
+		echo "ultima aplicacao : $(cat "$RUN_STATE")"
+	fi
+	# status e' leitura: sempre sai 0, mesmo que algum arquivo nao exista
+	return 0
+}
+
+# --------------------------------------------------------------- teardown
+stop_net() {
+	pkill -f "dnsmasq.*172.16.42" 2>/dev/null || true
+	[ -f "$DNSMASQ_PID" ] && kill "$(cat "$DNSMASQ_PID" 2>/dev/null)" 2>/dev/null || true
+	rm -f "$DNSMASQ_PID"
+}
+
+teardown() {
+	# 1) solta o UDC de QUALQUER gadget (inclusive os antigos hanoip-console/net)
+	for g in /sys/kernel/config/usb_gadget/*; do
+		[ -e "$g/UDC" ] || continue
+		[ -n "$(cat "$g/UDC" 2>/dev/null)" ] || continue
+		printf '' > "$g/UDC" 2>/dev/null && log "desvinculado ${g##*/}"
+	done
+
+	# 2) remove o nosso gadget inteiro (configfs exige rmdir, nao rm)
+	if [ -d "$G" ]; then
+		for l in "$G"/configs/c.1/*; do
+			[ -L "$l" ] && rm -f "$l"
+		done
+		for fn in "$G"/functions/*; do
+			[ -d "$fn" ] && rmdir "$fn" 2>/dev/null || log "aviso: nao removi ${fn##*/}"
+		done
+		rmdir "$G/configs/c.1/strings/0x409" "$G/configs/c.1" \
+		      "$G/strings/0x409" "$G" 2>/dev/null || log "aviso: sobras no configfs"
+	fi
+
+	stop_net
+}
+
+# ------------------------------------------------------------------ build
+new_gadget() {
+	mkdir -p "$G/strings/0x409" "$G/configs/c.1/strings/0x409" || die "configfs montado? (mount -t configfs none /sys/kernel/config)"
+	echo 0x1d6b > "$G/idVendor"
+	echo 0x0104 > "$G/idProduct"
+	echo 0x0100 > "$G/bcdDevice"
+	echo 0x0200 > "$G/bcdUSB"
+	echo 0xEF > "$G/bDeviceClass"
+	echo 0x02 > "$G/bDeviceSubClass"
+	echo 0x01 > "$G/bDeviceProtocol"
+	# serialnumber fixo: mantem o nome do tty estavel no macOS
+	echo hanoip-kali > "$G/strings/0x409/serialnumber"
+	echo Motorola > "$G/strings/0x409/manufacturer"
+	echo "hanoip Kali (USB)" > "$G/strings/0x409/product"
+	echo "hanoip $1" > "$G/configs/c.1/strings/0x409/configuration"
+	echo 500 > "$G/configs/c.1/MaxPower"
+}
+
+add_ncm() {
+	mkdir -p "$G/functions/ncm.usb0" || return 1
+	echo 02:68:61:6e:6f:01 > "$G/functions/ncm.usb0/dev_addr"
+	echo 02:68:61:6e:6f:02 > "$G/functions/ncm.usb0/host_addr"
+	ln -sf "$G/functions/ncm.usb0" "$G/configs/c.1/ncm.usb0"
+}
+
+add_acm() {
+	mkdir -p "$G/functions/acm.usb0" || return 1
+	ln -sf "$G/functions/acm.usb0" "$G/configs/c.1/acm.usb0"
+}
+
+add_hid() {
+	mkdir -p "$G/functions/hid.usb0" || return 1
+	echo 1 > "$G/functions/hid.usb0/protocol"
+	echo 0 > "$G/functions/hid.usb0/subclass"
+	echo 8 > "$G/functions/hid.usb0/report_length"
+	# descritor de relatorio: teclado simples (6 teclas + modificadores)
+	printf '\x05\x01\x09\x06\xa1\x01\x05\x07\x19\xe0\x29\xe7\x15\x00\x25\x01\x75\x01\x95\x08\x81\x02\x95\x01\x75\x08\x81\x01\x95\x06\x75\x08\x15\x00\x25\x65\x05\x07\x19\x00\x29\x65\x81\x00\xc0' \
+		> "$G/functions/hid.usb0/report_desc"
+	ln -sf "$G/functions/hid.usb0" "$G/configs/c.1/hid.usb0"
+}
+
+add_storage() {
+	ro=${1:-$STORAGE_DEFAULT_RO}
+	[ -f "$STORAGE_FILE" ] || {
+		log "arquivo-imagem nao existe: $STORAGE_FILE"
+		log "crie com:  hanoip-usb-mode storage-init 256   (256 MB)"
+		return 1
+	}
+	mkdir -p "$G/functions/mass_storage.0" || return 1
+	echo "$STORAGE_FILE" > "$G/functions/mass_storage.0/lun.0/file"
+	echo "$ro" > "$G/functions/mass_storage.0/lun.0/ro"
+	echo 1 > "$G/functions/mass_storage.0/lun.0/removable"
+	ln -sf "$G/functions/mass_storage.0" "$G/configs/c.1/mass_storage.0"
+	[ "$ro" = 1 ] && log "armazenamento em MODO LEITURA ($STORAGE_FILE)"
+}
+
+add_uvc() {
+	# experimental: precisa de usb_f_uvc (modulo) e de um app que alimente
+	# o stream (uvc-gadget). Aqui so' montamos a funcao.
+	modprobe usb_f_uvc 2>/dev/null || { log "uvc: modulo usb_f_uvc indisponivel"; return 1; }
+	mkdir -p "$G/functions/uvc.usb0/control/header/h" || return 1
+	ln -sf "$G/functions/uvc.usb0/control/header/h" "$G/configs/c.1/uvc.usb0"
+	mkdir -p "$G/functions/uvc.usb0/streaming/uncompressed/u/360p"
+	printf '666666\n1000000\n2000000\n' > "$G/functions/uvc.usb0/streaming/uncompressed/u/360p/dwFrameInterval"
+	echo 360000 > "$G/functions/uvc.usb0/streaming/uncompressed/u/360p/wMaxPacketSize"
+	mkdir -p "$G/functions/uvc.usb0/streaming/header/h"
+	ln -sf "$G/functions/uvc.usb0/streaming/uncompressed/u" "$G/functions/uvc.usb0/streaming/header/h/u"
+	ln -sf "$G/functions/uvc.usb0/streaming/header/h" "$G/configs/c.1/uvc.usb0-streaming"
+	ln -sf "$G/functions/uvc.usb0/streaming/class/fs" "$G/configs/c.1/uvc.usb0-fs"
+	log "uvc: funcao montada (precisa de uvc-gadget rodando para ter imagem)"
+}
+
+bind_udc() {
+	i=0
+	while [ -z "$(udc)" ] && [ "$i" -lt 20 ]; do i=$((i+1)); sleep 1; done
+	d=$(udc)
+	[ -n "$d" ] || die "nenhum UDC disponivel (papel host?)"
+	echo "$d" > "$G/UDC" || die "nao consegui vincular o UDC $d"
+	log "vinculado ao UDC $d"
+}
+
+setup_net() {
+	IF=$(cat "$G/functions/ncm.usb0/ifname" 2>/dev/null || echo usb0)
+	case "$IF" in ''|*unnamed*) IF=usb0 ;; esac
+	i=0
+	while [ ! -e "/sys/class/net/$IF" ] && [ "$i" -lt 20 ]; do i=$((i+1)); sleep 1; done
+	ip addr add "$NET_IP/24" dev "$IF" 2>/dev/null || true
+	ip link set "$IF" up 2>/dev/null || true
+	if have dnsmasq; then
+		dnsmasq --interface="$IF" --bind-interfaces --except-interface=lo \
+			--dhcp-range="$NET_HOST_IP,$NET_HOST_IP,255.255.255.0,12h" \
+			--pid-file="$DNSMASQ_PID" --port=0 2>/dev/null || true
+		log "dnsmasq em $IF ($NET_HOST_IP para o host)"
+	else
+		log "sem dnsmasq: configure $NET_HOST_IP/24 na mao no host"
+	fi
+	systemctl start ssh.service 2>/dev/null || true
+	log "rede: $IF $NET_IP/24"
+}
+
+storage_init() {
+	mb=${1:-256}
+	case "$mb" in ''|*[!0-9]*) die "tamanho invalido: $mb (MB)";; esac
+	mkdir -p "$(dirname "$STORAGE_FILE")"
+	[ -f "$STORAGE_FILE" ] && die "$STORAGE_FILE ja existe"
+	# arquivo esparso: ocupa pouco ate ser usado
+	truncate -s "${mb}M" "$STORAGE_FILE" || fallocate -l "${mb}M" "$STORAGE_FILE" || die "nao criei o arquivo"
+	if have mkfs.vfat; then
+		mkfs.vfat -n HANOIP "$STORAGE_FILE" >/dev/null 2>&1 && log "FAT criado"
+	else
+		log "sem mkfs.vfat: o arquivo esta cru (formate depois no host)"
+	fi
+	log "imagem criada: $STORAGE_FILE (${mb} MB)"
+}
+
+# ------------------------------------------------------------------- main
+apply_mode() {
+	mode=$1
+	shift || true
+	teardown
+	case "$mode" in
+	charge)
+		log "modo charge: sem gadget (apenas carregar)"
+		;;
+	serial)
+		new_gadget "$mode"; add_acm || die "acm falhou"; bind_udc ;;
+	net)
+		new_gadget "$mode"; add_ncm || die "ncm falhou"; bind_udc; setup_net ;;
+	combo)
+		new_gadget "$mode"; add_acm || die "acm falhou"; add_ncm || die "ncm falhou"
+		bind_udc; setup_net ;;
+	storage)
+		new_gadget "$mode"; add_storage "${1:-}" || die "storage falhou"; bind_udc ;;
+	hid)
+		new_gadget "$mode"; add_hid || die "hid falhou"; bind_udc
+		log "hid: /dev/hidg0 pronto para um injetor de teclado" ;;
+	uvc)
+		new_gadget "$mode"; add_uvc || die "uvc falhou"; bind_udc ;;
+	*)
+		die "modo desconhecido: $mode (use charge|serial|net|combo|storage|hid|uvc)" ;;
+	esac
+	printf '%s %s at %s\n' "$mode" "${*:-}" "$(date '+%F %T')" > "$RUN_STATE"
+	log "modo aplicado: $mode"
+}
+
+case "${1:-status}" in
+	status)        show_status; exit 0 ;;
+	save)          [ -n "${2:-}" ] || die "uso: $0 save <modo>"
+	               mkdir -p "$(dirname "$CONF")"
+	               printf 'MODE=%s\n' "$2" > "$CONF"
+	               log "salvo em $CONF: $2" ;;
+	storage-init)  storage_init "${2:-256}" ;;
+	set)           # aplica E grava (o que o app da interface usa)
+	               [ -n "${2:-}" ] || die "uso: $0 set <modo>"
+	               apply_mode "$2"
+	               mkdir -p "$(dirname "$CONF")"
+	               printf 'MODE=%s\n' "$2" > "$CONF"
+	               log "modo $2 aplicado e salvo" ;;
+	apply-saved)   # usado pelo hanoip-usb-mode.service no boot
+	               m=$(sed -n 's/^MODE=//p' "$CONF" 2>/dev/null | head -1)
+	               [ -n "$m" ] || { log "sem $CONF: nada a aplicar (mantendo o padrao do initramfs)"; exit 0; }
+	               apply_mode "$m" ;;
+	*)             apply_mode "$@" ;;
+esac

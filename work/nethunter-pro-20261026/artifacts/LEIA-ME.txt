@@ -1,0 +1,61 @@
+Kali NetHunter Pro (Phosh) para o hanoip — artefatos prontos (26/10/2026)
+
+Build feito no Mac (OrbStack, container arm64v8/ubuntu:24.04, NATIVO — sem
+emulação), replicando o rootfs.yaml oficial do kali-nethunter-pro.
+O build oficial via debos/fakemachine também foi tentado em Gentoo x86_64
+(com /dev/kvm) como referência.
+
+ARQUIVOS
+  kali-hanoip-userdata.img        10 GiB, ext4 label "kali", ~4,9 GiB usados
+                                  166723 arquivos, e2fsck -fn LIMPO
+                                  -> candidato a `fastboot flash userdata`
+  kernel-hanoip-kali-phosh-v1.img boot.img v2 (página 4096) com
+                                  kernel 7.3.0-sm7150 (Image.gz),
+                                  initrd gerado com nosso hook, DTB do hanoip
+                                  e cmdline com mobile.root=/dev/disk/by-partlabel/userdata
+  SHA256SUMS
+
+CONTEÚDO DO ROOTFS (seguindo a receita oficial)
+  kali-linux-core, kali-nethunter-core (nethunter-utils), kali-themes-mobile
+  mobian-phosh + phosh 0.58, firefox-esr, squeekboard, loupe,
+  gnome-sound-recorder, powersupply-gtk, uBlock Origin
+  usuário kali (uid 1000, senha definida no build) em sudo/bluetooth/
+  plugdev/feedbackd; ssh.service e bluetooth.service habilitados;
+  systemd-firstboot mascarado; hostname kali; machine-id zerado.
+
+DIFERENÇAS DELIBERADAS EM RELAÇÃO À DOC
+  - NÃO instalado: nethunter, hijacker, kalitorify (não existem nos repos
+    Kali rolling atuais; o pacote real é kali-nethunter-core/nethunter-utils)
+  - NÃO instalado (e é bom): systemd-repart, qcom-phone-utils,
+    droid-juicer, make-dynpart-mappings, zz-qcom-bootimg, qcom-backup-boot
+    -> nada regrava partição no primeiro boot
+  - kernel: o NOSSO 7.3.0-sm7150 (.deb do work/kernel-7.3/v3), não o 6.18
+    do Mobian (que não tem DT/patches do hanoip)
+  - boot: U-Boot volátil + `fastboot boot` do nosso boot.img; nunca
+    `flash boot`; o DT vem do U-Boot (o DTB anexado é ignorado)
+
+HOOK DE SEGURANÇA (initramfs)
+  /scripts/init-premount/hanoip-guard (roda antes do mobile-root):
+  trava TODO bloco em RO exceto o dispositivo do rootfs (userdata), e
+  verifica; se não conseguir identificar o root, NÃO trava nada e avisa
+  (para não impedir o boot). + regra udev 99-hanoip-blockdev-ro.rules no
+  rootfs (sd*/loop* RO + UDISKS_IGNORE).
+
+TESTE SEM GRAVAR — PASSOU (26/10 ~19h, log em /tmp/kali-serial-1.log)
+  `fastboot boot` U-Boot + este boot.img (cmdline sem mobile.root):
+  kernel 7.3 do Kali boota, DT do hanoip aplicado, DRM/MSM sobe
+  (fb0 msmdrmfb, 135x153), initramfs roda e o console USB (ACM, ttyGS0)
+  funciona — foi por ele que coletamos o log. Termina em
+  "No root device specified" (esperado, sem mobile.root). Nada montado.
+  Achados: os "ERROR: reserving fdt memory region failed ... -17" do U-Boot
+  são NORMAIS neste board (a GOLD mostra os mesmos e sobe).
+  a630_sqe.fw ausente no initramfs e' esperado (firmware vem de modem_a).
+
+PENDÊNCIAS ANTES DE USAR
+  1. Autorização final do usuário para `fastboot flash userdata`
+     (apaga o Android e todos os dados pessoais).
+  2. Decidir o crescimento do filesystem (imagem tem 10 GiB; userdata tem
+     ~110 GiB). Opções: resize2fs num serviço de primeiro boot, ou imagem
+     esparsa do tamanho da partição.
+  3. Firmware: serviço hanoip-firmware (systemd) ja instalado no rootfs,
+     monta modem_a/bluetooth_a RO e liga /lib/firmware. Validar no 1o boot.

@@ -1,0 +1,41 @@
+[   41.706639] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 60.000 Hz
+[   44.449171] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   46.264854] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   46.481903] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.246996] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.313490] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.313853] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.314215] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.314520] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.314774] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.315037] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.315296] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.315533] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.315766] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   48.315982] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   91.514117] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[   95.610708] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 60.000 Hz
+[  212.598708] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz
+[  223.544417] kali phoc[4399]: [backend/drm/drm.c:984] connector DSI-1: Turning off
+[  229.942505] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz
+[  356.036667] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[  356.053111] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[  425.630387] kali phoc[4399]: [backend/drm/drm.c:984] connector DSI-1: Turning off
+[  426.162819] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz
+[  427.387528] kali phoc[4399]: [backend/drm/drm.c:984] connector DSI-1: Turning off
+[  427.756656] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz
+[  428.561991] kali phoc[4399]: [backend/drm/drm.c:984] connector DSI-1: Turning off
+[  428.930625] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz
+[  429.677876] kali phoc[4399]: [backend/drm/drm.c:984] connector DSI-1: Turning off
+[  430.073088] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz
+[  430.770571] kali phoc[4399]: [backend/drm/drm.c:984] connector DSI-1: Turning off
+[  431.203546] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz
+[  431.876777] kali phoc[4399]: [backend/drm/drm.c:984] connector DSI-1: Turning off
+[  432.434467] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz
+[  433.184190] kali phoc[4399]: [backend/drm/drm.c:984] connector DSI-1: Turning off
+[  433.561238] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz
+[  437.590102] kali phoc[4399]: [backend/drm/drm.c:984] connector DSI-1: Turning off
+[  438.271936] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz
+[  521.195587] kali phoc[4399]: [backend/drm/atomic.c:82] connector DSI-1: Atomic commit failed: Device or resource busy
+[  582.760419] kali phoc[4399]: [backend/drm/drm.c:984] connector DSI-1: Turning off
+[  585.113105] kali phoc[4399]: [backend/drm/drm.c:980] connector DSI-1: Modesetting with 1080x2460 @ 119.976 Hz

@@ -1,0 +1,4 @@
+# hanoip: keep every block device read-only except the root (userdata).
+# The root partition must stay writable or the system breaks on remount.
+ACTION!="remove", SUBSYSTEM=="block", KERNEL=="sd*", ENV{ID_PART_ENTRY_NAME}!="userdata", ENV{UDISKS_IGNORE}="1", ENV{UDISKS_AUTO}="0", RUN+="/sbin/blockdev --setro /dev/%k"
+ACTION!="remove", SUBSYSTEM=="block", KERNEL=="loop*", ENV{UDISKS_IGNORE}="1", ENV{UDISKS_AUTO}="0"

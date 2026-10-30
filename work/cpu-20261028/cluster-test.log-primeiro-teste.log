@@ -1,0 +1,43 @@
+# inicio 2026-10-28 09:01:35
+09:01:35 dpms=Off status=connected cluster_S1=142772ms/3587usos dsi_err=6 lcdb_off=2 temp=35400mC
+  >>> dpms: ? -> Off  (09:01:35)
+  >>> ERRO DSI NOVO (total 6):
+      [  179.143418] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+      [  204.792928] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB enabled LAB 5500 IBB 5500 BST 5650 VREG_OK
+      [  205.423667] hanoip-ilitek-spi spi6.0: IRAM reloaded after panel power-on
+      [  206.234519] qcom-pm6150l-lcdb c440000.spmi:pmic@5:regulator@ec00: LCDB disabled
+09:01:38 dpms=Off status=connected cluster_S1=144250ms/3617usos dsi_err=6 lcdb_off=2 temp=35100mC
+09:01:40 dpms=Off status=connected cluster_S1=145016ms/3634usos dsi_err=6 lcdb_off=2 temp=35800mC
+09:01:42 dpms=Off status=connected cluster_S1=146563ms/3676usos dsi_err=6 lcdb_off=2 temp=35800mC
+09:01:44 dpms=Off status=connected cluster_S1=147973ms/3706usos dsi_err=6 lcdb_off=2 temp=35100mC
+09:01:46 dpms=Off status=connected cluster_S1=149342ms/3732usos dsi_err=6 lcdb_off=2 temp=35100mC
+09:01:48 dpms=Off status=connected cluster_S1=151121ms/3761usos dsi_err=6 lcdb_off=2 temp=34800mC
+09:01:50 dpms=Off status=connected cluster_S1=152876ms/3791usos dsi_err=6 lcdb_off=2 temp=35100mC
+09:01:52 dpms=Off status=connected cluster_S1=154549ms/3826usos dsi_err=6 lcdb_off=2 temp=35400mC
+09:01:54 dpms=Off status=connected cluster_S1=156441ms/3861usos dsi_err=6 lcdb_off=2 temp=34800mC
+09:01:56 dpms=On status=connected cluster_S1=158045ms/3897usos dsi_err=6 lcdb_off=2 temp=35800mC
+  >>> dpms: Off -> On  (09:01:56)
+09:01:58 dpms=On status=connected cluster_S1=158777ms/3925usos dsi_err=6 lcdb_off=2 temp=41600mC
+09:02:00 dpms=On status=connected cluster_S1=158892ms/3932usos dsi_err=6 lcdb_off=2 temp=39600mC
+09:02:02 dpms=On status=connected cluster_S1=160339ms/3974usos dsi_err=6 lcdb_off=2 temp=37000mC
+09:02:04 dpms=On status=connected cluster_S1=162061ms/4032usos dsi_err=6 lcdb_off=2 temp=36700mC
+09:02:07 dpms=On status=connected cluster_S1=163205ms/4063usos dsi_err=6 lcdb_off=2 temp=36400mC
+09:02:09 dpms=On status=connected cluster_S1=164751ms/4103usos dsi_err=6 lcdb_off=2 temp=37000mC
+09:02:11 dpms=On status=connected cluster_S1=166380ms/4160usos dsi_err=6 lcdb_off=2 temp=36400mC
+09:02:13 dpms=On status=connected cluster_S1=167989ms/4207usos dsi_err=6 lcdb_off=2 temp=36100mC
+09:02:15 dpms=On status=connected cluster_S1=169722ms/4257usos dsi_err=6 lcdb_off=2 temp=37000mC
+09:02:17 dpms=On status=connected cluster_S1=171442ms/4301usos dsi_err=6 lcdb_off=2 temp=36400mC
+09:02:19 dpms=On status=connected cluster_S1=173125ms/4336usos dsi_err=6 lcdb_off=2 temp=36100mC
+09:02:21 dpms=On status=connected cluster_S1=174457ms/4386usos dsi_err=6 lcdb_off=2 temp=37700mC
+09:02:23 dpms=On status=connected cluster_S1=174680ms/4396usos dsi_err=6 lcdb_off=2 temp=37700mC
+09:02:25 dpms=On status=connected cluster_S1=175613ms/4430usos dsi_err=6 lcdb_off=2 temp=38300mC
+09:02:27 dpms=On status=connected cluster_S1=176835ms/4466usos dsi_err=6 lcdb_off=2 temp=36700mC
+09:02:29 dpms=On status=connected cluster_S1=178482ms/4512usos dsi_err=6 lcdb_off=2 temp=37700mC
+09:02:31 dpms=On status=connected cluster_S1=180156ms/4560usos dsi_err=6 lcdb_off=2 temp=37400mC
+09:02:33 dpms=On status=connected cluster_S1=181891ms/4616usos dsi_err=6 lcdb_off=2 temp=37000mC
+09:02:35 dpms=On status=connected cluster_S1=183128ms/4650usos dsi_err=6 lcdb_off=2 temp=37000mC
+09:02:37 dpms=On status=connected cluster_S1=183912ms/4677usos dsi_err=6 lcdb_off=2 temp=37400mC
+09:02:40 dpms=On status=connected cluster_S1=185669ms/4726usos dsi_err=6 lcdb_off=2 temp=37000mC
+09:02:42 dpms=On status=connected cluster_S1=187416ms/4786usos dsi_err=6 lcdb_off=2 temp=36700mC
+09:02:44 dpms=On status=connected cluster_S1=189097ms/4839usos dsi_err=6 lcdb_off=2 temp=36700mC
+09:02:46 dpms=On status=connected cluster_S1=190719ms/4894usos dsi_err=6 lcdb_off=2 temp=36400mC

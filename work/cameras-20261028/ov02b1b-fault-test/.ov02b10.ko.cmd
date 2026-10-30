@@ -1,0 +1,1 @@
+savedcmd_ov02b10.ko := aarch64-linux-gnu-ld -r -EL  -maarch64elf -z noexecstack --no-warn-rwx-segments --build-id=sha1 --force-group-allocation  -T /src/obj/scripts/module.lds -o ov02b10.ko ov02b10.o ov02b10.mod.o .module-common.o

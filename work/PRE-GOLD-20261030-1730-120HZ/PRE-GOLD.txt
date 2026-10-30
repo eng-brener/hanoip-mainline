@@ -1,0 +1,103 @@
+PRE-GOLD — 120 Hz em troca de modo, com correções DSI (30/10/2026 17:30)
+=========================================================================
+
+Status: EXPERIMENTAL VALIDADO EM TROCA DE MODO. Não é GOLD e não é par de
+uso diário. O modo padrão continua 60 Hz. Não substitui nenhuma baseline
+anterior; PRE-GOLD-20261030-1430 continua sendo o par de retorno principal.
+
+O que este snapshot salva
+-------------------------
+Testado no aparelho entre 17:15 e 17:27 de 30/10, por `fastboot boot`
+volátil. Nada foi gravado em partição e o módulo do rootfs não foi trocado.
+
+  kernel/kernel-listener7-dsifix-120hz.img
+      NAO versionado: o GitHub bloqueia o push por um falso positivo de
+      scanner de segredos dentro dos dados comprimidos do .img. O arquivo
+      fica local e o hash continua em SHA256SUMS; para reconstruir, use
+      build/build.sh, build/build-msm-inside.sh e build/mkimg-dsifix-120hz.py.
+      Kernel e DTB byte-idênticos ao listener7 validado. Só o ramdisk muda:
+      acrescenta, antes do switch_root, o msm.ko corrigido e o módulo de
+      painel com o modo de 119,976 Hz.
+  kernel/msm-dsifix.ko.zst
+      msm.ko com as correções DSI. Build ID 73daad11ed466f94ad82ea2547e3dbe24806210e,
+      conferido contra o módulo carregado em /sys/module/msm/notes.
+      O msm original tem Build ID 62e041c55b987c01f422dd4c2edd51e3b6aba0b5,
+      e é este que continua no rootfs.
+  kernel/panel-ilitek-ili7807s-120-v2.ko.zst
+      Módulo de painel que anuncia 1080x2460 a 119,976 Hz como modo extra,
+      mantendo 60 Hz como preferido.
+  kernel/kernel.dtb
+  uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img
+      U-Boot necessário ao boot. O DT efetivo vem DELE, não do boot.img.
+  patches/  dsi-fixes-all.patch, experimental-120hz.patch, 0197-marker.patch
+  build/    scripts usados para msm.ko e para empacotar a imagem
+  docs/     investigação, auditorias de código e resultados
+
+Hashes em SHA256SUMS. Pasta deixada somente leitura.
+
+Como bootar (volátil, nunca flash)
+----------------------------------
+  fastboot boot uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img
+  # esperar o fastboot do U-Boot reaparecer
+  fastboot boot kernel/kernel-listener7-dsifix-120hz.img
+
+Depois do login, trocar a taxa manualmente:
+  su kali -c "XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-0 \
+    wlr-randr --output DSI-1 --custom-mode 1080x2460@119.976Hz"
+`--mode` não aplica este modo; é preciso `--custom-mode`.
+
+Validado neste snapshot
+-----------------------
+- Módulo corrigido efetivamente carregado (build ID conferido; o marcador
+  `hanoip-dsi-guards` apareceu no dmesg de boot) e painel experimental ativo.
+- Seis trocas consecutivas 120↔60 com rc=0, modo confirmado no Phoc e no DRM
+  (vtotal 2520), 6 ciclos LCDB com VREG_OK.
+- Seis recargas do firmware do touch, ZERO falhas e ZERO respostas f9.
+- DSI error_snapshot `irqs=0` durante todo o teste.
+- 119,976 FPS sustentados em es2gears_wayland (medida de aplicação, não óptica).
+- Usuário confirmou imagem correta em 120 Hz e toque normal.
+- Temperatura 41,9–45,4 °C nas trocas; pico de 75,4 °C apenas no estresse de
+  apagar/acender.
+
+O que NÃO está validado
+-----------------------
+- Apagar/acender pelo compositor (`wlr-randr --off/--on`): derrubou a sessão
+  gráfica de forma reprodutível. Timeouts e EBUSY também aparecem com o msm
+  original e também numa sessão iniciada em 60 Hz, então NÃO está atribuído às
+  correções; falta o teste A/B.
+- Início de sessão: o Phoc reaplica o último modo salvo. Com 60 Hz salvo a
+  imagem subiu correta; com 119,976 Hz salvo houve tela preta e
+  `Timeout (3000ms) expired with 1 configures pending`. Deixar 60 Hz antes de
+  encerrar a sessão.
+- Suspender/retomar, uso prolongado, estabilidade térmica sustentada e
+  consumo de bateria em 120 Hz.
+- Medição óptica independente de 120 Hz.
+- Persistência: o módulo vive no initramfs desta imagem volátil. Sem um boot
+  por esta imagem, o aparelho volta ao msm e ao painel do rootfs.
+
+Correções de código presentes em msm-dsifix.ko.zst
+--------------------------------------------------
+1. `dsi_host_parse_lane_data`: rejeita lane >3 antes de indexar a tabela.
+2. `msm_dsi_host_check_dsc`: rejeita slice_width/slice_height zero.
+3. `msm_dsi_host_power_on`: usa pm_runtime_resume_and_get e verifica o erro;
+   falha de clock libera o runtime PM; falha de timing DSC desfaz o caminho.
+4. `dsi_timing_setup`: passa a retornar int e propaga erro de DSC/populate.
+5. `msm_dsi_host_set_display_mode`: aloca o modo novo antes de liberar o
+   antigo (-ENOMEM preserva o anterior); power_on exige modo definido.
+6. `msm_dsi_host_xfer_prepare`: verifica resume/set_rate/enable, sem MMIO
+   após erro e sem vazar voto de PM.
+7. `msm_dsi_host_destroy`: libera o último modo alocado (não é devm).
+8. `dsi_link_clk_set_rate_6g_v2_9`: propaga falha de clk_set_parent.
+   (Afeta variantes DSI v2.9; não demonstrado no SM7150.)
+
+Testes locais: UBSan/bounds sobre funções extraídas, 13 cenários do manager
+com host único e dois hosts, regressões de touch e LCDB, compilação ARM64 com
+-Werror e checkpatch sem erros nem avisos. Detalhes em docs/CORRECOES-VALIDADAS.md.
+
+Limites desta promoção
+----------------------
+"Sucesso" aqui significa: o caminho de TROCA DE MODO a 120 Hz funcionou de
+forma repetida e sem erros observáveis nesta sessão, com as correções DSI
+carregadas. Não significa que 120 Hz esteja pronto como padrão, nem que as
+correções DSI expliquem o f9 ou a piscada. O par de retorno continua sendo
+PRE-GOLD-20261030-1430.

@@ -1,0 +1,94 @@
+Checkpoint 2026-10-27 — Comparação: nosso PMIC x o que o Android faz
+=====================================================================
+
+Fontes do lado Android (coletas read-only já existentes):
+  work/android-dump-20261025/dt-battery-profiles.dts   perfis de bateria
+  work/android-dump-20261025/dt-charger-fg-wifi-bt-gpu.dts  DT do charger/qg
+  work/android-dump-20261025/dumpsys-power.txt         estado do BatteryService
+  work/android-dump-20261025/power-thermal-layout.txt  topologia de power_supply
+
+ARQUITETURA (diferença de fundo)
+  Android: qcom,qpnp-smb5 publica `battery`, `main`, `usb`, `pc_port` e
+           qpnp,qg publica `bms`. O SOC vem do qpnp-qg rodando o algoritmo
+           completo (perfil de bateria: fcc, LUTs pc-temp, coulomb counting).
+  Nosso:   qcom_smbx em monitor_only publica o charger; qcom_qg publica o SOC
+           por estimativa de tensão. Mesma divisão de papéis, modelo diferente.
+
+1. ENVELOPE DE CARGA — Android x o que a ABL deixou no PMIC
+----------------------------------------------------------
+                                     Android        PMIC hoje    veredito
+  float / FV máximo                  4.450 V        4.400 V      +50 mV de margem
+  transição CC-CV (fg-cc-cv)         4.440 V        —            —
+  fast-charge (FCC)                  3.6 A (*)      2.0 A        metade, conservador
+  iterm (terminação)                 290 mA / 500 mA(QG)  I_TERM=1 (habilitado)
+  ICL em porta de PC (SDP)           500 mA         500 mA       IGUAL
+  ICL em carregador (DCP)            3.0 A          (teto 750 mA) depende da fonte
+  limite de temperatura (cl-min/max) 15 C / 45 C    JEITA hardlimit ON
+  (*) o perfil do pack diz fastchg-current-ma = 4000 mA; o DT do charger
+      limita a 3.6 A. O default que a ABL deixou (2.0 A) é MENOR que os dois.
+
+  Conclusão: o estado deixado no PMIC é um SUBCONJUNTO CONSERVADOR do que o
+  Android usa. O envelope do B3 (float 4.40 V, começar em 1.0 A) está ainda
+  mais abaixo disso — coerente e seguro.
+
+  Também do dumpsys: "Max charging current: 500000" com o aparelho plugado em
+  porta de PC — o Android faz exatamente o mesmo limite de 500 mA que vimos.
+
+2. CURVA OCV — agora TEMOS a da Motorola
+----------------------------------------
+Perfil do nosso pack: S88731AA1-mc50-ATL-4V45-6000mah (existe também a
+variante SUNWODA, mesmo formato).
+  max-voltage-uv         4450000 (4.45 V)
+  fg-cc-cv-threshold-uv  4440000 (4.44 V)
+  fastchg-current-ma     4000
+  batt-id-kohm           100     (resistor de identificação do pack)
+  battery-beta           3440    (NTC)
+  battery-therm-kohm     100
+  LUTs: pc-temp-v1/v2, y1..y6, z1..z6, fcc1/fcc2 — 5 temperaturas (0/10/25/40/50)
+
+Curva extraída (coluna 25 C), SOC -> tensão:
+  100% 4.447 V   95% 4.389 V   90% 4.321 V   85% 4.273 V   80% 4.199 V
+   75% 4.151 V   70% 4.084 V   65% 4.043 V   60% 3.991 V   55% 3.946 V
+   50% 3.890 V   45% 3.869 V   40% 3.842 V   35% 3.828 V   30% 3.814 V
+   25% 3.805 V   20% 3.781 V   15% 3.756 V   10% 3.711 V    5% 3.682 V
+    0% 3.000 V (ponto de corte do modelo, não é operável)
+
+  Comparação com a tabela GENÉRICA que eu coloquei no U-Boot:
+    topo (85-95%): Motorola ~+20..33 mV mais alta
+    meio (40-60%): Motorola ~-30..70 mV mais baixa
+    pior desvio: -70 mV em 50% (~5 pontos percentuais)
+  Ou seja: a genérica está no formato certo, mas deslocada no meio.
+
+VALIDAÇÃO INDEPENDENTE DA CURVA
+  dumpsys-power (25/10, Android, 54%, plugado em PC):
+      voltage = 3.836 V  (sob carga de 500 mA)
+  curva Motorola em 54% -> 3.90 V; diferença de ~50 mV = queda IR da corrente
+  de carga. Consistente. A curva da Motorola é confiável.
+
+3. OUTROS NÚMEROS DO ANDROID QUE CONFEREM COM OS NOSSOS
+-------------------------------------------------------
+  Android "Maximum capacity" 4,939,000 uAh  ==  nosso charge_full 4,939,000 uAh
+    (nosso driver já lê o FCC aprendido do SDAM — mesmo valor)
+  Android "Design capacity"  6,174,000 uAh  ==  nosso charge_full_design
+  thermal_zone battery 31.8 C              ==  nosso 31.5-33.6 C
+  Android usa 4 power_supply; nós usamos 2 (charger + qg) — sem perda funcional
+
+4. O QUE ISSO MUDA NO PLANO
+---------------------------
+  a) Substituir a tabela genérica do U-Boot pela curva da Motorola
+     (21 pontos derivados do LUT de 25 C). Ganho de ~2 a 5 pontos de precisão,
+     mesmo mecanismo já validado, sem escrever no PMIC.
+  b) Envelope do B3 confirmado: começar MUITO abaixo do Android
+     (float 4.40 V < 4.45 V; 1.0 A < 3.6 A; 500 mA em SDP = igual).
+  c) iterm: o Android usa 290 mA (charger) / 500 mA (QG). Antes de ligar a
+     carga vale dumpar o registrador de terminação para conferir o que a ABL
+     deixou.
+  d) Limites térmicos do Android: 15 C a 45 C. Nosso abort em 43 C está
+     coerente (2 C de margem antes do limite do Android).
+  e) O resistor de ID do pack (100k) e o NTC (beta 3440) existem: dá para
+     validar autenticidade da bateria e melhorar a conversão de temperatura
+     no futuro.
+
+O QUE NÃO FOI FEITO AQUI
+  Nada foi escrito no PMIC. A comparação é toda de leitura (debugfs + dumps
+  antigos do Android).

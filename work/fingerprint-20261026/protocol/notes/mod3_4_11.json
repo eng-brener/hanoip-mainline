@@ -1,0 +1,796 @@
+{
+  "meta": {
+    "title": "Protocolo dos modulos 3 (hw_auth), 4 (db_blob) e 11 (bio) do TA FPC (fpctzapp) do Moto G60",
+    "date": "2026-10-29",
+    "method": "Engenharia reversa estatica, somente leitura dos arquivos locais. Nenhum binario foi executado; nenhuma conexao com o aparelho; nada foi escrito fora de work/fingerprint-20261026/protocol/.", 
+    "inputs": {
+      "ta": "work/fingerprint-20261026/fpctzapp-reconstructed.elf (ELF32 ARM LE, Thumb, VMAs desde 0)",
+      "ta_symbols": "work/fingerprint-20261026/ta-dynamic-symbols.json (name/value/size; value tem bit0 setado em simbolos Thumb)",
+      "hal": "work/fingerprint-20261026/android-live-readonly/programs/fingerprint-service-fpc (ELF64 AArch64)",
+      "hal_symbols": "work/fingerprint-20261026/hal-protocol/fingerprint-service-fpc-symbols.json",
+      "disassembler": "llvm-objdump (Xcode) --triple=thumbv7 / --triple=aarch64"
+    },
+    "tools_created": [
+      "protocol/tools/ann.py  (desmonta faixa e anota alvos bl/b/bx com nomes exportados)",
+      "protocol/tools/scan_frames.py (varre o HAL e lista os frames {module_id,cmd_id} usados por funcao)"
+    ],
+    "confidence_legend": {
+      "OBSERVADO": "instrucao concreta citada prova o fato",
+      "INFERIDO": "decorre de varias instrucoes / de nomes de simbolos exportados / de strings de log do HAL, mas nao ha prova direta de uma unica instrucao",
+      "DESCONHECIDO": "nao foi possivel determinar"
+    }
+  },
+
+  "frame_convention": {
+    "summary": "Buffer compartilhado (ION, passado por referencia ao TA): {u32 module_id @0x00, u32 cmd_id @0x04, u32 len/valor @0x08, payload @0x0c}. O TA sobrescreve o payload com a resposta (mesmo buffer) e normalmente reusa +0x08 como 'tamanho/valor de resposta'.",
+    "status": "OBSERVADO",
+    "evidence": [
+      "0x1a8: roteador do TA; 0x1d8 'ldr.w lr,[r12]' = module_id em frame+0; 0x1fe 'ldr.w r2,[r12,#4]' = cmd em frame+4 (e comparado com 7 para o modulo 8, e cmd-3 < 3 para o modulo 3)",
+      "0x214 'ldr.w r4,[r12,#8]' + 0x21a 'add.w r5,r4,#0xc' + 0x21e 'cmp r5,r1' -> valida (len + 0xc) <= buflen: o payload comeca em +0xc",
+      "0x234-0x23c: 'mov r0,r12' + 'bx r3' -> handler(frame, buflen, cmd)",
+      "HAL 0x22e1c 'ldr x8,[x0]' / 0x22e20 'ldr w9,[x1,#8]' / 0x22e2c 'str w9,[x8]' -> o campo +0x8 do frame e' copiado para o request de 64 bytes do QSEECom",
+      "HAL 0x21118 'stp w9,w23,[x8,#0xc]' (cmd 4/14: frame+0xc=modo, frame+0x10=tamanho) e 0x20988 'str d0,[x8]' (frame+0/4 = constante {module,cmd} de rodata)"
+    ],
+    "corrections_vs_briefing": [
+      "O briefing dizia '+0x14 = limite de resposta na entrada; payload em +0x18'. Nao se confirma neste TA/HAL: o payload esta' em +0x0c (0x1a8-0x21e acima; 0x414a 'add.w r0,r6,#0xc' no modulo 4; 0x6e0 memset de frame+0xc; 0x662 'add.w r0,r9,#0xc' no modulo 11).",
+      "O 'limite de resposta' nao e' um campo do frame: e' o argumento r1 (tamanho do buffer compartilhado) que o TEE entrega ao roteador; os handlers comparam 'tamanho_do_chunk + 0xc <= buflen' (ex.: 0x411e-0x4124 no modulo 4; 0x21a-0x220 no roteador).",
+      "Nada nos tres modulos le frame+0x14 como limite; ele aparece apenas como campo de SAIDA (modulo 11 cmd 4 grava em r9+0x14; modulo 3 cmd 4 grava no token)."
+    ],
+    "transport": {
+      "status": "OBSERVADO",
+      "notes": [
+        "QSEECom sbuffer = 128 bytes: request 64 + response 64. HAL 0x22b08 'mov w8,#0x80' / 0x22b1c 'str w8,[x19,#8]' / 0x22b20 QSEECom_start_app(..., w3=0x80).",
+        "HAL 0x22e14 'mov w2,#0x40' e 0x22e24 'mov w4,#0x40' -> QSEECom_send_modified_cmd(handle, req, 0x40, req+0x40, 0x40, &fd_info).",
+        "O frame real (module/cmd/payload) esta' num buffer ION separado, entregue por fd: HAL 0x22e38 'ldr w9,[x1,#0x10]' + 0x22e40 'stp w9,w10(=4),[sp,#8]' -> fd_info = {fd = shared->share_fd, 4}; 0x22c90 ion_alloc_fd(..., &shared->share_fd).",
+        "O status do TA volta em response[0] (64 bytes): HAL 0x22e88 'ldr w20,[x19]' onde x19 = req_buf+0x40."
+      ],
+      "implication": "Blobs grandes (banco de digitais) nunca passam pelo buffer de 64 bytes: eles ficam no buffer ION (0x1b5800 bytes alocados pelo proprio TA) e sao copiados em chunks pelo payload do frame."
+    }
+  },
+
+  "hal_frame_map_observed": {
+    "note": "Tabela de constantes {module_id, cmd_id} em rodata do HAL (0xe080-0xe1ff) + as que sao montadas com 'movi v0.2s,#N'. Cada linha foi confirmada pela instrucao que grava a constante no frame.",
+    "module_3": {
+      "cmd_1": "fpc_tee_set_auth_challenge (HAL 0x20890, const 0xe0e0)",
+      "cmd_2": "fpc_tee_get_enrol_challenge (HAL 0x208f0, const 0xe130)",
+      "cmd_3": "fpc_tee_authorize_enrol (HAL 0x20924, 'movi v0.2s,#3' em 0x2097c -> frame {3,3})",
+      "cmd_4": "fpc_tee_get_auth_result (HAL 0x20a18, const 0xe178)",
+      "cmd_5": "fpc_tee_init_hw_auth (HAL 0x22fec-0x2302c, const 0xe128)",
+      "cmd_6": "fpc_tee_set_token_validation_enable (HAL 0x20ab4, const 0xe140)"
+    },
+    "module_4": {
+      "cmd_6": "fpc_tee_store_template_db_host (HAL 0x20bf8, const 0xe138) - consulta tamanho",
+      "cmd_14": "fpc_tee_store_template_db_host (0x20c24, const 0xe0e8, modo 0) e fpc_tee_load_template_db_host (0x21104, const 0xe0e8, modo 1)",
+      "cmd_15": "fpc_tee_store_template_db_host (0x20e34, const 0xe1f8) e fpc_tee_load_template_db_host (0x213c4, const 0xe1f8) - reset",
+      "cmd_16": "fpc_tee_store_template_db_host (0x20c78, const 0xe1f0) - leitura de chunks TA->host",
+      "cmd_17": "fpc_tee_load_template_db_host (0x211b4, const 0xe088) - escrita de chunks host->TA"
+    },
+    "module_11": {
+      "cmd_0": "fpc_tee_bio_init (HAL 0x22a04, const 0xe1c0)",
+      "cmd_1": "fpc_tee_begin_enrol (HAL 0x22414, const 0xe148)",
+      "cmd_2": "fpc_tee_enrol (HAL 0x22470, const 0xe1d8)",
+      "cmd_3": "fpc_tee_end_enrol (HAL 0x22518, const 0xe0f0)",
+      "cmd_4": "fpc_tee_identify (HAL 0x22644, const 0xe090) e fpc_tee_identify_image_status (HAL 0x2258c, const 0xe090)",
+      "cmd_5": "fpc_tee_update_template (HAL 0x22774, const 0xe180)",
+      "cmd_7": "fpc_tee_load_empty_db (HAL 0x229b0, const 0xe0a0)",
+      "cmd_8": "fpc_tee_get_finger_ids (HAL 0x2283c, const 0xe1b8)",
+      "cmd_9": "fpc_tee_delete_template (HAL 0x228e4, const 0xe118)",
+      "cmd_10": "fpc_tee_set_gid (HAL 0x223b4, const 0xe0c8)",
+      "cmd_11": "fpc_tee_get_template_db_id (HAL 0x22948, 'movi v0.2s,#0xb' -> frame {11,11})",
+      "cmd_18": "fpc_tee_get_identify_statistics (HAL 0x226e4, const 0xe0d8) - USA cmd 18, que este TA REJEITA (ver modulo 11, cmd>11)"
+    },
+    "not_a_ta_frame": {
+      "const_0xe158": "{0x205, 2} lido por fpc_tee_init_hw_auth (HAL 0x22f84) NAO e' um frame do fpctzapp: e' o cabecalho de comando enviado ao app KEYMASTER por QSEECom. Provas: 0x22f40-0x22f54 QSEECom_start_app(..., '/vendor/firmware_mnt/image', 'keymaster64', 0x400) e 0x22fa0 QSEECom_send_cmd(handle, sbuf, 0x40, sbuf+0x40, 0x3c0); string 0xc46a 'qsee_km_get_encapsulated_key'."
+    }
+  },
+
+  "modules": [
+    {
+      "id": 3,
+      "name": "hw_auth",
+      "handler_addr": "0x3da4",
+      "module_table_entry": "0x11608c = {0x0, 0x0, 0x3da5, 3} (thumb bit setado no ponteiro)",
+      "dispatch": {
+        "kind": "tbb [pc, rM] com indice = cmd-1",
+        "table_addr": "0x3dd2",
+        "evidence": [
+          "0x3dc8 'subs r0,r2,#1' (r2 = cmd) / 0x3dca 'cmp r0,#5' / 0x3dcc 'bhi 0x3df0' -> so' cmd 1..6",
+          "0x3dce 'tbb [pc,r0]' com PC = 0x3dd2 -> tabela em 0x3dd2",
+          "0x3fe8: epilogo (nao mexe em frame+8)"
+        ],
+        "entries": [
+          {"cmd": 1, "byte": "0x03", "handler": "0x3dd8"},
+          {"cmd": 2, "byte": "0x12", "handler": "0x3df6"},
+          {"cmd": 3, "byte": "0x2e", "handler": "0x3e2e"},
+          {"cmd": 4, "byte": "0x34", "handler": "0x3e3a"},
+          {"cmd": 5, "byte": "0x3a", "handler": "0x3e46"},
+          {"cmd": 6, "byte": "0x51", "handler": "0x3e74"}
+        ],
+        "unsupported": "cmd 0 ou cmd > 6 -> 0x3df0, retorna 0xe8a34063+0x86 = 0xe8a340e9 (INFERIDO: codigo 'nao suportado')"
+      },
+      "preconditions": [
+        "0x3db8 'cmp r4,#0' + 0x3dbe 'beq 0x3fe8' -> frame != NULL (senao retorna 0xe8a34063+0xce)",
+        "0x3dc2 'cmp r1,#0x10' + 0x3dc4 'blo 0x3fe8' -> buflen (r1) >= 0x10",
+        "roteador 0x20a-0x212: para cmd 3,4,5 valida frame+8+0xc <= buflen; cmd 1,2,6 pulam essa validacao"
+      ],
+      "context": {
+        "addr": "0x2ce1f0",
+        "status": "OBSERVADO (endereco resolvido de 'ldr rX,[pc,#imm]'+'add rX,pc' por tres caminhos independentes: 0x3dde->0x2ce1f0, 0x3e9a->0x2ce1f0, 0x3eb6->0x2ce1f0). A regiao e' .bss (zerada no arquivo), entao os valores iniciais nao podem ser lidos estaticamente.",
+        "fields": [
+          {"off": "0x00", "type": "u32", "note": "ponteiro para o contexto principal (S); S+0x00 = objeto do banco, S+0xa8 = estrutura de resultado de match (0x2c bytes)", "status": "OBSERVADO"},
+          {"off": "0x08", "type": "u8[8]", "note": "challenge recebido do host (cmd 1)", "status": "OBSERVADO"},
+          {"off": "0x10", "type": "u8[8]", "note": "challenge aleatorio gerado pelo TA (cmd 2); comparado com +0x08 no cmd 3", "status": "OBSERVADO"},
+          {"off": "0x18", "type": "u64", "note": "uptime no momento da geracao do challenge (cmd 2); usado para a janela de 10 min no cmd 3", "status": "OBSERVADO"},
+          {"off": "0x20", "type": "u8[0x45]", "note": "token de hw_auth recebido (cmd 3): copiado para ca' antes de validar", "status": "OBSERVADO"},
+          {"off": "0x65", "type": "u8[0x20]", "note": "chave AES de 32 bytes resultante do unwrap (cmd 5)", "status": "OBSERVADO"},
+          {"off": "0x88", "type": "u32", "note": "flag 'chave disponivel': 0 antes do unwrap, 1 apos sucesso (cmd 5); exigido por cmd 3/4", "status": "OBSERVADO"}
+        ],
+        "init_function": "0x3d74 (sem simbolo; chamada de inicializacao): 0x3d84 'str r0,[r1]' grava fpc_bio_get_handle() em ctx+0x00; 0x3d8a vst1.64 zera ctx+0x08..0x17; 0x3d92 'strd r0,r0,[r1,#24]' com r0=-1; 0x3d98 ctx+0x88=0"
+      },
+      "commands": [
+        {
+          "cmd": 1,
+          "handler": "0x3dd8",
+          "name_guess": "set_auth_challenge",
+          "name_source": "nome do simbolo do HAL que o emite: fpc_tee_set_auth_challenge (HAL 0x20890, const 0xe0e0 = {3,1})",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_set_auth_challenge (HAL 0x20890-0x208b0)",
+          "evidence": [
+            "0x3dd8 'ldr r5,[pc,#0x224]' (literal 0x2ca40e em 0x4000) + 0x3dde 'add r5,pc' -> r5 = 0x2ce1f0 (contexto)",
+            "0x3dda 'ldrd r4,r6,[r4,#8]' -> le 8 bytes do frame em +0x08",
+            "0x3de0 'ldr r0,[r5]' + 0x3de2 'adds r0,#0xa8' + 0x3de4 'bl 0x3c0' (fpc_match_result_reset) -> reseta a estrutura em S+0xa8",
+            "0x3de8 'strd r4,r6,[r5,#8]' -> grava os 8 bytes em ctx+0x08",
+            "0x3dec 'movs r0,#0' -> retorna 0",
+            "HAL 0x208a0 'str x19,[x8,#8]' -> o host grava um valor de 64 bits em frame+0x08"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u8[8] / u64", "dir": "in", "size": 8, "note": "challenge (o TA nao interpreta o conteudo: apenas copia para ctx+0x08)"}
+          ],
+          "response": [],
+          "return": "0 em sucesso"
+        },
+        {
+          "cmd": 2,
+          "handler": "0x3df6",
+          "name_guess": "get_enrol_challenge",
+          "name_source": "fpc_tee_get_enrol_challenge (HAL 0x208f0, const 0xe130 = {3,2}); string de log 0xa43c",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_get_enrol_challenge (HAL 0x208f0-0x20920)",
+          "evidence": [
+            "0x3df6 'ldr r5,[pc,#0x204]' (literal 0x2ca3ec em 0x3ffc) + 0x3e00 'add r5,pc' -> r5 = 0x2ce1f0",
+            "0x3dfa 'movs r6,#6' (6 tentativas) / 0x3e08 'mov r0,r4' (r4 = frame+8 apos 0x3dfc 'str r0,[r4,#8]!') / 0x3e0a 'movs r1,#8' / 0x3e0c 'bl 0x393c' (fpc_secure_random)",
+            "0x3dfc 'str r0,[r4,#8]!' e 0x3e02 'str r0,[r4,#4]' -> zera frame+0x08 e frame+0x0c antes de gerar",
+            "0x3e10 'ldrd r1,r2,[r4]' + 0x3e14 'orrs r1,r2' + 0x3e16 'bne 0x3e78' -> repete se o valor sorteado for todo zero",
+            "0x3e82 'strd r0,r1,[r5,#24]' -> ctx+0x18 = fpc_get_uptime() (0x3e7e 'bl 0x3980')",
+            "0x3e8a 'strd r0,r1,[r5,#16]' -> ctx+0x10 = os 8 bytes sorteados",
+            "HAL 0x2090c 'ldr x8,[x21,#8]' + 0x20910 'str x8,[x19]' -> o host le' 64 bits de frame+0x08"
+          ],
+          "request": [],
+          "response": [
+            {"off": "0x08", "type": "u8[8] / u64", "dir": "out", "size": 8, "note": "challenge aleatorio (tambem guardado em ctx+0x10 com timestamp em ctx+0x18)"}
+          ],
+          "return": "0 em sucesso; 0xe85340ac se fpc_secure_random falhar 6 vezes seguidas com resultado zero (0x3e1e 'movw r1,#0x40ac' + 0x3e24 'movt r1,#0xe853' + 0x3e28/0x3e2a 'it eq / moveq r0,r1')"
+        },
+        {
+          "cmd": 3,
+          "handler": "0x3e2e",
+          "name_guess": "set_hw_auth_token / authorize_enrol",
+          "name_source": "fpc_tee_authorize_enrol (HAL 0x20924; frame montado com 'movi v0.2s,#3' em 0x2097c/0x20988)",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_authorize_enrol (HAL 0x20924-0x20a18); NAO e' chamado por fpc_tee_set_token_validation_enable",
+          "evidence": [
+            "0x3e2e 'ldr r0,[r4,#8]' + 0x3e30 'cmp r0,#0x45' + 0x3e32 'bhs 0x3e92' -> exige frame+0x08 >= 0x45 (69), senao retorna 0xe8a340bc (0x3e34)",
+            "0x3e94 'add.w r1,r4,#0xc' (origem = payload) + 0x3e98 'movs r2,#0x45' + 0x3e9a 'add r0,pc' + 0x3e9c 'adds r0,#0x20' (destino = ctx+0x20) + 0x3e9e 'bl 0x52ba' (memcpy sem simbolo)",
+            "0x3eac 'b.w 0x3cb0' (tail call para a validacao, sem simbolo exportado)",
+            "0x3cb0: 0x3cc6 'ldr.w r1,[r8,#0x88]' + 0x3cca 'cbz r1,0x3d46' -> exige a chave (flag) ja' instalada, senao retorna 0xe913406f",
+            "0x3cb0: 0x3ccc 'ldrd r1,r2,[r8,#16]' + 0x3cd6-0x3d0c comparam os 8 bytes em ctx+0x10 com os bytes 1..8 do bloco (ctx+0x21..0x28); 0x3d3e retorna 0xe8a34079 se diferente",
+            "0x3cb0: 0x3d0e 'bl fpc_get_uptime' + 0x3d12 'ldrd r3,r6,[r8,#24]' + 0x3d16 'movw r2,#0x27c1' + 0x3d1a 'movt r2,#0x9' (=0x927c1 = 600001) -> janela de ~10 min; 0x3d28 'blo 0x3d4c'",
+            "0x3d4c 'add.w r0,r8,#0x20' + 0x3d58 'b.w 0x3c00' -> fpc_check_token_integrity(ctx+0x20)",
+            "0x3d2a/0x3d34: se expirou, retorna 0xe8c34083 e zera ctx+0x10..0x17 ('strd r1,r1,[r8,#16]' com r1=0)",
+            "fpc_check_token_integrity 0x3c00: 0x3c10 'ldrb r0,[r4]' + 0x3c12 'cmp r0,#0' -> byte 0 do token deve ser 0; 0x3c20 exige ctx+0x88 != 0; 0x3c30 'movs r1,#0x25' + 0x3c32 'movs r3,#0x20' + 0x3c34 'bl 0x3956' (fpc_hmac_sha256, in=token, inlen=0x25, key=ctx+0x65, keylen=0x20, out=sp+8); 0x3c3c 'add.w r1,r4,#0x25' + 0x3c42 'movs r2,#0x20' + 0x3c44 'bl 0x2c90' (fpc_crypto_memcmp) -> erro 0xe8a34055 se divergir"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u32", "dir": "in", "size": 4, "note": "tamanho do token; precisa ser >= 0x45 (0x3e30)"},
+            {"off": "0x0c", "type": "u8[0x45]", "dir": "in", "size": 69, "note": "token de hw_auth (formato = o que o cmd 4 emite); ver layout abaixo"}
+          ],
+          "response": [],
+          "return": "0 em sucesso; 0xe913406f (chave ausente), 0xe9134074 (ctx+0x10 zerado), 0xe8a34079 (challenge diferente), 0xe8c34083 (expirado), 0xe8a34055 (HMAC invalido), 0xe8a3403b (versao != 0)",
+          "token_layout_shared_with_cmd4": {
+            "note": "O bloco de 0x45 bytes e' o mesmo produzido pelo cmd 4 (ver 'module_3_token_format' no topo deste modulo). O campo em block+1..8 e' comparado com ctx+0x10, que e' o challenge gerado pelo cmd 2 - logo o host precisa ter chamado cmd 1 (set_auth_challenge) com o valor recebido do cmd 2.",
+            "status": "OBSERVADO quanto aos offsets; INFERIDO quanto ao uso"
+          }
+        },
+        {
+          "cmd": 4,
+          "handler": "0x3e3a",
+          "name_guess": "get_auth_result",
+          "name_source": "fpc_tee_get_auth_result (HAL 0x20a18, const 0xe178 = {3,4}); string 0xb371",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_get_auth_result (HAL 0x20a18-0x20a78)",
+          "evidence": [
+            "0x3e3a 'ldr r0,[r4,#8]' + 0x3e3c 'cmp r0,#0x45' + 0x3e3e 'bhs 0x3eb0' -> exige frame+0x08 >= 0x45, senao 0xe8a340d6 (0x3e40)",
+            "0x3eb0 'ldr r6,[pc,#0x140]' (literal 0x2ca336 em 0x3ff4) + 0x3eb6 'add r6,pc' -> r6 = 0x2ce1f0 (contexto)",
+            "0x3ebe 'ldr r0,[r1]' (objeto db) / 0x3ec0 'ldr.w r1,[r1,#0xb0]' / 0x3ec4 'bl 0x2782' (fpc_db_get_index_of_id32) -> indice a partir do id32 guardado em S+0xb0",
+            "0x3ed8 'bl 0x2768' fpc_db_get_secure_user_id -> 8 bytes em sp+0x18",
+            "0x3ee2 'bl 0x257a' fpc_db_get_database_id -> 8 bytes em sp+0x08",
+            "0x3ef0 'ldrd r0,r1,[r0,#168]' (=S+0xa8, os 8 bytes resetados pelo cmd 1) + 0x3ef4 'bl 0x2d0e' (fpc_htobe64)",
+            "0x3efa 'movs r0,#2' + 0x3efe 'bl 0x2d0a' (fpc_htobe32)",
+            "0x3fe0 'mov r0,r8' (r8 = frame+0xc, setado em 0x3eec 'add.w r8,r4,#0xc') + 0x3fe2 'movs r1,#0x25' + 0x3fe4 'bl 0x3956' (fpc_hmac_sha256) com r2 = ctx+0x65 (0x3fd4), r3 = 0x20 (0x3fc8) e out = frame+0x31 (0x3fdc 'adds r0,r4,#4' com r4 = frame+0x2d)",
+            "HAL 0x20a2c 'str w20,[x23,#8]' (o host informa o tamanho do buffer em +0x08) e 0x20a48 'add x1,x23,#0xc' + 0x20a50 memcpy -> o host copia o payload de frame+0x0c"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u32", "dir": "in", "size": 4, "note": "capacidade do buffer do host; precisa ser >= 0x45 (0x3e3c). O TA escreve sempre 0x45 bytes."}
+          ],
+          "response": [
+            {"off": "0x0c", "type": "u8", "dir": "out", "size": 1, "note": "versao = 0 (0x3f08 'strb r1,[r4,#0xc]' com r1=0)"},
+            {"off": "0x0d", "type": "u8[8]", "dir": "out", "size": 8, "note": "copia crua (little-endian) do u64 em ctx+0x08 gravado pelo cmd 1; 0x0d..0x10 = palavra baixa (0x3faa 'ldrd r0,r1,[r6,#8]', 0x3fc6/0x3fcc/0x3fd2/0x3fd8) e 0x11..0x14 = palavra alta (0x3fb0-0x3fbe)"},
+            {"off": "0x15", "type": "u8[8]", "dir": "out", "size": 8, "note": "secure_user_id do DB (sp+0x18), cru LE: 0x15..0x18 = palavra baixa (0x3f24-0x3f30), 0x19..0x1c = alta (0x3f10-0x3f1e)"},
+            {"off": "0x1d", "type": "u8[8]", "dir": "out", "size": 8, "note": "database_id (sp+0x08), cru LE: 0x1d..0x20 = baixa (0x3f52-0x3f60), 0x21..0x24 = alta (0x3f3c-0x3f4a)"},
+            {"off": "0x25", "type": "u32", "dir": "out", "size": 4, "note": "big-endian 2 = htobe32(2) gravado little-endian (0x3efa 'movs r0,#2'; bytes 00 00 00 02 em 0x25..0x28 por 0x3f64/0x3f68/0x3f6c/0x3f70). Significado do 2: DESCONHECIDO (provavel 'versao/tipo de token')"},
+            {"off": "0x29", "type": "u64", "dir": "out", "size": 8, "note": "big-endian de *(u64*)(S+0xa8) (fpc_htobe64 em 0x3ef4; bytes em 0x29..0x30 por 0x3f74-0x3fa2). S+0xa8 e' a estrutura de resultado de match, resetada para 0xff..ff pelo cmd 1"},
+            {"off": "0x31", "type": "u8[32]", "dir": "out", "size": 32, "note": "HMAC-SHA256 sobre frame+0x0c..0x30 (0x25 = 37 bytes) com a chave de 32 bytes em ctx+0x65 (0x3fe0-0x3fe4)"}
+          ],
+          "return": "0 em sucesso; 0xe8a340d6 se frame+0x08 < 0x45; erros do DB repassados"
+        },
+        {
+          "cmd": 5,
+          "handler": "0x3e46",
+          "name_guess": "init_hw_auth / unwrap da chave",
+          "name_source": "fpc_tee_init_hw_auth (HAL 0x22ef0; manda {3,5} em 0x22ff4-0x2302c)",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_init_hw_auth (HAL 0x22ef0-0x230ec): antes de chamar este cmd, abre o app KEYMASTER por QSEECom e usa o comando {0x205,2} para obter a chave encapsulada",
+          "evidence": [
+            "0x3e46 'ldr r5,[pc,#0x1a8]' (literal 0x2ca39e em 0x3ff0) + 0x3e4e 'add r5,pc' -> r5 = 0x2ce1f0",
+            "0x3e48 'movs r0,#0x20' + 0x3e50 'str r0,[sp,#0x18]' -> capacidade de saida = 0x20",
+            "0x3e4a 'ldr r1,[r4,#8]' -> tamanho do blob em frame+0x08",
+            "0x3e54 'str.w r0,[r5,#0x88]' (r0=0) -> zera a flag da chave ANTES de tentar",
+            "0x3e58 'add.w r0,r4,#0xc' (entrada = payload) + 0x3e5c 'add.w r2,r5,#0x65' (saida = ctx+0x65) + 0x3e60 'bl 0x4004' (fpc_ta_hw_auth_unwrap_key)",
+            "0x3e64 'cmp r0,#0' + 0x3e66 'bne 0x3fe8' -> erro propagado",
+            "0x3e6a 'movs r0,#1' + 0x3e6c 'str.w r0,[r5,#0x88]' -> instala a flag",
+            "fpc_ta_hw_auth_unwrap_key (0x4004): 0x4016 'blx 0xcc' chama um veneer ARM para uma tabela de syscalls do TEE (externo, fora da imagem) - o algoritmo real de unwrap e' DESCONHECIDO",
+            "0x4026-0x4030 'ldr r1,[pc,#0x1c]' (literal 0x7c3d7, base 0x4032 -> 0x80409) + 'mov.w r2,#0x100' + 'bl 0x57aa' (strncmp) -> o resultado precisa comecar com a string 'keymaster64' (0x80409), senao retorna 0xe8a3802c",
+            "HAL 0x22fec-0x2302c: 'ldr x0,[x19]' (tac) / 'add w1,w22,#0xc' / bl fpc_tac_alloc_shared / 'str d0,[x8]' com const {3,5} / 'str w22,[x8,#8]' / memcpy(frame+0xc, blob, w22) / bl fpc_tac_transfer"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u32", "dir": "in", "size": 4, "note": "tamanho do blob de chave encapsulada (HAL: w22 = [buf+0x48] = tamanho devolvido pelo keymaster)"},
+            {"off": "0x0c", "type": "u8[len]", "dir": "in", "size": "len", "note": "blob encapsulado pelo keymaster (dados em response+offset do keymaster; ver 'not_a_ta_frame')"}
+          ],
+          "response": [],
+          "return": "0 em sucesso; 0xe8538027 (falha no unwrap, 0x401c-0x4020) / 0xe8a3802c (rotulo != 'keymaster64', 0x4038-0x403c)"
+        },
+        {
+          "cmd": 6,
+          "handler": "0x3e74",
+          "name_guess": "set_token_validation_enable - NAO IMPLEMENTADO neste TA",
+          "name_source": "fpc_tee_set_token_validation_enable (HAL 0x20ab4, const 0xe140 = {3,6})",
+          "status": "OBSERVADO",
+          "hal_caller": "fpc_tee_set_token_validation_enable (HAL 0x20ab4-0x20ae0); o HAL apenas registra o status no log (string 0xb4e4)",
+          "evidence": [
+            "0x3e74 'mov r0,r3' onde r3 = 0xe8a34063 (carregado em 0x3dae 'movw r3,#0x4063' + 0x3db4 'movt r3,#0xe8a3') -> o handler devolve o codigo de erro base, sem executar nada",
+            "o mesmo 0xe8a34063 e' devolvido quando frame == NULL (0x3dba 'add.w r0,r3,#0xce')",
+            "HAL 0x20ac4 'strb w20,[x8,#8]' -> o host manda 1 byte em frame+0x08 (ligar/desligar), mas o TA ignora"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u8", "dir": "in", "size": 1, "note": "0/1 conforme HAL 0x20ac4 ('strb w20,[x8,#8]'); ignorado pelo TA"}
+          ],
+          "response": [],
+          "return": "0xe8a34063 sempre (comando nao suportado nesta build do TA)"
+        }
+      ],
+      "module_3_token_format": {
+        "note": "Layout do bloco de 0x45 bytes (producao no cmd 4, consumo no cmd 3). Todos os offsets sao relativos ao inicio do bloco (= frame+0x0c no cmd 4, = ctx+0x20 no cmd 3).",
+        "status": "OBSERVADO (offsets) / DESCONHECIDO (semantica de +0x25 e do campo S+0xa8)",
+        "layout": [
+          {"off": "0x00", "size": 1, "type": "u8", "note": "versao, precisa ser 0 (fpc_check_token_integrity 0x3c10-0x3c16)"},
+          {"off": "0x01", "size": 8, "type": "u64", "note": "challenge: copia do ctx+0x08 (cmd 4) e comparado com ctx+0x10 (cmd 3)"},
+          {"off": "0x09", "size": 8, "type": "u64", "note": "secure_user_id do DB"},
+          {"off": "0x11", "size": 8, "type": "u64", "note": "database_id do DB"},
+          {"off": "0x19", "size": 4, "type": "u32 BE", "note": "valor 2; significado DESCONHECIDO"},
+          {"off": "0x1d", "size": 8, "type": "u64 BE", "note": "*(u64*)(S+0xa8) (estrutura de resultado de match); significado DESCONHECIDO"},
+          {"off": "0x25", "size": 32, "type": "u8[32]", "note": "HMAC-SHA256 sobre os 0x25 primeiros bytes, chave = ctx+0x65 (32 bytes)"}
+        ]
+      }
+    },
+
+    {
+      "id": 4,
+      "name": "db_blob",
+      "handler_addr": "0x4048",
+      "module_table_entry": "0x11609c = {0x0, 0x0, 0x4049, 4}",
+      "dispatch": {
+        "kind": "tbb [pc, rM] com indice = cmd-6",
+        "table_addr": "0x4088",
+        "evidence": [
+          "0x4072 'subs r1,r4,#6' (r4 = cmd) / 0x4078 'cmp r1,#0xb' / 0x407a 'bhi 0x4108' -> so' cmd 6..17",
+          "0x4084 'tbb [pc,r1]' com PC = 0x4088",
+          "0x4108: epilogo comum, devolve r10"
+        ],
+        "entries": [
+          {"cmd": 6, "byte": "0x06", "handler": "0x4094"},
+          {"cmd": 7, "byte": "0x40", "handler": "0x4108", "note": "default/erro"},
+          {"cmd": 8, "byte": "0x40", "handler": "0x4108", "note": "default/erro"},
+          {"cmd": 9, "byte": "0x40", "handler": "0x4108", "note": "default/erro"},
+          {"cmd": 10, "byte": "0x40", "handler": "0x4108", "note": "default/erro"},
+          {"cmd": 11, "byte": "0x40", "handler": "0x4108", "note": "default/erro"},
+          {"cmd": 12, "byte": "0x40", "handler": "0x4108", "note": "default/erro"},
+          {"cmd": 13, "byte": "0x40", "handler": "0x4108", "note": "default/erro"},
+          {"cmd": 14, "byte": "0x14", "handler": "0x40b0"},
+          {"cmd": 15, "byte": "0x3c", "handler": "0x4100"},
+          {"cmd": 16, "byte": "0x45", "handler": "0x4112"},
+          {"cmd": 17, "byte": "0x72", "handler": "0x416c"}
+        ]
+      },
+      "preconditions": [
+        "0x4064 'bl 0x3b4' (fpc_bio_get_handle) -> r9 = handle; usado como objeto do banco",
+        "0x406a 'cmp r6,#0' + 0x406c 'beq 0x4108' -> frame != NULL",
+        "0x406e 'cmp r5,#0x70' + 0x4070 'blo 0x4108' -> buflen >= 0x70 para TODOS os cmds deste modulo"
+      ],
+      "context": {
+        "addr": "0x1160ac",
+        "status": "OBSERVADO (endereco resolvido em 0x4138, 0x4192 e 0x42fe; e' uma variavel global inicializada, ver prova abaixo)",
+        "prova_de_estado_inicial": "No arquivo, 0x1160ac = 0xffffffff e 0x1160b0..0x1160bb = 0; o reset (0x4316/0x431a) grava exatamente 0xffffffff em [ctx+0] e zera +4..+0x13 -> ctx ocupa 0x14 bytes e nasce com state = -1",
+        "fields": [
+          {"off": "0x00", "type": "u32", "note": "estado: -1 = ocioso/resetado; 0 = pronto para LEITURA (cmd 16); 1 = pronto para ESCRITA (cmd 17)", "status": "OBSERVADO"},
+          {"off": "0x04", "type": "u32", "note": "tamanho do blob: em modo 0 = fpc_get_wrapped_size(len); em modo 1 = total informado pelo host (tambem usado como in_len do unwrap)", "status": "OBSERVADO"},
+          {"off": "0x08", "type": "u32", "note": "bytes restantes (decrementado por chunk; o TA devolve esse valor como codigo de retorno do cmd 16/17)", "status": "OBSERVADO"},
+          {"off": "0x0c", "type": "u32", "note": "offset corrente dentro do buffer", "status": "OBSERVADO"},
+          {"off": "0x10", "type": "u32", "note": "ponteiro para o buffer de blob = global+0xdc (alocado com 0x1b5800 bytes no modulo 11 cmd 0)", "status": "OBSERVADO"}
+        ]
+      },
+      "blob_format": {
+        "status": "OBSERVADO",
+        "wrapper": "fpc_get_wrapped_size (0x3984) = len + 0x34 ('adds r0,#0x34'). fpc_wrap_crypto (0x3988) grava o tamanho plano em [out+0] ('str r9,[r5]' com r5 = out), copia o plano para out+0x34 (0x39b8 memcpy) e preenche o cabecalho de 0x34 bytes com chamadas ao TEE (veneers 0x90/0x9c). fpc_unwrap_crypto (0x3a04) le o tamanho de [in+0] ('ldr r0,[r5]'), exige len+0x34 <= in_len (0x3a28-0x3a2e) e devolve ponteiro para in+0x34 (ou copia para o buffer do chamador).",
+        "conclusion": "O blob do banco de digitais e' {u32 tamanho_plano @0, cabecalho de 0x34 bytes, ciphertext a partir de +0x34}; overhead fixo de 0x34 (52) bytes. O algoritmo de cifra fica atras de veneers ARM para a tabela de syscalls do TEE -> DESCONHECIDO.",
+        "max_size": {
+          "value": "0x1b5800 (1.792.000 bytes) para o blob empacotado",
+          "evidence": ["0x40c4 'movw r5,#0x57ff' + 0x40ca 'movt r5,#0x1b' -> 0x1b57ff; 0x40d0 'cmp r0,r5' valida (tamanho-1) <= 0x1b57ff", "0x4262 'adds r2,r5,#1' + 0x426c 'cmp r0,r2' valida tamanho_empacotado <= 0x1b5800", "0x4200 mod11: 0xa04 'movw r8,#0x5800' + 0x0a0a 'movt r8,#0x1b' -> alocacao de 0x1b5800 em global+0xdc e global+0xe0"],
+          "status": "OBSERVADO"
+        }
+      },
+      "commands": [
+        {
+          "cmd": 6,
+          "handler": "0x4094",
+          "name_guess": "get_db_blob_size",
+          "name_source": "usado por HAL fpc_tee_store_template_db_host (0x20bf8) apenas para perguntar o tamanho; sem string propria",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_store_template_db_host (HAL 0x20bf4-0x20c1c)",
+          "evidence": [
+            "0x4094 'ldr.w r0,[r9]' -> objeto do banco (handle->db)",
+            "0x4098 'add r1,sp,#8' + 0x409a 'bl 0x1e28' (fpc_db_get_data_size)",
+            "0x40a6 'ldr r0,[sp,#8]' + 0x40a8 'bl 0x3984' (fpc_get_wrapped_size) + 0x40ac 'str r0,[r6,#8]' -> resposta em frame+0x08",
+            "HAL 0x20c08 'str wzr,[x21,#8]' (host zera +0x08) e 0x20c18 'ldr w23,[x21,#8]' (le' o tamanho devolvido)"
+          ],
+          "request": [],
+          "response": [
+            {"off": "0x08", "type": "u32", "dir": "out", "size": 4, "note": "tamanho do blob empacotado = tamanho_plano + 0x34"}
+          ],
+          "return": "0 em sucesso; erro de fpc_db_get_data_size repassado"
+        },
+        {
+          "cmd": 14,
+          "handler": "0x40b0",
+          "name_guess": "db_blob_open (prepara transferencia nos dois sentidos)",
+          "name_source": "usado pelos dois lados: HAL store_template_db_host com modo 0 (0x20c24) e load_template_db_host com modo 1 (0x21104); sem string propria",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_store_template_db_host (modo 0, HAL 0x20c20-0x20c40) e fpc_tee_load_template_db_host (modo 1, HAL 0x21100-0x21124)",
+          "evidence": [
+            "0x40b4 'ldrd r2,r1,[r6,#12]' -> r2 = frame+0x0c (modo), r1 = frame+0x10 (tamanho total)",
+            "0x40be 'ldr r3,[r4]' + 0x40c0 'adds r3,#1' + 0x40c2 'bne 0x4108' -> so' aceita se o estado for -1 (0xffffffff)",
+            "0x40d0 'cmp r0,r5' (r0 = tamanho-1, r5 = 0x1b57ff) -> limite de 0x1b5800",
+            "0x40d8 'cmp r2,#0' + 0x40de 'beq 0x4234' (modo 0 = LEITURA: TA prepara o blob e o host puxa) / 0x40e2 'cmp r2,#1' + 0x40e4 'bne 0x42c2' (qualquer outro modo = erro 0xe890c07e)",
+            "modo 1 (escrita): 0x40e8 'ldr.w r0,[r9,#0xdc]' + 0x40ec 'str r0,[r4,#0x10]' (buf) + 0x40ee 'cbz r0' (buffer precisa existir) + 0x40f6 'strd r0,r1,[r4]' (state=1, total) + 0x40fa 'strd r1,r10,[r4,#8]' (restantes=total, offset=0)",
+            "modo 0 (leitura): 0x4238 'str r0,[r4]' (state=0) + 0x423e 'bl fpc_db_get_data_size' + 0x4248 'subs r2,r1,#1' (limite) + 0x4258 'bl fpc_get_wrapped_size' + 0x425c 'str r0,[r4,#4]' + 0x4260 'str r1,[r4,#0xc]' (offset=0, r1=0) + 0x426e 'str r1,[r4,#0x10]' (buf) + 0x427c 'bl 0x2090' (fpc_db_get_data -> buffer de trabalho global+0xe0) + 0x428e-0x4294 'bl 0x3988' (fpc_wrap_crypto) + 0x42a8 'streq r0,[r4,#8]' (restantes = tamanho empacotado) + 0x42b4 'bl 0x37ba' (fpc_memset_s limpa o plaintext)",
+            "HAL (store, modo 0): 0x20c34 'stp wzr,w23,[x8,#0xc]' -> frame+0x0c = 0, frame+0x10 = tamanho; HAL (load, modo 1): 0x21118 'stp w9(=1),w23,[x8,#0xc]'"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u32", "dir": "in", "size": 4, "note": "NAO usado por este comando (ignorado; o HAL deixa valor velho nesse campo)"},
+            {"off": "0x0c", "type": "u32", "dir": "in", "size": 4, "note": "modo: 0 = host vai LER o blob (TA empacota e prepara o buffer); 1 = host vai ESCREVER o blob (TA prepara para receber)"},
+            {"off": "0x10", "type": "u32", "dir": "in", "size": 4, "note": "tamanho total do blob empacotado (no modo 0 tem de bater com fpc_get_wrapped_size(tamanho_atual_do_db), senao erro 0xe890c04c em 0x42aa)"}
+          ],
+          "response": [],
+          "return": "0 em sucesso; codigos derivados da base 0xe8a0c074: +0x1e (tamanho invalido, 0x42cc), +0x4c (tamanho empacotado divergente, 0x42aa), +0x55 (modo invalido, 0x42c2), +0x6c (0x422e), +0x8f (chunk com 0 restante, 0x4228), +0xad (estado != -1, default 0x4060), +0xcd (0x4074); e 0xe890c07e (modo != 0 e != 1, 0x40d4)"
+        },
+        {
+          "cmd": 15,
+          "handler": "0x4100",
+          "name_guess": "db_blob_close / reset da transferencia",
+          "name_source": "chamado ao final dos dois fluxos do HAL (0x20e34 e 0x213c4)",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_store_template_db_host (HAL 0x20e34) e fpc_tee_load_template_db_host (HAL 0x213c4)",
+          "evidence": [
+            "0x4100 'bl 0x42f8' (reset) e 0x4104 'mov.w r10,#0' -> retorna 0",
+            "0x4300 'ldr r0,[r4,#0x10]' (buffer) + 0x4302 'cbz r0' + 0x4308 'bl 0x37ba' (fpc_memset_s limpa o buffer com [ctx+4] bytes)",
+            "0x430c vmov.i32 q8,#0 + 0x4312 'vst1.32 {d16,d17},[r0]' (r0 = ctx+4) -> zera ctx+4..ctx+0x13",
+            "0x4316 'mov.w r0,#0xffffffff' + 0x431a 'str r0,[r4]' -> estado volta a -1"
+          ],
+          "request": [],
+          "response": [],
+          "return": "0"
+        },
+        {
+          "cmd": 16,
+          "handler": "0x4112",
+          "name_guess": "read_db_blob_chunk (TA -> host)",
+          "name_source": "usado no laco de copia de fpc_tee_store_template_db_host (0x20c78-0x20cc4); o HAL compara o retorno com o 'restante' esperado",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_store_template_db_host (HAL 0x20c78-0x20ce0)",
+          "evidence": [
+            "0x4112 'ldr.w r8,[r6,#8]' -> tamanho do chunk pedido em frame+0x08",
+            "0x411a 'add.w r1,r8,#0xc' + 0x411e 'cmp r1,r5' + 0x4120 'bhi 0x4108' -> chunk+0xc <= buflen (limite de resposta)",
+            "0x413a 'ldr r1,[r4]' + 0x413c 'cmp r1,#0' + 0x413e 'bne 0x4108' -> estado tem de ser 0 (aberto para leitura pelo cmd 14 modo 0)",
+            "0x4140 'ldr r5,[r4,#8]' (restantes) + 0x4142 'cmp r5,#0' + 0x4144 'beq 0x4108' -> nao aceita chunk com 0 restante",
+            "0x4146 'ldrd r1,r2,[r4,#12]' -> r1 = offset, r2 = buffer",
+            "0x414a 'add.w r0,r6,#0xc' -> destino = payload do frame",
+            "0x414e 'cmp r5,r8' + 0x4152 'movlo r8,r5' -> chunk = min(pedido, restante)",
+            "0x4154 'add r1,r1,r2' (origem = buffer+offset) + 0x4158 'bl 0x52ba' (memcpy) -> copia buffer+offset -> payload",
+            "0x415c 'sub.w r10,r5,r8' -> retorno = restante apos o chunk; 0x4160 'str r10,[r4,#8]' e 0x4168 'str r0,[r4,#0xc]' (offset += chunk)",
+            "HAL 0x20cbc 'sub w4,w21,w22' + 0x20cc0 'cmp w4,w27' + 0x20cc4 b.ne -> 'REE and TEE out of sync (%u vs %d)' (string 0xdfaa)"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u32", "dir": "in", "size": 4, "note": "tamanho maximo do chunk desejado (o TA limita ao restante)"}
+          ],
+          "response": [
+            {"off": "0x0c", "type": "u8[chunk]", "dir": "out", "size": "min(frame+0x08, restante)", "note": "dados do blob empacotado"},
+            {"off": "(retorno)", "type": "u32", "dir": "out", "note": "o valor de retorno da funcao (nao o frame) = bytes restantes; 0 indica fim do blob (0x415c/0x4160)"}
+          ],
+          "return": "restante (>=0); negativo = erro"
+        },
+        {
+          "cmd": 17,
+          "handler": "0x416c",
+          "name_guess": "write_db_blob_chunk (host -> TA) + commit",
+          "name_source": "usado no laco de fpc_tee_load_template_db_host (0x211b0-0x21220), que o HAL registra como 'send_db_write_commands' (string 0xde52 usada em 0x21314/0x2139c)",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_load_template_db_host (HAL 0x211b0-0x21220)",
+          "evidence": [
+            "0x416c 'ldr.w r8,[r6,#8]' (chunk) e 0x4174-0x4184 mesmas guardas de tamanho do cmd 16",
+            "0x4194 'ldr r1,[r4]' + 0x4196 'cmp r1,#1' + 0x4198 'bne 0x4108' -> estado tem de ser 1 (aberto pelo cmd 14 modo 1)",
+            "0x41a0 'ldrd r2,r3,[r4,#12]' (offset, buffer) + 0x41a4 'add.w r1,r6,#0xc' (payload) + 0x41ae 'adds r0,r3,r2' + 0x41b2 memcpy -> copia payload -> buffer+offset",
+            "0x41b6 'ldr r0,[r4,#8]' + 0x41b8 'subs.w r10,r0,r8' (restante) + 0x41bc 'str.w r10,[r4,#8]' + 0x41c4 'str r0,[r4,#0xc]' (offset)",
+            "0x41c6 'bne 0x4108' -> so' no ULTIMO chunk (restante == 0) faz o commit",
+            "commit: 0x41cc 'ldr r1,[r4,#4]' (total) + 0x41d0 'str r0,[sp,#4]' (=0) + 0x41d4 'str r1,[sp,#8]' + 0x41d6 'bl 0x3a04' (fpc_unwrap_crypto(buf, total, &sp+4, &sp+8))",
+            "0x41dc 'cmp.w r10,#0xffffffff' + 0x41e0 'ble' -> retorno do unwrap <= -1 = erro",
+            "0x41e4 'bl 0x1d58' (fpc_db_destroy) + 0x41ee 'bl 0x139c' (fpc_db_create(db, [sp+4], [sp+8])) -> recria o banco com o blob recebido",
+            "0x4204 'ldr r1,[r2,#0x10]' + 0x4206 'cbz' + 0x420c 'ldr r1,[r0,#0x10]' + 0x420e 'add.w r0,r2,#0x14' + 0x4212 'movs r2,#8' + 0x4214 'bl 0x529c' (memcmp 8 bytes: db+0x14 vs handle+0x10) -> se diferente, 0xe920c0f8 ('REE e TEE dessincronizados')"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u32", "dir": "in", "size": 4, "note": "tamanho do chunk enviado"},
+            {"off": "0x0c", "type": "u8[chunk]", "dir": "in", "size": "min(frame+0x08, restante)", "note": "dados do blob empacotado"}
+          ],
+          "response": [],
+          "return": "restante apos o chunk (0 no ultimo); negativo = erro"
+        }
+      ],
+      "host_side_flow": {
+        "note": "Reconstruido das funcoes do HAL (OBSERVADO).",
+        "store_db_to_file": {
+          "hal_function": "fpc_tee_store_template_db_host (0x20ae0-0x20ea0) + fpc_write_db_blob_to_file (0x20f40-0x21060)",
+          "steps": [
+            "1. cmd 6 com frame+0x08 = 0 -> recebe o tamanho empacotado em frame+0x08 (HAL 0x20bf4-0x20c18)",
+            "2. cmd 14 modo 0, frame+0x0c = 0, frame+0x10 = tamanho (HAL 0x20c20-0x20c40) -> o TA empacota o banco no buffer interno (global+0xdc)",
+            "3. malloc(tamanho) + fpc_tac_alloc_shared(min(tamanho, 0xffff90) + 0x70) (HAL 0x20c44-0x20c6c)",
+            "4. laco: cmd 16 com frame+0x08 = min(tamanho,0xffff90) e payload em +0x0c; o retorno e' o restante; copia o chunk para o malloc (HAL 0x20c98-0x20ce4)",
+            "5. fpc_tac_free_shared + fpc_write_db_blob_to_file(buf, tamanho, caminho) (HAL 0x20ce8-0x20cfc); open(O_WRONLY|O_CREAT|O_TRUNC=0x241, 0600=0x180), write, fsync, close, confere bytes escritos (0x20f5c-0x20fa8)",
+            "6. cmd 15 (reset) - HAL 0x20e34"
+          ]
+        },
+        "file_to_ta": {
+          "hal_function": "fpc_tee_load_template_db_host (0x21060-0x21438); o nome 'fpc_read_db_blob_from_file' existe como string de log (0xc42d) e o codigo correspondente esta' inlinado nessa funcao",
+          "steps": [
+            "1. stat(caminho) -> tamanho; se nao existe (errno ENOENT) chama fpc_tee_load_empty_db (cmd 11/7) (HAL 0x210b0-0x210c4, 0x21228)",
+            "2. cmd 14 modo 1, frame+0x0c = 1, frame+0x10 = tamanho (HAL 0x21100-0x21124)",
+            "3. malloc(tamanho) + open(O_RDONLY) + read(tamanho) + close; se a leitura nao for completa -> erro 'failed to read full size of file' (0x980d) (HAL 0x2112c-0x21174)",
+            "4. fpc_tac_alloc_shared(min(tamanho,0xffff90)+0x70) e laco: memcpy(payload, buf+enviado, chunk) + cmd 17; o retorno e' o restante (HAL 0x211a8-0x21220)",
+            "5. cmd 15 (reset) - HAL 0x213c4",
+            "6. se o TA recusar o blob (erro -18 = 0xffffffee), o HAL apaga o arquivo ('remove' em 0x21374) e chama fpc_tee_load_empty_db (0x2137c)"
+          ]
+        },
+        "buffer_cap": "0xffff90 (16.776.080) e' o teto do chunk do HAL (0x20c54/0x20c58 'mov w8,#0xff90' + 'movk w8,#0xf,lsl #16'); acima de 0x1b5800 o proprio TA recusa o tamanho."
+      }
+    },
+
+    {
+      "id": 11,
+      "name": "bio",
+      "handler_addr": "0x420",
+      "module_table_entry": "0x116030 = {0x0, 0x3e1, 0x421, 11}; despacho separado em 0x3e0 (nao usado pelo roteador, que chama direto o handler)",
+      "dispatch": {
+        "kind": "tbh [pc, rM, lsl #1] com indice = cmd (tabela de meias-palavras)",
+        "table_addr": "0x476",
+        "evidence": [
+          "0x452 'cmp r2,#0xb' + 0x456 'bhi.w 0x98c' -> so' cmd 0..11 (cmd 18 usado pelo HAL e' rejeitado)",
+          "0x472 'tbh [pc,r2,lsl #1]' com PC = 0x476",
+          "0x98c-0x990 'ldr r0,[sp,#0x14]' + 'str.w r0,[r9,#8]' -> epilogo: grava de volta o 'tamanho/valor de resposta' em frame+0x08"
+        ],
+        "entries": [
+          {"cmd": 0, "half": "0x000c", "handler": "0x48e"},
+          {"cmd": 1, "half": "0x0035", "handler": "0x4e0"},
+          {"cmd": 2, "half": "0x006c", "handler": "0x54e"},
+          {"cmd": 3, "half": "0x00a9", "handler": "0x5c8"},
+          {"cmd": 4, "half": "0x00e9", "handler": "0x648"},
+          {"cmd": 5, "half": "0x01a6", "handler": "0x7c2"},
+          {"cmd": 6, "half": "0x028b", "handler": "0x98c", "note": "default/erro"},
+          {"cmd": 7, "half": "0x0221", "handler": "0x8b8"},
+          {"cmd": 8, "half": "0x022d", "handler": "0x8d0"},
+          {"cmd": 9, "half": "0x0265", "handler": "0x940"},
+          {"cmd": 10, "half": "0x027b", "handler": "0x96c"},
+          {"cmd": 11, "half": "0x0282", "handler": "0x97a"}
+        ],
+        "out_of_range": "cmd > 11 -> 0x98c com r11 = 0xe8a28310 (base de erro)"
+      },
+      "preconditions": [
+        "0x434 'cmp.w r9,#0' + 0x43c 'beq 0x992' -> frame != NULL",
+        "0x440 'cmp r1,#0x70' + 0x442 'blo.w 0x992' -> buflen >= 0x70",
+        "0x446 'ldr.w r1,[r9,#8]' + 0x454 'str r1,[sp,#0x14]' -> guarda frame+0x08 (entrada) para reescrever no epilogo"
+      ],
+      "context": {
+        "addr": "slot de ponteiro em 0x2cf07c (resolvido em 0x7c6/0x8b8/0x944/0x96c/0x97a). O codigo sempre faz 'ldr rX,[slot]' e depois usa offsets a partir do PONTEIRO; no arquivo o slot vale 0x001188d8.",
+        "status": "OBSERVADO (o slot esta' na parte inicializada do segmento 0x2cf000; o objeto apontado cai na regiao zerada, entao os valores iniciais dos campos nao sao legiveis estaticamente)",
+        "fields_relevant_to_bio": [
+          {"off": "0x00", "type": "u32", "note": "handle interno do banco: e' este valor (nao o objeto) que vai como 1o argumento de fpc_db_* (ex.: 0x68c 'ldr r0,[r5],#116' + 0x68e 'bl 0x2492' fpc_db_get_all_templates)", "status": "OBSERVADO"},
+          {"off": "0x04", "type": "u32", "note": "gid corrente (inicializado com -1 no cmd 0: 0x4a0/0x4a6)", "status": "OBSERVADO"},
+          {"off": "0x08", "type": "u8[0x44]", "note": "estrutura de resultado do identify (limpa com 'memset(ctx+8,0,0x44)' em 0x6e4 e preenchida por fpc_algo_identify(algo, img, ctx+0x08, 0) em 0x710); +0x08 = flag de match (0x740 'cmp r0,#1')", "status": "OBSERVADO"},
+          {"off": "0x4c", "type": "u32", "note": "campo do resultado lido em 0x728 -> frame+0x10 (o HAL o chama de 'quality')", "status": "OBSERVADO"},
+          {"off": "0x50", "type": "u32", "note": "campo do resultado lido em 0x722 -> frame+0x0c (o HAL o chama de 'coverage')", "status": "OBSERVADO"},
+          {"off": "0x60", "type": "u32", "note": "status do enrol (0..7) usado no despacho interno do cmd 2 (0x590-0x5a2)", "status": "OBSERVADO"},
+          {"off": "0x64", "type": "u32", "note": "tamanho usado no fim do enrol (0x5d2 'ldr r0,[r5,#0x64]' antes de alocar e chamar fpc_algo_end_enroll)", "status": "OBSERVADO"},
+          {"off": "0x70", "type": "u32", "note": "amostras restantes do enrol -> frame+0x08 (0x586 'ldr r0,[r0,#0x70]' + 0x588 'str r0,[sp,#0x14]')", "status": "OBSERVADO"},
+          {"off": "0x74", "type": "u32[?]", "note": "array de templates carregado por fpc_db_get_all_templates; indexado como (ctx+0x74+idx*8) em 0x74e/0x80c (entradas de 8 bytes)", "status": "OBSERVADO"},
+          {"off": "0x9c", "type": "u32", "note": "numero maximo de templates, fixado em 5 (0x4fe/0x502 e 0x666/0x66c 'movs r0,#5' + 'str r0,[r2,#156]')", "status": "OBSERVADO"},
+          {"off": "0xd8", "type": "u32", "note": "instancia do algoritmo (fpc_algo_*), gravada no cmd 0 (0x4d2)", "status": "OBSERVADO"},
+          {"off": "0xdc", "type": "u32", "note": "buffer de 0x1b5800 bytes (alocado no cmd 0, usado pelo modulo 4 como buffer do blob)", "status": "OBSERVADO"},
+          {"off": "0xe0", "type": "u32", "note": "segundo buffer de 0x1b5800 bytes (area de trabalho do wrap/memset)", "status": "OBSERVADO"}
+        ],
+        "note_common_handle": "O buffer da imagem capturada NAO fica neste contexto: vem de fpc_common_get_handle()+0x08 (0x570/0x6b2 'ldr r1,[r4,#8]', com r4 = 0x24/0x67c 'bl 0x248' fpc_common_get_handle); o byte +0x0c desse handle e' uma flag ligada em 0x4fc/0x686/0x9be"
+      },
+      "commands": [
+        {
+          "cmd": 0,
+          "handler": "0x48e",
+          "name_guess": "bio_init",
+          "name_source": "fpc_tee_bio_init (HAL 0x229d0, const 0xe1c0); string 0xb957",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_bio_init (HAL 0x229d0-0x22a30)",
+          "evidence": [
+            "0x498 'ldr r5,[r6]' (contexto) + 0x49c 'bl 0x56cc' (memset(global,0,0xe8); r1=0, r2=0xe8 em 0x492/0x494)",
+            "0x4a0 'mov.w r0,#0xffffffff' + 0x4a6 'str r0,[r5,#4]' -> gid = -1",
+            "0x4a8 'mov r0,r5' + 0x4aa 'movs r2,#0' + 0x4ac 'bl 0x139c' (fpc_db_create(db,NULL,0))",
+            "0x4be 'bl 0x6360' (fpc_algo_load_configuration) + 0x4c2 'adds r0,#0x9' + 0x4c4 'bne 0x9ec' (segunda tentativa com a instancia)",
+            "0x4d2 'str.w r0,[r1,#0xd8]' -> guarda a instancia do algoritmo (0x4ca 'bl 0x5920' aloca)",
+            "0xa04 'movw r8,#0x5800' + 0xa0a 'movt r8,#0x1b' (0x1b5800) + 0xa12/0xa28 'bl 0x5920' + 0xa22 'str r0,[r1,#0xdc]' + 0xa36 'str r0,[r1,#0xe0]' -> dois buffers de 1.792.000 bytes"
+          ],
+          "request": [],
+          "response": [],
+          "return": "0; 0xe892832d (0x4da 'add.w r11,r4,#0xba' com r4 = 0xe8928273) se o banco/algoritmo falhar; 0xe892834b (0xa30 'add.w r11,r11,#6') se a alocacao dos buffers de 0x1b5800 falhar"
+        },
+        {
+          "cmd": 1,
+          "handler": "0x4e0",
+          "name_guess": "begin_enrol",
+          "name_source": "fpc_tee_begin_enrol (HAL 0x223e0, const 0xe148); string 0xc1d3",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_begin_enrol (HAL 0x223e0-0x22434)",
+          "evidence": [
+            "0x4e6 'ldr.w r0,[r8]' + 0x4ea 'ldr r0,[r0]' + 0x4ec 'cmp r0,#0' + 0x4ee 'beq 0x99c' -> exige banco criado",
+            "0x4f8 'bl 0x248' (fpc_common_get_handle) + 0x4fc 'strb r4,[r0,#0xc]' (r4=1)",
+            "0x4fe 'movs r0,#5' + 0x502 'str r0,[r2,#156]!' -> global+0x9c = 5 (max templates)",
+            "0x50c 'bl 0x2492' (fpc_db_get_all_templates para global+0x74)",
+            "0x528 'bl 0x64c4' (fpc_algo_begin_identify com a lista de templates)",
+            "0x536 'bl 0xb64' (helper sem simbolo que sincroniza instance data do DB com o handle)",
+            "0x548 'bl 0x6ad8' (fpc_algo_begin_enroll(algo, r1, r2) com os dois u32 lidos de [db+0xc])"
+          ],
+          "request": [],
+          "response": [],
+          "return": "0 ou codigo de erro"
+        },
+        {
+          "cmd": 2,
+          "handler": "0x54e",
+          "name_guess": "enrol",
+          "name_source": "fpc_tee_enrol (HAL 0x22434, const 0xe1d8); strings 0xcf3f / 0x9744 ('samples_remaining: %d')",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_enrol (HAL 0x22434-0x224dc)",
+          "evidence": [
+            "0x55e-0x56c zeram global+0x64..0x73 e global+0x58..0x67 (vst1 com q8 zero)",
+            "0x570 'ldr r1,[r0,#8]' (handle+8 = buffer da imagem capturada) + 0x576 'bl 0x6b58' (fpc_algo_enroll(algo, imagem, &sp+0x18))",
+            "0x584 'ldr r0,[r5]' + 0x586 'ldr r0,[r0,#0x70]' + 0x588 'str r0,[sp,#0x14]' -> frame+0x08 = amostras restantes",
+            "0x590 'ldr r0,[r0,#0x60]' + 0x594 'cmp r0,#7' + 0x596 'bhi 0xa9e' + 0x5a2 'tbh [pc,r0,lsl #1]' -> despacho pelo status do enrol (0..7) para os erros 0,6,7,8,9,0xa",
+            "HAL 0x22490 'ldr w8,[x21,#8]' + 0x22498 'str w8,[x19]' -> o host le' frame+0x08 (amostras restantes)"
+          ],
+          "request": [],
+          "response": [
+            {"off": "0x08", "type": "u32", "dir": "out", "size": 4, "note": "amostras restantes do enrol (0 quando o template esta completo)"}
+          ],
+          "return": "0 concluido; por status em [global+0x60]: 0 -> 0 ou 6 (0x5b6/0x5b8), 1 -> 8 (0xa8c), 2/4/6 -> 9 (0xa9e), 3 -> erro default (0x98c), 5 -> 7 (0xaa4), 7 -> 0xa (0xaaa); <0 = erro do algoritmo"
+        },
+        {
+          "cmd": 3,
+          "handler": "0x5c8",
+          "name_guess": "end_enrol",
+          "name_source": "fpc_tee_end_enrol (HAL 0x224dc, const 0xe0f0); string 0xc34a",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_end_enrol (HAL 0x224dc-0x2254c)",
+          "evidence": [
+            "0x5d2 'ldr r0,[r5,#0x64]' + 0x5d6 'bl 0x5920' (aloca o template) + 0x5e4 'bl 0x6fc8' (fpc_algo_end_enroll(algo, &sp+0x48))",
+            "0x5fe 'bl 0x3c60' (fpc_check_enrollment_allowance)",
+            "0x618 'bl 0x2132' (fpc_db_add_fingerprint(db, gid, &template, &novo_id))",
+            "0x62e 'bl 0x27fa' (fpc_db_update_set_id(db,1)) / 0xad4 'bl 0x26fc' (fpc_db_update_fingerprint_id) / 0xaec 'bl 0x274e' (fpc_db_set_secure_user_id) / 0xb00 (fpc_db_update_set_id(db,2))",
+            "0xb0c 'bl 0x2734' (fpc_db_get_fingerprint_id) + 0xb2a 'bl 0x20ce' (fpc_db_trim_id_32(&sp+0x18,&sp+0x14)) -> frame+0x08 = id32 final do dedo",
+            "epilogo 0x98c-0x98e 'str.w r0,[r9,#8]' (r0 = sp+0x14)",
+            "HAL 0x22534 'ldr w8,[x21,#8]' + 0x22538 'str w8,[x19]' -> o host le' frame+0x08"
+          ],
+          "request": [],
+          "response": [
+            {"off": "0x08", "type": "u32", "dir": "out", "size": 4, "note": "id32 (template/finger id truncado) do dedo cadastrado"}
+          ],
+          "return": "0; 0xe892813b (0x9a2 'sub.w r11,r4,#0x138' com r4 = 0xe8928273) se fpc_algo_end_enroll nao devolver template"
+        },
+        {
+          "cmd": 4,
+          "handler": "0x648",
+          "name_guess": "identify",
+          "name_source": "fpc_tee_identify e fpc_tee_identify_image_status (HAL 0x22608 e 0x2254c, const 0xe090); string 0x9f3f 'coverage: %d, quality: %d'",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_identify (HAL 0x22608-0x226ac) e fpc_tee_identify_image_status (HAL 0x2254c-0x22608)",
+          "evidence": [
+            "0x652 'ldr r0,[r0]' + 0x654 'cmp r0,#0' + 0x656 'beq 0x9ca' -> exige banco",
+            "0x662 'add.w r0,r9,#0xc' + 0x674 'vst1.32 {d16,d17},[r2]!' + 0x678 'str r1,[r0,#0x14]' + 0x67a 'str r1,[r2]' -> zera frame+0x0c..frame+0x20 antes de responder",
+            "0x66c 'str r1,[r6,#156]!' -> global+0x9c = 5 (max templates)",
+            "0x68e 'bl 0x2492' (fpc_db_get_all_templates)",
+            "0x6a4 'cmp r0,#0' + 0x6a6 'beq 0xa82' -> exige templates carregados",
+            "0x6c2 'bl 0x6574' (fpc_algo_identify_extract(algo, handle+8, &global+0x4c, ...)) e 0x6d4 'blt 0xa72'",
+            "0x6e4 'bl 0x56cc' memset(global+8,0,0x44)",
+            "0x6f4 'bl 0x64c4' (fpc_algo_begin_identify) e 0x710 'bl 0x6730' (fpc_algo_identify(algo, handle+8, &global+8, 0))",
+            "0x722 'ldr r1,[r0,#0x50]' + 0x724 'str.w r1,[r9,#0xc]' ; 0x728/0x72a [r0+0x4c] -> [r9+0x10] ; 0x72e/0x730 [r0+0x18] -> [r9+0x14] ; 0x734/0x736 [r0+0xc] -> [r9+0x1c] ; 0x73a/0x73c [r0+8] -> [r9+0x18]",
+            "0x740 'cmp r0,#1' + 0x742 'bne 0x974' -> so' em match ([global+8]==1) preenche id/template",
+            "0x74a-0x756 fpc_db_get_index_of_template(db, &global[0x74+idx*8], &sp+0x48) ; 0x764 'ldr r2,[sp,#0x48]' + 0x76e 'str.w r2,[r9,#0x20]' -> frame+0x20 = template id",
+            "0x776 'bl 0x2734' (fpc_db_get_fingerprint_id) + 0x788 'bl 0x20ce' (fpc_db_trim_id_32) + 0x798 'ldr r0,[sp,#0x38]' + 0x79a 'str.w r0,[r1,#0xb0]' (S+0xb0 = id32) + 0x7b6 'str r0,[sp,#0x14]' -> frame+0x08 = id32",
+            "0x7bc 'bl 0x2454' (fpc_db_set_template_first)",
+            "HAL 0x22684 'ldr w9,[x8,#8]' -> *out = frame+0x08 ; 0x22690 'ldp w4,w5,[x8,#0xc]' -> loga +0x0c e +0x10 com o formato 0x9f3f 'coverage: %d, quality: %d'"
+          ],
+          "request": [],
+          "response": [
+            {"off": "0x08", "type": "u32", "dir": "out", "size": 4, "note": "id32 do dedo reconhecido; 0 se nao houver match (0x672 inicializa com 0 e o caminho 0x974 nao o altera)"},
+            {"off": "0x0c", "type": "u32", "dir": "out", "size": 4, "note": "[global+0x50]; o HAL chama de 'coverage' (formato 0x9f3f)"},
+            {"off": "0x10", "type": "u32", "dir": "out", "size": 4, "note": "[global+0x4c]; o HAL chama de 'quality'"},
+            {"off": "0x14", "type": "u32", "dir": "out", "size": 4, "note": "[global+0x18]; semantica DESCONHECIDA (nao lido pelo HAL)"},
+            {"off": "0x18", "type": "u32", "dir": "out", "size": 4, "note": "[global+0x08] = flag de match (1 = achou); semantica INFERIDA"},
+            {"off": "0x1c", "type": "u32", "dir": "out", "size": 4, "note": "[global+0x0c]; semantica DESCONHECIDA"},
+            {"off": "0x20", "type": "u32", "dir": "out", "size": 4, "note": "indice/template id do match (so' quando frame+0x18 == 1)"}
+          ],
+          "return": "0; valores negativos do algoritmo (0xa72) e 4 (0x6c8 'cmp r11,#4') tratados como 'sem match'"
+        },
+        {
+          "cmd": 5,
+          "handler": "0x7c2",
+          "name_guess": "update_template",
+          "name_source": "fpc_tee_update_template (HAL 0x2273c, const 0xe180); string 0xaa5b",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_update_template (HAL 0x2273c-0x227ac)",
+          "evidence": [
+            "0x7d2 'ldr r1,[r6]' + 0x7d6 'ldr.w r0,[r1,#0xd8]' + 0x7da 'adds r1,#0x8' + 0x7dc 'bl 0x6978' (fpc_algo_identify_update(algo, &global+8))",
+            "0x7ea 'ldr r0,[r0,#0x48]' + 0x7ee 'cmp r0,#1' + 0x7f0 'bne 0xa42' -> so' prossegue se o update foi aceito",
+            "0x808-0x814 fpc_db_get_index_of_template ; 0x844 fpc_db_get_template(db, gid, idx, &sp+0x48)",
+            "0x860 'ldr r5,[r5,#0x10]' + 0x862 'bl 0x5920' (aloca) ; 0x86e-0x880 copia cabecalho do template e a contagem de [db+0x44]",
+            "0xac4 'bl 0x70c8' (fpc_algo_update_templates(algo, &sp+0x48, &global+0x1c))",
+            "0xad0 'movs r0,#1' -> 0xa44 'str r0,[sp,#0x14]' (frame+0x08 = 1) no caminho de sucesso; 0xa42 'movs r0,#0' (frame+0x08 = 0) quando nao houve update",
+            "HAL 0x22790-0x2279c 'ldr w8,[x8,#8]' + 'str w8,[x19]' -> o host devolve frame+0x08 ao chamador"
+          ],
+          "request": [],
+          "response": [
+            {"off": "0x08", "type": "u32", "dir": "out", "size": 4, "note": "1 se os templates foram atualizados, 0 caso contrario (0xad0 vs 0xa42). ATENCAO: no caminho de match o valor gravado pode ser o id32 truncado (0x7b6 e' compartilhado com o cmd 4) - ver unknowns"}
+          ],
+          "return": "0; <0 = erro do algoritmo/DB"
+        },
+        {
+          "cmd": 7,
+          "handler": "0x8b8",
+          "name_guess": "load_empty_db",
+          "name_source": "fpc_tee_load_empty_db (HAL 0x2297c, const 0xe0a0)",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_load_empty_db (HAL 0x2297c-0x229d0); tambem chamado quando o blob do arquivo e' recusado (HAL 0x2137c)",
+          "evidence": [
+            "0x8b8 'ldr r0,[pc,#0x288]' + 0x8ba 'add r0,pc' -> contexto",
+            "0x8be 'mov r0,r5' + 0x8c0 'bl 0x1d58' (fpc_db_destroy)",
+            "0x8c4 'mov r0,r5' + 0x8c6 'movs r1,#0' + 0x8c8 'movs r2,#0' + 0x8ca 'bl 0x139c' (fpc_db_create(db,NULL,0))"
+          ],
+          "request": [],
+          "response": [],
+          "return": "resultado de fpc_db_create (0 = ok)"
+        },
+        {
+          "cmd": 8,
+          "handler": "0x8d0",
+          "name_guess": "get_finger_ids",
+          "name_source": "fpc_tee_get_finger_ids (HAL 0x227ac, const 0xe1b8); string 0xd40b / 0xa932 'Not enough room for templates'",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_get_finger_ids (HAL 0x227ac-0x228ac)",
+          "evidence": [
+            "0x8d6 'add r2,sp,#0x38' + 0x8d8 'movs r3,#5' + 0x8e0 'str r1,[sp,#0x38]' (r1=5) + 0x8e6 'str r2,[sp]' + 0x8ea 'bl 0x234a' (fpc_db_get_indices(db, gid, &array, 5, &count))",
+            "0x8f6 'ldr r0,[sp,#0x38]' (count) + 0x8fa 'ldr r1,[sp,#0x14]' (frame+0x08 = capacidade pedida) + 0x8fc 'cmp r0,r1' + 0x8fe 'bhi 0x98c' -> erro se nao couber",
+            "0x906 'add.w r6,r9,#0xc' -> destino = frame+0x0c; laco 0x912-0x93c: fpc_db_get_fingerprint_id (0x91e) + fpc_db_trim_id_32 (0x92e) gravando u32 a cada 4 bytes",
+            "0x932 'ldr r0,[sp,#0x38]' (count) + 0x93e 'b 0xa6e' + 0xa6e 'str r0,[sp,#0x14]' -> frame+0x08 = count (in/out)",
+            "HAL 0x227fc 'str w8,[x22,#8]' (capacidade) e 0x2285c 'ldr w5,[x22,#8]' (count) + 0x22894 'lsl x2,x5,#2' + 0x228a0 memcpy"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u32", "dir": "in", "size": 4, "note": "capacidade do array do host (numero maximo de ids aceitos)"}
+          ],
+          "response": [
+            {"off": "0x08", "type": "u32", "dir": "out", "size": 4, "note": "quantidade de ids devolvida (campo in/out)"},
+            {"off": "0x0c", "type": "u32[count]", "dir": "out", "size": "4*count", "note": "ids32 truncados dos dedos do gid corrente"}
+          ],
+          "return": "0; negativo = erro do DB"
+        },
+        {
+          "cmd": 9,
+          "handler": "0x940",
+          "name_guess": "delete_template / delete_fingerprint",
+          "name_source": "fpc_tee_delete_template (HAL 0x228ac, const 0xe118); string 0x96e0 'delete_template failed'",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_delete_template (HAL 0x228ac-0x22910)",
+          "evidence": [
+            "0x940 'cmp r1,#0' + 0x942 'beq 0x9ce' -> r1 = frame+0x08 (vindo de 0x446 'ldr.w r1,[r9,#8]'); id 0 e' invalido (0x9ce 'add.w r11,r5,#0xdb')",
+            "0x94e 'bl 0x2782' (fpc_db_get_index_of_id32(db, id32, &idx))",
+            "0x95a-0x962 'ldrd r0,r1,[r0]' + 'bl 0x2230' (fpc_db_delete_fingerprint(db, gid, idx))",
+            "0x966 'and.w r11,r0,r0,asr #31' -> retorna 0 se ok, valor negativo se erro",
+            "HAL 0x228f0 'str w19,[x8,#8]' (w19 = finger id) - o HAL grava o id antes de escrever a constante {11,9}"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u32", "dir": "in", "size": 4, "note": "id32 do dedo a apagar (0 = erro)"}
+          ],
+          "response": [],
+          "return": "0 em sucesso; negativo = erro"
+        },
+        {
+          "cmd": 10,
+          "handler": "0x96c",
+          "name_guess": "set_gid",
+          "name_source": "fpc_tee_set_gid (HAL 0x223b4, const 0xe0c8)",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_set_gid (HAL 0x223b4-0x223e0)",
+          "evidence": [
+            "0x96c 'ldr r0,[pc,#0x1ec]' + 0x96e 'add r0,pc' + 0x970 'ldr r0,[r0]' -> contexto",
+            "0x972 'str r1,[r0,#4]' -> grava r1 (= frame+0x08, carregado em 0x446) em ctx+0x04 (gid)",
+            "0x974 'mov.w r11,#0' -> retorna 0",
+            "HAL: fpc_tee_set_gid grava o gid em frame+0x08 antes do transfer (mesmo padrao de fpc_tee_delete_template)"
+          ],
+          "request": [
+            {"off": "0x08", "type": "u32", "dir": "in", "size": 4, "note": "gid (grupo) corrente"}
+          ],
+          "response": [],
+          "return": "0"
+        },
+        {
+          "cmd": 11,
+          "handler": "0x97a",
+          "name_guess": "get_template_db_id",
+          "name_source": "fpc_tee_get_template_db_id (HAL 0x22910; frame {11,11} montado com 'movi v0.2s,#0xb' em 0x22948-0x22950)",
+          "status": "INFERIDO",
+          "hal_caller": "fpc_tee_get_template_db_id (HAL 0x22910-0x2297c)",
+          "evidence": [
+            "0x97a 'ldr r0,[pc,#0x1bc]' + 0x97c 'add.w r1,r9,#0x10' -> destino = frame+0x10",
+            "0x982 'ldr r0,[r0]' + 0x984 'ldr r0,[r0]' (objeto db) + 0x986 'bl 0x257a' (fpc_db_get_database_id(db, frame+0x10))",
+            "HAL 0x22968 'ldr x8,[x8,#0x10]' + 0x2296c 'str x8,[x19]' -> o host le' 64 bits de frame+0x10"
+          ],
+          "request": [],
+          "response": [
+            {"off": "0x10", "type": "u64", "dir": "out", "size": 8, "note": "database id (identificador do banco de templates)"}
+          ],
+          "return": "resultado de fpc_db_get_database_id"
+        }
+      ]
+    }
+  ],
+
+  "unknowns": [
+    "Semantica dos campos frame+0x14 e frame+0x1c da resposta do cmd 4 do modulo 11 (desconhecidos; o HAL nao os le).",
+    "Semantica do u32 BE = 2 em block+0x19 do token de hw_auth (cmd 4) e do valor BE64 em block+0x1d (S+0xa8).",
+    "Algoritmo de cifra do blob do banco (fpc_wrap_crypto/fpc_unwrap_crypto): as chamadas vao para veneers ARM (0x90, 0x9c, 0xa8, 0xb4) que saltam para uma tabela de syscalls do TEE fora da imagem reconstruida - so' se sabe que o tamanho plano fica em [0] e que o overhead e' 0x34.",
+    "Primitiva usada por fpc_ta_hw_auth_unwrap_key (0x4004): veneer 0xcc -> TEE; sabe-se apenas o efeito (blob -> chave de 32 bytes em ctx+0x65) e a checagem do rotulo 'keymaster64'.",
+    "Quem chama o cmd 3 do modulo 3 em producao: o HAL nao chama; apenas fpc_tee_authorize_enrol o emite, e essa funcao nao aparece no fluxo normal de enrol deste binario (chamada provavelmente por outro componente/TEE).",
+    "O cmd 11/18 (get_identify_statistics) existe no HAL mas o TA rejeita cmd>11; nao se sabe se e' um TA mais novo que implementa, ou codigo morto no HAL.",
+    "cmd 5 do modulo 11: o byte de resposta (frame+0x08) pode ser 0/1 ou o id32 truncado dependendo do caminho; nao foi possivel separar os dois caminhos com certeza porque 0x7b6 e' compartilhado com o cmd 4.",
+    "O valor inicial de ctx+0x00 do modulo 3 e do modulo 11 nao pode ser lido no arquivo (.bss zerado); a ligacao ctx -> S (contexto principal) e' feita em tempo de execucao por uma rotina de init (0x3d74 para o hw_auth)."
+  ]
+}

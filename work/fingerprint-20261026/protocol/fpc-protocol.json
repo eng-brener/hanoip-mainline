@@ -1,0 +1,135 @@
+{
+  "artifact": {
+    "ta": "work/fingerprint-20261026/fpctzapp-reconstructed.elf",
+    "ta_sha256_source": "modem_a:/image/fpctzapp.mdt+b00..b07 (dump do aparelho)",
+    "hal": "work/fingerprint-20261026/android-live-readonly/programs/fingerprint-service-fpc",
+    "hal_symbols": "hal-protocol/fingerprint-service-fpc-symbols.json",
+    "factory_util": "vendor/bin/fpc_tee_test (extraído do dump; 55168 bytes, AArch64)"
+  },
+  "authority": "analise-estatica-de-artefato-entregue; nada executado",
+  "transport": {
+    "abi": "QSEECOM legado (QSEECom_start_app + QSEECom_send_modified_cmd)",
+    "app_name": "fpctzapp",
+    "control_buffer_bytes": 64,
+    "control_layout": [
+      {"off": 0, "type": "u32", "meaning": "tamanho da regiao externa", "evidence": "HAL 0x22e20: ldr w9,[x1,#8]; 0x22e2c: str w9,[x8]"},
+      {"off": 4, "type": "u32", "meaning": "endereco fisico da regiao externa, PATCHED pelo kernel via QSEECom_ion_fd_info.cmd_id=4", "evidence": "HAL 0x22e10/0x22e40: stp w9,w10,[sp,#8] com w10=4 -> 6o arg de send_modified_cmd"},
+      {"off": 8, "type": "u32", "meaning": "nao usado por este fluxo (zero)", "evidence": "HAL 0x22e30/0x22e34"},
+      {"off": 64, "type": "resposta64B", "meaning": "primeiro word = status devolvido pelo TEE (negativo = erro)", "evidence": "HAL 0x22e58/0x22e88: ldr w20,[x19] com x19 = base+0x40"}
+    ],
+    "external_region": "buffer compartilhado cujo conteudo e o frame do TA; o TA copia para buffer interno, despacha e copia de volta",
+    "ta_entry_copy_loop": {"addr": "0x3908", "evidence": "memcpy(r8,r10,r5); bl 0x1a8 (fpc_ta_route_command); memcpy(r10,r8,r5)"},
+    "status_decode": {
+      "observed": "HAL 0x22e88: w20 = status; 0x22e90: se bit31 -> erro. TA: ubfx r?,status,#26,#5 (classe); se classe!=0 e !=0x1f -> codigo = -(ubfx status,#20,#6)",
+      "retry": "status == -14 (0xFFFFFFF2) significa 'ocupado': HAL 0x1deec usleep(10000) e repete 1x; depois usleep(20000) e retorna -13"
+    }
+  },
+  "frame_general": {
+    "off0": {"type": "u32", "dir": "in", "meaning": "module_id"},
+    "off4": {"type": "u32", "dir": "in", "meaning": "command_id"},
+    "note": "NAO existe layout unico depois de +0x04. Medidos: (a) modulos 3,4,5,11: +8 = tamanho/valor (in e out) e payload em +0x0c, com o limite sendo o argumento buflen do handler (roteador 0x214/0x21a/0x21e; modulo 4 em 0x414a); (b) modulo 12: limite em +0x14 e payload em +0x18; (c) modulo 10: +8 flags, +0xc modo, +0x10 saida, +0x14 limite.",
+    "min_buffer_by_module": {"3": "0x10", "4": "0x70", "5": "0x34", "10": "0x70", "11": "0x70", "12": "0x418"}
+  },
+  "modules": {
+    "ta_table": {"addr": "0x116000", "entry_struct": {"+0x4": "inicio do despacho", "+0x8": "handler chamado pelo roteador", "+0xc": "module id"}, "count": 8},
+    "list": [
+      {"id": 12, "name": "common", "handler": "0x328", "min_frame": "0x418 (checado no proprio handler)", "commands": [
+        {"cmd": 0, "meaning": "no-op, retorna 0", "evidence": "TA 0x35c: movs r0,#0"},
+        {"cmd": 1, "meaning": "get_build_info: copia a string JSON de build para +0x18; +0x14=limite(max 0x400) na entrada e tamanho copiado na saida; +0x8=6, +0xc=0, +0x10=5 na saida", "evidence": "TA 0x328-0x3aa"}
+      ]},
+      {"id": 10, "name": "sensor", "handler": "0xcc0", "min_frame": "0x70", "entry_call": "fpc_sensor_communication_start (0x11209) antes do despacho; se <0 -> erro", "commands": [
+        {"cmd": 0, "meaning": "check finger lost / estado do dedo; devolve 1 ou 2; se 3 e +0xc!=0 faz fpc_test_dead_pixel_update", "evidence": "TA 0xd7a-0xdac, 0xed6-0xef0"},
+        {"cmd": 1, "meaning": "device open + ta_common_init + device_init(flags=frame+8) + get_sensor_unique_id -> escreve id em +0x10", "evidence": "TA 0xd02-0xd74"},
+        {"cmd": 2, "meaning": "fpc_sensor_wakeup_setup", "evidence": "TA 0xdbc"},
+        {"cmd": 3, "meaning": "fpc_sensor_finger_lost_wakeup_setup", "evidence": "TA 0xdb0"},
+        {"cmd": 4, "meaning": "fpc_sensor_deep_sleep", "evidence": "TA 0xe8c"},
+        {"cmd": 5, "meaning": "captura: capture_details_init + wakeup_qualification(flags=frame+8) + loop de deteccao (limite em +0x14, +0xc como modo) e grava o status da captura em +0x10; a imagem NAO vai para o frame (fica no buffer interno do TA)", "evidence": "TA 0xdc8-0xf80"},
+        {"cmd": 6, "meaning": "nao implementado (cai no exit comum com status 0)", "evidence": "TA 0xec2 (entrada da tabela tbb = 0xec2)"},
+        {"cmd": 7, "meaning": "fpc_otp_get_sensor_info -> escreve a info do OTP a partir de +0x8", "evidence": "TA 0xe98"},
+        {"cmd": 8, "meaning": "nao-op com sucesso (retorna 0)", "evidence": "TA 0xdac"},
+        {"cmd": 9, "meaning": "retorna 0xE8F10125 (nao suportado neste build)", "evidence": "TA 0xea8"},
+        {"cmd": 10, "meaning": "ENTRADA INVALIDA na tabela tbb (byte 0x00 -> 0xcf6). NAO ENVIAR", "evidence": "tabela em 0xcf6: 42 06 63 5d cb 69 e6 d1 5b d9 00"}
+      ]},
+      {"id": 11, "name": "bio (enrol/identify/templates)", "handler": "0x420", "min_frame": "0x70", "source": "notes/mod3_4_11.json", "commands": [
+        {"cmd": 0, "meaning": "bio_init"},
+        {"cmd": 1, "meaning": "begin_enrol"},
+        {"cmd": 2, "meaning": "enrol (uma amostra); sai +8 = amostras restantes"},
+        {"cmd": 3, "meaning": "end_enrol; sai +8 = id32 do dedo"},
+        {"cmd": 4, "meaning": "identify; sai +8 id32, +0xc coverage, +0x10 quality, +0x14/+0x18/+0x1c/+0x20"},
+        {"cmd": 5, "meaning": "update_template; sai +8 = 0/1"},
+        {"cmd": 7, "meaning": "load_empty_db"},
+        {"cmd": 8, "meaning": "get_finger_ids; +8 = capacidade (in) e count (out), +0xc = u32[count]"},
+        {"cmd": 9, "meaning": "delete_template (id32 em +8)"},
+        {"cmd": 10, "meaning": "set_gid"},
+        {"cmd": 11, "meaning": "get_template_db_id; sai u64 em +0x10"}
+      ], "notes": "cmd>11 rejeitado (get_identify_statistics do HAL sempre falha); maximo de templates fixo em 5; matching interno (fpc_algo_identify) sobre a imagem do contexto comum"},
+      {"id": 9, "name": "kpi", "handler": "0x2cba", "commands": "nao decodificado nesta etapa"},
+      {"id": 3, "name": "hw_auth", "handler": "0x3da4", "min_frame": "0x10", "source": "notes/mod3_4_11.json", "commands": [
+        {"cmd": 1, "meaning": "set_auth_challenge: +8 = u64 challenge"},
+        {"cmd": 2, "meaning": "get_enrol_challenge: sorteia 8 B em +8 (fpc_secure_random) e guarda uptime"},
+        {"cmd": 3, "meaning": "authorize_enrol: +8 >= 0x45 e token em +0x0c; HMAC + janela de ~10 min (0x927c1 ms); so valida se o challenge do cmd 1 == o do cmd 2"},
+        {"cmd": 4, "meaning": "get_auth_result: devolve token de 0x45 B em +0x0c (versao 0, challenge, secure_user_id, database_id, BE(2), BE64(S+0xa8), HMAC-SHA256 de 37 B)"},
+        {"cmd": 5, "meaning": "init_hw_auth: unwrap de chave AES de 32 B para ctx+0x65 a partir de blob do keymaster (rotulo keymaster64)"},
+        {"cmd": 6, "meaning": "nao implementado (0xE8A34063)"}
+      ]},
+      {"id": 4, "name": "db_blob", "handler": "0x4048", "min_frame": "0x70", "source": "notes/mod3_4_11.json", "commands": [
+        {"cmd": 6, "meaning": "tamanho do blob empacotado -> +8"},
+        {"cmd": 14, "meaning": "abre transferencia: +0xc modo (0 = host le, 1 = host escreve), +0x10 tamanho; exige estado ocioso"},
+        {"cmd": 15, "meaning": "reset/fecha e limpa o buffer"},
+        {"cmd": 16, "meaning": "le chunk TA->host: +8 pedido, dados em +0x0c; retorno da funcao = bytes restantes (0 = fim)"},
+        {"cmd": 17, "meaning": "escreve chunk host->TA + commit no ultimo"}
+      ], "blob_format": "{u32 tamanho_plano, cabecalho 0x34 B, ciphertext}; overhead fixo 52 B; teto 0x1b5800; cifra roda no TEE (opaco para o host)"},
+      {"id": 5, "name": "sensortest", "handler": "0x4324", "min_frame": "0x34", "source": "notes/mod5_sensortest.json", "commands": [
+        {"cmd": 0, "meaning": "fpc_test_self_test_init; status em +0x2c", "evidence": "TA 0x4376"},
+        {"cmd": 1, "meaning": "fpc_test_run_self_test (entra +0x2c, sai 0/5/6/0x10)", "evidence": "TA 0x4380"},
+        {"cmd": 2, "meaning": "fpc_test_self_test_cleanup", "evidence": "TA 0x438a"},
+        {"cmd": 3, "meaning": "fpc_test_is_*_supported para o id em +0x8 (retorno 1 = suportado)", "evidence": "TA 0x4394"},
+        {"cmd": 4, "meaning": "run_test: tipo em +0x8 (1..9), 28 B de parametros em +0x0c..+0x27; saida +0x28 resultado, +0x2c status, +0x30 tamanho do log", "evidence": "TA 0x43bc"},
+        {"cmd": 5, "meaning": "buraco: epilogo com 0xE8A1C0CE", "evidence": "tabela 0x436e byte 0x4d"},
+        {"cmd": 6, "meaning": "capture_uncalibrated: fpc_device_capture_uncalibrated_image(dev, ctx); imagem fica no contexto interno do TA, NAO vai para o frame", "evidence": "TA 0x43fe -> 0x108e0"},
+        {"cmd": 7, "meaning": "NAO despachado por este TA; o HAL usa {5,7} para get_log -> falha com 0xE8A1C0CE e o conteudo do log e inalcancavel", "evidence": "TA 0x4364 aceita 0..6; fpc_test_get_log sem chamadores"}
+      ], "test_ids": {"0": "Self Test", "1": "Checkerboard", "2": "Image Quality", "3": "Reset Pixel", "4": "AFD Calibration", "5": "AFD Cal", "6": "Module Quality", "7": "Defective Pixels", "8": "OTP Validation", "9": "TXPulse Checkerboard", "10-12": "ESD Check Pre/Check/Post", "evidence": "tabela fpc_sensortest_tests @0x27940 no HAL"}, "quirk": "o HAL reescreve test id 1 -> 7 (0x20044); -b/checkerboard executa fpc_test_defective_pixels_test e o tipo 1 do TA fica inalcancavel"},
+      {"id": 8, "name": "navigation", "handler": "0x44c0", "commands": "fora do escopo (navegacao por gestos)"}
+    ]
+  },
+  "hal_command_table": {
+    "note": "pares {module,cmd} em .rodata do HAL, um por funcao que envia comando; util como indice do que o HAL usa",
+    "addr_range": "0xe090..0xe1e8",
+    "pairs": [
+      [11,4],[6,3],[11,7],[6,5],[6,4],[8,2],[5,3],[11,10],[10,9],[3,1],[11,3],[5,7],[8,1],[10,8],[11,9],[8,6],[3,5],[3,2],[4,6],[3,6],[11,1],[5,6],[10,7],[12,1],[5,2],[3,4],[11,5],[6,1],[8,5],[8,7],[12,0],[5,0],[8,3],[11,8],[11,0],[6,2],[5,4],[11,2],[8,4],[5,1]
+    ],
+    "module6_absent": "o HAL tem comandos para o modulo 6 (retrieve de imagem: fpc_tee_debug_retrieve 0x1e690 usa {6,1}, com dados em frame+0x10; get_raw_size 0x1e620 usa {6,4}, tamanho lido em frame+8). O TA DESTE aparelho NAO registra o modulo 6, logo esse caminho de imagem crua falha. A imagem crua precisa vir do modulo 5 (sensortest)."
+  },
+  "capture_flow_observed": {
+    "source": "HAL fpc_tee_capture_image_internal 0x216c0",
+    "sequence": [
+      {"step": "setup do frame", "evidence": "0x2173c: strb w20,[x23,#8] (flags u8); 0x21740: str wzr,[x23,#0xc]; 0x21744/0x21748: ldr w8,[x19,#0x4c]; str w8,[x23,#0x14] (limite)"},
+      {"step": "se flags!=0: habilita wakeup da IRQ", "evidence": "0x21750/0x21754: bl 0x13004"},
+      {"step": "cmd 1", "evidence": "0x2177c: w1=1"},
+      {"step": "cmd 2", "evidence": "0x2178c: w1=2"},
+      {"step": "cmd 3", "evidence": "0x21804: w1=3"},
+      {"step": "espera IRQ com timeout 1", "evidence": "0x21818: fpc_irq_wait(ctx->irq, 1)"},
+      {"step": "cmd 4 e le status de frame+0x10 para ctx+0x48", "evidence": "0x218d0: w1=4; 0x218d4/0x218e4: ldr w8,[x23,#0x10]; str w8,[x19,#0x48]"},
+      {"step": "cmd 5 no final", "evidence": "0x21990: w1=5"},
+      {"step": "repete ate 4 vezes enquanto status==1", "evidence": "0x21734: csinc w28 ; 0x21948-0x21950"}
+    ],
+    "sender_fn": {"addr": "0x21478", "meaning": "envia {module=10, cmd=w1} e aplica a politica de retry em -14", "evidence": "0x214a0/0x214a8: mov w9,#0xa; stp w9,w1,[x8]"}
+  },
+  "power_and_irq": {
+    "irq": "GPIO90 (falling), reset GPIO4, enable GPIO29",
+    "hal_irq": "fpc_irq_init 0x1d6a8 / fpc_irq_wait 0x1d80c (timeout em unidades de 1 ms; 0x21938 usa o retorno 1)",
+    "platform_attrs": "o helper Android expoe /sys/class/fingerprint/fpc1020/{irq,irq_cnt,hw_reset,dev_enable}; no Linux equivalente = gpiolib + evento de IRQ"
+  },
+  "storage_conclusion": {
+    "templates": "blob do host: modulo 4 (db_blob) + arquivos no host (/data/fpc_tpl/, user.db); NAO usa RPMB/ssd",
+    "fts": "qsee_fts_encrypt/decrypt/integrity_protect/verify rodam dentro do TEE",
+    "evidence": "ta-dynamic-symbols.json (21 imports qsee_*, nenhum qsee_storage_*/listener) + strings do HAL"
+  },
+  "unknowns": [
+    "formato exato do retorno de +0x10 em cmd5 (status de captura vs tamanho)",
+    "layout do OTP em cmd7 (fpc_otp_get_sensor_info) — dumping precisa do modulo 5",
+    "caminho de imagem crua (modulo 6 ausente) — depende do modulo 5",
+    "semantica de cmd 10 do modulo 10 (entrada invalida na tbb)",
+    "se o TEE aceita QSEOS_APP_START_COMMAND para fpctzapp vindo do Linux (nao testado)"
+  ]
+}

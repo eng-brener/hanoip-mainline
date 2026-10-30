@@ -1,0 +1,12 @@
+[Unit]
+Description=Hanoip USB NCM network + SSH
+After=systemd-udevd.service
+Wants=ssh.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/hanoip-usbnet
+
+[Install]
+WantedBy=multi-user.target

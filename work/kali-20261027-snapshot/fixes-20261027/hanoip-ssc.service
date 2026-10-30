@@ -1,0 +1,16 @@
+[Unit]
+Description=Hanoip ADSP sensors via FastRPC (hexagonrpcd + libssc)
+After=local-fs.target
+Before=iio-sensor-proxy.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/hanoip-ssc
+# The script already retries internally; this is the second layer for the
+# case where the ADSP is really not ready yet at boot (seen 2026-10-27).
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

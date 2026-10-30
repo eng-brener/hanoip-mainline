@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: BSD-3-Clause
+/*
+ * Variante de TESTE: habilita o Venus (decode/encode de vídeo) sobre a base
+ * atual (cluster-idle test), sem mudar mais nada.
+ *
+ * Por que:
+ *   o nó &venus existe no sm7150.dtsi mas está status="disabled" e sem
+ *   firmware-name. O driver (venus-core/venus-dec/venus-enc, CONFIG_VIDEO_-
+ *   QCOM_VENUS=m) já está compilado e o patch "media: venus: add SM7150
+ *   resources (experimental)" já está no fonte do kernel (sm7150_res,
+ *   compatible qcom,sm7150-venus). Falta só o DT.
+ *
+ * Firmware: o hanoip-firmware aponta /usr/lib/firmware/qcom/sm7150/motorola/
+ *   hanoip/venus.mdt (+ b00..b04) para o vendor do Android. Por isso o
+ *   firmware-name abaixo usa esse caminho.
+ *
+ * Uso: fastboot boot desta U-Boot + kernel de sempre. Nada é gravado em
+ *   partição. Retorno = bootar a U-Boot do PRE-GOLD.
+ */
+#include "sm7150-motorola-hanoip-clusteridle-test.dts"
+
+&venus {
+	firmware-name = "qcom/sm7150/motorola/hanoip/venus.mdt";
+	status = "okay";
+};

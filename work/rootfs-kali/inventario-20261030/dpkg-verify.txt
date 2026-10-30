@@ -1,0 +1,23 @@
+??5?????? c /etc/apt/sources.list.d/mobian.sources
+??5?????? c /etc/greetd/config.toml
+??5?????? c /etc/pam.d/sudo
+??5??????   /lib/modules/7.3.0-sm7150/kernel/drivers/i2c/busses/i2c-qcom-cci.ko.zst
+??5??????   /lib/modules/7.3.0-sm7150/kernel/drivers/media/platform/qcom/camss/qcom-camss.ko.zst
+??5??????   /lib/modules/7.3.0-sm7150/kernel/drivers/power/supply/qcom_qg.ko.zst
+??5??????   /lib/modules/7.3.0-sm7150/kernel/drivers/power/supply/qcom_smbx.ko.zst
+??5??????   /lib/modules/7.3.0-sm7150/kernel/drivers/soundwire/soundwire-qcom.ko.zst
+??5??????   /lib/modules/7.3.0-sm7150/kernel/sound/soc/codecs/snd-soc-wcd937x-sdw.ko.zst
+??5??????   /lib/modules/7.3.0-sm7150/modules.alias
+??5??????   /lib/modules/7.3.0-sm7150/modules.alias.bin
+??5??????   /lib/modules/7.3.0-sm7150/modules.builtin.alias.bin
+??5??????   /lib/modules/7.3.0-sm7150/modules.builtin.bin
+??5??????   /lib/modules/7.3.0-sm7150/modules.dep
+??5??????   /lib/modules/7.3.0-sm7150/modules.dep.bin
+??5??????   /lib/modules/7.3.0-sm7150/modules.symbols.bin
+??5??????   /usr/lib/systemd/system/fake-hwclock-save.service
+??5??????   /usr/lib/systemd/system/fake-hwclock-save.timer
+missing     /etc/plymouth/plymouthd.conf.original
+missing     /etc/xdg/kcm-about-distrorc.original
+missing     /usr/lib/systemd/system/wpa_supplicant-nl80211@.service
+missing     /usr/lib/systemd/system/wpa_supplicant@.service
+missing     /usr/lib/systemd/system/wpa_supplicant-wired@.service

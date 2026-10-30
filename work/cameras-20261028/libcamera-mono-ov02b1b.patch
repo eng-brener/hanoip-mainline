@@ -1,0 +1,205 @@
+diff --git a/include/libcamera/internal/software_isp/swstats_cpu.h b/include/libcamera/internal/software_isp/swstats_cpu.h
+index 5518709..c971b96 100644
+--- a/include/libcamera/internal/software_isp/swstats_cpu.h
++++ b/include/libcamera/internal/software_isp/swstats_cpu.h
+@@ -97,6 +97,7 @@ private:
+ 	void statsBGGR12Line0(const uint8_t *src[], SwIspStats &stats);
+ 	/* Bayer 10 bpp packed */
+ 	void statsBGGR10PLine0(const uint8_t *src[], SwIspStats &stats);
++	void statsMono10PLine0(const uint8_t *src[], SwIspStats &stats);
+ 	void statsGBRG10PLine0(const uint8_t *src[], SwIspStats &stats);
+ 	/* Bayer 12 bpp packed */
+ 	void statsBGGR12PLine0(const uint8_t *src[], SwIspStats &stats);
+diff --git a/src/ipa/libipa/camera_sensor_helper.cpp b/src/ipa/libipa/camera_sensor_helper.cpp
+index 9457d62..90fade0 100644
+--- a/src/ipa/libipa/camera_sensor_helper.cpp
++++ b/src/ipa/libipa/camera_sensor_helper.cpp
+@@ -520,6 +520,19 @@ public:
+ };
+ REGISTER_CAMERA_SENSOR_HELPER("gc08a3", CameraSensorHelperGc08a3)
+ 
++/* OV02B1B: P1:0x22 analogue gain code, 0x10 = 1x, 0xf8 = 15.5x. */
++class CameraSensorHelperOv02b10 : public CameraSensorHelper
++{
++public:
++	CameraSensorHelperOv02b10()
++	{
++		/* From datasheet: black level 64 at 10 bits. */
++		blackLevel_ = 4096;
++		gain_ = AnalogueGainLinear{ 1, 0, 0, 16 };
++	}
++};
++REGISTER_CAMERA_SENSOR_HELPER("ov02b10", CameraSensorHelperOv02b10)
++
+ class CameraSensorHelperHm1246 : public CameraSensorHelper
+ {
+ public:
+diff --git a/src/libcamera/sensor/camera_sensor_legacy.cpp b/src/libcamera/sensor/camera_sensor_legacy.cpp
+index 6a68382..d5865de 100644
+--- a/src/libcamera/sensor/camera_sensor_legacy.cpp
++++ b/src/libcamera/sensor/camera_sensor_legacy.cpp
+@@ -614,10 +614,22 @@ int CameraSensorLegacy::initProperties()
+ 
+ 		properties_.set(properties::Rotation, propertyValue);
+ 	} else {
++		/*
++		 * Experimental hanoip OV02B1B support: the Android DT declares
++		 * sensor-position-roll = 90 for this module. Report it so
++		 * consumers can compensate; the software ISP does not rotate.
++		 */
++		int32_t propertyValue = model() == "ov02b10" ? 270 : 0;
++		bool success;
++
+ 		LOG(CameraSensor, Warning)
+-			<< "Rotation control not available, default to 0 degrees";
+-		properties_.set(properties::Rotation, 0);
+-		mountingOrientation_ = Orientation::Rotate0;
++			<< "Rotation control not available, assuming "
++			<< propertyValue << " degrees";
++		mountingOrientation_ = orientationFromRotation(propertyValue,
++							      &success);
++		if (!success)
++			mountingOrientation_ = Orientation::Rotate0;
++		properties_.set(properties::Rotation, propertyValue);
+ 	}
+ 
+ 	properties_.set(properties::PixelArraySize, pixelArraySize_);
+diff --git a/src/libcamera/sensor/camera_sensor_properties.cpp b/src/libcamera/sensor/camera_sensor_properties.cpp
+index 2804315..6d286a9 100644
+--- a/src/libcamera/sensor/camera_sensor_properties.cpp
++++ b/src/libcamera/sensor/camera_sensor_properties.cpp
+@@ -335,6 +335,12 @@ const CameraSensorProperties *CameraSensorProperties::get(const std::string &sen
+ 				.hblankDelay = 3
+ 			},
+ 		} },
++		{ "ov02b10", {
++			/* OV02B1B: 1600x1200 active pixels, 1.75 um square. */
++			.unitCellSize = { 1750, 1750 },
++			.testPatternModes = { },
++			.sensorDelays = { },
++		} },
+ 		{ "ov2685", {
+ 			.unitCellSize = { 1750, 1750 },
+ 			.testPatternModes = {
+diff --git a/src/libcamera/software_isp/debayer_cpu.cpp b/src/libcamera/software_isp/debayer_cpu.cpp
+index 49382b4..addd480 100644
+--- a/src/libcamera/software_isp/debayer_cpu.cpp
++++ b/src/libcamera/software_isp/debayer_cpu.cpp
+@@ -262,6 +262,24 @@ void DebayerCpu::debayer12_GRGR_BGR888(uint8_t *dst, const uint8_t *src[])
+ 	}
+ }
+ 
++template<bool addAlphaByte>
++void DebayerCpu::mono10P_BGR888(uint8_t *dst, const uint8_t *src[])
++{
++	const uint8_t *curr = src[1];
++	const unsigned int widthInBytes = window_.width * 5 / 4;
++
++	for (unsigned int x = 0; x < widthInBytes; x += 5) {
++		for (unsigned int k = 0; k < 4; k++) {
++			uint8_t value = green_[curr[x + k]];
++			*dst++ = value;
++			*dst++ = value;
++			*dst++ = value;
++			if constexpr (addAlphaByte)
++				*dst++ = 255;
++		}
++	}
++}
++
+ template<bool addAlphaByte, bool ccmEnabled>
+ void DebayerCpu::debayer10P_BGBG_BGR888(uint8_t *dst, const uint8_t *src[])
+ {
+@@ -451,7 +469,8 @@ int DebayerCpu::getInputConfig(PixelFormat inputFormat, DebayerInputConfig &conf
+ 
+ 	if (bayerFormat.bitDepth == 10 &&
+ 	    bayerFormat.packing == BayerFormat::Packing::CSI2 &&
+-	    isStandardBayerOrder(bayerFormat.order)) {
++	    (isStandardBayerOrder(bayerFormat.order) ||
++	     bayerFormat.order == BayerFormat::MONO)) {
+ 		config.bpp = 10;
+ 		config.patternSize.width = 4; /* 5 bytes per *4* pixels */
+ 		config.patternSize.height = 2;
+@@ -542,6 +561,18 @@ int DebayerCpu::setDebayerFunctions(PixelFormat inputFormat,
+ 		return -EINVAL;
+ 	};
+ 
++	if (bayerFormat.order == BayerFormat::MONO && bayerFormat.bitDepth == 10 &&
++	    bayerFormat.packing == BayerFormat::Packing::CSI2) {
++		bool alpha = outputFormat == formats::XRGB8888 || outputFormat == formats::ARGB8888 ||
++			     outputFormat == formats::XBGR8888 || outputFormat == formats::ABGR8888;
++		if (!alpha && outputFormat != formats::RGB888 && outputFormat != formats::BGR888)
++			return invalidFmt();
++		debayer0_ = alpha ? &DebayerCpu::mono10P_BGR888<true> :
++				    &DebayerCpu::mono10P_BGR888<false>;
++		debayer1_ = debayer0_;
++		return 0;
++	}
++
+ 	switch (outputFormat) {
+ 	case formats::XRGB8888:
+ 	case formats::ARGB8888:
+@@ -680,6 +711,8 @@ int DebayerCpu::configure(const StreamConfiguration &inputCfg,
+ 		return -EINVAL;
+ 	}
+ 
++	if (BayerFormat::fromPixelFormat(inputCfg.pixelFormat).order == BayerFormat::MONO)
++		ccmEnabled = false;
+ 	int ret = setDebayerFunctions(inputCfg.pixelFormat,
+ 				      outputCfg.pixelFormat,
+ 				      ccmEnabled);
+diff --git a/src/libcamera/software_isp/debayer_cpu.h b/src/libcamera/software_isp/debayer_cpu.h
+index 5281c65..ffc77f3 100644
+--- a/src/libcamera/software_isp/debayer_cpu.h
++++ b/src/libcamera/software_isp/debayer_cpu.h
+@@ -102,6 +102,8 @@ private:
+ 	template<bool addAlphaByte, bool ccmEnabled>
+ 	void debayer12_GRGR_BGR888(uint8_t *dst, const uint8_t *src[]);
+ 	/* CSI-2 packed 10-bit raw bayer format (all the 4 orders) */
++	template<bool addAlphaByte>
++	void mono10P_BGR888(uint8_t *dst, const uint8_t *src[]);
+ 	template<bool addAlphaByte, bool ccmEnabled>
+ 	void debayer10P_BGBG_BGR888(uint8_t *dst, const uint8_t *src[]);
+ 	template<bool addAlphaByte, bool ccmEnabled>
+diff --git a/src/libcamera/software_isp/swstats_cpu.cpp b/src/libcamera/software_isp/swstats_cpu.cpp
+index 7fb77ce..242a479 100644
+--- a/src/libcamera/software_isp/swstats_cpu.cpp
++++ b/src/libcamera/software_isp/swstats_cpu.cpp
+@@ -271,6 +271,24 @@ void SwStatsCpu::statsBGGR12Line0(const uint8_t *src[], SwIspStats &stats)
+ 	SWSTATS_FINISH_LINE_STATS()
+ }
+ 
++void SwStatsCpu::statsMono10PLine0(const uint8_t *src[], SwIspStats &stats)
++{
++	const uint8_t *src0 = src[1] + window_.x * 5 / 4;
++	const uint8_t *src1 = src[2] + window_.x * 5 / 4;
++	const unsigned int widthInBytes = window_.width * 5 / 4;
++	uint64_t sum = 0;
++
++	for (unsigned int x = 0; x < widthInBytes; x += 5) {
++		unsigned int y = (src0[x] + src0[x + 1] +
++				  src1[x] + src1[x + 1]) / 4;
++		sum += y;
++		stats.yHistogram[y * SwIspStats::kYHistogramSize / 256]++;
++	}
++	stats.sum_.r() += sum;
++	stats.sum_.g() += sum;
++	stats.sum_.b() += sum;
++}
++
+ void SwStatsCpu::statsBGGR10PLine0(const uint8_t *src[], SwIspStats &stats)
+ {
+ 	const uint8_t *src0 = src[1] + window_.x * 5 / 4;
+@@ -510,6 +528,12 @@ int SwStatsCpu::configure(const StreamConfiguration &inputCfg, unsigned int stat
+ 		processFrame_ = &SwStatsCpu::processBayerFrame2;
+ 
+ 		switch (bayerFormat.order) {
++		case BayerFormat::MONO:
++			if (bitDepth != 10)
++				break;
++			stats0_ = &SwStatsCpu::statsMono10PLine0;
++			swapLines_ = false;
++			return 0;
+ 		case BayerFormat::BGGR:
+ 		case BayerFormat::GRBG:
+ 			stats0_ = (bitDepth == 10) ? &SwStatsCpu::statsBGGR10PLine0 : &SwStatsCpu::statsBGGR12PLine0;

@@ -1,0 +1,25 @@
+08ea8c1758e05375d1577a9dd1382efd51f56ad1a2df6252ffda98a9ea1ba769  ./dt/sm7150-motorola-hanoip-audio-etapa0.dts
+3a7c1689c612405d3c21da4d97b4c4e76c86e787416b599222abd967fd25652c  ./dt/sm7150-motorola-hanoip-audio-etapa1.dts
+f402c2d0b19cbe12f147b395d863599c4707b03346534e627c480c7f0619de0a  ./dt/sm7150-motorola-hanoip-audio-etapa12.dts
+14cfc81ec29d9490f6bec4c42eae44f3454859f4103365edc2bd42c99d90205f  ./dt/sm7150-motorola-hanoip-audio-etapa13.dts
+517d9d192d4b54d9a647729d44b0915eb69238490c3386243fa247a4045ba83f  ./dt/sm7150-motorola-hanoip-audio-etapa14.dts
+6e7a4ab27e1b67ecf191fea4e816cef77fcd6324018883a5835b4eb7942304c6  ./dt/sm7150-motorola-hanoip-audio-etapa5.dts
+f343012acc304a2c0a7321045e8bb7b98952875b4b7acdf8ba220fd2a2f0a1c7  ./dt/sm7150-motorola-hanoip-clusteridle-venus.dts
+bb0839b3ec8e63b6ed8b19485142971d87a7d582eb93e9df091180319e434f3c  ./kernel/config-7.3.0-sm7150
+5adfedcfddfa161dcd740b735a8ed85e18f3dc7e944e8c16667f2987d339f8d0  ./kernel/Image.gz
+c0a0c822225c34c99cf70c55ffb380b146a9b2e8da6d32145412fd8f74aa1fb7  ./kernel/kernel-hanoip-kali-phosh-v5.img
+900e11eb55e16569dc749d3a8b2373f7d992ff610c0f018efa714bee13fe0a4a  ./kernel/kernel.dtb
+3c112135452337a212fe813d5172fa683564f3938b98de81df9cee4b9c8d4ceb  ./kernel/modules-7.3.0-sm7150.tar.gz
+ae0f5af7a8afef9535d2ba5a7600758abcbd31a03460317ba5584d14606e954d  ./kernel/version.txt
+1f75b80e86bf7a869e829f91b0b8db9fbd3895213a38e17767c60c10f7a2fa4e  ./modules/kernel/drivers/soundwire/soundwire-qcom.ko.zst
+5de8447bac8689889ab6db69eea55a2d7562aaad511703ba7ca46e49f1c14b2c  ./modules/kernel/sound/soc/codecs/snd-soc-wcd937x-sdw.ko.zst
+6509236df0df890ebf482ad5169435a3c39ccdedf7659d2f820d9efef93f21a4  ./patches/0188-ASoC-codecs-wcd937x-sdw-bound-the-static-channel-map.patch
+64e49d2f069bd023d04c5797e1087b7fc04be23afcbe072bab5e29676e44c3e3  ./patches/0189-soundwire-qcom-allow-DT-to-opt-out-of-clock-stop.patch
+a3ea771d365dc04d7be542a5c268dee940b1fdb8c643b9d790da28b2056d65d8  ./PRE-GOLD.txt
+12a1348347b86209c3547420676d64493141657c0d336b8be29edf9c3db27afb  ./scripts/build-uboot.sh
+655cc6554d83a5ba59052a3b19d77f91b29bb070790414cb5c07513c0a41e0b5  ./scripts/fdt_diff.py
+ffc9d6c009a928a43db530bd4addd10e1d2ffabd42fd04a5abcac573109b0bb9  ./uboot/u-boot-sm7150-motorola-hanoip-audio-etapa14.img
+3585a0e3fc6a638ebccde6975426873d03f2d85da647bcbb32a8905cb85cee8e  ./uboot/u-boot.bin
+3f635462a2d9ff21fe9854402880ad0dc085cf3486cfd4d62b16ac4e039f49af  ./uboot/uboot.dtb
+7449d14ba32bca8a6fa8aaab65f735d6e7a21b4ac98a06adf6d7149dbd56ee62  ./ucm2/conf.d/sm8250/Motorola Moto G60.conf
+4b16f5a1b303de226a52ad71064757b627384f45bf7531e0e8327cd5a98ff229  ./ucm2/Motorola/hanoip/HiFi.conf

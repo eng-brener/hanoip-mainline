@@ -1,0 +1,41 @@
+#!/bin/sh
+# hanoip-reboot — reinicia o hanoip de forma SEGURA (sem corromper o ext4).
+#
+# Motivo: `echo b > /proc/sysrq-trigger` (e segurar Power) reinicia na hora,
+# SEM sincronizar o disco e SEM desmontar. O ext4 fica com journal pendente,
+# inodes orfaos e bitmaps inconsistentes; depois o initramfs nao consegue
+# montar a raiz e cai no shell do BusyBox.
+#
+# Uso:
+#   hanoip-reboot            -> sincroniza, remonta tudo RO e reinicia
+#   hanoip-reboot --poweroff -> mesma coisa e desliga (util para chegar ao
+#                               bootloader segurando Power+Vol-)
+set -eu
+
+[ "$(id -u)" = 0 ] || { echo "precisa de root" >&2; exit 1; }
+
+echo "== parando servicos que escrevem em disco"
+systemctl stop hanoip-ssc.service 2>/dev/null || true
+
+echo "== sincronizando (1/2)"
+sync
+sleep 1
+echo "== sincronizando (2/2)"
+sync
+
+echo "== remontando tudo read-only"
+# 'u' = remonta todos os filesystems como somente leitura (SysRq)
+echo u > /proc/sysrq-trigger
+sleep 2
+
+echo "== despejando caches"
+echo s > /proc/sysrq-trigger
+sleep 1
+
+if [ "${1:-}" = "--poweroff" ]; then
+    echo "== desligando"
+    echo o > /proc/sysrq-trigger
+else
+    echo "== reiniciando"
+    echo b > /proc/sysrq-trigger
+fi

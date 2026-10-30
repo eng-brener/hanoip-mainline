@@ -1,0 +1,106 @@
+Checkpoint 2026-10-27 — CARGA LIGADA (primeira vez sob Linux)
+=============================================================
+
+Contexto: depois do laudo B0 (docs/kernel/checkpoint-2026-10-27-bateria-b0-
+registradores.txt) ficou claro que faltava um único bit. Este checkpoint
+registra a primeira sessão de carga real no aparelho.
+
+CONFIGURAÇÃO DO TESTE
+  Boot:  u-boot-sm7150-motorola-hanoip-pmos-perif-batt.img (curva OCV real)
+         + kernel-hanoip-kali-phosh-v2.img (Image sem mudanças)
+  Módulos v4: qcom_qg (SOC com histerese) e qcom_smbx (dump + controle de
+         carga). Carga DESLIGADA por padrão.
+  Ligada com:  echo 1 > /sys/kernel/debug/hanoip-charge
+  Fonte: porta USB do PC (SDP, 500 mA).
+  Limite de corrente da bateria: charge_current_ua = 1.000.000 uA (default).
+
+O QUE O DRIVER FEZ (3 escritas, na ordem)
+  1. SNARL_BARK_BITE_WD_CFG 0x8c -> 0x00   (sem "bite desliga carga")
+  2. WD_CFG                 0x62 -> 0x00   (watchdog desarmado)
+  3. FAST_CHARGE_CURRENT_CFG 0x28 -> 0x14  (2,0 A -> 1,0 A)
+  4. CHARGING_ENABLE_CMD    0x00 -> 0x01   (o switch)
+  Float (0x70 = 4.400 V), JEITA (0x90 = 0x1b), ICL e terminação: INTOCADOS.
+
+RESULTADO IMEDIATO (medido)
+  BATTERY_CHARGER_STATUS_1   0x47 -> 0x03   (DISABLE_CHARGE -> FULLON_CHARGE)
+  qcom_qg/status             "Not charging" -> "Charging"
+  qcom_qg/current_now        0 -> +358.276 uA, depois +445.556 uA (+ = carga)
+  charger/current_now        101.535 uA -> 496.970 uA (limite SDP respeitado)
+  charger/voltage_now        5,128 V
+  qcom_qg/temp               33,3 C -> 33,1 C (sem elevação)
+  capacity                   79% (curva Motorola: 4,19 V -> ~79%)
+  dmesg                      "hanoip: charging ENABLED (1000000 uA)", sem erros
+
+  Corrente na bateria ~440 mA com entrada limitada a 500 mA: coerente com
+  consumo do sistema (~60-100 mA neste momento) + carga.
+
+PENDÊNCIAS DESTA SESSÃO
+  - rodar 15 min e conferir estabilidade de temperatura/corrente (batt-log)
+  - testar o desligamento: echo 0 -> volta a "Not charging" e corrente ~0
+  - conferir terminação quando chegar perto de 100% (hoje em 79%)
+  - em carregador de parede (DCP) o limite de entrada ainda fica em 500 mA,
+    porque o driver não roda a negociação APSD (isso é fase B4)
+
+MELHORIA IDENTIFICADA (não bloqueia)
+  O "caminhante" de 1% a cada 2 min é lento quando o valor inicial está
+  errado: no boot o primeiro sample pode vir ruins (status FULL momentâneo) e
+  o SOC fica preso em 100% por dezenas de minutos. Correção planejada: se
+  |estimativa - reportado| > 10 pontos, adotar imediatamente (não é ruído).
+  Depois de um reload limpo o valor correto aparece na hora (79%), o que
+  confirma que a estimativa está boa — o problema é só a inicialização.
+
+SEGURANÇA
+  - Float 4.400 V (Android usa 4.45 V; PMIC já vinha com 4.40 V)
+  - Corrente da bateria limitada a 1.0 A por software (Android usa 3.6-4.0 A)
+  - JEITA com hardlimit permanece ativo no hardware
+  - Watchdog desarmado (é o que o upstream qcom_smbx também faz no init)
+  - Temperatura monitorada por log de 2 s; limites de aborto definidos no
+    PROTOCOLO-TESTE-CARGA.txt (bateria > 43 C, conector > 50 C)
+  - Nenhuma escrita em partição; nenhum OTG/boost/PD tocado
+
+CORREÇÃO DE UMA OBSERVAÇÃO MINHA
+  Registrei antes que o registrador de corrente "inverte o sinal ao acaso".
+  A leitura correta: ele ficou ERRÁTICO NA TRANSIÇÃO (primeiros segundos
+  depois de habilitar a carga: -311 mA, -113 mA, +442 mA em segundos) e
+  depois estabilizou em +439..+444 mA. Continua valendo trocar a regra de
+  direção da suavização para o STATUS do charger (estável sempre), mas o
+  registrador não é inutilizável — só não serve como sinal de controle.
+
+DADOS DA SESSÃO (em andamento, 2 s)
+  v_avg subiu de 4,19 V para 4,2608 V  -> carga real acontecendo
+  i_batt estabilizou em +439..+444 mA  -> coerente: 497 mA de entrada menos
+                                          ~57 mA de consumo do sistema
+  capacidade 79% -> 80% e estável
+  temperatura 32,9 a 33,7 C (média 32,9)
+
+RESULTADO FINAL DA SESSÃO (15 min, amostragem 2 s)
+  arquivo: /root/batt-chg.csv (124 linhas no corte, sessão de 900 s)
+  capacidade: 79% -> 81%
+  temperatura: 32,6 C .. 33,7 C (média 33,1)  -> SEM aquecimento
+  corrente de entrada: 497 mA estável (limite SDP)
+  corrente na bateria: +439..+444 mA em regime (errática só na transição)
+  tensão média subiu 4,19 V -> 4,26 V
+  balanço: 497 mA (entrada) - 444 mA (bateria) = ~57 mA de consumo do sistema
+
+TESTE DO DESLIGAMENTO (aprovado)
+  antes:  status=Charging     current=+138.855 uA  enable=0x01  FSM=0x03
+  echo 0 > /sys/kernel/debug/hanoip-charge
+  depois: status=Not charging current=0            enable=0x00  FSM=0x47
+  dmesg:  "hanoip: charging disabled (0 uA)"
+
+OBSERVAÇÃO SOBRE O SOC APÓS CARGA (limite conhecido do método)
+  Imediatamente depois de carregar até 81% e desligar, a tensão de terminal
+  estava em 4,3028 V (carga de superfície) e a estimativa por OCV leu 86%.
+  A curva daria 88% naquele ponto. É o esperado para um estimador puramente
+  OCV: superestima logo após carga e converge quando a tensão relaxa (o
+  caminhante desce 1% a cada 2 min, sem pular).
+  O algoritmo do Android resolve isso com contagem de Coulomb + relaxamento
+  (qpnp-qg completo). É a diferença estrutural entre os dois, documentada em
+  checkpoint-2026-10-27-bateria-vs-android.txt.
+
+ESTADO DO SUBSISTEMA APÓS ESTA SESSÃO
+  - carga: FUNCIONA, opt-in (usuário escolheu modo manual = opção B)
+  - desligar: FUNCIONA e é limpo
+  - SOC: estável (histerese) e não trava (patch 0170)
+  - terminação em 100%: AINDA NÃO OBSERVADA (exige ciclo longo)
+  - DCP (carregador de parede): limite continua 500 mA (APSD não roda) = B4

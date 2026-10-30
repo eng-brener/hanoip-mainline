@@ -1,0 +1,93 @@
+PENDENTE: RECARGA (item 1) e AICL (item 3) — anotado em 27/10/2026 ~18:10
+=========================================================================
+
+ESTADO NO MOMENTO EM QUE ISSO FOI ANOTADO
+  aparelho: 100% / status Full / FSM 0x45 / i_bateria 0 mA / 4,3749 V / 30 C
+  plugado no carregador de parede (USB-C, 5,05-5,10 V, PD nao negociado:
+  usado como DCP a 5 V)
+  kernel: 187 patches. U-Boot com DT novo (power-role dual, sink-pdos so 5 V).
+  modulos instalados: qcom_qg 0184-equivalente (e8dfbc39...), qcom_smbx 0186.
+
+  loggers rodando no aparelho (systemd-run, sobrevivem ao ssh sair):
+    charge-watch  -> /root/charge-watch.log  (10 s: status, FSM, cap, v, i, VBUS,
+                     reg 0x370, STATUS_2; marca qualquer mudanca de status/FSM)
+    dpms-watch    -> /root/dpms-watch.log    (transicoes de tela)
+
+---------------------------------------------------------------------
+POR QUE NAO DA PARA OBSERVAR AGORA (e por que isso e' fisica, nao limitacao)
+---------------------------------------------------------------------
+1) RECARGA: com o cabo plugado e a carga terminada, o sistema roda do VBUS e a
+   bateria fica em i = 0 mA. A celula so relaxa de 4,40 V para ~4,375 V; nao
+   descarrega. O SMB5 so reinicia a carga quando a tensao cai abaixo do limiar
+   de recharge (tipicamente float - 100 mV ~ 4,30 V neste float de 4,40 V).
+   Sair de 4,375 e chegar a 4,30 exige ~15-20% de carga CONSUMIDA. Plugado numa
+   fonte forte isso nunca acontece -> deixar horas no carregador de parede nao
+   exercita a recarga.
+
+3) AICL: e' o chip baixando sozinho o limite de entrada quando a fonte afunda.
+   Com carregador de 100 W o VBUS fica em 5,05-5,10 V e nao ha afundamento:
+   nao existe nada para o AICL fazer. Precisa de fonte fraca (porta de PC).
+
+---------------------------------------------------------------------
+PROTOCOLO PARA QUANDO VOLTAR AO PC (faz os dois de uma vez)
+---------------------------------------------------------------------
+PRE-REQUISITOS
+  - cabo no PC (nao no carregador de parede)
+  - tela LIGADA (para o sistema consumir da bateria)
+  - conferir que a carga esta habilitada: FSM != 0x47 e CHARGING_ENABLE = 0x01
+    (se o enable estiver 0, ligar com dd, NAO com echo — ver abaixo)
+
+PASSOS
+  1. ler a linha de base:
+       Q=/sys/class/power_supply/qcom_qg
+       C=/sys/class/power_supply/hanoip-pm6150-monitor-charger
+       S=/sys/kernel/debug/c440000.spmi:pmic@0:charger@1000
+       cat $Q/capacity $Q/status; cat $C/current_max $C/voltage_now
+       grep -E "USBIN_CURRENT_LIMIT_CFG|STATUS_1 |APSD_STATUS|APSD_RESULT" $S
+  2. lembrar que o `echo` falha: o debugfs recusa O_TRUNC (EACCES).
+       printf '1500000\n' | dd of=/sys/kernel/debug/hanoip-icl bs=8 count=1
+     (teto do override = 1 500 000 uA; abaixo de 100 000 o driver recusa)
+  3. acompanhar por alguns minutos (o charge-watch ja grava a cada 10 s; para
+     ver AICL em detalhe, amostrar VBUS/entrada a cada 1 s)
+
+O QUE ESPERAR — ITEM 3 (AICL)
+  - ICL comandado passa a 0x1e (30 x 50 mA = 1,5 A) no registrador 0x370
+  - como a porta SDP entrega ~500 mA, o VBUS deve AFUNDAR (de ~5,0 para
+    4,7-4,8 V) e a corrente de entrada estabilizar perto do que a porta da
+  - isso e' o AICL trabalhando: o chip reduz o limite efetivo sozinho
+  - ATENCAO: o nosso CURRENT_MAX le o registrador de COMANDO (patch 0186), nao
+    o resultado do AICL. O limite efetivo do AICL aparece no campo de STATUS_2
+    (registrador 0x07), cujo campo no SMB5 e' uma TABELA codificada — ainda nao
+    decodificada. Para provar AICL sem a tabela: use VBUS + corrente de entrada
+    medidos, nao o numero do registrador.
+
+O QUE ESPERAR — ITEM 1 (RECARGA)
+  - com a tela ligada e porta fraca, a bateria passa a fornecer corrente
+    (i negativo) e a tensao cai devagar
+  - quando cruzar o limiar de recharge, o FSM deve sair de 0x45 (terminado) e
+    voltar para 0x02/0x03/0x04 (pre-charge/CC/taper) e o status deve virar
+    "Charging" de novo
+  - o charge-watch marca a transicao com ">>> MUDANCA: status=... FSM=..."
+  - e' a primeira observacao do caminho de recarga; ate hoje nunca foi visto
+
+SEGURANCA / LIMITES (nao mexer)
+  - float 0x70 = 0x50 (4,40 V): NAO alterar. Decisao registrada (secao 24 do
+    checkpoint): ficamos 46,5 mV abaixo do float do Android de proposito.
+  - JEITA 0x90 = 0x1b: NAO alterar.
+  - FCC 0x61 = 0x14 (bateria limitada a 1 A): NAO alterar.
+  - abortar se temperatura passar de ~42 C.
+  - o override de ICL tem teto de 1,5 A no proprio driver.
+  - ao terminar o teste, voltar o ICL para 500000 uA (estado SDP) ou 1000000
+    (DCP), para nao deixar limite alto esquecido.
+
+COMO SABER SE O TESTE ACABOU
+  cat /root/charge-watch.log | grep -E "MUDANCA|#"   -> mostra as transicoes
+  grep -c "" /root/charge-watch.log                  -> quantas amostras
+
+DEPOIS DO TESTE
+  - registrar resultado na secao 26 do
+    docs/kernel/checkpoint-2026-10-27-bateria-RESUMO.txt
+  - se o AICL for confirmado, vale escrever o decodificador da tabela do
+    STATUS_2 para o CURRENT_MAX poder mostrar o limite efetivo (nao so o
+    comandado), e ai o UPower passa a refletir a realidade quando a fonte
+    afunda.

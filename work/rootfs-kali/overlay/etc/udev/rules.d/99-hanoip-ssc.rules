@@ -1,0 +1,7 @@
+# hanoip: sensores via SSC/ADSP (libssc + iio-sensor-proxy)
+# O registry do ADSP entrega mount-matrix ZERADA (libssc avisa: firmware all 0,
+# falling back to identity). Com identidade o acelerometro sai 180 graus girado
+# no plano XY: em pe retrato y=+9.77 (esperado -9.81) e por isso o compositor
+# vira a tela. Deitado z=+9.92 (face-up) ja estava certo.
+# Matriz diag(-1,-1,1): novo_x = -x, novo_y = -y, novo_z = z.
+ACTION!="remove", SUBSYSTEM=="misc", KERNEL=="fastrpc-adsp*", ENV{IIO_SENSOR_PROXY_TYPE}="ssc-accel ssc-light ssc-proximity", ENV{ACCEL_MOUNT_MATRIX}="-1,0,0;0,-1,0;0,0,1"

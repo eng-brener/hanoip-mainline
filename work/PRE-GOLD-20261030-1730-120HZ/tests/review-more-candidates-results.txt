@@ -1,0 +1,4 @@
+PASS: command preparation rejects resume/rate/enable errors without MMIO or leaked votes; HS/LPM success and restore preserved
+PASS: 13 manager cases: single/bonded prepare failures, success and command-error cleanup
+PASS: both parent errors propagate and stop rate setting; success preserved
+PASS: teardown frees final owned mode after draining queue, and accepts NULL mode/queue
