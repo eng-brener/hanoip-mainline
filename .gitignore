@@ -122,3 +122,9 @@ work/PRE-GOLD-20261030-1730-120HZ/kernel/*.img
 
 # Clone externo do libcamera (reproduzivel pelo patch ao lado)
 work/cameras-20261028/libcamera-mono-src/
+
+# Cache do build reproduzivel do U-Boot (clone do fork + objetos).
+work/uboot-builds-20261026/.cache/
+
+# Logs de build reproduzivel do kernel.
+work/kernel-7.3/v*/build-repro.log
