@@ -1,16 +1,128 @@
-> **CORREÇÃO DE AUDITORIA — 29/10, posterior aos testes:** O driver experimental calculava `arg.status` a partir de `rsp[0]`, mas não copiava a estrutura de volta ao userspace. Os zeros de status impressos pelo cliente não são evidência de sucesso. Captura, IRQ por toque, banco vazio, cadastro e autenticação não foram comprovados; as interpretações categóricas abaixo são históricas e não valem como conclusão. O JSON de build-info foi efetivamente observado. A rotação obrigatória de slots, causa de resets e segurança/posse do carveout continuam hipóteses não comprovadas; slots de 1 MiB aceitam frames de até 2 MiB e se sobrepõem. Não executar receitas de teste abaixo. Correção local do ioctl compilada, não instalada nem validada no aparelho; cliente novo rejeita driver antigo e trata status não zero conservadoramente (alguns comandos podem retornar valores positivos legítimos). Nenhuma partição foi escrita.
-
 # Handoff — Moto G60 hanoip mainline
 
-## NOVA PRE-GOLD-20261030-1430: DIGITAL PERMANENTE E REPRODUZÍVEL — RETOMAR AQUI
-    Designada pelo usuário ("deixe permanente e deixe tudo reproduzível").
-    work/PRE-GOLD-20261030-1430/PRE-GOLD.txt (somente leitura, SHA256SUMS).
-    Par: U-Boot cam-tres (igual à 1534) + kernel listener7 (#64).
-    Kernel reproduzível: work/kernel-7.3/v7 (v6 + 0195 QSEECOM, árvore
-    276fbce0); rebuild do zero conferido: Image só difere no carimbo e
-    build-id, módulo com código idêntico. Rootfs reproduzível:
-    work/fingerprint-20261029/integration/setup-kali-fingerprint.sh.
-    Falta: exercitar o app Digital na tela; suspensão com a digital.
+## >>> RETOMAR AQUI — ESTADO ATUAL (30/10/2026, fim da tarde)
+
+### A PRE-GOLD ATUAL É: `work/PRE-GOLD-20261030-1430/`
+    Designada pelo usuário em 30/10 ("deixe permanente e deixe tudo
+    reproduzível"). SUBSTITUI a PRE-GOLD-20261029-1534 como par de retorno.
+    Pasta somente leitura; ler PRE-GOLD.txt; SHA256SUMS (32 arquivos, OK).
+    Registrada também no AGENTS.md (CURRENT BASELINE PAIR).
+
+    Bootar (volátil, NUNCA flash; usar cópia das imagens):
+      fastboot boot work/PRE-GOLD-20261030-1430/uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img
+      fastboot boot work/PRE-GOLD-20261030-1430/kernel/kernel-hanoip-listener7.img
+    U-Boot = o MESMO cam-tres da 1534 (5cb08127...). Kernel = listener7 #64
+    (eb5d4478...) = work/kernel-7.3/v7. O módulo qcom_qseecom_fpc só carrega
+    neste kernel; no kernel da 1534 o modprobe só registra erro.
+
+    Bases anteriores (preservadas, não usar como padrão):
+      PRE-GOLD-20261029-1534 (áudio + câmeras), PRE-GOLD-20261028-1707,
+      PRE-GOLD-20261028-1133, GOLDs de 25-26/10.
+
+### O que a PRE-GOLD-20261030-1430 entrega (medido)
+    Tudo da 1534 (8 CPUs, GPU, Venus, bateria/carga, USB OTG, áudio
+    completo, três câmeras) MAIS o leitor de digital FPC:
+    - TA da digital (fpctzapp) carregado pelo Linux no TEE;
+    - cadastro autorizado por token legítimo (HAT) do Gatekeeper do
+      keymaster64, com credencial da MÁQUINA no uid 0x4b414c49 ("KALI"),
+      separado do usuário 0 do Android;
+    - o TEE grava no RPMB pelo listener do nosso módulo (escrita autorizada
+      pelo usuário em 30/10, só para esse uid);
+    - fprintd de pacote + libfprint 1.94.10 com driver hanoip_fpc
+      (/opt/hanoip-fprint): enroll, verify, list e delete validados;
+    - desbloqueio do Phosh pela digital VALIDADO pelo usuário ("sucesso!"),
+      com proteções do Android (hanoip-fp-guard): PIN depois do boot, 72 h
+      sem PIN, 5 erros -> 30 s, 20 -> só PIN, lockdown, tela apagada não
+      desbloqueia;
+    - app "Digital" (menu do Phosh): cadastrar/excluir, interruptores,
+      estado, lockdown. INSTALADO, AINDA NÃO EXERCITADO NA TELA;
+    - sudo pela digital instalado e DESLIGADO (liga no app).
+    Digital cadastrada hoje: indicador direito (template 1897085487).
+
+### Estado do aparelho agora
+    Rodando a própria PRE-GOLD-20261030-1430 (U-Boot cam-tres + listener7
+    #64). Rootfs Kali em userdata (sdb24) montado normal; outros discos RO.
+    Instalado no rootfs (hashes em PRE-GOLD/rootfs-instalado.txt):
+      /lib/modules/7.3.0-sm7150/updates/qcom_qseecom_fpc.ko (d4bfad41)
+      /etc/modprobe.d/qcom-qseecom-fpc.conf (region_phys=0 listener_id=0x2000
+        rpmb_writes=1), /etc/modules-load.d/qcom-qseecom-fpc.conf
+      pacotes fprintd, libpam-fprintd, meson, ninja, gcc/g++, libglib2.0-dev,
+        libgusb-dev (o apt subiu a GLib 2.90.0 -> 2.90.1)
+      /opt/hanoip-fprint (libfprint com o driver; a do sistema não mudou)
+      /etc/systemd/system/fprintd.service.d/hanoip-fpc.conf
+      /usr/local/libexec/hanoip-fp-guard + hanoip-fp-guard.service (ativo)
+      /usr/local/libexec/hanoip-fp-admin, /usr/local/bin/hanoip-digital,
+        polkit (org.hanoip.fingerprint.policy, 50-hanoip-fprint.rules)
+      /etc/pam.d/sudo +3 linhas (inertes sem /etc/hanoip-fp/sudo-enabled)
+      /etc/hanoip-fp/unlock-enabled (desbloqueio LIGADO)
+      /var/lib/fpc-gk/ = segredo + handle do Gatekeeper + banco cifrado de
+        templates. SEGREDO DO APARELHO: nunca copiar para fora.
+    Backups: /root/backup-fingerprint-20261030/ (pam.d original, log do apt,
+    banco antes da limpeza do template órfão).
+    Desfazer app/guardião/sudo: integration/uninstall-digital.sh.
+
+### Como reproduzir do zero (verificado em 30/10)
+    Kernel: work/kernel-7.3/v7/build.sh && ./mkimg-kali.sh
+      (195 patches; 0195 = QSEECOM legado; árvore 276fbce0 = listener7).
+      Rebuild comparado: Image difere só no carimbo #65x#64 e build-id;
+      módulo com código e dados idênticos; ramdisk e dtb idênticos.
+    Rootfs da digital: sh work/fingerprint-20261029/integration/setup-kali-fingerprint.sh
+      Rodado de novo no aparelho: mesmos hashes (inclusive a libfprint).
+    Depois: cadastrar o dedo (app Digital ou fprintd-enroll).
+    Git: commit c1ee2ed87 no branch `digital-fpc` (NÃO enviado ao GitHub;
+    main também está 36 commits à frente de origin/main).
+
+### Riscos e lacunas conhecidos (não resolvidos)
+    1. SEM BACKUP FORA DESTE SSD: main e digital-fpc não foram enviados.
+    2. Binários (U-Boot .img, boot.img, Image.gz, .ko) só no SSD; o kernel
+       se refaz (provado); o U-Boot cam-tres NÃO foi reconstruído hoje.
+    3. O ramdisk do boot.img = /boot/initrd.img-7.3.0-sm7150 do Kali
+       (hash b33fad38, igual); vem do rootfs, não do git.
+    4. O rootfs Kali base (Phosh, áudio, câmeras) não tem snapshot; o
+       setup só monta a digital sobre ele; o Kali é rolling (versões do
+       apt mudam; só a libfprint está fixada na tag 1.94.10).
+    5. Recadastrar o Gatekeeper do zero (rootfs novo, sem o segredo antigo)
+       não foi testado.
+    6. Android não foi testado depois das escritas no RPMB (uid separado
+       justamente para não afetar o PIN; regra: não bootar o Android).
+    7. Suspensão com a digital não testada; sem detecção de dedo falso (o
+       TA vem com LIVENESS_DETECTION:false); TA guarda no máximo 5 digitais.
+
+### Próximos passos sugeridos (ordem)
+    1. Enviar main + digital-fpc ao GitHub (precisa do ok do usuário).
+    2. Reconstruir o U-Boot cam-tres e conferir o hash.
+    3. Pacote de artefatos (U-Boot, boot.img, initrd, Image.gz + SHA256)
+       guardado fora deste SSD.
+    4. Testar o app Digital na tela (cadastro/exclusão, interruptores com
+       pkexec, lockdown, sudo).
+    5. Testar recadastro do Gatekeeper do zero.
+
+### Onde está cada coisa
+    work/PRE-GOLD-20261030-1430/PRE-GOLD.txt      resumo da base
+    work/kernel-7.3/v7/README.txt                  kernel v7
+    work/fingerprint-20261029/HANDOFF-20261030.md  histórico técnico da digital
+    work/fingerprint-20261029/integration/LEIA-ME.md  instalação/uso
+    docs/kernel/PROTOCOLO-FPC-TA-20261029.md       protocolo do TA
+    docs/kernel/checkpoint-2026-10-29-hat-gate.txt Gatekeeper/HAT
+
+### Armadilhas da digital (custaram boot)
+    - Listener registrado e ocioso trava o TEE (watchdog reinicia):
+      registrar só dentro de cada envio.
+    - Notificar a região 0x86d00000 trava o aparelho: region_phys=0.
+    - TA recém-carregado: m10c0 e m11c0 ANTES de qualquer comando, senão o
+      TEE mata o app e tudo volta -EINVAL até rmmod/insmod.
+    - O TA recusa begin_enrol depois de identify na mesma sessão e bio init
+      repetido com banco carregado: o driver usa um TA novo por sessão.
+    - GK_SB_* (0x150x) são stubs -10008; só GK_NEW_* (CBOR) funcionam.
+    - Instalação permanente de PAM/serviço root é bloqueada no modo
+      automático do Claude Code: precisa de aprovação manual do usuário.
+
+---
+HISTÓRICO (seções antigas, mais recentes primeiro)
+
+> **[SUPERADA em 30/10]** A nota de auditoria abaixo era de 29/10. A correção do ioctl foi instalada e validada em 30/10 (fpc-tac/driver hanoip_fpc; cadastro e reconhecimento comprovados, ver seção atual).
+>
+> **CORREÇÃO DE AUDITORIA — 29/10, posterior aos testes:** O driver experimental calculava `arg.status` a partir de `rsp[0]`, mas não copiava a estrutura de volta ao userspace. Os zeros de status impressos pelo cliente não são evidência de sucesso. Captura, IRQ por toque, banco vazio, cadastro e autenticação não foram comprovados; as interpretações categóricas abaixo são históricas e não valem como conclusão. O JSON de build-info foi efetivamente observado. A rotação obrigatória de slots, causa de resets e segurança/posse do carveout continuam hipóteses não comprovadas; slots de 1 MiB aceitam frames de até 2 MiB e se sobrepõem. Não executar receitas de teste abaixo. Correção local do ioctl compilada, não instalada nem validada no aparelho; cliente novo rejeita driver antigo e trata status não zero conservadoramente (alguns comandos podem retornar valores positivos legítimos). Nenhuma partição foi escrita.
 
 ## (anterior) APP "DIGITAL" INSTALADO (30/10 ~14:16)
     Instalado pelo usuário (aprovação manual) via
@@ -1654,7 +1766,7 @@ confirmados após retorno. Evidências em
 `docs/kernel/checkpoint-2026-10-26-sensores-preparado.txt` e
 `work/sensors-20261026/se11-runtime-overlay-v2/screenlog.0`.
 
-## >>> RETOMAR AQUI — áudio do alto-falante, fases 1-3 (26/10/2026, madrugada)
+## (histórico) áudio do alto-falante, fases 1-3 (26/10/2026, madrugada)
 
 **CAUSA DO WI-FI INTERMITENTE ACHADA E CORRIGIDA (26/10 ~14h05):** no boot ruim,
 13 ms após "modem is now up", o kernel loga "failed to announce new service"
