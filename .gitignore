@@ -131,3 +131,4 @@ work/kernel-7.3/v*/build-repro.log
 
 # Artefatos do build de módulos do v8 (os validados ficam no snapshot).
 work/kernel-7.3/v8-dsi/*.ko.zst
+work/kernel-7.3/v*/build-repro*.log
