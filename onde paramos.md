@@ -1,4 +1,152 @@
+> **CORREÇÃO DE AUDITORIA — 29/10, posterior aos testes:** O driver experimental calculava `arg.status` a partir de `rsp[0]`, mas não copiava a estrutura de volta ao userspace. Os zeros de status impressos pelo cliente não são evidência de sucesso. Captura, IRQ por toque, banco vazio, cadastro e autenticação não foram comprovados; as interpretações categóricas abaixo são históricas e não valem como conclusão. O JSON de build-info foi efetivamente observado. A rotação obrigatória de slots, causa de resets e segurança/posse do carveout continuam hipóteses não comprovadas; slots de 1 MiB aceitam frames de até 2 MiB e se sobrepõem. Não executar receitas de teste abaixo. Correção local do ioctl compilada, não instalada nem validada no aparelho; cliente novo rejeita driver antigo e trata status não zero conservadoramente (alguns comandos podem retornar valores positivos legítimos). Nenhuma partição foi escrita.
+
 # Handoff — Moto G60 hanoip mainline
+
+## NOVA PRE-GOLD-20261030-1430: DIGITAL PERMANENTE E REPRODUZÍVEL — RETOMAR AQUI
+    Designada pelo usuário ("deixe permanente e deixe tudo reproduzível").
+    work/PRE-GOLD-20261030-1430/PRE-GOLD.txt (somente leitura, SHA256SUMS).
+    Par: U-Boot cam-tres (igual à 1534) + kernel listener7 (#64).
+    Kernel reproduzível: work/kernel-7.3/v7 (v6 + 0195 QSEECOM, árvore
+    276fbce0); rebuild do zero conferido: Image só difere no carimbo e
+    build-id, módulo com código idêntico. Rootfs reproduzível:
+    work/fingerprint-20261029/integration/setup-kali-fingerprint.sh.
+    Falta: exercitar o app Digital na tela; suspensão com a digital.
+
+## (anterior) APP "DIGITAL" INSTALADO (30/10 ~14:16)
+    Instalado pelo usuário (aprovação manual) via
+    work/fingerprint-20261029/integration/install-digital.sh: app Digital
+    (menu do Phosh), serviço hanoip-fp-guard habilitado (desbloqueio pela
+    digital LIGADO, política Android), sudo pela digital DESLIGADO (liga no
+    app), polkit pede senha para cadastrar/excluir/mudar. Desfazer:
+    uninstall-digital.sh. Falta: testar o app na tela (cadastro/exclusão pelo
+    app, interruptores com pkexec, lockdown).
+
+## (anterior) DIGITAL NO FPRINTD (30/10, tarde)
+    Driver libfprint hanoip_fpc + fprintd de pacote: fprintd-enroll e
+    fprintd-verify validados (verify-match). Módulo carrega no boot (kernel
+    listener7). Instalado e pendências: work/fingerprint-20261029/integration/
+    LEIA-ME.md. Falta decidir sudo/desbloqueio do Phosh (preparados, não
+    aplicados).
+
+## (anterior) DIGITAL FUNCIONANDO NO KALI: CADASTRO + RECONHECIMENTO (30/10 ~14:50)
+    Ver topo de work/fingerprint-20261029/HANDOFF-20261030.md.
+    Cadastro com token legítimo do Gatekeeper (uid KALI, escrita RPMB
+    autorizada), 12 amostras, banco cifrado em /var/lib/fpc-gk/templates.bin.
+    Reconhecido na mesma sessão e DEPOIS de recarregar o TA do zero com o
+    banco lido do arquivo; dedo diferente não reconhecido.
+    Aparelho: U-Boot cam-tres + kernel listener7 (#64); módulo em
+    /root/qcom_qseecom_fpc-listen.ko, cliente /root/fpc-tac.
+    Próximo: libfprint/fprintd, módulo no boot, mais dedos.
+
+## (anterior) TOKEN DO GATEKEEPER ACEITO PELO FPC (30/10 ~14:35)
+    Ver topo de work/fingerprint-20261029/HANDOFF-20261030.md.
+    Escrita RPMB AUTORIZADA pelo usuário (uid KALI 0x4b414c49). GK enroll +
+    verify gravaram no RPMB (resultado 0x0000) e o authorize_enrol do
+    fpctzapp aceitou o HAT. Credencial da máquina em /var/lib/fpc-gk/.
+    Próximo: /root/fpc-tac ... enroll-auth (toques do usuário, <10 min).
+
+## (anterior) RPMB VIA LISTENER FUNCIONA NO KALI (30/10 ~14:05)
+    Ver topo de work/fingerprint-20261029/HANDOFF-20261030.md.
+    Keymaster residente (app_id 1) respondeu GK_NEW_VERIFY (0x21002, CBOR);
+    o TEE pediu o listener RPMB e o módulo atendeu leituras reais (40+8
+    setores @1016/@1056 e contador). O TA tentou ESCREVER 2 setores @1018
+    até para uid inexistente; o módulo recusou (rpmb_writes=0). Nada gravado.
+    Os GK_SB_* legados (0x150x) são stubs -10008 neste firmware.
+    Aparelho: U-Boot cam-tres + kernel listener7 (#64), tainted só OOT.
+    PRÓXIMO: cadastro real exige rpmb_writes=1 = gravar no RPMB do Android;
+    só com autorização explícita do usuário.
+
+## (anterior) LISTENER POR CHAMADA VALIDADO + SERVIÇO RPMB PRONTO (30/10 ~13:20)
+    Ver topo de work/fingerprint-20261029/HANDOFF-20261030.md.
+    Passo 1 OK: registro/desregistro do listener dentro de cada send; 3
+    build-info OK e aparelho estável >6 min (antes reiniciava em 1-2 min).
+    Achado: o cycle.sh antigo não passava region_phys=0 (notificava
+    0x86d00000, que já travou o aparelho) — segunda causa possível do
+    incidente; padrão do módulo agora é 0.
+    Passo 2 implementado no kernel (W-LUN RPMB via scsi_execute_cmd, layout
+    do librpmb), com ESCRITA RECUSADA por padrão; ainda não exercitado porque
+    o FPC não usa RPMB. Próximo: passo 3 (Keymaster/Gatekeeper), que exige
+    decisão do usuário (estado do TEE é compartilhado com o Android).
+    Aparelho: U-Boot cam-tres + kernel listener6 (#60), módulo em /tmp.
+
+## DIGITAL: LISTENER RPMB REGISTROU NO TEE (30/10 ~00:20) (anterior)
+    Handoff completo: work/fingerprint-20261029/HANDOFF-20261030.md
+    Checkpoint: docs/kernel/checkpoint-2026-10-29-hat-gate.txt
+    Aparelho deixado na BASELINE (U-Boot cam-tres + kernel v5), rootfs kali em
+    userdata montado normal, demais discos RO, SSH ok. Nada gravado.
+    CONSEGUIDO: o TEE aceitou o listener RPMB a partir do Kali:
+      insmod qcom_qseecom_fpc-listen.ko carveout_phys=0x9e400000 listener_id=0x2000
+      qseecom-fpc: listener 0x2000: register 0xfe100000+32768 -> 0
+    Custou tres correcoes (cada uma devolvia -22 = 0xFFFFFFEA do TEE):
+    variante smcinvoke (owner 50, svc 2, fn 0x06, nao fn 0x01); buffer
+    alinhado a pagina (0x8000, nao 0x6400); e buffer em memoria NORMAL, nunca
+    no carveout 0x9e400000.
+    INCIDENTE: minutos depois o aparelho reiniciou sozinho. Causa provavel:
+    listener registrado e sem ninguem atendendo — o TEE bloqueia e o watchdog
+    reinicia. Sem log (console-ramoops sobrescrito). Integridade conferida:
+    nada gravado, registro de listener e volatil e sumiu com o reset.
+    REGRA NOVA: registrar SOMENTE dentro do caminho de envio (registrar,
+    enviar, atender, responder, desregistrar). Nunca deixar listener ocioso.
+    PROVADO TAMBEM: (a) o cadastro da digital exige HAT com HMAC da chave do
+    Keymaster e nao pode ser fabricado; (b) as digitais NAO ficam em RPMB, o
+    TA devolve o banco cifrado e o HAL grava em /data/fpc_tpl (arquivo nosso);
+    (c) o Gatekeeper usa RPMB — ssd (sdb1) e keystore (sdb5) estao zerados e o
+    frp tem marca de credencial; (d) o TEE nao acessa o RPMB sozinho, depende
+    de listener do QSEECOM (RPMB=0x2000, SSD=0x3000), mecanica em
+    work/fingerprint-20261029/listener/NOTES.md; (e) imagem crua do sensor NAO
+    e exportavel (modulo 5 cmd 6 devolve so status), entao casamento em
+    userspace esta descartado.
+    PROXIMO PASSO (ordem): 1) registro/desregistro por chamada; 2) atender o
+    pedido executando frames RPMB via /dev/bsg/0:0:0:49476 (o TEE ja manda
+    assinado, sem MAC no host) e responder; 3) envio generico + carregar
+    keymaster no layout QSEE e mandar GK_NEW_ENROLL 0x21001;
+    4) HAT no modulo 3 do fpctzapp e cadastro, guardando o blob em arquivo.
+    Armadilhas registradas no handoff: ramdisk real do boot.img tem 23 MB
+    (offset 12 e endereco, nao tamanho — extracao manual gera panic
+    "VFS: Cannot open root device"); build-mod precisa checkout base dos dois
+    arquivos do qcom_scm; `make modules` sozinho nao resolve simbolos
+    built-in; mkimg.sh tem de copiar o .ko novo para listener-boot/.
+
+## DIGITAL: O BLOQUEIO DO CADASTRO É O HAT, E ISSO AGORA ESTÁ PROVADO (29/10 ~20:10)
+    docs/kernel/checkpoint-2026-10-29-hat-gate.txt e
+    work/fingerprint-20261029/fpc-ta/RESULTADO-TA.md.
+    Análise OFFLINE do TA remontado (fpctzapp.elf, a17a0ca0...). O cadastro
+    chama fpc_check_enrollment_allowance (VA 0x3c61) SEM condição; ele devolve
+    0xe913406f quando ctx+0x88 (chave hw_auth) está zerado — exatamente o erro
+    do nosso end_enrol. Depois disso ainda exige: desafio de 8 bytes igual ao
+    do token, token com menos de ~600 s e HMAC-SHA256 válido sobre os 37
+    primeiros bytes dos 69, com a chave de 32 bytes em ctx+0x65. Essa chave só
+    existe em claro dentro do TEE (vem de qsee_decapsulate_inter_app_message
+    sobre o blob do Keymaster 0x205), logo HAT não pode ser fabricado.
+    Única fonte legítima: Gatekeeper do TEE (0x21001/0x21002) — escreve no
+    estado de credencial do TEE, backend ainda não observado (RPMB lógico
+    0x474b3232 x gk_sfs_file). Só com autorização explícita.
+    ARMADILHA RESOLVIDA: as DIGITAIS NÃO ficam em RPMB. O TA não tem API de
+    arquivo/SFS; só qsee_fts_* e o módulo 4 (db_blob) devolvem o banco cifrado
+    ao userspace. O HAL grava em /data/fpc_tpl/ (também /data/fpc,
+    /data/vendor/.fps). No Kali o arquivo é nosso, o caminho é escolha nossa.
+
+## DIGITAL: O TA RODA NO LINUX (29/10 ~20:00) — build info real, captura e identify
+    Resultado e receita: work/fingerprint-20261029/RESULTADO-20261029.md.
+    Aparelho bootado volátil com Image.gz 11b79bd3... + módulo e48a65e3... +
+    tool c0f4e0ad... Nada gravado em partição.
+    CONSEGUIDO: app_start aceito; TA devolveu o build info REAL
+    ({"buildid_md5":"31193ede...","host":"sheldon-VirtualBox","date":"2021-02-24",
+    ENGINEERING:true,...}); GPIO29/4/90 ok; IRQ do sensor dispara ao toque;
+    captura status 1002 sem dedo e 0 com dedo; identify responde "não
+    reconhecido" (banco vazio). Enroll roda mas o template ainda não é aceito.
+    OS 4 SEGREDOS: (1) a região compartilhada TEM de estar no carveout
+    qseecom@9e400000 (memória normal → -EINVAL; CMA → 0xE850002A); (2) só a
+    variante whitelist do send (owner 48, svc 0, fn 6, 7 args, sglist
+    {0x80000004,tamanho}); (3) controle = {tamanho da região PÁGINA-ALINHADO,
+    phys} — o bug era calcular o tamanho DEPOIS de escrever o controle; (4) cada
+    chamada precisa de endereço de região DIFERENTE (driver rotaciona 8 slots).
+    ARMADILHAS: mapa WB no carveout TRAVA o aparelho (usar MEMREMAP_WC +
+    memcpy_toio); imagem do TA só de memória normal; region_notify é recusado e
+    forçá-lo para 0x86d00000 travou o aparelho; módulo 10 cmd 0 = init (sem ele
+    os demais estouram o TA e o TEE mata o app).
+    Pendente: status por amostra do módulo 11 (enroll), coverage/quality do
+    identify, módulo 4 (persistir o template em arquivo), libfprint depois.
 
 ## TRÊS CÂMERAS FUNCIONANDO NO APP (29/10 ~14:55, confirmado pelo usuário)
     ATUALIZAÇÃO ~15:40: cores certas nas 3 (CCM do tuning do vendor;

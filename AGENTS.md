@@ -6,8 +6,11 @@ Parar no meio depois dessa ordem é considerado falha de execução.
 
 # Device safety
 
-The user forbids flashing or writing any phone partition. Preserve this rule
-throughout this project, including later sessions.
+Flashing phone partitions is forbidden. Other writes to the device are forbidden
+by default and allowed only with the user's explicit authorization for that
+specific operation and its scope. Prior authorization for one operation does not
+authorize other writes. Preserve these rules throughout this project, including
+later sessions.
 
 # THE DEVICE TREE COMES FROM U-BOOT, NEVER FROM THE KERNEL boot.img
 
@@ -28,7 +31,21 @@ Consequences that must shape every change and every record:
   image together with the kernel and modules (see
   work/PRE-GOLD-20261027-1852/ and work/PRE-GOLD-20261028-1133/, which keep
   uboot/, kernel/, dt/ and patches/);
-- CURRENT BASELINE PAIR (user-designated 2026-10-29 15:34):
+- CURRENT BASELINE PAIR (user-designated 2026-10-30 14:30, "deixe permanente"):
+  work/PRE-GOLD-20261030-1430/ = the same U-Boot cam-tres as 1534 + kernel
+  v7 listener7 (#64, work/kernel-7.3/v7 = v6 + patch 0195, legacy QSEECOM
+  transport with in-kernel RPMB listener, tree 276fbce0). Adds the FPC
+  fingerprint: TA in the TEE, enrollment authorized by the Gatekeeper HAT
+  (machine credential, uid 0x4b414c49, RPMB writes user-authorized
+  2026-10-30), fprintd via libfprint driver hanoip_fpc in /opt/hanoip-fprint,
+  Phosh unlock by fingerprint with Android-like protections (hanoip-fp-guard)
+  and the "Digital" app; sudo by fingerprint installed but OFF. Rootfs setup
+  is reproducible with work/fingerprint-20261029/integration/
+  setup-kali-fingerprint.sh. Boot it with
+  `fastboot boot uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img` then
+  `fastboot boot kernel/kernel-hanoip-listener7.img`. Read-only.
+  Never copy /var/lib/fpc-gk (device secret) off the phone.
+- PREVIOUS BASELINE PAIR (user-designated 2026-10-29 15:34):
   work/PRE-GOLD-20261029-1534/ = U-Boot cam-tres (audio-etapa14 DT + camss
   + S5K4H7/S5KHM2/OV32B + VCMs, CCI 1 MHz) + the SAME kernel img as 1707
   (#29). Cameras come from modules installed in the Kali rootfs
@@ -69,14 +86,16 @@ DT changes that were actually killed/prepared here: Type-C power-role
 the Motorola OCV curve plus 200 mOhm internal resistance, and
 dr_mode="otg" + usb-role-switch for USB host.
 
-- Never use fastboot flash/erase/format/update, change the active slot, write
-  /dev/block devices, repair phone filesystems, or push files onto partitions.
+- Never use fastboot flash/erase/format/update.
+- Do not change the active slot, write /dev/block devices, repair phone
+  filesystems, or push files onto partitions without explicit user authorization
+  for the specific operation and scope. Such authorization does not permit flash.
 - Do not execute historical flashing examples in README.md or docs/.
 - Read-only ADB collection and local source/build/artifact changes are allowed.
 - 2026-10-25: the user authorized READ-ONLY mounts of UFS partitions, only
   when the block device is already kernel read-only (BLKROSET guard, sysfs
   ro=1) and with ro,noload (ext4) plus nodev,nosuid,noexec. Prove no writes
-  by hashing the raw partition before and after. Writing stays forbidden;
+  by hashing the raw partition before and after. This does not authorize writes;
   never mount super/userdata/persist/metadata without asking again.
 - 2026-10-25: one-time UFS write test on logo_b (inactive slot B) with backup,
   verify and byte-exact restore was authorized and done (RESTORE_OK). That
@@ -408,7 +427,8 @@ GOLD.txt and SHA256SUMS (kernel c99f8cf5..., U-Boot 33c05711...). It is the
 default return pair from now on. Never modify files in that folder; build new
 variants elsewhere. Volatile fastboot boot only, never flash. Battery/charger, LCDB/display robustness, CPUs6/7, long-run
 stability and suspend remain pending. Touch polish stays deferred. No flash
-or phone partition writes under any circumstances.
+under any circumstances; other phone partition writes require explicit authorization
+for the specific operation.
 
 # Reboot rule (2026-10-26, user request)
 

@@ -1,0 +1,17 @@
+eb67939fff76afc4a190d6d1ac92ffab287fbbb00527c40f6487ca59dfb86e9d  /opt/hanoip-fprint/lib/libfprint-2.so.2.0.0
+d4bfad41084d66dd823728f255dba1b155d17c6f59dd507671b285d7c9d82d23  /lib/modules/7.3.0-sm7150/updates/qcom_qseecom_fpc.ko
+3ebe747b4d13c4cb906c13715be879c5a3b42b0e452234a6043181446b643a3e  /usr/local/libexec/hanoip-fp-guard
+31d83392cecdbef1032221d9351f49e0bbb3e6907b742a4dbbebceafdbf64a2c  /usr/local/libexec/hanoip-fp-admin
+9e4d8a2eac6594bf099a593cb4ee7275be3983427f5fbf07e12f81b64ce35134  /usr/local/bin/hanoip-digital
+3f8e1b3aa6fcae6ab03a6db49241c70f0957f34aa7d0978015207566b536b6f6  /usr/share/polkit-1/actions/org.hanoip.fingerprint.policy
+36748c3d0a33a09edbb73fc39b4950d8cb902e626f02adeef8dba3600ac349b4  /etc/polkit-1/rules.d/50-hanoip-fprint.rules
+a6511714d75448f78dde72db63497c384f9b0db768e5bedecb27864c6246d31d  /etc/systemd/system/fprintd.service.d/hanoip-fpc.conf
+46b0b5873c362993c02b41d13a95d00f581a8dab296b0b003cb3a8f1e7f24ff3  /etc/systemd/system/hanoip-fp-guard.service
+a82658a07f72a7fa2bd44d5e30205cdb44720a37460ed91168beaf032b18deb1  /etc/modprobe.d/qcom-qseecom-fpc.conf
+5db025a917181e7d8788539bec2624231ed20ab2563508304a2e90b4c9452408  /etc/pam.d/sudo
+fprintd	1.94.5-4+b2
+libfprint-2-2	1:1.94.10-1
+libglib2.0-0t64:arm64	2.90.1-2
+libpam-fprintd:arm64	1.94.5-4+b2
+unlock-enabled
+ - #0: right-index-finger

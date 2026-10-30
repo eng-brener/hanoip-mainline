@@ -1,0 +1,104 @@
+# Etapas A e B — transporte QSEECOM e cliente do TA FPC
+
+Data: 29/10/2026. Tudo offline: nada foi executado no aparelho nem enviado ao
+TEE. O objetivo desta pasta é ser **revisável** antes de qualquer boot.
+
+## O que existe aqui
+
+```
+kernel/
+  apply.py                    aplica o patch numa árvore Linux (idempotente)
+  build.sh                    build no docker, baseline = work/kernel-7.3/v6
+  build-inside.sh             (roda no container)
+  src/                        fonte do patch (fonte da verdade)
+    drivers/firmware/qcom/qcom_qseecom_fpc.c
+    include/uapi/misc/qseecom-fpc.h
+    scm_qseecom_app.frag.c    funções inseridas em qcom_scm.c
+    scm_qseecom_app.frag.h    protótipos inseridos em qcom_scm.h
+  patches-gerados/0195-wip-qseecom-fpc-etapa-A.patch   (git format-patch)
+  out/Image.gz, out/qcom_qseecom_fpc.ko (+ SHA em SHA256SUMS)
+userspace/
+  fpc-tac.c, Makefile, qseecom-fpc.h, fpc-tac (binário aarch64 compilado)
+docs/kernel/PROTOCOLO-FPC-TA-20261029.md   o protocolo que este código implementa
+```
+
+## O que o código faz
+
+**Kernel (562 linhas, 6 arquivos).** Nada de QSEECOM genérico: só o que o TA da
+FPC precisa.
+
+- `qcom_scm_qseecom_app_start(image_phys, mdt_len, img_len)`: SCM call
+  `owner=QSEE_OS(50), svc=APP_MGR(1), cmd=1`, três argumentos VAL — o mesmo
+  `TZ_OS_APP_START_ID` que o Android usa. Fonte da codificação:
+  `include/soc/qcom/qseecomi.h` (Qualcomm), conferida em três pontos.
+- `qcom_scm_qseecom_app_shutdown(app_id)`: cmd 2.
+- `qcom_scm_qseecom_app_send_phys(...)`: idêntico ao `app_send` do mainline,
+  mas aceita endereços físicos e devolve o **retorno do TA** (`res.result`), que
+  o protocolo usa como contagem/erro privado.
+- `/dev/qseecom-fpc` (misc, um único open): `LOAD_APP`, `SEND`, `UNLOAD_APP`,
+  `INFO`. Buffers em `dma_alloc_coherent()` (32 KiB de controle + 2 MiB de
+  frame), então o secure world vê exatamente o que a CPU escreveu — dispensa o
+  `dmac_flush_range` do driver antigo.
+- Sem DT, sem listeners, sem RPMB/ssd, sem keymaster, sem ION/dmabuf.
+
+**Userspace (`fpc-tac`, 18 KB de C).** Lê o TA de `modem_a/image`
+(`fpctzapp.b00..bNN` + `.mdt`, nessa ordem), energiza/en-reseta por gpiolib
+uAPI v2 (GPIO29 enable, GPIO4 reset, GPIO90 IRQ com borda), e fala o protocolo:
+
+| comando | o que faz |
+| --- | --- |
+| `info` | app_id, estado, tamanho do frame |
+| `build-info` | módulo 12 cmd 1: string de build do TA |
+| `otp` | módulo 10 cmd 7: despeja o OTP |
+| `sensor-init` | módulo 10 cmd 1 |
+| `capture [--no-wait]` | módulo 10 cmds 2→3→(IRQ)→4→5, imprime o status |
+| `identify` | captura + módulo 11 cmd 4 (id/coverage/quality) |
+| `enroll` | módulo 11 cmds 0→1→(captura+2)×N→3 |
+| `db-store ARQ` / `db-load ARQ` | módulo 4: blob de templates em arquivo |
+| `selftest` | módulo 5 cmds 0..2 |
+
+## O que foi verificado (e o que não foi)
+
+Verificado:
+- compila de verdade: `Image` 34 MB (gzip 12,6 MB) e `qcom_qseecom_fpc.ko`
+  88 KB, `vermagic 7.3.0-sm7150` **sem `+`** (a armadilha da árvore suja);
+- a árvore resultante é `v6 + 195º patch`, com diff de 562 linhas em 6 arquivos
+  — o patch está em `kernel/patches-gerados/0195-*.patch`;
+- `fpc-tac` compila com `-Wall -Wextra` sem avisos (aarch64, glibc).
+
+NÃO verificado (só o aparelho responde, e isso exige autorização sua):
+1. se o TEE aceita `QSEOS_APP_START_COMMAND` vindo do Linux (assinatura,
+   whitelist/VMID, região de memória). É o primeiro teste e é o mais incerto;
+2. se buffers de `dma_alloc_coherent` são aceitos no lugar do carveout
+   `qseecom_ta_region` (se não, o plano B é alocar do carveout e passar o físico);
+3. qualquer comando do TA: nada foi enviado, nem `get_build_info`;
+4. se `enrol` exige token do módulo 3 e, portanto, o keymaster.
+
+## Riscos, escritos antes do teste
+
+- O TEE é a única superfície realmente nova. O pior caso plausível de um
+  comando errado é hang/reboot do aparelho (como já aconteceu no experimento de
+  áudio que travou o SoC). Nada aqui escreve em partição.
+- O blob de templates é um arquivo escolhido por você; o `db-load` sobrescreve o
+  banco do TA em memória, não o do Android.
+- Os offsets vêm de RE estática; o teste começa pelo comando read-only
+  (`build-info`), que não toca no sensor.
+
+## Como o teste vai começar (quando você autorizar)
+
+1. boot volátil com `out/Image.gz` + o U-Boot atual (o `Image.gz` evita o
+   "Starting kernel" travado do Image cru);
+2. `insmod qcom_qseecom_fpc.ko`;
+3. `fpc-tac build-info` — critério de aceite: retorno 0 e a string de build do
+   TA (24/02/2021, debug, ENGINEERING=true);
+4. só depois: `otp` (energiza o sensor), `sensor-init`, `capture`.
+
+## Revisão: o que olhar primeiro
+
+1. `qcom_scm.c` (fragmento): owner/svc/cmd e os três `QCOM_SCM_VAL`. Um erro
+   aqui invalida tudo.
+2. O layout do controle no driver: `ctrl[0]=frame_len`, `ctrl[4]=frame_phys`.
+   É o "patch do offset 4" do QSECom legado.
+3. `dma_alloc_coherent` + `dma_set_mask_and_coherent(36 bits)`.
+4. `fpc-tac`: módulo/comando e offsets por módulo (tabela no
+   `PROTOCOLO-FPC-TA-20261029.md`).

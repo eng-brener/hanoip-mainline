@@ -1,0 +1,11 @@
+[Unit]
+Description=Desbloqueio do Phosh pela digital, com as proteções do Android
+After=systemd-logind.service
+
+[Service]
+ExecStart=/usr/local/libexec/hanoip-fp-guard daemon
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical.target

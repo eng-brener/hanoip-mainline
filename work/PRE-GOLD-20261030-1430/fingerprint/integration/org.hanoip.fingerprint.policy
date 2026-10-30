@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  <action id="org.hanoip.fingerprint.admin">
+    <description>Change how the fingerprint is used</description>
+    <description xml:lang="pt_BR">Mudar o uso da digital</description>
+    <message>Authentication is required to change fingerprint settings</message>
+    <message xml:lang="pt_BR">Digite sua senha para mudar o uso da digital</message>
+    <icon_name>auth-fingerprint-symbolic</icon_name>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>auth_self</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/local/libexec/hanoip-fp-admin</annotate>
+  </action>
+</policyconfig>

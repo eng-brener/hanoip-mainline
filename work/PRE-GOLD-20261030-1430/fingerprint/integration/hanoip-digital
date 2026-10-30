@@ -1,0 +1,413 @@
+#!/usr/bin/python3
+# SPDX-License-Identifier: GPL-2.0-only
+"""
+Digital - cadastrar, excluir e escolher onde usar a impressão digital
+(leitor FPC do Moto G60 via TEE, fprintd + driver hanoip_fpc).
+
+  * digitais: fprintd pelo D-Bus (cadastrar/excluir pedem a senha pelo
+    polkit, regra 50-hanoip-fprint.rules);
+  * "desbloquear a tela" e "sudo": interruptores em /etc/hanoip-fp, mudados
+    pelo hanoip-fp-admin via pkexec (pede a senha);
+  * estado e lockdown: hanoip-fp-guard (/run/hanoip-fp/status.json e
+    /run/user/UID/hanoip-fp-lockdown).
+"""
+import json
+import os
+import re
+
+import gi
+
+gi.require_version("Gtk", "4.0")
+gi.require_version("Adw", "1")
+from gi.repository import Adw, Gio, GLib, Gtk  # noqa: E402
+
+APP_ID = "org.hanoip.Digital"
+FPRINT = "net.reactivated.Fprint"
+STATUS = "/run/hanoip-fp/status.json"
+ADMIN = "/usr/local/libexec/hanoip-fp-admin"
+MAX_PRINTS = 5
+INTERACTIVE = Gio.DBusCallFlags.ALLOW_INTERACTIVE_AUTHORIZATION
+
+FINGERS = [
+    ("right-index-finger", "Indicador direito"),
+    ("right-thumb", "Polegar direito"),
+    ("right-middle-finger", "Médio direito"),
+    ("right-ring-finger", "Anelar direito"),
+    ("right-little-finger", "Mínimo direito"),
+    ("left-index-finger", "Indicador esquerdo"),
+    ("left-thumb", "Polegar esquerdo"),
+    ("left-middle-finger", "Médio esquerdo"),
+    ("left-ring-finger", "Anelar esquerdo"),
+    ("left-little-finger", "Mínimo esquerdo"),
+]
+LABEL = dict(FINGERS)
+
+ENROLL_MSG = {
+    "enroll-stage-passed": "Boa! Levante e encoste de novo",
+    "enroll-retry-scan": "Não deu para ler. Encoste de novo",
+    "enroll-swipe-too-short": "Encoste por mais tempo",
+    "enroll-finger-not-centered": "Centralize o dedo no sensor",
+    "enroll-remove-and-retry": "Levante e encoste numa posição diferente",
+    "enroll-completed": "Digital cadastrada",
+    "enroll-failed": "O cadastro falhou",
+    "enroll-data-full": "Limite de %d digitais atingido" % MAX_PRINTS,
+    "enroll-duplicate": "Esse dedo já está cadastrado",
+    "enroll-disconnected": "O leitor foi desconectado",
+    "enroll-unknown-error": "Erro no leitor",
+}
+
+
+def dbus_message(err):
+    """'GDBus.Error:net.reactivated.Fprint.Error.X: texto' -> 'texto'."""
+    return re.sub(r"^GDBus\.Error:[\w.]+:\s*", "", err.message)
+
+
+def read_status():
+    try:
+        with open(STATUS) as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
+class Fprint:
+    """Acesso ao fprintd (barramento do sistema)."""
+
+    def __init__(self):
+        self.mgr = Gio.DBusProxy.new_for_bus_sync(
+            Gio.BusType.SYSTEM, Gio.DBusProxyFlags.NONE, None, FPRINT,
+            "/net/reactivated/Fprint/Manager", FPRINT + ".Manager", None)
+        path = self.mgr.call_sync("GetDefaultDevice", None,
+                                  Gio.DBusCallFlags.NONE, -1, None).unpack()[0]
+        self.dev = Gio.DBusProxy.new_for_bus_sync(
+            Gio.BusType.SYSTEM, Gio.DBusProxyFlags.NONE, None, FPRINT, path,
+            FPRINT + ".Device", None)
+        name = self.dev.get_cached_property("name")
+        self.name = name.unpack() if name else "Leitor de digital"
+        stages = self.dev.get_cached_property("num-enroll-stages")
+        self.stages = stages.unpack() if stages else 12
+
+    def enrolled(self):
+        try:
+            res = self.dev.call_sync("ListEnrolledFingers",
+                                     GLib.Variant("(s)", ("",)),
+                                     Gio.DBusCallFlags.NONE, -1, None)
+            return list(res.unpack()[0])
+        except GLib.Error as e:
+            if "NoEnrolledPrints" in e.message:
+                return []
+            raise
+
+    def call(self, method, args, done):
+        """Chamada assíncrona; done(erro ou None)."""
+        def finish(proxy, res, _data):
+            try:
+                proxy.call_finish(res)
+                done(None)
+            except GLib.Error as e:
+                done(e)
+        params = GLib.Variant("(s)", args) if args is not None else None
+        self.dev.call(method, params, INTERACTIVE, 120000, None, finish, None)
+
+
+class EnrollDialog(Adw.Dialog):
+    def __init__(self, win, fp, free):
+        super().__init__(title="Cadastrar digital", content_width=360,
+                         content_height=520)
+        self.win, self.fp = win, fp
+        self.finger = None
+        self.passed = 0
+        self.claimed = self.running = False
+        self.sig = None
+
+        view = Adw.ToolbarView()
+        view.add_top_bar(Adw.HeaderBar())
+        self.stack = Gtk.Stack(transition_type=Gtk.StackTransitionType.SLIDE_LEFT)
+        view.set_content(self.stack)
+        self.set_child(view)
+
+        # 1: escolher o dedo
+        page = Adw.PreferencesPage()
+        group = Adw.PreferencesGroup(title="Qual dedo?")
+        for key, label in FINGERS:
+            if key not in free:
+                continue
+            row = Adw.ActionRow(title=label, activatable=True)
+            row.add_suffix(Gtk.Image(icon_name="go-next-symbolic"))
+            row.connect("activated", self.start, key)
+            group.add(row)
+        page.add(group)
+        self.stack.add_named(page, "choose")
+
+        # 2: progresso
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18,
+                      margin_top=24, margin_bottom=24, margin_start=24,
+                      margin_end=24, valign=Gtk.Align.CENTER)
+        box.append(Gtk.Image(icon_name="auth-fingerprint-symbolic",
+                             pixel_size=128, css_classes=["dim-label"]))
+        self.title = Gtk.Label(css_classes=["title-2"], wrap=True,
+                               justify=Gtk.Justification.CENTER)
+        self.msg = Gtk.Label(wrap=True, justify=Gtk.Justification.CENTER)
+        self.bar = Gtk.ProgressBar()
+        self.button = Gtk.Button(label="Cancelar", halign=Gtk.Align.CENTER,
+                                 css_classes=["pill"])
+        self.button.connect("clicked", lambda _b: self.close())
+        for w in (self.title, self.msg, self.bar, self.button):
+            box.append(w)
+        self.stack.add_named(box, "progress")
+
+        self.connect("closed", self.cleanup)
+
+    def say(self, title, msg=""):
+        self.title.set_label(title)
+        self.msg.set_label(msg)
+
+    def start(self, _row, finger):
+        self.finger = finger
+        self.stack.set_visible_child_name("progress")
+        self.say(LABEL[finger], "Preparando o leitor…")
+        self.fp.call("Claim", ("",), self.claimed_cb)
+
+    def claimed_cb(self, err):
+        if err:
+            return self.fail(dbus_message(err))
+        self.claimed = True
+        self.sig = self.fp.dev.connect("g-signal", self.on_signal)
+        self.fp.call("EnrollStart", (self.finger,), self.started_cb)
+
+    def started_cb(self, err):
+        if err:
+            return self.fail(dbus_message(err))
+        self.running = True
+        self.say(LABEL[self.finger],
+                 "Encoste o dedo no sensor (o primeiro toque confere se ele "
+                 "já está cadastrado)")
+
+    def on_signal(self, _proxy, _sender, name, params):
+        if name != "EnrollStatus":
+            return
+        result, done = params.unpack()
+        if result == "enroll-stage-passed":
+            self.passed += 1
+            self.bar.set_fraction(min(1.0, self.passed / self.fp.stages))
+        self.say(LABEL[self.finger], ENROLL_MSG.get(result, result))
+        if not done:
+            return
+        self.running = False
+        if result == "enroll-completed":
+            self.bar.set_fraction(1.0)
+            self.say("Pronto!", "%s cadastrado" % LABEL[self.finger])
+            self.button.set_label("Concluir")
+            self.button.add_css_class("suggested-action")
+            self.win.toast("%s cadastrado" % LABEL[self.finger])
+        else:
+            self.button.set_label("Fechar")
+        self.release()
+
+    def fail(self, text):
+        self.say("Não foi possível cadastrar", text)
+        self.button.set_label("Fechar")
+        self.release()
+
+    def release(self):
+        if self.sig:
+            self.fp.dev.disconnect(self.sig)
+            self.sig = None
+        if self.running:
+            self.running = False
+            self.fp.call("EnrollStop", None, lambda _e: None)
+        if self.claimed:
+            self.claimed = False
+            self.fp.call("Release", None, lambda _e: None)
+        self.win.refresh()
+
+    def cleanup(self, _dialog):
+        self.release()
+
+
+class Window(Adw.ApplicationWindow):
+    def __init__(self, app):
+        super().__init__(application=app, title="Digital",
+                         default_width=360, default_height=720)
+        self.fp = None
+        self.busy = False
+        self.pending = 0	# pkexec em andamento: não mexer nos interruptores
+
+        view = Adw.ToolbarView()
+        view.add_top_bar(Adw.HeaderBar())
+        self.toasts = Adw.ToastOverlay()
+        view.set_content(self.toasts)
+        self.set_content(view)
+
+        page = Adw.PreferencesPage()
+        self.toasts.set_child(page)
+
+        self.prints = Adw.PreferencesGroup(
+            title="Digitais cadastradas",
+            description="O leitor guarda até %d digitais" % MAX_PRINTS)
+        page.add(self.prints)
+        self.print_rows = []
+        self.add_row = Adw.ButtonRow(title="Cadastrar digital",
+                                     start_icon_name="list-add-symbolic")
+        self.add_row.connect("activated", self.enroll)
+
+        use = Adw.PreferencesGroup(title="Usar a digital para")
+        self.unlock = Adw.SwitchRow(
+            title="Desbloquear a tela",
+            subtitle="Na tela de bloqueio, com a tela acesa")
+        self.sudo = Adw.SwitchRow(
+            title="Autorizar o sudo",
+            subtitle="No terminal; a senha continua valendo")
+        for row, what in ((self.unlock, "unlock"), (self.sudo, "sudo")):
+            row.connect("notify::active", self.switched, what)
+            use.add(row)
+        page.add(use)
+
+        sec = Adw.PreferencesGroup(
+            title="Segurança",
+            description="Como no Android: depois de reiniciar, a cada 72 h "
+                        "e depois de 20 erros, só o PIN desbloqueia.")
+        self.state = Adw.ActionRow(title="Digital agora")
+        sec.add(self.state)
+        lock = Adw.ButtonRow(title="Bloquear só com PIN (lockdown)",
+                             start_icon_name="changes-prevent-symbolic")
+        lock.add_css_class("destructive-action")
+        lock.connect("activated", self.lockdown)
+        sec.add(lock)
+        page.add(sec)
+
+        try:
+            self.fp = Fprint()
+            self.prints.set_title("Digitais cadastradas")
+        except GLib.Error as e:
+            self.toast("Leitor indisponível: %s" % dbus_message(e))
+        self.refresh()
+        GLib.timeout_add_seconds(2, self.poll)
+
+    def toast(self, text):
+        self.toasts.add_toast(Adw.Toast(title=text, timeout=4))
+
+    # -------------------------------------------------- digitais
+    def refresh(self):
+        for row in self.print_rows:
+            self.prints.remove(row)
+        self.print_rows = []
+        fingers = []
+        if self.fp:
+            try:
+                fingers = self.fp.enrolled()
+            except GLib.Error as e:
+                self.toast(dbus_message(e))
+        for finger in fingers:
+            row = Adw.ActionRow(title=LABEL.get(finger, finger))
+            row.add_prefix(Gtk.Image(icon_name="auth-fingerprint-symbolic"))
+            trash = Gtk.Button(icon_name="user-trash-symbolic",
+                               valign=Gtk.Align.CENTER,
+                               tooltip_text="Excluir",
+                               css_classes=["flat"])
+            trash.connect("clicked", self.ask_delete, finger)
+            row.add_suffix(trash)
+            self.prints.add(row)
+            self.print_rows.append(row)
+        if not fingers:
+            row = Adw.ActionRow(title="Nenhuma digital cadastrada")
+            self.prints.add(row)
+            self.print_rows.append(row)
+        if self.fp and len(fingers) < MAX_PRINTS:
+            self.prints.add(self.add_row)
+            self.print_rows.append(self.add_row)
+        self.fingers = fingers
+        self.poll()
+
+    def enroll(self, _row):
+        free = [k for k, _ in FINGERS if k not in self.fingers]
+        EnrollDialog(self, self.fp, free).present(self)
+
+    def ask_delete(self, _button, finger):
+        dlg = Adw.AlertDialog(
+            heading="Excluir %s?" % LABEL.get(finger, finger).lower(),
+            body="Ela deixa de desbloquear a tela e de autorizar o sudo.")
+        dlg.add_response("cancel", "Cancelar")
+        dlg.add_response("delete", "Excluir")
+        dlg.set_response_appearance("delete",
+                                    Adw.ResponseAppearance.DESTRUCTIVE)
+        dlg.connect("response", self.delete, finger)
+        dlg.present(self)
+
+    def delete(self, _dlg, response, finger):
+        if response != "delete":
+            return
+
+        def released(_err):
+            self.refresh()
+
+        def deleted(err):
+            if err:
+                self.toast(dbus_message(err))
+            else:
+                self.toast("%s excluído" % LABEL.get(finger, finger))
+            self.fp.call("Release", None, released)
+
+        def claimed(err):
+            if err:
+                self.toast(dbus_message(err))
+                return
+            self.fp.call("DeleteEnrolledFinger", (finger,), deleted)
+
+        self.fp.call("Claim", ("",), claimed)
+
+    # -------------------------------------------------- interruptores
+    def poll(self):
+        st = read_status()
+        if not self.pending:
+            self.busy = True
+            self.unlock.set_active(os.path.exists("/etc/hanoip-fp/unlock-enabled"))
+            self.sudo.set_active(os.path.exists("/etc/hanoip-fp/sudo-enabled"))
+            self.busy = False
+        if st is None:
+            self.state.set_subtitle("Serviço de proteção parado")
+        else:
+            self.state.set_subtitle(st["reason"] or "Liberada")
+        return True
+
+    def switched(self, row, _pspec, what):
+        if self.busy:
+            return
+        on = row.get_active()
+
+        def done(proc, res, _data):
+            self.pending -= 1
+            try:
+                proc.wait_check_finish(res)
+                self.toast("%s %s" % (
+                    "Desbloqueio pela digital" if what == "unlock" else
+                    "Sudo pela digital", "ligado" if on else "desligado"))
+            except GLib.Error:
+                self.toast("Não alterado (senha cancelada ou recusada)")
+            self.poll()
+
+        proc = Gio.Subprocess.new(["pkexec", ADMIN, what, "on" if on else "off"],
+                                  Gio.SubprocessFlags.NONE)
+        self.pending += 1
+        proc.wait_check_async(None, done, None)
+
+    def lockdown(self, _row):
+        path = "/run/user/%d/hanoip-fp-lockdown" % os.getuid()
+        try:
+            open(path, "w").close()
+            self.toast("Lockdown: só o PIN desbloqueia até a próxima senha")
+        except OSError as e:
+            self.toast(str(e))
+
+
+class App(Adw.Application):
+    def __init__(self):
+        super().__init__(application_id=APP_ID)
+
+    def do_activate(self):
+        win = self.get_active_window() or Window(self)
+        win.present()
+
+
+if __name__ == "__main__":
+    App().run(None)

@@ -1,0 +1,284 @@
+#!/usr/bin/python3
+# SPDX-License-Identifier: GPL-2.0-only
+"""
+hanoip-fp-guard - desbloqueio do Phosh pela digital, com as proteções do
+Android, e porteiro do sudo pela digital.
+
+Política (a mesma do Android para biometria forte):
+  * depois do boot, a digital só vale depois de um login/desbloqueio com
+    senha (o phrog sempre pede senha: o login conta);
+  * 72 h sem senha -> a digital deixa de valer até o próximo PIN;
+  * 5 erros seguidos -> 30 s de bloqueio; 20 erros -> só com PIN;
+  * modo lockdown (`hanoip-fp-guard lockdown`, ou o usuário cria
+    /run/user/UID/hanoip-fp-lockdown) -> só com PIN;
+  * com a tela apagada a digital não desbloqueia (evita desbloqueio no
+    bolso: aqui o desbloqueio não acende a tela).
+Um desbloqueio por PIN (sessão destravada sem ter sido por nós) zera tudo.
+
+Interruptores (o app "Digital" liga e desliga pelo hanoip-fp-admin):
+  /etc/hanoip-fp/unlock-enabled   existe -> desbloqueio da tela pela digital
+  /etc/hanoip-fp/sudo-enabled     existe -> sudo aceita a digital
+Estado público (sem segredos) para o app: /run/hanoip-fp/status.json.
+
+Subcomandos:
+  daemon    serviço (root): espera o dedo enquanto a sessão está bloqueada
+  allowed   sai com 0 se a digital vale agora no sudo (usado pelo PAM)
+  lockdown  liga o modo lockdown
+  status    mostra o estado
+O estado fica em /run (tmpfs): um boot sempre volta ao "precisa de PIN".
+"""
+import json
+import os
+import subprocess
+import sys
+import time
+
+STATE_DIR = "/run/hanoip-fp"
+STATE = STATE_DIR + "/state.json"
+STATUS = STATE_DIR + "/status.json"
+CONF_DIR = "/etc/hanoip-fp"
+UNLOCK_FLAG = CONF_DIR + "/unlock-enabled"
+SUDO_FLAG = CONF_DIR + "/sudo-enabled"
+DPMS = "/sys/class/drm/card0-DSI-1/dpms"
+LOCKDOWN_REQ = "hanoip-fp-lockdown"	# em /run/user/UID/
+
+LOCKOUT_FAILS = 5
+LOCKOUT_SECS = 30
+PERMANENT_FAILS = 20
+CRED_TIMEOUT = 72 * 3600
+
+
+def now():
+    # inclui o tempo em suspensão; recomeça a cada boot
+    return time.clock_gettime(time.CLOCK_BOOTTIME)
+
+
+class Policy:
+    def __init__(self, d=None):
+        d = d or {}
+        self.armed = d.get("armed", False)
+        self.cred_at = d.get("cred_at")
+        self.fails = d.get("fails", 0)
+        self.lockout_until = d.get("lockout_until", 0)
+        self.lockdown = d.get("lockdown", False)
+        self.sid = d.get("sid")
+
+    def to_dict(self):
+        return dict(armed=self.armed, cred_at=self.cred_at, fails=self.fails,
+                    lockout_until=self.lockout_until, lockdown=self.lockdown,
+                    sid=self.sid)
+
+    def credential(self, t):
+        """Senha/PIN aceito: a digital volta a valer."""
+        self.armed = True
+        self.cred_at = t
+        self.fails = 0
+        self.lockout_until = 0
+        self.lockdown = False
+
+    def failure(self, t):
+        self.fails += 1
+        if self.fails < PERMANENT_FAILS and self.fails % LOCKOUT_FAILS == 0:
+            self.lockout_until = t + LOCKOUT_SECS
+
+    def success(self):
+        self.fails = 0
+        self.lockout_until = 0
+
+    def reason(self, t):
+        """None se a digital vale agora; senão o motivo."""
+        if not self.armed:
+            return "precisa do PIN depois do boot"
+        if self.lockdown:
+            return "lockdown"
+        if self.cred_at is None or t - self.cred_at > CRED_TIMEOUT:
+            return "72 h sem PIN"
+        if self.fails >= PERMANENT_FAILS:
+            return "muitos erros: só com PIN"
+        if t < self.lockout_until:
+            return "bloqueado por %d s" % (self.lockout_until - t + 0.999)
+        return None
+
+
+def load():
+    try:
+        with open(STATE) as f:
+            return Policy(json.load(f))
+    except (OSError, ValueError):
+        return Policy()
+
+
+def _write(path, data, mode):
+    os.makedirs(STATE_DIR, mode=0o755, exist_ok=True)
+    tmp = path + ".new"
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, mode)
+    with os.fdopen(fd, "w") as f:
+        json.dump(data, f)
+    os.replace(tmp, path)
+
+
+def save(p):
+    _write(STATE, p.to_dict(), 0o600)
+    publish(p)
+
+
+def enabled(flag):
+    return os.path.exists(flag)
+
+
+def status_dict(p, t):
+    return dict(unlock=enabled(UNLOCK_FLAG), sudo=enabled(SUDO_FLAG),
+                reason=p.reason(t), fails=p.fails, lockdown=p.lockdown)
+
+
+def publish(p):
+    """Estado legível pelo app (sem segredos)."""
+    try:
+        _write(STATUS, status_dict(p, now()), 0o644)
+    except OSError:
+        pass
+
+
+def sh(*args):
+    return subprocess.run(args, capture_output=True, text=True).stdout.strip()
+
+
+def seat_session():
+    """(sid, usuário, uid) da sessão gráfica do seat0, ou None."""
+    for line in sh("loginctl", "list-sessions", "--no-legend").splitlines():
+        f = line.split()
+        if len(f) >= 6 and f[3] == "seat0" and f[5] == "user":
+            return f[0], f[2], int(f[1])
+    return None
+
+
+def locked(sid):
+    return sh("loginctl", "show-session", sid, "-p", "LockedHint",
+              "--value") == "yes"
+
+
+def screen_on():
+    try:
+        with open(DPMS) as f:
+            return f.read().strip() == "On"
+    except OSError:
+        return True
+
+
+def has_prints(user):
+    return " - #" in sh("fprintd-list", user)
+
+
+def log(msg):
+    print(msg, flush=True)
+
+
+class Guard:
+    """Laço do serviço; isolado das chamadas de sistema para os testes."""
+
+    def __init__(self, sys_=None):
+        self.s = sys_ or sys.modules[__name__]
+        self.p = self.s.load()
+        self.prev_locked = None
+        self.our_unlock = 0.0
+
+    def commit(self):
+        self.s.save(self.p)
+
+    def unlock_enabled(self):
+        return self.s.enabled(self.s.UNLOCK_FLAG)
+
+    def observe(self, sid, uid, is_locked, t):
+        """Detecta desbloqueio por PIN, sessão nova e pedido de lockdown."""
+        if sid != self.p.sid:
+            # sessão nova: veio do phrog, que exige senha
+            self.p.sid = sid
+            self.prev_locked = is_locked
+            if not is_locked:
+                self.p.credential(t)
+                log("sessão %s aberta com senha: digital liberada" % sid)
+            self.commit()
+            return
+        if self.prev_locked and not is_locked and t - self.our_unlock > 10:
+            self.p.credential(t)
+            log("desbloqueio por PIN: contadores zerados")
+            self.commit()
+        self.prev_locked = is_locked
+        req = "/run/user/%d/%s" % (uid, LOCKDOWN_REQ)
+        if self.s.os.path.exists(req):
+            self.s.os.unlink(req)
+            self.p.lockdown = True
+            log("lockdown pedido pelo usuário")
+            self.commit()
+
+    def verdict(self, out, t):
+        """Resultado do fprintd-verify -> True se deve desbloquear."""
+        if "verify-match" in out:
+            self.p.success()
+            self.commit()
+            return True
+        if "verify-no-match" in out:
+            self.p.failure(t)
+            log("digital não confere (%d erro(s))" % self.p.fails)
+            self.commit()
+        return False
+
+    def run(self):
+        while True:
+            t = self.s.now()
+            ses = self.s.seat_session()
+            if not ses:
+                time.sleep(1)
+                continue
+            sid, user, uid = ses
+            is_locked = self.s.locked(sid)
+            self.observe(sid, uid, is_locked, t)
+            self.s.publish(self.p)
+            if (not is_locked or not self.unlock_enabled() or self.p.reason(t)
+                    or not self.s.screen_on() or not self.s.has_prints(user)):
+                time.sleep(1)
+                continue
+            proc = subprocess.Popen(["fprintd-verify", user],
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT, text=True)
+            while proc.poll() is None:
+                time.sleep(0.5)
+                t = self.s.now()
+                if (not self.s.locked(sid) or self.p.reason(t)
+                        or not self.s.screen_on() or not self.unlock_enabled()):
+                    proc.terminate()
+                    break
+            out = proc.communicate()[0] or ""
+            if proc.returncode is not None and self.verdict(out, self.s.now()):
+                self.our_unlock = self.s.now()
+                log("digital reconhecida: desbloqueando %s" % sid)
+                subprocess.run(["loginctl", "unlock-session", sid])
+            time.sleep(1)
+
+
+def main(argv):
+    cmd = argv[1] if len(argv) > 1 else ""
+    if cmd == "daemon":
+        Guard().run()
+    elif cmd == "allowed":
+        # sudo: só com o interruptor ligado e a política liberando
+        if not enabled(SUDO_FLAG):
+            return 1
+        return 0 if load().reason(now()) is None else 1
+    elif cmd == "lockdown":
+        p = load()
+        p.lockdown = True
+        save(p)
+        print("lockdown: só com PIN até o próximo desbloqueio por senha")
+    elif cmd == "status":
+        p = load()
+        print(json.dumps(status_dict(p, now())))
+        print("digital:", p.reason(now()) or "liberada")
+    else:
+        print(__doc__)
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

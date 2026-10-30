@@ -1,0 +1,79 @@
+PRE-GOLD 2026-10-30 14:30 -03 — Kali/Phosh + ÁUDIO + CÂMERAS + DIGITAL
+=======================================================================
+Designada pelo usuário em 30/10/2026 ("deixe permanente e deixe tudo
+reproduzível"). Substitui a PRE-GOLD-20261029-1534 como par de retorno.
+Boot volátil (fastboot boot); nunca flash.
+
+1. O QUE ESTE PAR ENTREGA (medido)
+----------------------------------
+  Tudo da PRE-GOLD-20261029-1534 (8 CPUs, GPU, Venus, bateria/carga, USB
+  OTG, áudio completo, três câmeras), mais o leitor de digital FPC:
+  - o TA da digital (fpctzapp) roda no TEE, carregado pelo Linux;
+  - cadastro autorizado por token legítimo do Gatekeeper do keymaster64
+    (credencial da máquina, uid 0x4b414c49 "KALI", fora do usuário 0 do
+    Android); o TEE grava no RPMB pelo listener do módulo (escrita
+    autorizada pelo usuário em 30/10);
+  - fprintd (pacote) com a libfprint 1.94.10 + driver hanoip_fpc em
+    /opt/hanoip-fprint: fprintd-enroll/verify/delete validados;
+  - desbloqueio do Phosh pela digital, validado pelo usuário ("sucesso!"),
+    com as proteções do Android (hanoip-fp-guard: PIN depois do boot, 72 h,
+    5 erros -> 30 s, 20 -> só PIN, lockdown, tela apagada não desbloqueia);
+  - app "Digital" (cadastrar/excluir/interruptores/estado/lockdown);
+    instalado, ainda não exercitado na tela;
+  - sudo pela digital instalado e DESLIGADO (liga no app).
+
+2. CONTEÚDO
+-----------
+  uboot/   = o mesmo U-Boot cam-tres da PRE-GOLD-1534 (5cb08127...), sem
+             mudança de DT.
+  kernel/kernel-hanoip-listener7.img (eb5d4478...)
+             = o boot.img que estava rodando (kernel #64), com o ramdisk
+               real da PRE-GOLD-1534. É o par validado.
+  kernel/Image.gz.listener7, qcom_qseecom_fpc.ko (d4bfad41..., o mesmo
+             instalado em /lib/modules/7.3.0-sm7150/updates)
+  kernel/kernel-hanoip-kali-phosh-v7.img, Image.gz, kernel.dtb
+             = rebuild do zero de work/kernel-7.3/v7 (195 patches, árvore
+               276fbce0 = a do listener7). Comparado: Image difere só no
+               carimbo (#65 x #64, data) e no build-id GNU; o módulo tem
+               texto, rodata e modinfo idênticos; ramdisk e dtb idênticos.
+  kernel/0195-*.patch, config-7.3.0-sm7150-v7 (= v6 + QSEECOM_FPC=m)
+  fingerprint/userspace/   fpc-tac (diagnóstico do TA), gk-client.h,
+                           gk-probe.c (fonte)
+  fingerprint/libfprint/   patch do driver hanoip_fpc sobre a v1.94.10
+  fingerprint/integration/ app, guardião, ajudante, polkit, PAM, testes e
+                           os instaladores (ver LEIA-ME.md)
+  rootfs-instalado.txt     hashes do que está instalado no rootfs e
+                           versões dos pacotes
+
+3. COMO BOOTAR
+--------------
+  (cópia das imagens: a pasta é somente leitura)
+  fastboot boot uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img
+  fastboot boot kernel/kernel-hanoip-listener7.img
+  O módulo qcom_qseecom_fpc só carrega neste kernel (v7) ou posterior; com
+  o kernel da PRE-GOLD-1534 o modprobe registra erro e o resto funciona.
+
+4. COMO REPRODUZIR DO ZERO
+--------------------------
+  kernel:  work/kernel-7.3/v7/build.sh && work/kernel-7.3/v7/mkimg-kali.sh
+  rootfs:  sh work/fingerprint-20261029/integration/setup-kali-fingerprint.sh
+           (módulo + parâmetros, pacotes, libfprint com o patch compilada
+            no aparelho, drop-in do fprintd, app/guardião/polkit/sudo)
+  Depois: cadastrar o dedo (app Digital ou fprintd-enroll).
+
+5. O QUE NÃO ESTÁ AQUI (de propósito)
+-------------------------------------
+  - /var/lib/fpc-gk (segredo e handle da credencial da máquina e banco
+    cifrado de templates): é do aparelho; nunca copiar para fora dele.
+    Sem ele, um rootfs novo cria outra credencial no primeiro cadastro.
+  - imagens do TA, bibliotecas e dumps do Android (firmware do fabricante).
+
+6. LIMITES CONHECIDOS
+---------------------
+  - O TA guarda no máximo 5 digitais; o driver recarrega um TA novo a cada
+    sessão (o TA recusa begin_enrol depois de identify na mesma sessão).
+  - Sem detecção de dedo falso (o TA vem com LIVENESS_DETECTION:false).
+  - As proteções do desbloqueio são aplicadas por um processo root, não
+    dentro do TEE como no Android.
+  - Suspensão com a digital não foi testada.
+  Detalhes: work/fingerprint-20261029/HANDOFF-20261030.md.

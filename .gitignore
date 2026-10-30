@@ -83,3 +83,18 @@ work/**/*.raw
 # Wi-Fi scans list neighbours' networks.
 work/wifi-*/*/run1/scan*.txt
 work/wifi-*/*/run1/internet.txt
+
+# U-Boot v2026.10 reference clone and merge worktree (large, reproducible).
+uboot-sm7150-v2026.10/
+work/uboot-v2026.10/
+
+# Digital FPC: clone da libfprint (o patch em libfprint/ é o fonte) e saídas
+# de build/boot grandes e regeneráveis.
+work/fingerprint-20261029/libfprint/src/
+work/fingerprint-20261029/kernel/out*/
+work/fingerprint-20261029/kernel/listener-boot/
+work/fingerprint-20261029/boot/
+work/fingerprint-20261029/Image.gz
+work/kernel-7.3/v7/out/
+work/kernel-7.3/v7/build.log
+work/**/Image.gz.*

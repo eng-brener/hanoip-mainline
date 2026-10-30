@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Digital
+Name[pt_BR]=Digital
+Comment=Fingerprint: enroll, delete and where to use it
+Comment[pt_BR]=Impressão digital: cadastrar, excluir e onde usar
+Exec=/usr/local/bin/hanoip-digital
+Icon=auth-fingerprint-symbolic
+Categories=Settings;Security;GTK;
+Keywords=fingerprint;digital;biometria;
+StartupNotify=true
+X-Purism-FormFactor=Workstation;Mobile;

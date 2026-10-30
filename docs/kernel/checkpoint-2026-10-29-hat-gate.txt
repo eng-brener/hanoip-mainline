@@ -1,0 +1,183 @@
+CHECKPOINT 2026-10-29 — POR QUE O CADASTRO DA DIGITAL EXIGE HAT (prova estática)
+=================================================================================
+
+Estado: análise OFFLINE no computador. Nenhum comando Keymaster/Gatekeeper foi
+enviado, nenhuma credencial foi lida, nenhuma partição foi lida, montada ou
+escrita nesta etapa. O aparelho segue ligado no Kali volátil (kernel
+7.3.0-sm7150 #39, módulos lookup, qcom_qseecom_fpc e qcomtee carregados).
+
+1. RESPOSTA CURTA
+-----------------
+O cadastro da digital não é recusado por falta de implementação nossa: o
+próprio TA impõe um token de autorização (HAT) de 69 bytes cujo HMAC-SHA256 é
+conferido com uma chave de 32 bytes que só existe em claro dentro do TEE. Isso
+foi provado lendo o binário do TA deste aparelho.
+
+2. O QUE FOI LIDO
+-----------------
+- firmware do TA: vendor/firmware_mnt/image/fpctzapp.b00..b07 + .mdt, tirados
+  do dump local work/android-dump-20261025/firmware/firmware.tar;
+- remontagem do ELF em work/fingerprint-20261029/fpc-ta/fpctzapp.elf
+  (SHA-256 a17a0ca02747f1741dd00960601ec3408ba1ca73fc8795a66e5df6e0dc96bc17);
+- HAL do leitor: android.hardware.biometrics.fingerprint@2.1-service-fpc,
+  SHA-256 107a3352758e687d4608aa0256b77ac30e74cba9e1db5d866d015bc28c07b1d8
+  (mesmo hash do artefato já analisado em 26/10);
+- keymaster_a.img (SHA-256 e0468868823289ebc244315b5ac4d337c4f7cf8d4b7ff8866555d36297fe1e6b)
+  e as bibliotecas do HAL Gatekeeper (ver trabalho/gatekeeper-offline).
+
+Detalhes e endereços: work/fingerprint-20261029/fpc-ta/RESULTADO-TA.md e
+work/fingerprint-20261029/gatekeeper-offline/RESULTADO.md.
+
+3. A CHECAGEM EXATA (símbolos preservados no TA)
+------------------------------------------------
+fpc_check_token_integrity (VA 0x3c01):
+  - token[0] (versão) tem de ser 0, senão 0xe8a3403b;
+  - exige ctx+0x88 != 0 (chave carregada), senão 0xe9134040;
+  - HMAC-SHA256(chave = ctx+0x65, 32 B, dados = token[0..36]) tem de ser igual
+    a token[37..68], senão 0xe8a34055.
+
+fpc_check_enrollment_allowance (VA 0x3c61) chama a rotina 0x6cb0 antes de
+devolver o limite de cadastros:
+  - ctx+0x88 == 0 -> 0xe913406f   (é exatamente o erro que o nosso end_enrol
+     devolveu em 29/10, o que liga o caminho de cadastro a esta rotina);
+  - desafio ausente -> 0xe9134074;
+  - desafio do token (token[1..8]) diferente do guardado em ctx+0x10 -> 0xe8a34079;
+  - token guardado há mais de ~600 s -> 0xe8c34083 (e apaga o desafio);
+  - por fim, o HMAC acima.
+
+Essa rotina é chamada de forma incondicional no caminho de cadastro (chamada em
+0x35fe, antes de fpc_algo_begin_enroll e da contagem em ctx+0x64).
+
+4. MODULO 3 = hw_auth (id 3, despachante 0x3da4, comandos 1..6)
+---------------------------------------------------------------
+  - 0x6dd8 grava o desafio de 8 bytes em ctx+0x8;
+  - 0x6df6 zera ctx+0x10, sorteia desafio não nulo, grava uptime em ctx+0x18;
+  - 0x6e2e/0x6e3a exigem >= 69 bytes e copiam o token para ctx+0x20;
+  - 0x6e46 chama fpc_ta_hw_auth_unwrap_key (VA 0x4005 = arquivo 0x7004) e marca
+    ctx+0x88 = 1 se der certo;
+  - a chave desempacotada fica em ctx+0x65 (32 bytes), obtida com
+    qsee_decapsulate_inter_app_message a partir do blob que o Keymaster devolve
+    no comando 0x205.
+
+5. ONDE AS DIGITAIS SÃO GUARDADAS (resposta à pergunta de armazenamento)
+-----------------------------------------------------------------------
+O TA não tem nenhuma API de arquivo, SFS ou partição. Os únicos imports de
+armazenamento são qsee_fts_encrypt/decrypt/integrity_protect/verify. O módulo 4
+(db_blob) devolve o banco cifrado ao mundo normal. No HAL, as rotas de dados
+são /data/fpc_tpl/, /data/fpc/ e /data/vendor/.fps/.
+
+Conclusão: os templates são ARQUIVOS EM USERSPACE, protegidos pelo FTS do TEE.
+Não vão para RPMB. Num Kali o caminho do arquivo é escolha nossa, o que resolve
+a dúvida de "onde armazenar" para a digital (diferente do Gatekeeper, cujo
+armazenamento é interno ao TEE e continua desconhecido: partição lógica RPMB
+0x474b3232 ou arquivo SFS gk_sfs_file, selecionado por
+qsee_query_rpmb_enablement em runtime).
+
+6. CONSEQUÊNCIA
+---------------
+HAT não pode ser fabricado: a chave vive em claro só dentro do TEE. Pegar a
+chave encapsulada no Keymaster (comando 0x205) serve apenas para o TA
+desempacotá-la; ela não volta para o mundo normal e não temos como assinar o
+token.
+
+A única fonte legítima de HAT neste aparelho é o Gatekeeper do próprio TEE
+depois de verificar uma credencial (0x21001 cadastrar e 0x21002 verificar; o
+0x1502 "SB_VERIFY" é stub que devolve 0xffffd8e8, e 0x1501..0x1504 e
+0x501..0x51b também são stubs). Isso ESCREVE no estado de credenciais do TEE
+que o Android usa; a localização física (RPMB lógico ou SFS) ainda não foi
+observada e o efeito sobre o PIN do Android não foi testado.
+
+6b. BACKEND DO GATEKEEPER: RPMB (evidência indireta forte, 29/10 ~20:30)
+-------------------------------------------------------------------------
+O estado do TEE não fica no SFS deste aparelho:
+  - `ssd` (sdb1, 8 KiB) está INTEIRAMENTE ZERADO (0 bytes não nulos em 64 KiB);
+  - `keystore` (sdb5, 512 KiB) também inteiramente zerado;
+  - `frp` (sdb6) tem 111 bytes não nulos, começando por 32 bytes aleatórios
+    (marcador de credencial), e `devinfo` (sdb18) tem a assinatura
+    "ANDROID-BOOT!".
+Se o Gatekeeper usasse o arquivo SFS `gk_sfs_file`, a partição `ssd` teria
+conteúdo. Ela está vazia e o FRP tem marca de credencial => o estado seguro
+(chaves do Keymaster e Gatekeeper) está no RPMB (partição lógica 0x474b3232
+dentro do espaço de storage do TEE). Nada foi montado ou escrito; somente
+leitura de blocos com as partições já em modo RO.
+
+6c. COMO O TEE ACESSA O RPMB: LISTENERS DO QSEECOM
+--------------------------------------------------
+O `qseecomd` original registra listeners de sistema ("RPMB system services",
+"SSD system services", gpfs) e exporta a propriedade
+`vendor.sys.listeners.registered`, que é justamente o que o HAL do Keymaster
+consulta antes de falar com o TA. O `librpmb.so` importa
+QSEECom_register_listener / QSEECom_receive_req / QSEECom_send_resp e faz
+SG_IO em /dev/sg* (UFS query + frames RPMB). Ou seja: o TEE não tem acesso
+direto ao RPMB; ele pede ao mundo normal, que executa os frames.
+
+Consequência para nós: rodar Gatekeeper no Kali exige implementar esse
+listener no kernel (e habilitar CONFIG_RPMB, que hoje está desligado:
+`# CONFIG_RPMB is not set`). O qcom_qseecom mainline não tem suporte a
+listeners. É trabalho de kernel novo, não uma chamada.
+
+6d. ALTERNATIVA SEM TEE: IMAGEM CRUA DO SENSOR — TESTADA E DESCARTADA
+----------------------------------------------------------------------
+O TA exporta `fpc_device_capture_uncalibrated_image` e o módulo 5 aceita o
+comando 6 para acioná-lo. Esse comando foi descoberto no cliente de referência
+`fpc_tee_test` (função `fpc_tee_sensortest_capture_uncalibrated`, que escreve
+o frame `{5, 6}` e chama `fpc_tac_transfer`).
+
+TESTE REAL (29/10 ~20:40, somente leitura do sensor):
+  /tmp/fpc-tac-new --enable 0 --reset 0 --irq 0 raw 5 6 262144
+  ret=0, status do TA = 0 (sucesso), frame devolvido SEM nenhum byte de
+  imagem (só {5,6} e o campo de tamanho em +8). Dump de 256 KiB salvo em
+  work/fingerprint-20261029/frames/m5c6-sem-dedo.bin.
+Conclusão: `capture_uncalibrated` executa a captura DENTRO do TA e devolve só
+status — o utilitário de fábrica também não extrai imagem (só imprime status).
+`fpc_access_read_image` é chamado apenas por código do algoritmo dentro do
+TA. Nenhum comando de módulo devolve imagem crua.
+
+=> O caminho "imagem crua + casamento em userspace" NÃO é viável por este TA.
+A imagem nunca sai do TEE. A única rota para a digital funcionando é o caminho
+TEE (cadastro com HAT), e a identificação já funciona sem HAT.
+
+8. PASSOS 1 E 1b: LISTENER REGISTRA NO TEE (30/10 ~00:20)
+--------------------------------------------------------
+Marco real: o TEE aceitou o registro do listener RPMB.
+
+  insmod qcom_qseecom_fpc-listen.ko carveout_phys=0x9e400000 listener_id=0x2000
+  qseecom-fpc: listener 0x2000: register 0xfe100000+32768 -> 0
+
+O que foi preciso (cada item custou uma tentativa, todas com -22 = 0xFFFFFFEA
+devolvido pelo próprio TEE):
+  1. ID correto: TZ_OS_REGISTER_LISTENER_SMCINVOKE_ID = (owner QSEE_OS=50,
+     svc LISTENER=2, fn 0x06). A variante clássica (fn 0x01) também é
+     rejeitada neste firmware.
+  2. Buffer com tamanho ALINHADO A PÁGINA (0x8000). Com 0x6400 → EINVAL.
+  3. Buffer em MEMÓRIA NORMAL (dma_alloc_coherent), NÃO no carveout
+     0x9e400000: dentro do carveout o registro é recusado.
+A resposta whitelist usa TZ_OS_LISTENER_RESPONSE_HANDLER_WITH_WHITELIST_ID =
+(50, 2, 0x05), args (VAL, VAL, BUF_RW, VAL).
+
+INCIDENTE (mesma sessão): logo depois do registro o aparelho reiniciou
+sozinho. Causa provável: listener registrado e SEM ninguém atender. Se o TEE
+pedir storage e ninguém responder, o TEE fica bloqueado e o watchdog reinicia.
+O log do console no ramoops foi sobrescrito no boot seguinte, então não há
+prova direta do abort. Verificado depois: rootfs em userdata (kali) montado
+normalmente, todos os outros discos em RO, nenhum erro no dmesg. NADA foi
+gravado em partição; registro de listener é volátil e sumiu com o reset.
+
+Correção de projeto para a próxima tentativa: registrar o listener SOMENTE
+dentro do caminho de envio (registrar → enviar → atender/responder →
+desregistrar), para nunca existir listener registrado e ocioso.
+
+9. PENDÊNCIAS
+-------------
+- Decidir, com autorização explícita, se o cadastro de credencial no Gatekeeper
+  do TEE será tentado (risco: reescrever o estado de credencial que o Android
+  usa; sem caminho de backup do lado TEE).
+- Antes disso: descobrir o backend ativo (RPMB x SFS) sem executar comandos.
+- Implementar, para quando houver HAT: módulo 3 (desafio + token + unwrap) e
+  módulo 4 (persistir o blob em arquivo escolhido no Kali).
+
+8. SEGURANÇA
+------------
+Nada foi executado no aparelho neste checkpoint. Nenhum template foi gerado.
+Continuam proibidos flash de partição e qualquer escrita no telefone sem
+autorização específica.

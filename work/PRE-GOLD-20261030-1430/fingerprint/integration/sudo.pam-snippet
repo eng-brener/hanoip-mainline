@@ -1,0 +1,6 @@
+# --- digital (hanoip): inserir em /etc/pam.d/sudo ANTES de @include common-auth
+# O guardião diz se a digital vale agora (PIN depois do boot, 72 h,
+# bloqueio por erros, lockdown). Se não valer, pula a linha do fprintd.
+# Se a digital falhar ou expirar (15 s), cai na senha normal.
+auth       [success=ignore default=1] pam_exec.so quiet /usr/local/libexec/hanoip-fp-guard allowed
+auth       sufficient                 pam_fprintd.so max-tries=3 timeout=15

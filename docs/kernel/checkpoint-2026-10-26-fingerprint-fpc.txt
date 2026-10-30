@@ -1,3 +1,5 @@
+> **CORREÇÃO DE AUDITORIA — 29/10, posterior aos testes:** O driver experimental calculava `arg.status` a partir de `rsp[0]`, mas não copiava a estrutura de volta ao userspace. Os zeros de status impressos pelo cliente não são evidência de sucesso. Captura, IRQ por toque, banco vazio, cadastro e autenticação não foram comprovados; as interpretações categóricas abaixo são históricas e não valem como conclusão. O JSON de build-info foi efetivamente observado. A rotação obrigatória de slots, causa de resets e segurança/posse do carveout continuam hipóteses não comprovadas; slots de 1 MiB aceitam frames de até 2 MiB e se sobrepõem. Não executar receitas de teste abaixo. Correção local do ioctl compilada, não instalada nem validada no aparelho; cliente novo rejeita driver antigo e trata status não zero conservadoramente (alguns comandos podem retornar valores positivos legítimos). Nenhuma partição foi escrita.
+
 # Digital FPC — investigação somente leitura, 26/10/2026
 
 ## Investigação encerrada a pedido do usuário — retomada do protocolo
@@ -202,3 +204,299 @@ os arquivos. Capturas originais continuam em `work/android-dump-20261025/`.
 A skill REA já consultada nesta conversa orientou separar observação e
 inferência; não havia REA conectado. Ferramentas usadas: Python para ELF/DAL
 e llvm-objdump local para disassembly, sem execução do código alvo.
+
+## 29/10/2026 — Retomada: armazenamento seguro, RPMB e acesso aos arquivos
+
+CORREÇÃO posterior: a ausência de imports diretos de storage no fpctzapp NÃO
+prova que Keymaster, Gatekeeper ou outros serviços seguros não usam RPMB ou
+listeners. Arquivo de banco do host também pode residir em partição persistente.
+Os trechos categóricos da seção histórica abaixo não provam a localização do
+contador Gatekeeper; ver `work/fingerprint-20261029/keymaster-lookup/NOTAS.md`.
+
+Investigação somente local (o aparelho NÃO estava conectado: sem fastboot,
+sem adb, sem `/dev/cu.usbmodem*`). Nada foi executado no telefone.
+
+### 1. O TA NÃO usa RPMB/ssd: o "banco de templates" é um blob do host
+
+Símbolos dinâmicos do TA (`fpctzapp-reconstructed.elf`, 1939 entradas): só 21
+imports `qsee_*` — `spi_open/close/write/full_duplex`, `malloc/free/realloc`,
+`register/deregister_shared_buffer`, `prepare_shared_buf_for_(no)secure_read`,
+`prng_getdata`, `hmac`, `fts_encrypt/decrypt/integrity_protect/integrity_verify`,
+`log`, `get_uptime`, `decapsulate_inter_app_message`.
+NÃO existe nenhum `qsee_storage_*`, `qsee_ssd_*`, nem registro de listener.
+
+Prova do desenho "blob do host": o TA tem o módulo `fpc_ta_db_blob_module` e o
+ símbolo `FpcBioTemplateSave/Load`, `ctl_storage_buffer_save/load`;
+quem grava o DB é o HAL, em arquivos comuns:
+`/data/fpc_tpl/`, `user.db`, `/data/fpc/test.db`,
+`/data/fpc/calibration_sense_touch.dat`, `/data/vendor/.fps/{ta_ver,tac_ver,ic_ver}`.
+O utilitário de fábrica confirma a mesma API:
+`fpc_write_db_blob_to_file` / `fpc_read_db_blob_from_file` /
+`fpc_tee_store_template_db_host` (presentes em `vendor/bin/fpc_tee_test`).
+Logo: persistência de template = arquivo do lado Linux, cifrado/autenticado
+pelo TA com `qsee_fts_*` (chaves dentro do TEE). Não passa por partição.
+
+### 2. Os listeners de armazenamento do Android existem, mas são de outros serviços
+
+`vendor/lib64/libssd.so` importa `QSEECom_register_listener/_receive_req/
+_send_resp` e abre `/dev/block/platform/msm_sdcc.1/by-name/ssd`
+("ssd_write writing to ssd partition error!"). `vendor/bin/qseecomd` linka
+`libssd.so`, `libdrmfs.so`, `libspl.so` e tem as strings
+`rpmb_init_service`, `gpfs_start`, `gpfs_close`, `spl_stop`, `atime_start`,
+"output protection service listener" e
+"ERROR: RPMB_INIT failed, shall not start listener services".
+
+Ou seja: quem escreveria em partição para o TEE é o qseecomd, via `ssd`.
+Medição local: a partição `ssd` desta unidade tem 8192 bytes e está
+INTEIRAMENTE ZERADA (`partitions/ssd.img`, 8192 bytes, todos 0x00) — não é
+onde ficam templates. Consequência para nós: nenhum desses listeners é
+necessário para o fluxo FPC, e ativá-los significaria escrita em partição,
+o que continua PROIBIDO.
+
+### 3. Acesso aos arquivos a partir do Kali
+
+| Arquivo | Origem | Situação |
+| --- | --- | --- |
+| `fpctzapp.mdt` + `.b00..b07` | partição **modem_a** (`/vendor/firmware_mnt`) | já montada RO em `/mnt/ro/modem_a` pelo `hanoip-firmware.sh` |
+| `libQSEEComAPI.so`, `fpc_tee_test`, `fpc_ident`, HAL | `/vendor` (volume lógico no `super`) | cópia local no dump; no telefone exigiria montar `super` |
+
+Hashes dos blobs do TA conferidos entre o tar do `/vendor` e o pacote antigo
+(`work/fingerprint-20261026/android-artifacts/`), idênticos:
+`fpctzapp.mdt ad676d9d5e69f5a98d713debb5e6c886db37e84ecc6b5a803ea53281c6b4b9a1`,
+`b00 90e27045b3ffdf3d013704c3c6aed09b01d0bcbc701188b06038a4f3d1cf67df`,
+`b07 73f04408c52296983b976d08c9f72b6507d7e9159d3db319bcb107a30cb92edd`.
+O TA portanto é legível do Linux hoje, sem tocar em super/userdata.
+
+### 4. `fpc_tee_test` é o ativo mais valioso (e o mais perto de um driver)
+
+`vendor/bin/fpc_tee_test`: 55168 bytes, AArch64, bionic, com a camada TAC
+COMPLETA embutida (`fpc_tac_open/alloc_shared/transfer/release`,
+`fpc_tee_capture_image`, `fpc_tee_sensortest_*`, `fpc_irq_wait`,
+`fpc_tee_begin_enrol/identify`, `fpc_tee_store_template_db_host`) e opções:
+`-s sensor_test`, `-b checkerboard`, `-q imagequality`, `-p resetpixel`,
+`-u capture_uncalibrated`, `-C afd_calibration`, `-D defective_pixels`,
+`-E enroll_no_sensor`, `-A authentication_no_sensor`.
+Ele lê/escreve o DB em arquivo. `vendor/bin/hw/fpc_ident` usa a mesma TAC e
+identifica o silício pelo OTP (`FPSIdent.FPC`).
+
+### 5. O que o kernel mainline já tem e o que falta (medido no fonte 7.3)
+
+Já existe: `CONFIG_QCOM_SCM=y`, `CONFIG_QCOM_TZMEM=y` (modo SHMBRIDGE),
+`CONFIG_QCOM_QSEECOM=y` (só cria cliente para `qcom.tz.uefisecapp`),
+`qcom_scm_qseecom_app_get_id()` e `qcom_scm_qseecom_app_send()`, e
+`qcom_tzmem`.
+Falta: o **app start** — o driver GPL do aparelho usa
+`QSEOS_APP_START_COMMAND` → `TZ_OS_APP_START_ID` em `SCM_SVC_TZSCHEDULER`
+(`hal-protocol/motorola-source/qseecom.c:549`), caminho que o mainline não
+expõe; e o alocador de memória TZ a partir do carveout (o config atual usa
+SHMBRIDGE, que é de notebook; Android usa `qseecom_ta_region` de 16 MB).
+
+DT Android (extraído do DTB de `vendor_boot_a.img`, página 0x2000):
+`/soc/qseecom@86d00000` reg `0x86d00000`+`0x2200000`, `memory-region` →
+`qseecom_region@9e400000` (0x1400000, `shared-dma-pool`),
+`qcom,qsee-reentrancy-support = 2`, `qcom,disk-encrypt-pipe-pair = 2`.
+Reservas: `qseecom_ta_region` size `0x1000000`, `qseecom_region@9e400000`
+0x1400000. O `sm7150.dtsi` mainline só tem `qseecom_mem@9e400000` (`no-map`,
+sem compatible).
+Pinos FPC (inalterado): IRQ GPIO90 (pull-down), reset GPIO4, enable GPIO29;
+`GPIO91` é a definição genérica `fpc_reset_int` do base DT, NÃO usada.
+
+### 6. Conclusão desta etapa
+
+O leitor depende de TEE, não de RPMB nem de partição: o caminho é
+(1) ligar energia/reset do sensor por gpiolib, (2) carregar `fpctzapp` no TEE
+pelo caminho app-start do SCM, (3) falar o protocolo TAC (64 B req/resp +
+buffer externo, primeiro word = tamanho) e (4) persistir o DB como arquivo
+cifrado. O SPI é feito DENTRO do TEE (`qsee_spi_*`), então o controlador SPI1
+do AP NÃO deve ser habilitado.
+
+Primeiro passo seguro e read-only: `get_build_info` (módulo 12, comando 1).
+Nada disso foi executado; depende de autorização explícita para interagir com
+o TEE, que até hoje só foi analisado estaticamente.
+
+## 29/10/2026 — Protocolo do TA decodificado (transporte + módulo do sensor)
+
+Trabalho estático, offline; nada executado no alvo. Documento novo:
+`docs/kernel/PROTOCOLO-FPC-TA-20261029.md`; mapa legível por máquina em
+`work/fingerprint-20261026/protocol/fpc-protocol.json`; desassemblagem em
+`protocol/disasm/` e `protocol/hal/`; leitor ELF próprio em
+`protocol/taread.py` (com `thumb_bl_scan` para achar chamadores).
+
+### Transporte (fechado)
+
+`QSEECom_start_app("fpctzapp", 128)`; controle de 128 B = 64 B de pedido +
+64 B de resposta. `control[0]` = tamanho da região externa; `control[4]` =
+endereço físico da região externa, PATCHED pelo kernel via
+`QSEECom_ion_fd_info{fd, cmd_id=4}` (HAL 0x22e10/0x22e40/0x22e4c). A região
+externa é ION (alinhamento 4096, flag 0x08000000) mapeada RW
+(HAL 0x22c94–0x22d08). O TA copia a região para buffer interno, despacha e
+copia de volta (TA 0x3908 → `fpc_ta_route_command` em 0x1a8). Status = primeiro
+word da resposta de 64 B; **-14 = ocupado** (retry 10 ms, depois 20 ms e -13).
+`fpc_tee_init` aloca a região externa de **5264 B** (HAL 0x1df9c).
+
+### Módulos do TA
+
+Tabela em 0x116000 (8 ponteiros; struct: +0x4 despacho, +0x8 handler, +0xc id).
+ids: 12 common, 11 bio, 10 sensor, 9 kpi, 8 nav, 5 sensortest, 4 db_blob,
+3 hw_auth. **Módulo 6 NÃO existe** — e o HAL usa 6 para imagem crua
+(`fpc_tee_debug_retrieve` {6,1}, `get_raw_size` {6,4}) e para
+`fpc_tee_get_sensor_info` {6,2} (HAL 0x1e620, 0x1e690, 0x1e7f0). Portanto esses
+três caminhos do HAL estão mortos neste aparelho; a imagem crua tem de vir do
+módulo 5 (sensortest).
+
+Índice útil: 40 pares {module,cmd} em `.rodata` 0xe090..0xe1e8 do HAL, um por
+função que envia comando (cada uma faz `ldr d0,[x8,#imm]` e grava 8 B no frame).
+
+### Módulo 12 (common), frame mínimo 0x418
+
+cmd 1 = get_build_info: entra limite em +0x14 (máx 0x400), sai +0x08=6,
++0x0c=0, +0x10=5, +0x14=strlen+1, string JSON em +0x18 (TA 0x328–0x3aa).
+
+### Módulo 10 (sensor), frame mínimo 0x70
+
+Antes do despacho: `fpc_sensor_communication_start` (0x11209). Despacho por
+`tbb` em 0xcf2 (tabela 0xcf6 = 42 06 63 5d cb 69 e6 d1 5b d9).
+
+| cmd | efeito (função provada por chamada direta) |
+| --- | --- |
+| 0 | `fpc_sensor_check_finger_lost`; devolve 1/2; 3 dispara dead-pixel update se +0xc != 0 |
+| 1 | `fpc_device_open` + `fpc_ta_common_init` + `fpc_device_init(flags=+8)` + `fpc_device_get_sensor_unique_id` → id em +0x10 |
+| 2 | `fpc_sensor_wakeup_setup` |
+| 3 | `fpc_sensor_finger_lost_wakeup_setup` |
+| 4 | `fpc_sensor_deep_sleep` |
+| 5 | captura: `capture_details_init`, flags em +8, limite em +0x14, laço de detecção, status da captura em +0x10; imagem NÃO vem no frame |
+| 6 | não implementado (retorna o erro base 0xE8A1017B) |
+| 7 | `fpc_otp_get_sensor_info(dev, +0x8)` |
+| 8 | no-op com sucesso |
+| 9 | retorna 0xE8F10125 (não suportado) |
+| 10 | entrada inválida na tabela (byte 0x00). Nunca enviar |
+
+Sequência de captura do HAL (0x216c0): setup (+0x8 flags, +0xc=0, +0x14 limite),
+wakeup da IRQ se flags!=0, cmd 1, cmd 2, cmd 3, `fpc_irq_wait(1)`, cmd 4 (lê
++0x10 → ctx+0x48), cmd 5; até 4 ciclos enquanto status==1. Sender dedicado em
+0x21478 grava {10,cmd} e aplica a política de -14.
+
+
+### 29/10 (cont.) — módulos 3, 4, 5 e 11 e correção do frame
+
+Notas detalhadas (instrução por instrução): `protocol/notes/mod5_sensortest.md`,
+`protocol/notes/mod3_4_11.md` (+ JSONs). Ferramentas novas:
+`protocol/tools/ann.py` (desmonta faixa e anota chamadas) e
+`protocol/tools/scan_frames.py` (lista os frames que o HAL monta por função).
+
+CORREÇÃO do frame: NÃO existe layout único depois de +0x04. Medido:
+ (a) módulos 3, 4, 5, 11 → `+0x08` = tamanho/valor (in e out) e payload em
+     `+0x0c`; o "limite" é o argumento buflen do handler, não campo do frame
+     (roteador 0x214/0x21a/0x21e; módulo 4 em 0x414a);
+ (b) módulo 12 → limite em `+0x14`, payload em `+0x18`;
+ (c) módulo 10 → `+8` flags, `+0xc` modo, `+0x10` saída, `+0x14` limite.
+Mínimos de buffer: 3→0x10, 4→0x70, 5→0x34, 10→0x70, 11→0x70, 12→0x418.
+
+Módulo 5 (sensortest, 0x4324): cmds 0..6, tabela 0x436e
+(`04 09 0e 13 27 4d 48`); cmd 4 = run_test (tipo em +8, 28 B em +0xc..+0x27,
+saída +0x28 resultado, +0x2c status, +0x30 tamanho do log); cmd 6 =
+capture_uncalibrated; cmd 7 (get_log) NÃO é despachado — e `fpc_test_get_log`
+não tem chamador no TA, então o log só é obtível em tamanho. O HAL reescreve
+`test id 1 → 7` (0x20044): `-b/checkerboard` executa
+`fpc_test_defective_pixels_test` e o tipo 1 do TA fica inalcançável.
+
+SEM PIXELS CRUS: o módulo 5 captura para o contexto interno
+(`fpc_sensor_driver_capture_image(driver, 0x10, 0, ctx, 0)`), o módulo 6
+(retrieve) não existe e o get_log também não. Verificação é interna ao TA.
+
+Módulo 3 (hw_auth, 0x3da4): cmds 1..6; token de 0x45 B (versão 0, challenge,
+secure_user_id, database_id, BE(2), BE64(S+0xa8), HMAC-SHA256 de 37 bytes com
+chave em ctx+0x65); janela de ~10 min; só valida se o challenge do cmd 1 for
+igual ao sorteado no cmd 2; cmd 5 = unwrap de chave a partir de blob do
+**keymaster64** (strncmp conferido); cmd 6 não implementado.
+
+Módulo 4 (db_blob, 0x4048): cmds 6/14/15/16/17 sobre estado global em 0x1160ac
+(-1 ocioso / 0 leitura / 1 escrita). Blob = {u32 tamanho plano, cabeçalho 0x34,
+ciphertext}, overhead 52 B, teto 0x1b5800 (1,79 MB) = tamanho dos dois buffers
+do módulo 11. cmd 16/17 devolvem "restantes" como retorno da função. Cifra roda
+no TEE (veneers): para o host o blob é opaco → guardar em arquivo comum.
+Fluxo store/load do HAL documentado (inclui remover o arquivo se o TA recusar).
+
+Módulo 11 (bio, 0x420): cmds 0..11 (`tbh` em 0x476; cmd>11 rejeitado, então
+get_identify_statistics do HAL sempre falha); begin_enrol(1)/enrol(2, sai
+amostras restantes)/end_enrol(3, sai id32)/identify(4, sai id32 + coverage +
+quality)/update_template(5)/load_empty_db(7)/get_finger_ids(8)/delete_template(9)
+/set_gid(10)/get_template_db_id(11). Máximo de templates = 5.
+
+PONTO ABERTO QUE DECIDE O ESFORÇO: se `enrol` exigir token (módulo 3), a chave
+vem do keymaster64 (outro TA) — e aí a pergunta de armazenamento seguro volta
+(chave mestra do KM no TEE/RPMB). Nada foi executado; só um teste controlado
+responde.
+
+## 29/10/2026 — Etapas A e B: código escrito e compilado (nada executado no aparelho)
+
+Pasta: `work/fingerprint-20261029/` (LEIA-ME.txt = índice e checklist de revisão).
+
+KERNEL (sobre a árvore v6, via `kernel/apply.py`, idempotente):
+- `qcom_scm_qseecom_app_start(image_phys, mdt_len, img_len)`: owner QSEE_OS(50),
+  svc APP_MGR(1), cmd 1, 3 args VAL — confirmado contra
+  include/soc/qcom/qseecomi.h (SMC_ID = owner<<24 | svc<<8 | fn);
+- `qcom_scm_qseecom_app_shutdown(app_id)`: cmd 2;
+- `qcom_scm_qseecom_app_send_phys(...)`: mesmo call do app_send do mainline
+  (args app_id, req, req_len, rsp, rsp_len; tipos VAL,BUF_RW,VAL,BUF_RW,VAL),
+  mas com endereços físicos e devolvendo o retorno do TA (res.result), porque o
+  protocolo usa esse valor como contagem/erro privado;
+- driver `qcom_qseecom_fpc` (misc `/dev/qseecom-fpc`, ioctls LOAD_APP/SEND/
+  UNLOAD_APP/INFO), buffers `dma_alloc_coherent` (controle 128 B + frame 2 MiB),
+  controle montado como ctrl[0]=frame_len e ctrl[4]=frame_phys (o "patch do
+  offset 4" do QSECom legado); sem DT, sem listeners, sem RPMI/ssd/keymaster.
+- Build verificado: Image 34 MB / Image.gz 12,6 MB, vermagic 7.3.0-sm7150 SEM
+  "+" (armadilha da árvore suja: o build commita o patch local antes de compilar),
+  `qcom_qseecom_fpc.ko` 88 KB. Diff: 562 linhas em 6 arquivos
+  (`kernel/patches-gerados/0195-*.patch`).
+
+USERSPACE `userspace/fpc-tac.c` (aarch64, -Wall -Wextra limpo):
+- carrega o TA de modem_a/image na ordem [b00..bNN][.mdt];
+- GPIO via gpiolib uAPI v2: 29 enable, 4 reset (pulso 4 ms/12 ms), 90 IRQ com
+  borda de descida;
+- comandos: info, build-info (12/1), otp (10/7), sensor-init (10/1),
+  capture (10/2→3→IRQ→4→5), identify (11/4), enroll (11/0→1→(captura+2)×N→3),
+  db-store/db-load (4/6,14,15,16,17), selftest (5/0..2).
+
+NÃO testado (exige aparelho + autorização): aceitação do app_start pelo TEE;
+uso de dma_alloc_coherent no lugar do carveout qseecom_ta_region; qualquer
+comando do TA; necessidade de token/keymaster para enrol.
+
+## 29/10/2026 (noite) — TESTE NO APARELHO: O TA RODA NO LINUX
+
+Detalhes e receita: `work/fingerprint-20261029/RESULTADO-20261029.md`.
+Boot volátil, kernel novo (`Image.gz` 11b79bd3...), módulo `e48a65e3...`,
+tool `c0f4e0ad...`. Nada foi gravado em partição.
+
+CONSEGUIDO (medido no aparelho):
+- app_start aceito pelo TEE; build info REAL devolvido:
+  {"buildid_md5":"31193ede7fff401e933be6749c3b1bc1","host":"sheldon-VirtualBox",
+  "date":"2021-02-24T11:36:48","FPC_BUILD_TYPE":"debug","ENGINEERING":true,...}
+  com +8=6, +0xc=0, +0x10=5, len=787 — exatamente o previsto pelo RE;
+- GPIO29/4/90 por gpiolib funcionando; a IRQ do sensor dispara ao toque;
+- captura: status 1002 (0x3EA) sem dedo e 0 com dedo;
+- identify (módulo 11 cmd 4) roda e responde "não reconhecido" (banco vazio);
+- enroll roda a sequência toda mas o template NÃO é aceito (identify seguinte
+  não casa) — falta tratar o status por amostra do módulo 11.
+
+OS QUATRO SEGREDOS (custo alto, registrados para não repetir):
+1. a região compartilhada TEM de estar no carveout qseecom@9e400000 (20 MiB,
+   NOMAP): memória normal → SCM -EINVAL; CMA → TA falha em registrar (0xE850002A,
+   montado em TA 0x38b8);
+2. é obrigatória a variante *with whitelist* do send: owner TZ_APPS(48), svc 0,
+   fn 6, 7 args, sglist {0x80000004, tamanho} (bit31=1 endereço, bit30=0 32 bits,
+   offset 4 no controle);
+3. controle = {u32 tamanho da região ALINHADO A PÁGINA, u32 phys}; o bug que
+   custou horas foi calcular region_len DEPOIS de escrever o controle (tamanho 0);
+4. cada invocação precisa de endereço de região DIFERENTE (o TEE recusa reuso) →
+   o driver rotaciona 8 slots de 1 MiB.
+
+ARMADILHAS DE SEGURANÇA:
+- mapa WB sobre o carveout compartilhado TRAVA o aparelho; usar MEMREMAP_WC +
+  memcpy_toio/fromio com bounce buffer;
+- imagem do TA tem de vir de memória normal (dma_alloc_coherent); do carveout o
+  load é recusado;
+- a notificação de região (fn 5) é recusada (-22, ABL já configurou); forçá-la
+  para 0x86d00000 TRAVOU o aparelho (é memória viva do kernel) — não repetir;
+- módulo 10 cmd 0 = init do dispositivo; sem ele cmd 1..4 estouram o TA e o TEE
+  mata o app (todas as chamadas seguintes falham).
