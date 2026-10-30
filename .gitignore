@@ -98,3 +98,23 @@ work/fingerprint-20261029/Image.gz
 work/kernel-7.3/v7/out/
 work/kernel-7.3/v7/build.log
 work/**/Image.gz.*
+
+# --- Exclusoes para o push de 30/10 (artefatos derivados e enormes) ---
+# Imagens de rootfs/userdata: reproduziveis, tem hashes nos LEIA-ME.
+work/nethunter-pro-20261026/artifacts/*.simg
+work/nethunter-pro-20261026/artifacts/*.img
+work/kali-20261027-snapshot/*.tar.zst
+work/rootfs-kali/blobs/*.tar.zst
+# Ramdisks e cpio extraidos de imagens do aparelho (derivados).
+work/display-120hz-20261030/*.cpio
+work/display-120hz-20261030/*.cpio.zst
+work/display-120hz-20261030/*ramdisk
+# Arvore de fontes do U-Boot (332 MB); os .dts do hanoip entram a mao.
+uboot-sm7150/
+# Saidas de build dos kernels.
+work/kernel-7.3/v*/out/
+# Credencial local do Kali: NUNCA commitar (AGENTS.md).
+work/nethunter-pro-20261026/serial-login.py
+# O snapshot de 120 Hz precisa da imagem testada e do U-Boot no git.
+!work/PRE-GOLD-20261030-1730-120HZ/kernel/*.img
+!work/PRE-GOLD-20261030-1730-120HZ/uboot/*.img

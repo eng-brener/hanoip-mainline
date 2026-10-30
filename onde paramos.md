@@ -1,5 +1,209 @@
 # Handoff — Moto G60 hanoip mainline
 
+## >>> 120 Hz — ONDE PARAMOS (30/10/2026 17:30)
+
+**Snapshot:** `work/PRE-GOLD-20261030-1730-120HZ/` (somente leitura, com
+PRE-GOLD.txt e SHA256SUMS). Status: 120 Hz **validado em troca de modo**,
+experimental, NÃO promovido a par de uso diário. O par de retorno continua
+PRE-GOLD-20261030-1430.
+
+Imagem testada: `kernel/kernel-listener7-dsifix-120hz.img`. Kernel e DTB são
+byte-idênticos ao listener7; só o ramdisk muda, injetando antes do switch_root
+o `msm.ko` corrigido e o módulo de painel com 119,976 Hz. Nada foi gravado em
+partição; o módulo do rootfs continua o original.
+
+Boot volátil: `fastboot boot uboot/u-boot-...-cam-tres.img` e depois a imagem
+do kernel. Trocar taxa com `--custom-mode 1080x2460@119.976Hz`; `--mode` não
+aplica. **Voltar a 60 Hz antes de encerrar a sessão**, porque o Phoc salva o
+último modo e o reaplica no próximo login.
+
+Validado: 6 trocas seguidas 120↔60 com rc=0, modo confirmado no Phoc e no DRM,
+6 ciclos LCDB com VREG_OK, 6 recargas de touch **sem falhas e sem f9**, DSI
+`irqs=0`, 119,976 FPS de aplicação, imagem e toque confirmados pelo usuário,
+41,9–45,4 °C. Prova de que o msm corrigido rodou: Build ID
+73daad11ed466f94ad82ea2547e3dbe24806210e (o original é 62e041c5...).
+
+Pendente: apagar/acender pelo compositor derruba a sessão (timeouts e EBUSY
+aparecem também com o msm original e também numa sessão iniciada em 60 Hz;
+falta A/B, não atribuir às correções); login com 119,976 Hz salvo deu tela
+preta com `Timeout (3000ms)`; suspender/retomar, uso prolongado, térmica
+sustentada e medição óptica independente não testados. Detalhes completos em
+`docs/LEIA-ME.md`, `docs/CORRECOES-VALIDADAS.md` e
+`docs/OUTROS-CANDIDATOS-CORRECAO.md` dentro do snapshot.
+
+Correções de código no msm: validação de lane e de slice DSC, propagação de
+erro de DSC e de runtime PM/clock, liberação de PM em falha, modo novo antes
+de liberar o antigo, preparação de comando com verificação de erros e
+liberação do último modo no destroy. Compilado com -Werror, checkpatch limpo.
+
+## >>> SUSPEND / TRAVAMENTO — ONDE PARAMOS (30/10/2026 17:40)
+
+**Duas coisas diferentes, não confundir.**
+
+1) Suspend automático após 15 min de ociosidade. Configuração vigente:
+`gsd-power sleep-inactive-battery-type='suspend'` com timeout 900 s; a tela
+apaga antes (`idle-delay=300`). No boot das 16:33 (journal -1), às 17:06:18 o
+`systemd-sleep` executou `sleep operation 'suspend'`, o kernel registrou
+`PM: suspend entry (s2idle)` e o journal TERMINOU ali, sem `suspend exit` nem
+`resume`; o boot seguinte só começou 3 min depois. `/sys/power/mem_sleep` tem
+apenas `s2idle` (sem `deep`). Isso explica o relato de "apagou por muito tempo
+e precisei apertar o power várias vezes e esperar 30–40 s": foi reboot
+forçado, não resume.
+
+**Correção de uma conclusão minha anterior:** NÃO é verdade que s2idle sempre
+trava. Em 28/10 o suspend funcionou por 31 s, com ADSP/remoteproc parado por
+hook (`/usr/lib/systemd/system-sleep/hanoip-adsp`), voltando com ADSP running
+e usb0 restaurado (ver item 16 mais abaixo e
+`work/cpu-20261028/SUSPEND-RTC-BOOT.md`). Portanto a hipótese correta é:
+sem esse hook (ou se ele não rodar), o suspend trava. **Não verificado** se o
+hook está instalado neste rootfs nem se rodou em 17:06:18 — a checagem foi
+interrompida.
+
+2) Travamento às ~17:31–17:32, com o aparelho ligado. Aqui `suspend_stats`
+estava `success=0`, ou seja, **não houve suspend**. O que se observou:
+ping em 172.16.42.1 respondia, mas o SSH oscilava entre "banner exchange
+timed out" e conectar; quando conectou, load average 9,4–9,5 (8 CPUs) e a
+sessão ficou inutilizável. No dmesg havia mais de 1775 linhas
+`spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046`, desde ~71 s de
+boot. Hipótese principal, NÃO comprovada: algum driver/serviço em laço
+tentando escrever nesse registrador SPMI e saturando CPU. O dono dessas
+escritas não foi identificado — a busca no código foi interrompida.
+
+**Relato do usuário (informação nova e importante): o travamento aconteceu
+logo depois de abrir o Firefox.** Isso reposiciona os suspeitos: Firefox
+carrega GPU e memória de forma pesada, e o projeto já registrou GPU a 800 MHz
+e 55 °C com WebGL (`docs/kernel/LEVANTAMENTO-GPU.md`), além de uma
+investigação aberta de travamento de GPU no Waydroid
+(`work/waydroid-20261030/hang-gpu-20261030/`). Hipóteses a testar, todas NÃO
+comprovadas: (a) hang do GPU/msm com laço de recuperação; (b) pressão de
+memória com swap em zram (1,8 GB) causando thrash — compatível com load 9,5 e
+com o SSH respondendo devagar antes de parar; (c) compositor preso em commits
+que não completam. O laço de SPMI em `sid=0/0x6046` pode ser ruído de fundo
+não relacionado, e não foi provado como causa.
+
+Pendências imediatas
+--------------------
+- **Reproduzir abrindo o Firefox** já foi a pista do usuário para o segundo
+  travamento. Antes disso, preparar coleta: `dmesg -w` para GPU/hangcheck,
+  `/proc/meminfo` e `zram` a cada 5 s, `ps` por CPU, e o log do phoc. Sem
+  abrir Firefox sozinho em teste longo; primeiro montar o roteiro.
+- Decidir se o laço SPMI `sid=0/0x6046` é causa ou ruído: ele acontece desde
+  ~71 s de boot, muito antes do Firefox, o que enfraquece a ligação causal.
+- Identificar quem escreve em sid=0/0x6046 e por que é bloqueado.
+- Verificar se `/usr/lib/systemd/system-sleep/hanoip-adsp` existe e se rodou
+  às 17:06:18; se faltar, reinstalar conforme `work/cpu-20261028/`.
+- Mitigação opcional e reversível, **NÃO aplicada** (precisa autorização, é
+  escrita em dconf): `gsettings set
+  org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'nothing'`
+  — mantém o apagamento de tela e evita a tentativa de suspender.
+- Nada disso está ligado ao modo de 119,976 Hz nem às correções DSI: os dois
+  travamentos ocorreram com a tela em 60 Hz e sem suspend completar.
+
+Nada foi alterado no aparelho nesta investigação. Detalhes:
+`docs/kernel/checkpoint-2026-10-30-suspend.txt` e
+`work/display-120hz-20261030/NOTA-SUSPEND.md`.
+
+## >>> WAYDROID — ONDE PARAMOS (30/10/2026 15:45)
+
+**Correção importante:** os diagnósticos e propostas de GPU nas seções abaixo
+contêm hipóteses não demonstradas, não uma correção comprovada. Ver aviso em
+`work/waydroid-20261030/hang-gpu-20261030/PROPOSTA-CORRECAO-GPU.md`.
+Variável llvmpipe no ambiente não prova renderização em software. Não forçar
+fences nem assumir que o reset ou a causa do watchdog estejam demonstrados.
+
+### Concluído
+- `waydroid init -s GAPPS` TERMINOU (log /root/waydroid-init.log). Imagens em
+  /var/lib/waydroid/images: system.img 2 907 893 760 B (LineageOS 20 GAPPS
+  arm64 20260927) e vendor.img 421 629 952 B (vendor MAINLINE 20261022).
+  `waydroid-container.service` está habilitado.
+- O kernel #64 serve: binder/binderfs, veth/bridge/nft NAT, PSI, memfd. O
+  container sobe, o Android 13 chega a `sys.boot_completed=1`, IP
+  192.168.240.112, GMS/Play presentes.
+- Clipboard: pyclip mínimo (wl-copy/wl-paste) instalado; copy/paste testado
+  no lado Kali (funciona). Fonte em work/waydroid-20261030/overlay/.
+
+### O que QUEBROU
+1. 15:10:09 — **phosh morreu com SIGSEGV** no instante em que o hwcomposer do
+   Waydroid apresentou o primeiro frame. A sessão reiniciou sozinha e o bind
+   de /run/xdg/wayland-0 dentro do container ficou apontando para o socket
+   morto do phoc antigo → "Couldn't open Wayland display" em loop. Só
+   `waydroid session stop` + `systemctl restart waydroid-container` +
+   `waydroid show-full-ui` resolve (o bind é refeito no início da sessão).
+2. 15:16:48 — **GPU travou de vez, tela congelada**:
+   - 15:16:32 `arm-smmu 15000000.iommu: Unhandled context fault`, SID 0xc40
+     (casa com display-subsystem: `iommus = <&apps_smmu 0x800 0x440>`), IOVA
+     0x400;
+   - 15:16:48 `gpu fault iova=0xe040080980 dir=WRITE type=TRANSLATION
+     source=CP` (endereço de 40 bits, inválido no MMU de 36 bits); hangcheck
+     do ring 0; task culpada **RenderThread (com.android.launcher3)**;
+   - 15:16:50 `a6xx_sptprac_disable: failed to power off SPTPRAC: 0x28` →
+     `GMU watchdog expired` em loop (1,6 M de IRQs) e a GPU não volta mais;
+   - phoc fica preso em `dma_fence_default_wait` = tela congelada. Matar o
+     Android não libera. Só reiniciar.
+   Evidência/análise: work/waydroid-20261030/hang-gpu-20261030/
+   (DIAGNOSTICO.md, klog-hang.log, journal-hang.txt, dmesg-ring.txt) e telas
+   em work/waydroid-20261030/shots/.
+   ANÁLISE DO CÓDIGO DO DRIVER e proposta de correção (30/10, nada
+   implementado): work/waydroid-20261030/hang-gpu-20261030/
+   PROPOSTA-CORRECAO-GPU.md — o driver TENTA recuperar (a6xx_gmu_fault →
+   recover_worker → a6xx_recover → a6xx_gmu_stop → force_off), mas falha no
+   sptprac_disable, o pm_runtime reabilita as IRQs e rearma o hangcheck
+   (msm_gpu.c:825) → loop de watchdog; e as fences só avançam quando a GPU
+   escreve no memptrs, então todo mundo que espera GPU fica preso. Proposta
+   camada 1 (fail-safe: matar o storm com disable_irq_nosync, marcar GMU
+   morta, drenar as fences, banner único) e camada 2 (reset real de GMU,
+   experimento). Repro sugerida: programa de userspace com IB contendo
+   CP_MEM_WRITE para IOVA inválido. Nota: o kernel 7.3 tem UAPI de VM_BIND
+   (que declara não recuperar de GPU fault), mas a Mesa do guest NÃO tem
+   strings vm_bind para msm — não foi essa a causa.
+3. Recuperado com VOL- → fastboot → `fastboot boot` do par
+   PRE-GOLD-20261030-1430 (U-Boot cam-tres + kernel listener7). Boot limpo,
+   zero erro de GPU.
+
+### Teste em andamento: guest em software (llvmpipe)
+- SwiftShader NÃO existe na imagem (só libEGL_mesa/libEGL_angle), então
+  `ro.hardware.egl=swiftshader` não é opção. Mas o `libgallium_dri.so` do
+  guest TEM llvmpipe/swrast/zink.
+- Injeção de ambiente: o init do Android faz `clearenv()`, então
+  `lxc.environment` não passa, e `setenv` não é keyword aceita. O que
+  FUNCIONOU: wrapper no exec do zygote.
+  Criados na camada upper do overlay da RAIZ do container:
+    /var/lib/waydroid/overlay_rw/system/system/bin/hanoip-swgl64
+    /var/lib/waydroid/overlay_rw/system/system/bin/hanoip-swgl32
+      (#!/system/bin/sh; export MESA_LOADER_DRIVER_OVERRIDE=llvmpipe;
+       exec /system/bin/app_process64|32 "$@")
+    /var/lib/waydroid/overlay_rw/system/system/etc/init/hw/
+      init.zygote64_32.rc (cópia do original com o exec nos wrappers)
+  ARMADILHA: overlay_rw/system = RAIZ do container; `/etc` lá é symlink para
+  /system/etc, então criar overlay_rw/system/etc esconde o /etc real e
+  quebra o boot (zygote SIGABRT + InitFatalReboot; aconteceu 15:35, removido).
+  CONFIRMADO: todos os app_process do guest têm
+  MESA_LOADER_DRIVER_OVERRIDE=llvmpipe no environ (zygote, systemui,
+  launcher, settings...).
+  Ficaram também (inertes, para documentar/reverter): linha
+  `lxc.environment = MESA_LOADER_DRIVER_OVERRIDE=llvmpipe` em
+  /var/lib/waydroid/lxc/waydroid/config e em
+  /usr/lib/waydroid/data/configs/config_base (backup em
+  /root/backup-config_base-20261030).
+- ESTADO NO CORTE (15:45): sessão e container RUNNING, Android com
+  boot_completed=1, phoc vivo (pid 4073), ZERO erro de GPU. A captura do grim
+  às 15:43 saiu PRETA (shots/swgl-llvmpipe-1.png), mas isso foi só a TELA
+  APAGADA por inatividade: `card0-DSI-1/dpms = Off` e `LCDB disabled` no
+  dmesg. Ou seja, ainda NÃO se sabe se o guest em software desenha — precisa
+  acordar a tela e olhar. As threads do launcher também ainda não mostram
+  worker de llvmpipe (pode ser só por falta de frame novo).
+- Reverter o teste: apagar /var/lib/waydroid/overlay_rw/system/system/
+  inteiro, tirar a linha lxc.environment dos dois arquivos e reiniciar a
+  sessão (session stop + systemctl restart waydroid-container + show-full-ui).
+
+### Próximo passo
+1. Decidir entre insistir no software (desempenho ruim em 1080x2460) ou
+   corrigir o kernel: resetar a GMU quando o SPTPRAC não desliga (hoje só
+   entra em flood) — é isso que impede a recuperação do fault.
+2. Não abrir o Waydroid com GPU antes disso: cada fault custa reinício manual
+   (VOL- + fastboot boot do PRE-GOLD).
+3. Nada disto foi comitado.
+
 ## >>> RETOMAR AQUI — ESTADO ATUAL (30/10/2026, fim da tarde)
 
 ### A PRE-GOLD ATUAL É: `work/PRE-GOLD-20261030-1430/`
@@ -18,6 +222,52 @@
     Bases anteriores (preservadas, não usar como padrão):
       PRE-GOLD-20261029-1534 (áudio + câmeras), PRE-GOLD-20261028-1707,
       PRE-GOLD-20261028-1133, GOLDs de 25-26/10.
+
+### Achados de 30/10 depois da PRE-GOLD (fim da tarde)
+    - CHECK DE HARDWARE (só leitura, kernel #64): tudo com driver de pé, 0
+      erros de kernel. Proximidade NÃO aparece no boot (corrida: o
+      iio-sensor-proxy sobe antes do hanoip-ssc; "registry sensor unavailable
+      after 30s"); reiniciar o iio-sensor-proxy resolve. Correção proposta
+      (não aplicada): drop-in After=/Wants=hanoip-ssc.service.
+    - BÚSSOLA: o G60 NÃO tem magnetômetro (SensorService do Android sem mag;
+      só Game Rotation Vector; geomag fusion disabled).
+    - SAR: Semtech sx933x em i2c7@a84000 (0x28, IRQ GPIO84), barramento
+      DESLIGADO no DT; mainline não tem driver sx933x (tem sx9310/9324/9360/
+      9500). Serve para o modem baixar a potência perto do corpo; só importa
+      com SIM. Adiado.
+    - WI-FI: WCN3990/ath10k aceita o tipo monitor mas o firmware
+      WLAN.HL.3.2.2 NÃO entrega quadros (0 beacons em 1/6/11/36) -> sem
+      monitor/injeção no chip interno. AP e cliente+AP simultâneos são
+      anunciados. Kernel v7 tem ath9k_htc (AR9271) e mt76x2u (MT7612U) para
+      adaptador USB via OTG; rtl8812au/8188eus não compilam no 7.3. Nenhuma
+      ferramenta de pentest instalada.
+    - WAYDROID: kernel v7 JÁ tem binder+binderfs, memfd, PSI, COMPAT, bridge,
+      veth, nft/iptables NAT, cgroups/namespaces. Kali tem waydroid 1.6.3,
+      lxc 7, python3-gbinder. Mesa 26.1 freedreno FD618.
+    - ESPAÇO RESOLVIDO (autorizado pelo usuário 30/10): ext4 do Kali aumentado
+      online de 10 GiB para 107 GiB (resize2fs, 28301179 blocos, clean,
+      96 GiB livres). Outras partições seguiram RO; tabela de partições
+      intocada. Snapshots antigos de 10 GiB continuam restauráveis (tar).
+    - ROOTFS REPRODUTÍVEL (em andamento): work/rootfs-kali/LEIA-ME.md. O
+      script da imagem base de 26/10 não foi salvo; inventário, overlay,
+      dconf, blobs e chaves já coletados; build ainda não escrito/rodado.
+    - Link USB do Mac caiu (sem 172.16.42.x e sem fastboot); o aparelho não
+      reiniciou e responde por SSH no Wi-Fi (10.0.0.44).
+
+### WAYDROID EM ANDAMENTO (30/10 ~15:05) — RETOMAR AQUI
+    Instalado: waydroid 1.6.3, lxc 7, python3-gbinder, libgbinder1 (apt
+    --no-install-recommends, 7 pacotes; log /root/waydroid-apt.log).
+    `waydroid init -s GAPPS` rodando em segundo plano (log
+    /root/waydroid-init.log): LineageOS 20 GAPPS arm64 20260927, vendor
+    MAINLINE (Mesa). binderfs OK (/dev/binderfs/*). Rede: bridge/veth/nft
+    NAT carregam, ip_forward=1, sem apparmor.
+    Clipboard: pyclip mínimo próprio (wl-copy/wl-paste) em
+    /usr/local/lib/python3.14/dist-packages/pyclip, fonte em
+    work/waydroid-20261030/overlay/.
+    FALTA: conferir fim do init; `systemctl enable --now waydroid-container`;
+    abrir Waydroid na tela (sessão do kali); rede dentro do Android;
+    GPU (freedreno); áudio; multi_windows; pastas compartilhadas; ARM32;
+    certificar Play (android_id); sensores; anotar tudo no rootfs-kali.
 
 ### O que a PRE-GOLD-20261030-1430 entrega (medido)
     Tudo da 1534 (8 CPUs, GPU, Venus, bateria/carga, USB OTG, áudio

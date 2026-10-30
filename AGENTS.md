@@ -45,6 +45,51 @@ Consequences that must shape every change and every record:
   `fastboot boot uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img` then
   `fastboot boot kernel/kernel-hanoip-listener7.img`. Read-only.
   Never copy /var/lib/fpc-gk (device secret) off the phone.
+- EXPERIMENTAL 120 Hz SNAPSHOT (validated 2026-10-30 17:30, NOT a baseline pair):
+  work/PRE-GOLD-20261030-1730-120HZ/ = U-Boot cam-tres + listener7 kernel/DTB
+  byte-identical to PRE-GOLD-20261030-1430, but with an initramfs override that
+  loads a DSI-fixed msm.ko (build id 73daad11...) and the panel module
+  advertising 1080x2460 @ 119,976 Hz, keeping 60 Hz preferred. The rootfs is
+  untouched; the fix lives only in this volatile image. Validated: six
+  120<->60 mode switches with rc=0, 6 LCDB cycles all VREG_OK, 6 touch firmware
+  reloads with ZERO failures and ZERO f9 responses, DSI irqs=0, ~119,976 app
+  FPS, image and touch confirmed by the user, 41.9-45.4 C. Switch with
+  `wlr-randr --custom-mode 1080x2460@119.976Hz` (`--mode` does not apply it) and
+  ALWAYS return to 60 Hz before ending the session: Phoc saves the last mode
+  and reapplies it at login, and a 119,976 Hz saved state produced a black
+  screen with `Timeout (3000ms)`. NOT validated: compositor off/on (drops the
+  session; also happens with the original msm and at 60 Hz, A/B pending),
+  suspend/resume, long runs, sustained thermals, battery, optical measurement.
+  Do not treat it as the default pair; PRE-GOLD-20261030-1430 remains the
+  return pair.
+- SUSPEND AND A SEPARATE FREEZE — do not conflate (measured 2026-10-30):
+  (a) The desktop requests suspend after 15 min idle
+  (`gsd-power sleep-inactive-battery-type='suspend'`). At 17:06:18 the kernel
+  logged `PM: suspend entry (s2idle)` and the journal ENDED with no
+  `suspend exit`/`resume`; the next boot was 3 min later, so pressing power and
+  waiting 30-40 s was a forced reboot. /sys/power/mem_sleep offers only s2idle.
+  BUT suspend is not unconditionally broken: on 28/10 it worked for 31 s with
+  the ADSP/remoteproc stopped by `/usr/lib/systemd/system-sleep/hanoip-adsp`
+  (see work/cpu-20261028/SUSPEND-RTC-BOOT.md). Whether that hook is installed
+  now or ran at 17:06:18 was NOT verified.
+  (b) At ~17:31 the phone froze with `suspend_stats/success = 0`, i.e. NO
+  suspend: ping replied but SSH intermittently timed out during banner
+  exchange, and load average was 9.4-9.5 on 8 CPUs. More than 1775 lines of
+  `spmi spmi-0: disallowed SPMI write to sid=0, addr=0x6046` appeared since
+  ~71 s of boot. Leading unproven hypothesis: a write/retry loop on that SPMI
+  register saturating the CPUs; the caller was not identified.
+  Neither event is related to 120 Hz or the DSI patches (both happened at
+  60 Hz, without a completed suspend). USER REPORT: the ~17:31 freeze happened
+  right after opening Firefox, so the leading suspects are now a GPU/msm hang
+  with a recovery loop, zram swap thrash (1.8 GB), or the compositor stuck on
+  pending commits; the SPMI loop predates Firefox (~71 s of boot) and is not
+  proven causal. Do not trigger suspend while validating something else. A
+  reversible mitigation (keep screen blanking, disable only
+  the automatic suspend) needs explicit authorization and was NOT applied:
+  `gsettings set org.gnome.settings-daemon.plugins.power
+  sleep-inactive-battery-type 'nothing'`. Evidence and the open list:
+  docs/kernel/checkpoint-2026-10-30-suspend.txt,
+  work/display-120hz-20261030/NOTA-SUSPEND.md.
 - PREVIOUS BASELINE PAIR (user-designated 2026-10-29 15:34):
   work/PRE-GOLD-20261029-1534/ = U-Boot cam-tres (audio-etapa14 DT + camss
   + S5K4H7/S5KHM2/OV32B + VCMs, CCI 1 MHz) + the SAME kernel img as 1707
@@ -111,6 +156,11 @@ dr_mode="otg" + usb-role-switch for USB host.
   extents before/after, and get explicit user go before the first write.
   U-Boot and kernel stay volatile (`fastboot boot`); physical _b partitions
   stay untouched. An Android OTA would overwrite this region.
+- 2026-10-30: the user authorized growing the Kali ext4 on userdata (sdb24)
+  to the whole partition ("vamos aumentar a particao do kali"). Done online
+  with resize2fs: 10 GiB -> 107 GiB (28301179 blocks), state clean; the other
+  23 sdb partitions stayed RO, nothing written outside sdb24. The partition
+  table was not touched. Shrinking would need an offline fs; do not.
 - Volatile tests with `fastboot boot` have been authorized and used in this
   session. Keep diagnostic root filesystems in RAM, without automounting disks.
 - Keep known-good images and hashes before preparing another variant.
