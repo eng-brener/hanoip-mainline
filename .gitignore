@@ -128,3 +128,6 @@ work/uboot-builds-20261026/.cache/
 
 # Logs de build reproduzivel do kernel.
 work/kernel-7.3/v*/build-repro.log
+
+# Artefatos do build de módulos do v8 (os validados ficam no snapshot).
+work/kernel-7.3/v8-dsi/*.ko.zst

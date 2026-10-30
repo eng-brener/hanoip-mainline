@@ -1,0 +1,69 @@
+--- a/drivers/gpu/drm/panel/panel-ilitek-ili7807s.c
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili7807s.c
+@@ -27,6 +27,7 @@
+ 
+ struct panel_desc {
+ 	const struct drm_display_mode *mode;
++	const struct drm_display_mode *experimental_mode;
+ 	unsigned int lanes;
+ 	enum mipi_dsi_pixel_format format;
+ 	unsigned long mode_flags;
+@@ -209,8 +210,20 @@
+ static int ili7807s_get_modes(struct drm_panel *panel, struct drm_connector *connector)
+ {
+ 	struct ili7807s *ctx = to_ili7807s(panel);
++	struct drm_display_mode *mode;
++	int count;
+ 
+-	return drm_connector_helper_get_modes_fixed(connector, ctx->desc->mode);
++	count = drm_connector_helper_get_modes_fixed(connector, ctx->desc->mode);
++	if (count < 0 || !ctx->desc->experimental_mode)
++		return count;
++
++	mode = drm_mode_duplicate(connector->dev, ctx->desc->experimental_mode);
++	if (!mode)
++		return count;
++
++	drm_mode_set_name(mode);
++	drm_mode_probed_add(connector, mode);
++	return count + 1;
+ }
+ 
+ static const struct drm_panel_funcs ili7807s_panel_funcs = {
+@@ -293,10 +306,27 @@
+ 	.width_mm  = 69,
+ 	.height_mm = 158,
+ 	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
++};
++
++/* Candidate only: VFP from the Tianma downstream source, clock kept at 60 Hz baseline. */
++static const struct drm_display_mode tianma_hanoip_120_mode = {
++	.clock = (1080 + 28 + 4 + 24) * (2460 + 12 + 2 + 2565) * 60 / 1000,
++	.hdisplay = 1080,
++	.hsync_start = 1080 + 28,
++	.hsync_end = 1080 + 28 + 4,
++	.htotal = 1080 + 28 + 4 + 24,
++	.vdisplay = 2460,
++	.vsync_start = 2460 + 46,
++	.vsync_end = 2460 + 46 + 2,
++	.vtotal = 2460 + 46 + 2 + 12,
++	.width_mm = 69,
++	.height_mm = 158,
++	.type = DRM_MODE_TYPE_DRIVER,
+ };
+ 
+ static const struct panel_desc tianma_hanoip_desc = {
+ 	.mode       = &tianma_hanoip_mode,
++	.experimental_mode = &tianma_hanoip_120_mode,
+ 	.lanes      = 4,
+ 	.format     = MIPI_DSI_FMT_RGB888,
+ 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
+@@ -320,6 +350,8 @@
+ 
+ 	desc = of_device_get_match_data(dev);
+ 	ctx->desc = desc;
++	if (desc->experimental_mode)
++		dev_info(dev, "hanoip: experimental 120 Hz candidate enabled\n");
+ 
+ 	ret = devm_regulator_bulk_get_const(dev, ARRAY_SIZE(ili7807s_supplies),
+ 					    ili7807s_supplies, &ctx->supplies);

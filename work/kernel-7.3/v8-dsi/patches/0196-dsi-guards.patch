@@ -1,0 +1,157 @@
+diff --git a/kernel-mainline/drivers/gpu/drm/msm/dsi/dsi_host.c b/kernel-mainline/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 6c860c141..e46ea6823 100644
+--- a/kernel-mainline/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/kernel-mainline/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -429,8 +429,12 @@ int dsi_link_clk_set_rate_6g_v2_9(struct msm_dsi_host *msm_host)
+ 	ret = clk_set_parent(msm_host->byte_src_clk, msm_host->dsi_pll_byte_clk);
+-	if (ret)
++	if (ret) {
+ 		dev_err(dev, "Failed to parent byte_src -> dsi_pll_byte: %d\n", ret);
++		return ret;
++	}
+ 
+ 	ret = clk_set_parent(msm_host->pixel_src_clk, msm_host->dsi_pll_pixel_clk);
+-	if (ret)
++	if (ret) {
+ 		dev_err(dev, "Failed to parent pixel_src -> dsi_pll_pixel: %d\n", ret);
++		return ret;
++	}
+ 
+@@ -986,3 +990,3 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
+ 
+-static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
++static int dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+ {
+@@ -1025,6 +1029,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+ 		/* update dsc params with timing params */
+-		if (!dsc || !mode->hdisplay || !mode->vdisplay) {
++		if (!mode->hdisplay || !mode->vdisplay ||
++		    !dsc->slice_width || !dsc->slice_height) {
+ 			pr_err("DSI: invalid input: pic_width: %d pic_height: %d\n",
+ 			       mode->hdisplay, mode->vdisplay);
+-			return;
++			return -EINVAL;
+ 		}
+@@ -1040,3 +1045,3 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+ 		if (ret)
+-			return;
++			return ret;
+ 
+@@ -1119,2 +1124,4 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+ 	}
++
++	return 0;
+ }
+@@ -1853,2 +1860,9 @@ static int dsi_host_parse_lane_data(struct msm_dsi_host *msm_host,
+ 
++	for (i = 0; i < num_lanes; i++) {
++		if (lane_map[i] > 3) {
++			DRM_DEV_ERROR(dev, "bad physical lane entry %u\n", lane_map[i]);
++			return -EINVAL;
++		}
++	}
++
+ 	/*
+@@ -1869,6 +1883,2 @@ static int dsi_host_parse_lane_data(struct msm_dsi_host *msm_host,
+ 		for (j = 0; j < num_lanes; j++) {
+-			if (lane_map[j] < 0 || lane_map[j] > 3)
+-				DRM_DEV_ERROR(dev, "bad physical lane entry %u\n",
+-					lane_map[j]);
+-
+ 			if (swap[lane_map[j]] != j)
+@@ -2152,2 +2162,5 @@ void msm_dsi_host_destroy(struct mipi_dsi_host *host)
+ 
++	drm_mode_destroy(msm_host->dev, msm_host->mode);
++	msm_host->mode = NULL;
++
+ 	mutex_destroy(&msm_host->cmd_mutex);
+@@ -2212,2 +2225,3 @@ int msm_dsi_host_xfer_prepare(struct mipi_dsi_host *host,
+ 	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
++	int ret;
+ 
+@@ -2223,5 +2237,13 @@ int msm_dsi_host_xfer_prepare(struct mipi_dsi_host *host,
+ 	 */
+-	pm_runtime_get_sync(&msm_host->pdev->dev);
+-	cfg_hnd->ops->link_clk_set_rate(msm_host);
+-	cfg_hnd->ops->link_clk_enable(msm_host);
++	ret = pm_runtime_resume_and_get(&msm_host->pdev->dev);
++	if (ret < 0)
++		return ret;
++
++	ret = cfg_hnd->ops->link_clk_set_rate(msm_host);
++	if (ret)
++		goto put_pm;
++
++	ret = cfg_hnd->ops->link_clk_enable(msm_host);
++	if (ret)
++		goto put_pm;
+ 
+@@ -2240,2 +2262,6 @@ int msm_dsi_host_xfer_prepare(struct mipi_dsi_host *host,
+ 	return 0;
++
++put_pm:
++	pm_runtime_put(&msm_host->pdev->dev);
++	return ret;
+ }
+@@ -2543,2 +2569,6 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
+ 	}
++	if (!msm_host->mode) {
++		ret = -EINVAL;
++		goto unlock_ret;
++	}
+ 
+@@ -2558,3 +2588,6 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
+ 
+-	pm_runtime_get_sync(&msm_host->pdev->dev);
++	ret = pm_runtime_resume_and_get(&msm_host->pdev->dev);
++	if (ret < 0)
++		goto fail_disable_reg;
++
+ 	ret = cfg_hnd->ops->link_clk_set_rate(msm_host);
+@@ -2565,3 +2598,3 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
+ 		       __func__, ret);
+-		goto fail_disable_reg;
++		goto fail_put_pm;
+ 	}
+@@ -2583,3 +2616,8 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
+ 		dsi_op_mode_config(msm_host, false, false);
+-	dsi_timing_setup(msm_host, is_bonded_dsi);
++	ret = dsi_timing_setup(msm_host, is_bonded_dsi);
++	if (ret) {
++		pr_err("%s: failed to set up timing. ret=%d\n", __func__, ret);
++		pinctrl_pm_select_sleep_state(&msm_host->pdev->dev);
++		goto fail_disable_clk;
++	}
+ 	dsi_sw_reset(msm_host);
+@@ -2598,2 +2636,3 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
+ 	cfg_hnd->ops->link_clk_disable(msm_host);
++fail_put_pm:
+ 	pm_runtime_put(&msm_host->pdev->dev);
+@@ -2643,10 +2682,6 @@ int msm_dsi_host_set_display_mode(struct mipi_dsi_host *host,
+ 	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
++	struct drm_display_mode *new_mode;
+ 
+-	if (msm_host->mode) {
+-		drm_mode_destroy(msm_host->dev, msm_host->mode);
+-		msm_host->mode = NULL;
+-	}
+-
+-	msm_host->mode = drm_mode_duplicate(msm_host->dev, mode);
+-	if (!msm_host->mode) {
++	new_mode = drm_mode_duplicate(msm_host->dev, mode);
++	if (!new_mode) {
+ 		pr_err("%s: cannot duplicate mode\n", __func__);
+@@ -2655,2 +2690,6 @@ int msm_dsi_host_set_display_mode(struct mipi_dsi_host *host,
+ 
++	if (msm_host->mode)
++		drm_mode_destroy(msm_host->dev, msm_host->mode);
++	msm_host->mode = new_mode;
++
+ 	return 0;
+@@ -2668,2 +2707,6 @@ enum drm_mode_status msm_dsi_host_check_dsc(struct mipi_dsi_host *host,
+ 		return MODE_OK;
++	if (!dsc->slice_width)
++		return MODE_H_ILLEGAL;
++	if (!dsc->slice_height)
++		return MODE_V_ILLEGAL;
+ 

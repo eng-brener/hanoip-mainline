@@ -35,3 +35,31 @@ Gatekeeper/HAT, listener RPMB com escrita autorizada, cadastro e
 identificação pelo fprintd, desbloqueio do Phosh. Detalhes:
 work/fingerprint-20261029/HANDOFF-20261030.md e
 work/PRE-GOLD-20261030-1430/PRE-GOLD.txt.
+
+REPRODUZIBILIDADE (30/10/2026)
+==============================
+`build.sh` agora fixa KBUILD_BUILD_VERSION=64 e
+KBUILD_BUILD_TIMESTAMP="Fri Oct 30 16:26:38 UTC 2026", que são o contador e
+a data embutidos na Image do listener7 realmente bootada (a que está dentro
+de PRE-GOLD-20261030-1430/kernel/kernel-hanoip-listener7.img). Ambos podem
+ser sobrescritos por variável de ambiente.
+
+O que já se reproduz:
+  - árvore-fonte: `git am` dos 195 patches resulta em 276fbce0 (o script
+    aborta se divergir), com a tag base v7.3 em 30fd2ef8;
+  - configuração: config-7.3-hanoip + olddefconfig sem diferenças (o script
+    compara ignorando apenas as linhas de versão do toolchain);
+  - DTB: byte-idêntico ao da PRE-GOLD (900e11eb...), conferido em 30/10.
+
+O que NÃO se reproduz ainda:
+  - a Image.gz. Com os mesmos fontes e config e com banner já idêntico
+    ("#64 ... Sat/Fri Oct 30 16:26:38 UTC 2026"), o build de 30/10 gerou
+    2d5439e2... enquanto a referência é 9769296c..., com o MESMO tamanho
+    (34.632.192 bytes) e 10.382 bytes diferentes. RANDSTRUCT está desligado
+    (CONFIG_RANDSTRUCT_NONE=y), então não é randomização de layout.
+    Causa ainda não identificada; o próximo passo é compilar duas vezes com
+    entradas idênticas para saber se o build em si é determinístico.
+
+Portanto: reproduzível em fonte, configuração e DT; a imagem binária do
+kernel ainda não é byte-idêntica. U-Boot, por outro lado, é byte-idêntico
+(ver work/uboot-builds-20261026/README.txt).

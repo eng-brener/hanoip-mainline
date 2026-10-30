@@ -5,6 +5,10 @@
 #   /v3   this directory (read-write: out/ is written here)
 #   /src  cache volume (tarball, source tree, objects)
 set -euo pipefail
+# Bump de compilação e data embutidos no banner: fixos para reproduzir a
+# Image do listener7 (#64, 16:26:38 UTC de 30/10). Sobrescreva por env.
+export KBUILD_BUILD_VERSION="${KBUILD_BUILD_VERSION:-64}"
+export KBUILD_BUILD_TIMESTAMP="${KBUILD_BUILD_TIMESTAMP:-Fri Oct 30 16:26:38 UTC 2026}"
 V=7.3
 URL=https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-$V.tar.xz
 BASE_TREE=30fd2ef82912c26cf3a58ad0ba6afc375fa851ac	# git tree of tag v7.3

@@ -10,7 +10,10 @@ repo=$(cd "$here/../../.." && pwd)
 
 docker build -q -t hanoip-kernel73-v3 "$here" >/dev/null
 docker volume create hanoip-kernel73-v3-src >/dev/null
+# Reproducibilidade byte a byte da Image do listener7 bootado (#64).
 docker run --rm -v "$here":/v3 -v hanoip-kernel73-v3-src:/src \
+	-e KBUILD_BUILD_VERSION="${KBUILD_BUILD_VERSION:-64}" \
+	-e KBUILD_BUILD_TIMESTAMP="${KBUILD_BUILD_TIMESTAMP:-Fri Oct 30 16:26:38 UTC 2026}" \
 	hanoip-kernel73-v3 bash /v3/build-inside.sh
 
 # The ramdisk is not in the repository (the pmOS one embeds vendor firmware).

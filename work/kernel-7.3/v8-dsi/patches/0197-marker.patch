@@ -1,0 +1,9 @@
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -2146,5 +2146,6 @@ int msm_dsi_host_init(struct msm_dsi *msm_dsi)
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
++	dev_info(&pdev->dev, "hanoip-dsi-guards: resume/clk/dsc/mode fixes active\n");
+ 	DBG("Dsi Host %d initialized", msm_host->id);
