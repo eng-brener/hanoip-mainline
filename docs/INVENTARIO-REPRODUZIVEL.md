@@ -89,7 +89,7 @@ próprio. Nossa customização é a injeção de módulos, que é script.
 
 ### RESOLVIDO (31/10) — imagens-base de boot publicadas
 
-As quatro imagens-base foram publicadas como *release assets* em
+As imagens-base e o U-Boot foram publicados como *release assets* em
 `https://github.com/eng-brener/hanoip-mainline/releases/tag/artefatos-base-20261031`
 (decisão do usuário: a Motorola já publica o firmware do aparelho):
 
@@ -99,6 +99,9 @@ As quatro imagens-base foram publicadas como *release assets* em
 | `Image.gz.listener7` | 12.603.461 |
 | `kernel-hanoip-kali-phosh-v5.img` | 35.627.008 |
 | `kernel-listener7-dsifix-120hz.img` | 36.028.416 |
+| `u-boot-sm7150-motorola-hanoip-cam-tres.img` | 532.480 |
+| `u-boot.bin` | 1.314.192 |
+| `uboot.dtb` | 105.192 |
 
 `scripts/fetch-artifacts.sh` usa esse release como origem padrão, baixa e
 **confere o SHA256** de `artifacts/base-images.sha256`. Testado de ponta a

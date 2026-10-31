@@ -61,9 +61,10 @@ sh work/kernel-7.3/v8-dsi/build.sh
 - Empacotar a imagem volátil: `work/display-120hz-20261030/mkimg-dsifix-120hz.py`
   — também depende da imagem-base local.
 
-## Imagens-base: publicadas (31/10/2026)
+## Imagens-base e U-Boot: publicados (31/10/2026)
 
-Estão no release `artefatos-base-20261031` e são obtidas com
+As imagens-base e os três arquivos do U-Boot (`.img`, `u-boot.bin`,
+`uboot.dtb`) estão no release `artefatos-base-20261031` e são obtidos com
 `sh scripts/fetch-artifacts.sh` (confere SHA256 de
 `artifacts/base-images.sha256`). Verificado de ponta a ponta: apaguei um dos
 arquivos, o script baixou e o `cmp` deu idêntico. Decisão do usuário em
