@@ -70,6 +70,10 @@ snapshot, imagem-cabeçalho do U-Boot, Dockerfiles, UCM2, `hanoip_boot.py`.
    mas não fixa o snapshot do repositório Debian).
 6. **Segredos do aparelho** ficam fora por decisão (`/var/lib/fpc-gk`,
    cadastro da digital, credencial do HAT) — isso é intencional, não lacuna.
+7. **Rootfs**: a customização é 100% scriptada, mas a **imagem base do Kali**
+   (10 GB) não é reconstruída do repositório; o toolchain upstream do Kali
+   NetHunter está só parcialmente vendorizado e a deriva do `apt` não está
+   fixada. Detalhes e opções em [REPRODUZIR-ROOTFS.md](REPRODUZIR-ROOTFS.md).
 
 ## Veredito
 

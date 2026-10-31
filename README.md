@@ -119,8 +119,10 @@ sh work/fingerprint-20261029/integration/setup-kali-fingerprint.sh
 ```
 
 Detalhes, limites e o que ainda depende de revalidação:
-[docs/REPRODUZIR.md](docs/REPRODUZIR.md) e
-[docs/INVENTARIO-REPRODUZIVEL.md](docs/INVENTARIO-REPRODUZIVEL.md).
+[docs/REPRODUZIR.md](docs/REPRODUZIR.md),
+[docs/INVENTARIO-REPRODUZIVEL.md](docs/INVENTARIO-REPRODUZIVEL.md),
+[docs/REPRODUZIR-ROOTFS.md](docs/REPRODUZIR-ROOTFS.md) (rootfs) e
+[docs/AUDITORIA-REPRODUZIBILIDADE.md](docs/AUDITORIA-REPRODUZIBILIDADE.md).
 
 **O que já é byte-idêntico:** U-Boot (`5cb08127…`), DTB do kernel e o módulo
 `msm` do experimento (`e45516ee…`). **Equivalente, não idêntico:** `Image.gz`
