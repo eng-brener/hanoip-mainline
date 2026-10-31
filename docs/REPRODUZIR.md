@@ -89,3 +89,54 @@ DTB — não para o pacote final de boot.
 
 Nada disso foi feito ainda. Não tratar esta receita como "reproduz tudo de
 qualquer máquina" antes de resolver (1).
+
+## Áudio, câmeras, digital (FPC) e apps: o que existe no git
+
+Fontes e patches estão versionados. O que falta, na maioria dos casos, é o
+**script que instala no rootfs** — hoje isso foi feito à mão e está descrito
+em checkpoints.
+
+### Áudio
+- No git: 17 patches de ASoC/wcd937x/soundwire no series do kernel
+  (`work/kernel-7.3/v7/patches`), UCM2 do hanoip
+  (`work/PRE-GOLD-20261028-1707/ucm2/...`, também em 20261029-1534) e os
+  checkpoints de bring-up.
+- Só no aparelho: módulos instalados em `/lib/modules/7.3.0-sm7150` e o UCM
+  copiado para `/usr/share/alsa/ucm2`.
+- Falta: script de instalação (módulos + UCM + reload do PipeWire).
+
+### Câmeras
+- No git: patches 0190–0194 (camss, C-PHY, CCI resume, sensores/VCM), fontes
+  dos módulos (`work/cameras-20261028/hanoip-cam`, `dw9714`, `dw9768`, com
+  headers de registradores), patch do libcamera mono e os tunings
+  (`work/PRE-GOLD-20261029-1534/tuning/{s5k4h7,s5khm2,ov32b}.yaml`).
+- Só no aparelho: `.ko` em `/lib/modules`, tunings em
+  `/etc/libcamera/ipa/simple/`, backup em `/root/backup-cameras-20261029/`.
+- Falta: script de build dos módulos (hoje compilados à mão dentro das
+  pastas de teste, com `.o` versionados) e script de instalação.
+
+### Digital / FPC
+- No git: patch do driver `hanoip_fpc` para libfprint, fontes de `fpc-tac` e
+  `gk-probe`, `hanoip-fp-guard` + unit, app **Digital** (script Python),
+  `install-digital.sh`/`uninstall-digital.sh`, `setup-kali-fingerprint.sh`,
+  testes (`test_hanoip_fp_guard.py`), além do patch 0195 (QSEECOM legado).
+- Só no aparelho: `/opt/hanoip-fprint` já construído, base de cadastro,
+  credencial do Gatekeeper/HAT, e o segredo `/var/lib/fpc-gk`.
+- **Nunca copiar**: `/var/lib/fpc-gk` (segredo do aparelho). Cadastro e HAT
+  são específicos da máquina e não devem ser versionados.
+
+### Apps e utilitários
+- No git: `hanoip-usb-app.py`, `hanoip-usb-mode`, `hanoip-mmi.sh`,
+  `hanoip-ssc.sh`, `hanoip-rtc`, `hanoip-reboot`, regras systemd/udev e
+  scripts de instalação do NetHunter (`instalar-fase0.sh`).
+- Só no aparelho: pacotes instalados, estado do Waydroid e da NetHunter.
+
+### Resumo
+- **Código-fonte, patches, configurações e receitas de build:** no git.
+- **Estado do rootfs (o que está instalado):** parcialmente reproduzível —
+  FPC tem script completo; áudio e câmeras ainda não têm.
+- **Artefatos e segredos do aparelho:** por decisão, fora do git.
+
+Próximo passo para "tudo do zero": escrever `install-audio.sh`,
+`build-cameras.sh` e `install-cameras.sh` no mesmo estilo do
+`setup-kali-fingerprint.sh`, e testar num boot volátil.
