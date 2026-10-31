@@ -18,8 +18,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 HAL = os.path.join(ROOT, 'android-live-readonly', 'programs', 'fingerprint-service-fpc')
 SYM = os.path.join(ROOT, 'hal-protocol', 'fingerprint-service-fpc-symbols.json')
-OD = ('/Volumes/SSDExterno/Applications/Xcode.app/Contents/Developer/Toolchains/'
-      'XcodeDefault.xctoolchain/usr/bin/llvm-objdump')
+# llvm-objdump do sistema (PATH) ou de LLVM_OBJDUMP; nada de caminho fixo.
+OD = os.environ.get('LLVM_OBJDUMP') or shutil.which('llvm-objdump') or 'llvm-objdump'
 
 data = open(HAL, 'rb').read()
 syms = json.load(open(SYM))

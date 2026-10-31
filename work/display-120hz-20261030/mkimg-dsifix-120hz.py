@@ -68,7 +68,10 @@ def newc(entries):
 
 for path in (base_img, kernel, dtb, small, panel):
     if not path.is_file():
-        sys.exit(f'missing {path}')
+        hint = ''
+        if path in (base_img, kernel):
+            hint = '\n  rode antes: sh scripts/fetch-artifacts.sh'
+        sys.exit(f'missing {path}{hint}')
 
 data = base_img.read_bytes()
 _page, sec = hb.read_v2(data)

@@ -13,6 +13,10 @@ repo, out = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
 spec = importlib.util.spec_from_file_location('hboot', repo/'scripts/hanoip_boot.py')
 m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
 base = repo/'work/PRE-GOLD-20261029-1534/kernel/kernel-hanoip-kali-phosh-v5.img'
+if not base.is_file():
+    raise SystemExit(
+        f"imagem-base ausente: {base}\n"
+        "rode antes: sh scripts/fetch-artifacts.sh")
 img = out/'kernel-hanoip-kali-phosh-v7.img'
 with tempfile.TemporaryDirectory() as t:
     rd = pathlib.Path(t)/'ramdisk.cpio.gz'

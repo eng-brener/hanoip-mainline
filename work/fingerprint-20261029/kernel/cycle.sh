@@ -5,7 +5,7 @@
 # Os parâmetros vão inteiros para o insmod; nada é fixado aqui. O padrão do
 # módulo já é region_phys=0 (notificar 0x86d00000 trava este aparelho).
 set -eu
-repo=/Volumes/SSDExterno/Users/brener/developer/hanoip-mainline
+repo=$(cd "$(dirname "$0")/../../.." && pwd)
 img=$1
 params=${2:-region_phys=0 listener_id=0x2000}
 SSH="ssh -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=5 -i $HOME/.ssh/id_ed25519"

@@ -23,7 +23,10 @@ KREL=${KREL:-7.3.0-sm7150}
 apply=0
 [ "${1:-}" = "--apply" ] && apply=1
 
-SSH="ssh -o BatchMode=yes -o ConnectTimeout=8 -o HostKeyAlias=10.0.0.44 $host"
+# StrictHostKeyChecking=accept-new: maquina nova nao tem a chave do
+# aparelho; o primeiro contato a registra em vez de falhar.
+SSH="ssh -o BatchMode=yes -o ConnectTimeout=8 -o StrictHostKeyChecking=accept-new \
+     -o HostKeyAlias=10.0.0.44 $host"
 UCM_SRC="$repo/work/audio-20261028/ucm2"
 SNAP="$repo/work/PRE-GOLD-20261028-1707"
 PATHS="

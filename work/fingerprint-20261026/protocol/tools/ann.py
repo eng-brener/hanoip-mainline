@@ -12,13 +12,14 @@ import os
 import re
 import struct
 import subprocess
+import shutil
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROT = os.path.dirname(HERE)
 ROOT = os.path.dirname(PROT)
-OD = ('/Volumes/SSDExterno/Applications/Xcode.app/Contents/Developer/Toolchains/'
-      'XcodeDefault.xctoolchain/usr/bin/llvm-objdump')
+# llvm-objdump do sistema (PATH) ou de LLVM_OBJDUMP; nada de caminho fixo.
+OD = os.environ.get('LLVM_OBJDUMP') or shutil.which('llvm-objdump') or 'llvm-objdump'
 
 TA = os.path.join(ROOT, 'fpctzapp-reconstructed.elf')
 HAL = os.path.join(ROOT, 'android-live-readonly', 'programs', 'fingerprint-service-fpc')

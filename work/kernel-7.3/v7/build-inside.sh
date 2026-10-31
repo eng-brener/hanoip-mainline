@@ -56,14 +56,24 @@ $MAKE M=/src/extra modules
 
 # NetHunter USB Wi-Fi drivers (out-of-tree, aircrack-ng). Pinned branches;
 # best-effort: a failure warns but does not stop the kernel build.
-for drv in "rtl8812au v5.13.6 88XXau.ko" "rtl8188eus master 8188eu.ko"; do
-	set -- $drv; name=$1; branch=$2; ko=$3
+# Commits fixos (antes era "master" no rtl8188eus, que mudava o build a cada
+# release). Estes são os que geraram os módulos validados.
+for drv in "rtl8812au v5.13.6 ee6490b6d448c2d53e6c72d9d413b1426998473e 88XXau.ko" \
+           "rtl8188eus master 47b502716a095ad63bd037a94065cb4333f2b0b0 8188eu.ko"; do
+	set -- $drv; name=$1; branch=$2; commit=$3; ko=$4
 	if [ ! -d /src/$name/.git ]; then
 		rm -rf /src/$name
-		git clone -q --depth 1 --branch $branch \
+		git clone -q --branch $branch \
 			https://github.com/aircrack-ng/$name.git /src/$name || {
 			echo "WARNING: could not clone $name, skipping"; continue; }
 	fi
+	# Fixa o commit: garante o mesmo código em qualquer máquina.
+	if ! git -C /src/$name cat-file -e "$commit^{commit}" 2>/dev/null; then
+		git -C /src/$name fetch -q origin "$commit" 2>/dev/null || \
+			echo "WARNING: $name não tem o commit $commit"
+	fi
+	git -C /src/$name checkout -qf "$commit" 2>/dev/null || \
+		echo "WARNING: $name ficou em $branch (commit $commit indisponível)"
 	# kbuild >= 6.x dropped EXTRA_CFLAGS; these Makefiles only use it.
 	sed -i 's/^EXTRA_CFLAGS += /ccflags-y += /' /src/$name/Makefile
 	# I386_PC=n loses -DCONFIG_LITTLE_ENDIAN/-DCONFIG_IOCTL_CFG80211.

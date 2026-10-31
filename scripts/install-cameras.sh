@@ -22,7 +22,10 @@ KREL=${KREL:-7.3.0-sm7150}
 apply=0
 [ "${1:-}" = "--apply" ] && apply=1
 
-SSH="ssh -o BatchMode=yes -o ConnectTimeout=8 -o HostKeyAlias=10.0.0.44 $host"
+# StrictHostKeyChecking=accept-new: maquina nova nao tem a chave do
+# aparelho; o primeiro contato a registra em vez de falhar.
+SSH="ssh -o BatchMode=yes -o ConnectTimeout=8 -o StrictHostKeyChecking=accept-new \
+     -o HostKeyAlias=10.0.0.44 $host"
 MODULES="qcom-camss i2c-qcom-cci s5k4h7 hanoip-cam hanoip-vcm"
 PATHS="
 drivers/media/platform/qcom/camss/qcom-camss.ko.zst
