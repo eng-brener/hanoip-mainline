@@ -61,14 +61,26 @@ sh work/kernel-7.3/v8-dsi/build.sh
 - Empacotar a imagem volátil: `work/display-120hz-20261030/mkimg-dsifix-120hz.py`
   — também depende da imagem-base local.
 
-## Lacunas: o que NÃO está no git
+## Imagens-base: publicadas (31/10/2026)
 
-1. **Imagens-base de boot** (`kernel-hanoip-listener7.img`,
-   `Image.gz.listener7`, `kernel-hanoip-kali-phosh-v5.img`). Sem elas não se
-   empacota um boot.img novo do zero, porque o ramdisk/extrator parte delas.
-   Motivo: `work/**/*.img` fica fora do git e o push da imagem construída foi
-   bloqueado por um falso positivo do scanner de segredos (string tipo Twilio
-   em dados comprimidos).
+Estão no release `artefatos-base-20261031` e são obtidas com
+`sh scripts/fetch-artifacts.sh` (confere SHA256 de
+`artifacts/base-images.sha256`). Verificado de ponta a ponta: apaguei um dos
+arquivos, o script baixou e o `cmp` deu idêntico. Decisão do usuário em
+publicar: o fabricante já publica o firmware do aparelho.
+
+Logo, o fluxo completo do zero passa a ser:
+
+```sh
+sh scripts/fetch-artifacts.sh          # imagens-base (verificadas)
+sh scripts/reproduce-all.sh            # U-Boot + kernel v7 + módulos v8
+sh work/display-120hz-20261030/mkimg-dsifix-120hz.py   # boot.img do teste
+```
+
+## Lacunas restantes
+
+1. ~~Imagens-base de boot~~ — **resolvido** pelo release acima.
+   Seguem fora do histórico do git (só como assets), por tamanho.
 2. **A imagem validada de 120 Hz** (`kernel-listener7-dsifix-120hz.img`):
    só local, hash no `SHA256SUMS` do snapshot.
 3. **Rootfs do Kali** e snapshots grandes (`*.img`, `*.tar.zst`): fora por

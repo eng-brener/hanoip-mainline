@@ -87,36 +87,27 @@ próprio. Nossa customização é a injeção de módulos, que é script.
 | Imagens-base de boot | **LACUNA 1** (abaixo) |
 | Segredos do aparelho (`/var/lib/fpc-gk`, cadastro, HAT) | não versionar, por decisão |
 
-### LACUNA 1 — imagens-base de boot
+### RESOLVIDO (31/10) — imagens-base de boot publicadas
 
-`kernel-hanoip-listener7.img`, `Image.gz.listener7` e
-`kernel-hanoip-kali-phosh-v5.img` só existem localmente (33 + 12 + 33 MB).
-Sem elas, `mkimg-kali.sh` e `mkimg-dsifix-120hz.py` não montam um boot.img
-novo do zero.
+As quatro imagens-base foram publicadas como *release assets* em
+`https://github.com/eng-brener/hanoip-mainline/releases/tag/artefatos-base-20261031`
+(decisão do usuário: a Motorola já publica o firmware do aparelho):
 
-Por que não subiram: (a) `work/**/*.img` está fora do git por tamanho;
-(b) o push da imagem construída foi bloqueado por falso positivo do scanner
-de segredos; (c) **o repositório é público** e essas imagens carregam o
-ramdisk do vendor (firmware de terceiros) — publicar precisa de decisão
-consciente, não de um commit automático.
+| Arquivo | Bytes |
+|---|---|
+| `kernel-hanoip-listener7.img` | 35.631.104 |
+| `Image.gz.listener7` | 12.603.461 |
+| `kernel-hanoip-kali-phosh-v5.img` | 35.627.008 |
+| `kernel-listener7-dsifix-120hz.img` | 36.028.416 |
 
-Ponto único para resolver isso: `scripts/fetch-artifacts.sh` (com
-`artifacts/base-images.sha256` versionado, só hashes). Ele aceita
-`--from DIR` (cópia local/backup) ou `BASE_URL=https://...` (release assets),
-baixa e **confere o SHA256** antes de aceitar. Testado em 31/10 contra os
-arquivos locais: as quatro imagens conferem.
+`scripts/fetch-artifacts.sh` usa esse release como origem padrão, baixa e
+**confere o SHA256** de `artifacts/base-images.sha256`. Testado de ponta a
+ponta em 31/10: apaguei `Image.gz.listener7` local, o script baixou do release
+e o `cmp` contra o original deu idêntico.
 
-Opções para a origem, em ordem de segurança:
-1. tornar o repositório privado e publicar as imagens como *release assets*
-   (o `gh` está autenticado; falta só o aval);
-2. manter público e publicar as imagens mesmo assim, aceitando o risco de
-   redistribuir blobs do vendor;
-3. não publicar: quem for reproduzir extrai o ramdisk do próprio aparelho
-   (passo documentado, mas não é "do zero").
-
-Enquanto isso não é decidido, "reproduzir do zero" vale para fontes,
-drivers, U-Boot, módulos, DTB, scripts de rootfs e apps — não para o pacote
-final de boot.
+Com isso o `boot.img` final também nasce do zero:
+`sh scripts/fetch-artifacts.sh && sh work/kernel-7.3/v7/build.sh &&
+sh work/display-120hz-20261030/mkimg-dsifix-120hz.py`.
 
 ## 7. Comandos
 
