@@ -1,212 +1,159 @@
-# postmarketOS + Linux 7.3 mainline no Motorola Moto G60 (hanoip / SM7150)
+# Linux 7.3 mainline no Motorola Moto G60 (hanoip / SM7150)
 
 Port do U-Boot mainline e do kernel Linux mainline (fork
 [sm7150-mainline](https://github.com/sm7150-mainline/linux)) para o Moto G60
-(codename `hanoip`, Snapdragon 730G / `sm7150` / `sdmmagpie`), com
-postmarketOS e Plasma Mobile rodando de verdade.
+(codename `hanoip`, Snapdragon 730G / `sm7150` / `sdmmagpie`). O aparelho roda
+**multi-boot volátil**: postmarketOS + Plasma Mobile (histórico) e, desde
+outubro, **Kali + NetHunter Pro com Phosh**, ambos sem gravar partição.
 
 > **Regra do projeto: nenhum flash.** U-Boot e kernel sobem só por
-> `fastboot boot` (em RAM). A única área gravável do celular é a região não
-> alocada no fim da partição `super` (espaço do slot B; o slot ativo é o A),
-> onde mora o rootfs do pmOS. Metadados LP, partições `_a`, `userdata`,
-> `persist` e `metadata` nunca são gravados. Detalhes em [AGENTS.md](AGENTS.md).
+> `fastboot boot` (em RAM). O DT que vale é o **embutido no U-Boot**
+> (`CONFIG_OF_EMBED`), não o do `boot.img`. Metadados LP, partições `_a`,
+> `userdata`, `persist` e `metadata` nunca são gravados. Detalhes e o histórico
+> completo de autorizações em [AGENTS.md](AGENTS.md).
 
-## Estado atual (26/10/2026)
+Todo o código, os patches e as receitas de build estão neste repositório e
+**reproduzem do zero** — ver [Reproduzir do zero](#reproduzir-do-zero).
+
+## Estado atual (31/10/2026)
 
 | Item | Estado |
 |---|---|
-| Kernel | **Linux 7.3** (upstream v7.3 + 160 patches) — `work/kernel-7.3/v2/` |
-| Retorno padrão (GOLD 26/10 ~17h) | U-Boot v2026.10 + kernel #6 7.3 — `work/GOLD-20261026-1712/` |
-| Sistema | postmarketOS v26.06 + Plasma Mobile, rootfs ext4 no fim do `super` |
-| Display | DSI 1080×2460 @ 60 Hz com DSC, painel Tianma ILI7807S, brilho (WLED) |
-| GPU | Adreno 618 com Freedreno/Mesa, KWin com OpenGL; Vulkan 1.3 (Turnip) |
-| Vídeo por hardware | Venus: decodifica H.264/HEVC/VP8/VP9/MPEG-2 e codifica (V4L2); validado em H.264 1080p |
-| Touch | ILI7807S TDDI por SPI, firmware só na RAM, segue a energia do painel |
-| Rede | Wi-Fi WCN3990 (NetworkManager), USB NCM + SSH em 172.16.42.1 |
-| Bluetooth | WCN3990 por UART (hci0) |
-| Áudio | alto-falante (ADSP → SEC_MI2S → Awinic AW882xx) com PipeWire; **sem proteção do alto-falante ainda** |
-| Vibração | vibrador LDO do PM6150 (`pm8xxx-vibrator`, teto de 3,0 V), usado pelo Plasma (feedbackd) |
-| Lanterna e flash | PM6150L: flash traseiro (lanterna do Plasma) e flash frontal separados |
-| LED de notificação | LED branco no TRILED do PM6150L (`white:status`), ligado ao feedbackd; **acendimento confirmado visualmente** |
-| NFC | NXP PN54x (`nxp-nci`): o kernel lê cartões; falta app no Plasma |
-| Botões | power e volume (+/−) funcionando no Plasma |
-| Armazenamento | UFS, todos os blocos somente leitura exceto o rootfs |
-| CPU | 8 CPUs, CPUfreq (qcom-cpufreq-hw), CPUidle local |
-| Bateria | telemetria (PM6150 QG + SMB5); **carga ainda desligada** |
-| Par de testes atual | U-Boot `work/perif-20261026/v5/` + kernel #6 `work/perif-20261026/v6-qrtr/` (áudio + periféricos + correção do Wi-Fi) |
-| Pendente | ver [O que falta](#o-que-falta) |
+| Kernel | **Linux 7.3.0-sm7150** — 195 patches sobre upstream v7.3, árvore `276fbce0` (`work/kernel-7.3/v7/`) |
+| Par de retorno | **PRE-GOLD-20261030-1430**: U-Boot cam-tres + kernel listener7 (#64) + Kali com digital |
+| Experimento de 120 Hz | **PRE-GOLD-20261030-1730-120HZ** (volátil): `msm` corrigido + painel anunciando 119,976 Hz |
+| Sistema | Kali + NetHunter Pro, Phosh; rootfs ext4 em `userdata` |
+| Display | DSI 1080×2460 @ 60 Hz com DSC (Tianma ILI7807S); **120 Hz validado em troca de modo** (experimental) |
+| Toque | Ilitek TDDI por SPI, firmware só na RAM, recarrega a cada power-on do painel |
+| Digital (FPC) | TA no TEE, cadastro autorizado pelo Gatekeeper/HAT, fprintd via libfprint `hanoip_fpc`, app **Digital**, guardião de desbloqueio |
+| Áudio | alto-falante, fone, earpiece, 3 microfones, detecção de jack e PipeWire validados |
+| Câmeras | três validadas: S5K4H7 (wide), S5KHM2 (principal, C-PHY), OV32B (frontal); réguas e tunings instalados |
+| CPU/GPU | 8 CPUs, CPUfreq, CPUidle local, piso de GPU 355 MHz |
+| Rede | Wi-Fi WCN3990, USB NCM + SSH em 172.16.42.1, Bluetooth |
+| Bateria | telemetria + **carga opt-in** (`/sys/kernel/debug/hanoip-charge`); SOC pela curva OCV do vendor |
+| Suspender | **quebrado**: entra em `s2idle` e não retorna (ver pendências) |
+| Reprodutibilidade | U-Boot **byte-idêntico**; kernel equivalente; módulos e DTB idênticos; artefatos-base em release |
 
 ## O que falta
 
 Ordem sugerida: primeiro o que impede o uso diário, depois o resto.
 
-**Energia (o mais urgente)**
-- **Carga da bateria.** O SMB5 roda só em modo monitor: o celular descarrega
-  mesmo no cabo (~−160 mA com a tela no máximo). Falta ligar a carga com
-  limites conservadores, corte por temperatura (JEITA) e, depois, USB-PD.
-  Escreve no carregador do PMIC, então precisa de autorização. Referência
-  medida no Android carregando pelo USB do computador: entrada limitada a
-  500 mA, corrente de carga até 3,6 A, flutuação 4,45 V, sem step charging
-  nem JEITA por software, Type-C sem PD (aceitaria até 9 V).
-- **Porcentagem calibrada.** Hoje é estimada pela tensão. O driver já aceita
-  tabela OCV, mas falta descrever a bateria (tabela e resistência interna)
-  no DT.
-- **Suspend/resume.** O celular nunca dorme. Desligar o painel já funciona
-  (o touch recarrega o firmware), mas o suspend do sistema nunca foi testado.
-  O Android usa `deep`; com cabo e ADB conectados ele também não suspende,
-  e as estatísticas de sono do SoC (RPMh) só existem no debugfs, ausente no
-  kernel do Android.
-- **CPUidle de cluster.** Só os estados locais das CPUs estão ligados; o
-  colapso de cluster deixou a tela preta e está desativado.
-- **Estabilidade prolongada.** Falta uma sessão de horas medindo
-  temperatura, erros do DSI e memória.
+**Suspender e energia**
+- **Suspend (`s2idle`) não retorna.** Depois de 15 min ociosos o ambiente pede
+  suspend e o aparelho não volta (o "voltar" após apertar power é reboot
+  forçado). Em 28/10 funcionou por 31 s com o ADSP parado pelo hook
+  `hanoip-adsp`; falta confirmar o hook e fechar o caminho. Evidências em
+  `docs/kernel/checkpoint-2026-10-30-suspend.txt`.
+- **Travamento com carga alta.** Em 30/10 o aparelho travou logo após abrir o
+  Firefox: load 9,5 em 8 CPUs, SSH oscilando e milhares de escritas SPMI
+  bloqueadas. Suspeitos não comprovados: GPU/msm, swap em zram, compositor.
+- **Carga com a tela ligada.** A carga opt-in entrega ~497 mA; com a tela
+  acesa o consumo passa disso. Próximo passo combinado: APSD/ICL (B4).
 
-**Display e entrada**
-- **FIFO do DSI na partida.** Alguns boots ainda mostram erros de FIFO; a
-  causa da tela preta ocasional não foi fechada.
-- **90/120 Hz.** O painel do Android tem modos de 90 e 120 Hz; hoje só 60 Hz.
-- **Fluidez.** Engasgos e travadas ao abrir apps vinham do devfreq da GPU
-  e da UFS reagindo devagar; o serviço `hanoip-perf-tune` aplica um piso de
-  355 MHz na GPU (reavaliação a cada 16 ms) e fixa a UFS em 200 MHz. Ainda
-  dá para melhorar: direct I/O no loop do rootfs, zram e tempo real no KWin.
-- **Touch: refinamento.** Cantos, orientação, calibração e gestos ficaram
-  adiados de propósito.
+**120 Hz (experimental)**
+- Medição óptica independente ainda não feita (só FPS de aplicação).
+- Login com 119,976 Hz salvo abre com tela preta e `Timeout (3000ms)` do Phoc:
+  voltar a 60 Hz antes de encerrar a sessão.
+- Apagar/acender pelo compositor derruba a sessão gráfica; falta o A/B com o
+  `msm` original.
+- Sem teste de suspend, uso prolongado, térmica sustentada e bateria em 120 Hz.
 
-**Áudio**
-- **Proteção do alto-falante (antes de usar volume alto).** No Android o ADSP
-  modela a temperatura da bobina; aqui não há proteção. Hoje o amplificador
-  começa com 6 dB de atenuação (`/etc/modprobe.d/hanoip-speaker.conf`). Plano
-  combinado, nesta ordem: (1) controle de volume ALSA com teto no driver +
-  monitor de bateria/frio do vendor (tabelas do DT stock); (2) retorno de
-  tensão/corrente (IV) do amplificador pela SEC_MI2S_TX; (3) `speakersafetyd`
-  (pacote do Alpine) com parâmetros do hanoip; (4) passa-alta + limitador no
-  PipeWire.
-- **Formato de 24 bits.** Com S24_LE o caminho do ADSP toca ~48 dB mais baixo;
-  o WirePlumber força S16LE como contorno. A causa no q6asm não foi vista.
-- **Microfones e fone.** Passam pelo codec WCD937x (macros do LPASS +
-  SoundWire) e pela chave `fsa4480` do USB-C; ainda não começou.
-- **Áudio Bluetooth.** Depende da pilha de áudio; não testado.
+**Câmeras e áudio**
+- Câmeras: autofoco, LSC e recuperação do serviço em aberto.
+- Áudio: proteção do alto-falante (hoje 6 dB de atenuação fixa), S24_LE ~48 dB
+  baixo (WirePlumber força S16LE), microfones/fone pelo WCD937x e áudio BT.
 
-**Telefonia e rádio**
-- **Modem.** O modem sobe (necessário para o Wi-Fi), mas não há RIL: sem
-  chamadas, SMS ou dados móveis. Firmware `M7150_25.333.01.85R`, perfil
-  `HANOIP_LATAMDSDS_CUST` (dual SIM). Não há chip no aparelho (o Android
-  também mostra os dois slots vazios), então telefonia só pode ser testada
-  com um SIM inserido.
-- **GPS.** Passa pelo modem; não investigado.
-- **Hotspot Wi-Fi.** Não testado.
-
-**Câmera e LEDs**
-- **Câmeras.** Principal Samsung S5KHM2 (108 MP), ultrawide S5K4H7 (8 MP),
-  OmniVision OV02B1B (2 MP) e frontal OV32B (32 MP), em dois barramentos CCI
-  e quatro CSIPHYs, com EEPROMs e 2 atuadores de foco. Nenhum desses
-  sensores tem driver no mainline; o fork tem o camss do SM7150.
-- **Flash da câmera.** Os dois LEDs já acendem (traseiro e frontal), mas o
-  modo flash só será usado quando houver câmera.
-
-**Sensores e periféricos**
-- **Acelerômetro/giroscópio e luz/proximidade.** ICM4x6xx e TMD2755, ligados
-  ao ADSP no Android. Firmware mapeado: SSC SE0/I3C (ICM) e SSC SE4/I²C
-  (TMD). Teste real via ADSP/FastRPC + libssc, com registry em RAM: 382
-  amostras do acelerômetro, luz de 0 a 72,5 lux observados e proximidade
-  alternando FAR/NEAR. Giroscópio também testado: 665 amostras com resposta nos três eixos;
-  orientação/calibração pendentes. Ver
-  `docs/kernel/checkpoint-2026-10-26-sensores-teste-ssc.txt`.
-  Integração Plasma/iio-sensor-proxy parcial: luz e proximidade chegam,
-  mas o proxy não recebe amostras do accel via QMI (enable ok, zero
-  mensagens; libssc recebe normal) e a orientação fica `undefined` —
-  rotação automática adiada. Inversão de 180° medida quando fluía.
-  Sem magnetômetro.
-- **Leitor de digital.** Sensor FPC (há variante Chipone). No Android, a
-  captura usa o TrustZone (`fpctzapp`); o helper do kernel só controla
-  IRQ 90, reset 4 e pinctrl de alimentação 29 (30 é da alternativa Chipone).
-  Modelo exato ainda desconhecido: `fpc1020` é o compatible genérico.
-  SPI1/0x884000 é candidato forte pelos dados do TA/devcfg, sem teste AP.
-  Falta o caminho QSEECOM legado e o protocolo HAL/FPC; carregar `qcomtee`
-  moderno não fornece essa pilha. Ver o checkpoint FPC de 26/10.
-- **Sensor SAR.** Semtech SX933x no I²C 1 (SE `0xa84000`, 0x28); nem o
-  Android liga um driver nele.
-- **NFC: aplicativos.** O kernel liga o PN54x e lê cartões (ISO 14443-A
-  testado); o Alpine não tem o `neard`, então nenhum app usa o NFC ainda.
-- **USB host/OTG.** Hoje a USB é só gadget (NCM + serial). O hardware faz os
-  dois papéis (`dual power role`, dwc3 em OTG, regulador de VBUS
-  `smb5-vbus`); falta a troca de papel do Type-C e esse regulador no
+**Sistema e periféricos**
+- Sensores (ICM4x6xx/TMD2755) via ADSP/libssc: leitura ok, integração e
+  orientação pendentes; sem magnetômetro.
+- Modem sobe mas não há RIL (sem chamadas/SMS/dados); GPS e hotspot não testados.
+- USB host/OTG (troca de papel do Type-C), microSD (parado por tensão).
+- Venus: integrar de forma permanente e ligar nos players.
+- Upstream: as correções do hanoip ainda não foram enviadas ao fork nem ao
   mainline.
-- **microSD.** Parado: as tentativas pediam 3,3 V num regulador que vai até
-  2,95 V. Os patches estão guardados em `work/sd-20261025/saved-patches/`.
-- **Vídeo por hardware: integrar.** O Venus já decodifica H.264 1080p a
-  ~125 fps com quadros idênticos ao software (patch experimental do SM7150,
-  DT `...-pmos-venus.dts`). Falta: testar o encoder e os outros codecs, tornar
-  o módulo e o DT permanentes e ligar a aceleração nos players (Haruna/mpv,
-  Firefox).
-
-**Sistema**
-- **Boot sem computador.** Tudo sobe por `fastboot boot` a partir do Mac;
-  sem gravar partições, o celular não inicia o pmOS sozinho.
-- **OTA do Android.** Uma atualização do Android usaria o espaço livre do
-  `super` e apagaria o pmOS.
-- **Firewall.** O kernel não tem nftables; o pmOS roda sem firewall.
-- **Térmica sob carga.** As CPUs grandes chegam a ~74 °C; o controle
-  térmico existe, mas não foi validado em carga longa.
-- **Wi-Fi intermitente: confirmar a correção.** A corrida do QRTR que travava
-  o modem em metade dos boots foi corrigida no kernel #6; falta confirmar em
-  mais boots (os logs de cada boot ficam em `/var/log/hanoip-boot/`).
-- **Upstream.** As correções do hanoip (LCDB, painel, touch, DSI, SMMU,
-  bateria, pinos SSC do LPI, vibrador, QRTR) ainda não foram enviadas ao fork
-  nem ao mainline. O helper da lanterna do Plasma Mobile 6.6.6 já tem
-  correção no master (`ad036102`); o binário corrigido é usado até o Alpine
-  atualizar.
 
 ## Como bootar (só volátil)
 
-Com o celular no fastboot da Motorola (power + volume para baixo):
+Com o celular no fastboot (power + volume para baixo), dois passos:
 
 ```
-fastboot boot work/kernel-7.3/v2/u-boot-hanoip-pmos-v1.img   # espere o fastboot do U-Boot
-fastboot boot work/kernel-7.3/v2/kernel-hanoip-pmos-7.3-v2.img
+# par de retorno (Kali + digital)
+fastboot boot work/PRE-GOLD-20261030-1430/uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img
+fastboot boot work/PRE-GOLD-20261030-1430/kernel/kernel-hanoip-listener7.img
+
+# experimento de 120 Hz (mesmo U-Boot)
+fastboot boot work/PRE-GOLD-20261030-1730-120HZ/uboot/u-boot-sm7150-motorola-hanoip-cam-tres.img
+fastboot boot work/PRE-GOLD-20261030-1730-120HZ/kernel/kernel-listener7-dsifix-120hz.img
 ```
 
-Par de testes com áudio e periféricos (mesmos passos, U-Boot
-`work/perif-20261026/v5/u-boot-hanoip-pmos-perif-v5.img` e kernel
-`work/perif-20261026/v6-qrtr/kernel-hanoip-pmos-7.3-qrtr.img`).
+Espere o fastboot do U-Boot reaparecer entre os dois comandos. As pastas
+PRE-GOLD são somente leitura; para logar o boot, use uma **cópia** da imagem.
 
-Para a GOLD atual, use uma **cópia** das imagens de `work/GOLD-20261026-1712/`
-(a pasta é somente leitura e o helper grava um log ao lado da imagem). O
-Plasma sobe em ~40 s (sem o hash integral da super no boot). SSH:
-`ssh root@172.16.42.1` (só por chave).
-O helper `work/hanoip-display-20261024/boot-volatile.py` faz os dois passos.
+Boot completo: o ABL carrega o U-Boot como `boot.img`; o U-Boot entrega ao
+kernel o DTB embutido nele; o initramfs sobe display, USB, UFS (RO), Wi-Fi,
+BT e bateria, monta o rootfs e faz `switch_root`. SSH: `ssh root@172.16.42.1`.
 
-Como funciona: o ABL carrega o U-Boot como `boot.img`; o U-Boot passa ao
-kernel o **DTB embutido nele** (o DT que vale é o de `uboot-sm7150/`). O
-initramfs sobe display, USB, UFS (RO), Wi-Fi, BT e bateria, confere os
-metadados LP e o ext4 no offset, monta o rootfs por `/dev/loop7` e faz
-`switch_root` para o OpenRC.
+Trocar a taxa no 120 Hz (Voltar a 60 Hz antes de sair da sessão):
+
+```
+su kali -c "XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-0 \
+  wlr-randr --output DSI-1 --custom-mode 1080x2460@119.976Hz"
+```
+
+## Reproduzir do zero
+
+Precisa de Docker, git, python3, ~12 GB de disco e rede.
+
+```sh
+sh scripts/fetch-artifacts.sh     # imagens-base + U-Boot (release, com SHA256)
+sh scripts/reproduce-all.sh       # U-Boot + kernel v7 + módulos do 120 Hz
+sh scripts/reproduce-all.sh --verify   # confere os hashes conhecidos
+```
+
+Rootfs (aparelho ligado e autorização para escrever):
+
+```sh
+sh scripts/install-audio.sh --apply
+sh scripts/install-cameras.sh --apply
+sh work/fingerprint-20261029/integration/setup-kali-fingerprint.sh
+```
+
+Detalhes, limites e o que ainda depende de revalidação:
+[docs/REPRODUZIR.md](docs/REPRODUZIR.md) e
+[docs/INVENTARIO-REPRODUZIVEL.md](docs/INVENTARIO-REPRODUZIVEL.md).
+
+**O que já é byte-idêntico:** U-Boot (`5cb08127…`), DTB do kernel e o módulo
+`msm` do experimento (`e45516ee…`). **Equivalente, não idêntico:** `Image.gz`
+do kernel e o módulo do painel.
+
+**Segredos do aparelho nunca entram aqui:** `/var/lib/fpc-gk`, cadastro da
+digital e credencial do Gatekeeper/HAT são específicos da máquina.
 
 ## Onde está cada coisa
 
-- `onde paramos.md` — handoff detalhado, comece por aqui.
 - `AGENTS.md` — regras de segurança do aparelho e estado resumido.
-- `work/kernel-7.3/v3/` — kernel 7.3 atual: `patches/` (166 sobre v7.3),
-  config, módulo extra e `./build.sh` (Docker) que reconstrói tudo do zero
-  conferindo a árvore; ver `README.txt`. O v2 (160 patches) fica em
-  `work/kernel-7.3/v2/`.
-- `work/GOLD-20261026-1712/` — GOLD atual (U-Boot v2026.10 + kernel #6 7.3),
-  somente leitura, com `GOLD.txt` e `SHA256SUMS`. GOLDs anteriores em `work/GOLD-*`.
-- `work/uboot-builds-20261026/` — build reproduzível do U-Boot (v2026.10 +
-  delta hanoip, diff-record em `patches/`).
-- `work/sensors-20261026/orient-fix/` — imagens v3/v4 de boot rápido,
-  parser do registry e notas do diagnóstico de orientação.
-- `work/audio-20261026/` — áudio do alto-falante: patches do driver
-  AW882xx e dos pinos SSC do LPI, DTs e fases de bring-up.
-- `work/perif-20261026/` — vibrador, flashes, LED, NFC e a correção do QRTR:
-  patches, DTs, imagens por versão, helper da lanterna e ferramentas de teste
-  (`tools/nfcpoll.py`, `tools/vib.py`).
-- `work/pmos-super-20261025/` — `build-rootfs.sh` + `overlay/` recriam o
-  rootfs pmOS do zero; `write-super-tail.sh` é o procedimento de gravação.
-- `kernel-mainline/` — fonte do kernel 7.1 (#10) da GOLD v4.
-- `uboot-sm7150/` — U-Boot (fork sm7150-mainline) com os DTs do hanoip.
-- `scripts/` — scripts do initramfs e helpers de boot.
-- `docs/kernel/` — checkpoints de cada etapa.
+- `onde paramos.md` — handoff detalhado do dia a dia.
+- `docs/REPRODUZIR.md`, `docs/INVENTARIO-REPRODUZIVEL.md` — como reconstruir
+  tudo e de onde vem cada peça.
+- `docs/kernel/` — checkpoints por etapa (bateria, display, CPU, áudio,
+  câmeras, digital, suspend).
+- `work/kernel-7.3/v7/` — kernel atual (195 patches + config + `build.sh`;
+  `README.txt` explica a árvore `276fbce0`).
+- `work/kernel-7.3/v8-dsi/` — correções DSI + modo de 120 Hz (módulos).
+- `work/PRE-GOLD-20261030-1430/` — par de retorno (U-Boot + kernel + rootfs
+  reproduzível + digital).
+- `work/PRE-GOLD-20261030-1730-120HZ/` — snapshot do experimento de 120 Hz.
+- `work/uboot-builds-20261026/` — build reproduzível do U-Boot
+  (`build-repro.sh`, patches e prova de hash).
+- `work/fingerprint-20261029/integration/` — `setup-kali-fingerprint.sh`,
+  app Digital, guardião e testes.
+- `scripts/` — `hanoip_boot.py`, `hanoip-pmos-root.sh`, `install-audio.sh`,
+  `install-cameras.sh`, `fetch-artifacts.sh`, `reproduce-all.sh`.
+- `kernel-mainline/` — fonte mainline usada como referência e para os patches.
+- `uboot-sm7150/` — árvore local do U-Boot (não versionada; o build
+  reproduzível parte do fork + patches).
+- `artifacts/base-images.sha256` — hashes das imagens-base publicadas no
+  release `artefatos-base-20261031`.
 
 ## Lições do port
 
