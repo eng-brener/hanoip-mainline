@@ -140,3 +140,29 @@ em checkpoints.
 Próximo passo para "tudo do zero": escrever `install-audio.sh`,
 `build-cameras.sh` e `install-cameras.sh` no mesmo estilo do
 `setup-kali-fingerprint.sh`, e testar num boot volátil.
+
+## Scripts de instalação no rootfs (31/10/2026)
+
+Escritos para fechar a lacuna de "estado do rootfs". Todos são idempotentes,
+fazem backup datado e **só escrevem com `--apply`** (sem a flag, mostram o
+plano). `HANOIP_SKIP_SSH=1` permite validar a checagem local sem o aparelho.
+
+| Área | Script | O que faz |
+|---|---|---|
+| Áudio | `scripts/install-audio.sh` | 2 módulos (wcd937x-sdw, soundwire-qcom) + árvore UCM2 + depmod + recarga do PipeWire/WirePlumber |
+| Câmeras | `scripts/install-cameras.sh` | 5 módulos (qcom-camss, i2c-qcom-cci, s5k4h7, hanoip-cam, hanoip-vcm) + 3 tunings + depmod |
+| FPC | `work/fingerprint-20261029/integration/setup-kali-fingerprint.sh` | já existia: módulo QSEECOM, libfprint com patch, fprintd, app Digital, guardião |
+
+E um orquestrador: `scripts/reproduce-all.sh` constrói U-Boot, kernel v7 e os
+módulos do v8, e `--verify` confere os hashes conhecidos.
+
+Estado da validação (honesto): `sh -n` passou nos três; `reproduce-all.sh
+--verify` roda e reporta OK para U-Boot, DTBs e msm, e "EQUIVALENTE" para a
+Image.gz; os dois instaladores rodaram em dry-run (`HANOIP_SKIP_SSH=1`) e
+resolveram as fontes localmente. **Nada foi executado com `--apply`** porque
+o aparelho estava travado/sem SSH no momento em que foram escritos — a
+primeira execução real ainda precisa ser feita e observada.
+
+Depois de aplicar, a validação recomendada é: `cam -l` e uma foto para
+câmeras; `pactl list short sinks` e um toque para áudio; e o
+`test_hanoip_fp_guard.py` para a digital.
